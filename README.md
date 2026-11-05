@@ -139,8 +139,38 @@ Thus the classical and quantum **length, dimensions, and entanglement parameters
 
 For **32 larger Table 1 cases**, the verified lower bound uses Magma's BestKnownLinearCode database: the original generator defines the same code as the corresponding database entry, whose minimum distance is at least the claimed D. Reproducing that route requires a compatible Magma code database. The CSV files determine the codes but are not, by themselves, exhaustive distance-proof certificates.
 
-## Optional construction programs
+## Construction routines (optional)
 
-The accompanying X4_core.m, HermitianBasis_X4.m, HullIncreasing_X4.m and HullDecreasing_X4.m illustrate the construction algorithms. The earlier detailed instance files X4.m, HullIncreasing.m, HullDecreasing.m and QC_X4.m are also included. The two CSV files and their matching table-specific Magma files are **self-contained** and do not require these other scripts.
+Four small Magma modules are included for constructing new examples over GF(4):
 
-This dataset covers the **148 direct X4 constructions**; propagation-derived results elsewhere in the manuscript are outside its scope.
+- [X4_core.m](X4_core.m) implements the block-matrix assembly `ConstructionX4(A1,W1,A2,W2)`, with matching rows placed side by side.
+- [HermitianBasis_X4.m](HermitianBasis_X4.m) computes the Hermitian hull, a complementary subspace, and an orthonormal basis using Magma's built-in linear-algebra routines.
+- [HullIncreasing_X4.m](HullIncreasing_X4.m) implements `HullIncreasingX4(G1,G2,lambda)` by matching orthonormal directions from both ingredients. It produces output hull dimension \(h_1+h_2+\lambda\).
+- [HullDecreasing_X4.m](HullDecreasing_X4.m) implements `HullDecreasingX4(G1,G2,lambda)` by matching directions from the first ingredient's hull with orthonormal directions from the second. It produces output hull dimension \(h_1+h_2-\lambda\).
+
+Run the following examples from this directory. The increasing/decreasing files automatically load their two dependencies.
+
+**Increasing the hull:**
+
+~~~magma
+load "HullIncreasing_X4.m";
+G1 := IdentityMatrix(F,2);
+G2 := IdentityMatrix(F,1);
+GX4,A1,W1,A2,W2 := HullIncreasingX4(G1,G2,1);
+assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
+~~~
+
+**Decreasing the hull:**
+
+~~~magma
+load "HullDecreasing_X4.m";
+G1 := Matrix(F,2,5,[1,1,0,0,0, 0,0,1,1,1]);
+G2 := IdentityMatrix(F,1);
+GX4,A1,W1,A2,W2 := HullDecreasingX4(G1,G2,1);
+assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
+~~~
+
+These routines select matching bases automatically. Consequently, they need not reproduce the **same minimum distances** as the particular published examples. For the exact 148 direct constructions in Tables 1 and 2, use the explicit matrices in the table-specific CSV/Magma data files above. The general routines do not implement the extra module-preserving choices needed to produce QC codes.
+
+Propagation-derived results elsewhere in the manuscript are outside the scope of these direct-construction data files.
+
