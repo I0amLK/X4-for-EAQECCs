@@ -123,7 +123,7 @@ The same permutation rule works for all 32 Table 2 cases. Coordinate permutation
 For a full-rank generator matrix G over GF(4), let $G^\dagger$ denote the conjugate transpose. Its Hermitian hull dimension is
 
 $$
-h=k-\operatorname{rank}(GG^\dagger),
+h=k-\mathrm{rank}(GG^\dagger),
 $$
 
 and the Hermitian EAQECC construction used in the manuscript gives
@@ -131,8 +131,8 @@ and the Hermitian EAQECC construction used in the manuscript gives
 $$
 [[N,\;k-h,\;d_Q;\;N-k-h]]_2,
 \qquad
-d_Q=\min\{\operatorname{wt}(x):x\in C\setminus C^{\perp_H}\},
-\quad C=\operatorname{RowSpace}(G).
+d_Q=\min\{\mathrm{wt}(x):x\in C\setminus C^{\perp_H}\},
+\quad C=\mathrm{RowSpace}(G).
 $$
 
 Thus the classical and quantum **length, dimensions, and entanglement parameters** can be checked directly from the supplied matrices. To certify an **exact distance** $d_Q=D$, verify a lower bound $d(C)\ge D$ and exhibit a word of weight D in C outside the Hermitian hull. A distance lower-bound claim needs only the corresponding lower bound. Some minimum-distance computations can be expensive.
