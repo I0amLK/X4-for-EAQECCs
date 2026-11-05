@@ -72,9 +72,9 @@ Use the desired table result number as the array index.
 
 ## QC coordinate order — important for Table 2
 
-The Table 2 matrices are published in the **concatenated X4 coordinate order** because it makes the construction blocks visible. This is the code called \(\mathcal S_0\) in the proof of the QC-X4 theorem.
+The Table 2 matrices are published in the **concatenated X4 coordinate order** because it makes the construction blocks visible. This is the code called $\mathcal S_0$ in the proof of the QC-X4 theorem.
 
-All 32 examples have co-index 3. If the input lengths are \(n_i=3\ell_i\), the concatenated order is
+All 32 examples have co-index 3. If the input lengths are $n_i=3\ell_i$, the concatenated order is
 
 $$
 (u_0,u_1,u_2,v_0,v_1,v_2),
@@ -89,7 +89,7 @@ P:(u_0,u_1,u_2,v_0,v_1,v_2)
 \longmapsto(u_0,v_0,u_1,v_1,u_2,v_2).
 $$
 
-**After this column permutation, the output code is an \((\ell_1+\ell_2)\)-quasi-cyclic code in the standard coordinate convention.** The raw concatenated matrix need not itself be invariant under the ordinary \((\ell_1+\ell_2)\)-step shift.
+**After this column permutation, the output code is an $(\ell_1+\ell_2)$-quasi-cyclic code in the standard coordinate convention.** The raw concatenated matrix need not itself be invariant under the ordinary $(\ell_1+\ell_2)$-step shift.
 
 For example, after loading Table2_Generators.m, check No. 117:
 
@@ -120,7 +120,7 @@ The same permutation rule works for all 32 Table 2 cases. Coordinate permutation
 
 ## Parameter and distance checks
 
-For a full-rank generator matrix G over GF(4), let \(G^\dagger\) denote the conjugate transpose. Its Hermitian hull dimension is
+For a full-rank generator matrix G over GF(4), let $G^\dagger$ denote the conjugate transpose. Its Hermitian hull dimension is
 
 $$
 h=k-\operatorname{rank}(GG^\dagger),
@@ -135,7 +135,7 @@ d_Q=\min\{\operatorname{wt}(x):x\in C\setminus C^{\perp_H}\},
 \quad C=\operatorname{RowSpace}(G).
 $$
 
-Thus the classical and quantum **length, dimensions, and entanglement parameters** can be checked directly from the supplied matrices. To certify an **exact distance** \(d_Q=D\), verify a lower bound \(d(C)\ge D\) and exhibit a word of weight D in C outside the Hermitian hull. A distance lower-bound claim needs only the corresponding lower bound. Some minimum-distance computations can be expensive.
+Thus the classical and quantum **length, dimensions, and entanglement parameters** can be checked directly from the supplied matrices. To certify an **exact distance** $d_Q=D$, verify a lower bound $d(C)\ge D$ and exhibit a word of weight D in C outside the Hermitian hull. A distance lower-bound claim needs only the corresponding lower bound. Some minimum-distance computations can be expensive.
 
 For **32 larger Table 1 cases**, the verified lower bound uses Magma's BestKnownLinearCode database: the original generator defines the same code as the corresponding database entry, whose minimum distance is at least the claimed D. Reproducing that route requires a compatible Magma code database. The CSV files determine the codes but are not, by themselves, exhaustive distance-proof certificates.
 
@@ -145,8 +145,8 @@ Four small Magma modules are included for constructing new examples over GF(4):
 
 - [X4_core.m](X4_core.m) implements the block-matrix assembly `ConstructionX4(A1,W1,A2,W2)`, with matching rows placed side by side.
 - [HermitianBasis_X4.m](HermitianBasis_X4.m) computes the Hermitian hull, a complementary subspace, and an orthonormal basis using Magma's built-in linear-algebra routines.
-- [HullIncreasing_X4.m](HullIncreasing_X4.m) implements `HullIncreasingX4(G1,G2,lambda)` by matching orthonormal directions from both ingredients. It produces output hull dimension \(h_1+h_2+\lambda\).
-- [HullDecreasing_X4.m](HullDecreasing_X4.m) implements `HullDecreasingX4(G1,G2,lambda)` by matching directions from the first ingredient's hull with orthonormal directions from the second. It produces output hull dimension \(h_1+h_2-\lambda\).
+- [HullIncreasing_X4.m](HullIncreasing_X4.m) implements `HullIncreasingX4(G1,G2,lambda)` by matching orthonormal directions from both ingredients. It produces output hull dimension $h_1+h_2+\lambda$.
+- [HullDecreasing_X4.m](HullDecreasing_X4.m) implements `HullDecreasingX4(G1,G2,lambda)` by matching directions from the first ingredient's hull with orthonormal directions from the second. It produces output hull dimension $h_1+h_2-\lambda$.
 
 Run the following examples from this directory. The increasing/decreasing files automatically load their two dependencies.
 
