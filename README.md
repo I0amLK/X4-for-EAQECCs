@@ -22,17 +22,17 @@ All matrices are over GF(4) = GF(2)(w), where w² + w + 1 = 0. A CSV matrix is a
 Commas separate entries and semicolons separate rows. There are no empty-set symbols or artificial separators inside the matrices.
 
 The Magma files contain the same explicit matrices, retaining the **unreduced Construction X4 row order**. In Table 1 the generator is displayed as
-
+```math
 $$
 G_{\mathrm{X4}}=\begin{pmatrix} A_1&0\\ W_1&I_\lambda\end{pmatrix}.
 $$
-
+```
 In Table 2 the generator is displayed as
-
+```math
 $$
 G_{\mathrm{X4}}=\begin{pmatrix} A_1&0\\0&A_2\\W_1&W_2\end{pmatrix}.
 $$
-
+```
 The matched rows are paired by their order. No explicit matching map is needed to reconstruct these particular output codes.
 
 ## Reproduction with Magma
