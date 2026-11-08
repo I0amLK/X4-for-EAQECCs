@@ -1,63 +1,19 @@
-// Supplementary data for Table 1: 116 direct Construction X4 examples.
-// Each record contains EXACTLY TWO explicit generator matrices:
-//   Gsrc : generator of the original ingredient code.
-//   GX4  : X4 generator in the paper's UNREDUCED block-row form.
-//
-//       [ A1   0 ]
-// GX4 = [        ],  A1 = [Htop;Ktop], W1 = matched rows.
-//       [ W1   I ]
-//
-// The rightmost lambda columns are, visibly, [0; I_lambda].
-// No row reduction, row-space canonicalization, or hidden phi is
-// applied to the published GX4 matrices.
-// This dataset verifies length, dimension and Hermitian hull exactly.
-// Distance claims can be recomputed separately from these generators.
-// Table1Generators[number] = <Gsrc,GX4>.
+// Table 1: Corollary 3.6: direct arbitrary-hull constructions.
+// 68 records, manuscript Nos. 1-68.
+// CSV matrices and Magma matrices have exactly the same row order.
+// Table1Generators[No] = <Gsrc,GX4>.
 
-F<w> := GF(4);
-Table1Generators := AssociativeArray();
+F<w>:=GF(4);
+function HDag(X)
+    return Transpose(Matrix(BaseRing(X),Nrows(X),Ncols(X),[z^2:z in Eltseq(X)]));
+end function;
+Table1Generators:=AssociativeArray();
+Table1Parameters:=AssociativeArray();
+Table1DistanceTypes:=AssociativeArray();
 
-// Table 1, No. 001 | source H01 | HullIncreasing.m
-// Gsrc: [18,8]_4, hull 1; X4: [[19,6,8;9]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,8,18,[
-    1,0,0,0,0,0,0,w,w^2,0,w^2,w,1,1,w^2,0,w,w^2,
-    0,1,0,0,0,0,0,1,0,0,1,1,w,1,0,0,w,w^2,
-    0,0,1,0,0,0,0,0,1,0,w^2,w,w,1,w,w^2,w^2,1,
-    0,0,0,1,0,0,0,w,w^2,0,w,0,w,w,w^2,w^2,0,1,
-    0,0,0,0,1,0,0,1,0,0,w^2,w,w,0,1,w,w^2,w^2,
-    0,0,0,0,0,1,0,0,1,0,w^2,0,1,1,w^2,w,1,0,
-    0,0,0,0,0,0,1,w,w^2,0,w^2,1,1,0,w,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,7,18,[
-            1,w,w^2,1,w,w^2,1,w,w^2,w,w^2,1,w,w^2,1,w,w^2,1,
-            0,0,1,w,0,0,w,0,1,0,1,0,w^2,w,0,w^2,w^2,0,
-            0,0,1,w^2,0,0,w^2,0,1,0,0,1,0,0,1,w^2,w^2,w^2,
-            0,w,w^2,w^2,0,1,0,w^2,0,0,w,w^2,w,1,0,w,0,1,
-            0,0,1,1,0,1,w,1,w,0,w^2,0,w^2,w,1,w^2,w,w^2,
-            0,0,0,1,1,w,0,w^2,1,0,0,w,w,0,w^2,w,1,w,
-            0,w,0,0,w^2,1,w^2,0,w^2,1,0,1,1,w,0,0,1,w^2
-        ]),
-        ZeroMatrix(F,7,1)),
-    HorizontalJoin(
-        Matrix(F,1,18,[
-            0,0,0,0,0,0,w,w^2,1,0,1,w,w,0,w^2,1,0,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 8 and Rank(GX4) eq 8;
-assert Ncols(GX4) eq 19;
-assert RowSpace(Submatrix(GX4,1,1,8,18)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[1] := <Gsrc,GX4>;
-
-// Table 1, No. 002 | source B18_11_s0 | HullDecreasing.m
-// Gsrc: [18,11]_4, hull 1; X4: [[19,11,6;8]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,11,18,[
+// Table 1, No. 1 | B18_11_s0
+// [[19,11,6;8]]_2, distance exact.
+Gsrc:=Matrix(F,11,18,[
     1,0,0,0,0,0,0,0,0,w,0,0,w,0,w^2,w^2,w,w^2,
     0,1,0,0,0,0,0,0,0,1,0,0,0,1,w,1,1,0,
     0,0,1,0,0,0,0,0,0,w^2,0,0,0,w^2,0,1,1,1,
@@ -70,37 +26,32 @@ Gsrc := Matrix(F,11,18,[
     0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,w^2,1,
     0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w^2,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,10,18,[
-            1,0,0,0,0,0,0,0,0,w,0,0,w,0,w^2,w^2,w,w^2,
-            1,0,1,0,0,0,0,0,0,1,0,0,w,w^2,w^2,w,w^2,w,
-            1,0,0,w^2,1,0,0,0,0,w^2,0,0,0,0,w^2,w^2,0,w,
-            w,0,w^2,0,1,0,0,0,0,w,0,0,0,w^2,w,1,w,w,
-            w,w^2,0,w^2,w^2,0,0,0,0,0,w,0,0,w,w,1,0,w,
-            w^2,w^2,0,w,w^2,0,0,0,0,1,w^2,0,0,w,w,w,1,w,
-            0,w,1,0,w^2,0,1,0,0,w,0,0,w,0,0,w^2,w^2,w,
-            1,1,1,w^2,w^2,1,1,0,w,w,w,0,w^2,w,1,0,w,w^2,
-            w,w,w^2,0,1,1,1,0,w^2,w^2,w,0,w,0,w^2,0,w^2,1,
-            0,w,w,0,w,1,1,1,0,1,0,0,1,w,w^2,w^2,0,0
-        ]),
-        ZeroMatrix(F,10,1)),
-    HorizontalJoin(
-        Matrix(F,1,18,[
-            0,0,1,w,w^2,1,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,11,19,[
+    1,0,0,0,0,0,0,0,0,w,0,0,w,0,w^2,w^2,w,w^2,0,
+    1,0,1,0,0,0,0,0,0,1,0,0,w,w^2,w^2,w,w^2,w,0,
+    1,0,0,w^2,1,0,0,0,0,w^2,0,0,0,0,w^2,w^2,0,w,0,
+    w,0,w^2,0,1,0,0,0,0,w,0,0,0,w^2,w,1,w,w,0,
+    w,w^2,0,w^2,w^2,0,0,0,0,0,w,0,0,w,w,1,0,w,0,
+    w^2,w^2,0,w,w^2,0,0,0,0,1,w^2,0,0,w,w,w,1,w,0,
+    0,w,1,0,w^2,0,1,0,0,w,0,0,w,0,0,w^2,w^2,w,0,
+    1,1,1,w^2,w^2,1,1,0,w,w,w,0,w^2,w,1,0,w,w^2,0,
+    w,w,w^2,0,1,1,1,0,w^2,w^2,w,0,w,0,w^2,0,w^2,1,0,
+    0,w,w,0,w,1,1,1,0,1,0,0,1,w,w^2,w^2,0,0,0,
+    0,0,1,w,w^2,1,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,0,1
+]);
 assert Rank(Gsrc) eq 11 and Rank(GX4) eq 11;
-assert Ncols(GX4) eq 19;
 assert RowSpace(Submatrix(GX4,1,1,11,18)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[2] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,19,11,1) eq VerticalJoin(ZeroMatrix(F,10,1),IdentityMatrix(F,1));
+Table1Generators[1]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 19 and Dimension(Q) eq 11;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[1]:=[19,11,6,8];
+Table1DistanceTypes[1]:="exact";
 
-// Table 1, No. 003 | source B19_12_s1 | HullDecreasing.m
-// Gsrc: [19,12]_4, hull 2; X4: [[20,11,6;7]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,12,19,[
+// Table 1, No. 2 | B19_12_s1
+// [[20,11,6;7]]_2, distance exact.
+Gsrc:=Matrix(F,12,19,[
     1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,0,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,w,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,0,1,
@@ -114,38 +65,33 @@ Gsrc := Matrix(F,12,19,[
     0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,w^2,1,0,
     0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w^2,w,w,0
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,11,19,[
-            0,1,0,1,w,w^2,w^2,w,0,w^2,w,w,w,1,w,w^2,1,1,w,
-            0,0,w^2,w,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,1,1,1,
-            0,0,w^2,w^2,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w^2,w,0,
-            0,0,1,1,w^2,1,0,0,0,0,0,0,w,w,0,w,0,w,1,
-            0,0,w,w,0,1,0,0,0,0,0,0,1,w^2,w,0,w^2,w^2,w,
-            w,0,w,w,w,1,0,0,0,0,w,w,0,w,w,w^2,0,0,1,
-            w,0,w^2,1,1,w,0,0,0,0,w^2,w^2,0,w^2,0,1,0,w^2,1,
-            0,0,1,1,w,w^2,1,0,0,0,0,0,w,w,1,w^2,0,1,1,
-            1,0,1,w^2,1,0,0,1,0,0,w,w,1,0,w^2,1,1,w,1,
-            0,0,1,w^2,w,1,0,w^2,1,0,w^2,w^2,w,1,0,w^2,0,1,w^2,
-            1,0,1,w,1,1,0,w,w,1,w,w,0,1,1,w,w,w^2,0
-        ]),
-        ZeroMatrix(F,11,1)),
-    HorizontalJoin(
-        Matrix(F,1,19,[
-            0,0,1,w,w^2,1,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,0,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,12,20,[
+    0,1,0,1,w,w^2,w^2,w,0,w^2,w,w,w,1,w,w^2,1,1,w,0,
+    0,0,w^2,w,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,1,1,1,0,
+    0,0,w^2,w^2,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w^2,w,0,0,
+    0,0,1,1,w^2,1,0,0,0,0,0,0,w,w,0,w,0,w,1,0,
+    0,0,w,w,0,1,0,0,0,0,0,0,1,w^2,w,0,w^2,w^2,w,0,
+    w,0,w,w,w,1,0,0,0,0,w,w,0,w,w,w^2,0,0,1,0,
+    w,0,w^2,1,1,w,0,0,0,0,w^2,w^2,0,w^2,0,1,0,w^2,1,0,
+    0,0,1,1,w,w^2,1,0,0,0,0,0,w,w,1,w^2,0,1,1,0,
+    1,0,1,w^2,1,0,0,1,0,0,w,w,1,0,w^2,1,1,w,1,0,
+    0,0,1,w^2,w,1,0,w^2,1,0,w^2,w^2,w,1,0,w^2,0,1,w^2,0,
+    1,0,1,w,1,1,0,w,w,1,w,w,0,1,1,w,w,w^2,0,0,
+    0,0,1,w,w^2,1,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,0,0,1
+]);
 assert Rank(Gsrc) eq 12 and Rank(GX4) eq 12;
-assert Ncols(GX4) eq 20;
 assert RowSpace(Submatrix(GX4,1,1,12,19)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[3] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,20,12,1) eq VerticalJoin(ZeroMatrix(F,11,1),IdentityMatrix(F,1));
+Table1Generators[2]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 20 and Dimension(Q) eq 12;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[2]:=[20,11,6,7];
+Table1DistanceTypes[2]:="exact";
 
-// Table 1, No. 004 | source B20_13_s2 | HullDecreasing.m
-// Gsrc: [20,13]_4, hull 3; X4: [[21,11,6;6]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,13,20,[
+// Table 1, No. 3 | B20_13_s2
+// [[21,11,6;6]]_2, distance exact.
+Gsrc:=Matrix(F,13,20,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,1,1,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,w,w,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,0,1,0,
@@ -160,39 +106,34 @@ Gsrc := Matrix(F,13,20,[
     0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,w^2,w,1,
     0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,0,w^2,1,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,12,20,[
-            1,0,0,0,w,0,w^2,w,0,w^2,w,1,1,w,w,0,0,w,0,w,
-            0,1,0,1,w,w^2,w^2,w,0,w^2,w,w,w,1,w,w^2,1,1,w,0,
-            0,0,w^2,w,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w^2,w,w,
-            0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,1,1,w^2,
-            0,0,0,1,1,0,0,0,0,0,0,0,0,1,w,1,w,1,1,w^2,
-            0,0,w^2,w^2,0,w^2,1,0,0,0,0,0,0,1,0,w,w,w,w^2,0,
-            0,0,w,1,w^2,0,1,0,0,0,0,0,0,1,0,w^2,1,1,w,0,
-            0,0,1,w,w^2,1,w,1,w,0,0,0,0,w^2,0,w^2,w,w^2,w,w^2,
-            0,0,w,w^2,w^2,1,1,1,w^2,0,0,0,0,0,0,0,w,w^2,1,w,
-            0,0,w,1,1,w^2,1,1,1,1,w^2,0,0,w^2,w,1,0,w^2,w,1,
-            0,0,w,1,0,0,w,1,w,0,0,w,1,w^2,w,w,w^2,1,0,1,
-            0,0,1,w^2,w^2,0,w,w,w,1,w^2,0,1,w^2,1,1,1,w^2,0,w^2
-        ]),
-        ZeroMatrix(F,12,1)),
-    HorizontalJoin(
-        Matrix(F,1,20,[
-            0,0,1,w,w^2,1,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,0,0,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,13,21,[
+    1,0,0,0,w,0,w^2,w,0,w^2,w,1,1,w,w,0,0,w,0,w,0,
+    0,1,0,1,w,w^2,w^2,w,0,w^2,w,w,w,1,w,w^2,1,1,w,0,0,
+    0,0,w^2,w,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w^2,w,w,0,
+    0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,1,1,w^2,0,
+    0,0,0,1,1,0,0,0,0,0,0,0,0,1,w,1,w,1,1,w^2,0,
+    0,0,w^2,w^2,0,w^2,1,0,0,0,0,0,0,1,0,w,w,w,w^2,0,0,
+    0,0,w,1,w^2,0,1,0,0,0,0,0,0,1,0,w^2,1,1,w,0,0,
+    0,0,1,w,w^2,1,w,1,w,0,0,0,0,w^2,0,w^2,w,w^2,w,w^2,0,
+    0,0,w,w^2,w^2,1,1,1,w^2,0,0,0,0,0,0,0,w,w^2,1,w,0,
+    0,0,w,1,1,w^2,1,1,1,1,w^2,0,0,w^2,w,1,0,w^2,w,1,0,
+    0,0,w,1,0,0,w,1,w,0,0,w,1,w^2,w,w,w^2,1,0,1,0,
+    0,0,1,w^2,w^2,0,w,w,w,1,w^2,0,1,w^2,1,1,1,w^2,0,w^2,0,
+    0,0,1,w,w^2,1,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,0,0,0,1
+]);
 assert Rank(Gsrc) eq 13 and Rank(GX4) eq 13;
-assert Ncols(GX4) eq 21;
 assert RowSpace(Submatrix(GX4,1,1,13,20)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[4] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,21,13,1) eq VerticalJoin(ZeroMatrix(F,12,1),IdentityMatrix(F,1));
+Table1Generators[3]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 21 and Dimension(Q) eq 13;
+assert Dimension(HermitianHull(Q)) eq 2;
+Table1Parameters[3]:=[21,11,6,6];
+Table1DistanceTypes[3]:="exact";
 
-// Table 1, No. 005 | source Q11_puncture1_s0 | HullDecreasing.m
-// Gsrc: [23,10]_4, hull 1; X4: [[24,10,9;14]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,10,23,[
+// Table 1, No. 4 | Q11_puncture1_s0
+// [[24,10,9;14]]_2, distance exact.
+Gsrc:=Matrix(F,10,23,[
     1,0,0,0,0,0,0,0,0,w^2,w^2,0,0,1,0,1,1,w,0,1,w^2,0,0,
     0,1,0,0,0,0,0,0,0,w^2,0,0,0,1,1,1,0,w^2,w,1,w,w^2,0,
     0,0,1,0,0,0,0,0,0,1,w,0,0,w,1,w^2,w^2,w^2,w^2,0,0,w,w^2,
@@ -204,77 +145,31 @@ Gsrc := Matrix(F,10,23,[
     0,0,0,0,0,0,0,0,1,1,w,0,w,0,w,w,w^2,0,w,1,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,23,[
-            0,0,0,1,0,0,0,0,0,1,0,0,w^2,1,1,0,w,w^2,0,w,w,w^2,1,
-            0,0,w^2,w^2,1,0,0,0,0,0,0,0,w^2,0,0,w,w,w^2,0,0,w,0,w^2,
-            0,0,0,0,1,0,0,0,0,0,1,0,1,w,0,0,1,w^2,w,1,w^2,w^2,w,
-            1,w^2,w,w^2,0,0,w,0,0,1,1,0,0,1,1,w^2,w,1,w^2,1,0,0,w,
-            w^2,1,0,1,w^2,0,w^2,0,0,w,w^2,0,w^2,w^2,1,w,w^2,0,w,0,1,w^2,0,
-            w,w,1,w,1,0,0,0,0,w^2,w,1,1,w^2,0,w,w,w,w^2,w^2,w^2,0,w,
-            0,0,w^2,w^2,1,0,0,0,0,0,0,1,w,1,1,w^2,w^2,w,1,1,w^2,1,w,
-            0,1,0,w^2,0,w,0,1,0,w^2,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,
-            0,w,0,w,0,0,0,1,0,0,0,w,w^2,w,0,w^2,0,w,0,0,0,0,w
-        ]),
-        ZeroMatrix(F,9,1)),
-    HorizontalJoin(
-        Matrix(F,1,23,[
-            1,0,w,0,w^2,0,1,0,w,0,w^2,w,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,10,24,[
+    0,0,0,1,0,0,0,0,0,1,0,0,w^2,1,1,0,w,w^2,0,w,w,w^2,1,0,
+    0,0,w^2,w^2,1,0,0,0,0,0,0,0,w^2,0,0,w,w,w^2,0,0,w,0,w^2,0,
+    0,0,0,0,1,0,0,0,0,0,1,0,1,w,0,0,1,w^2,w,1,w^2,w^2,w,0,
+    1,w^2,w,w^2,0,0,w,0,0,1,1,0,0,1,1,w^2,w,1,w^2,1,0,0,w,0,
+    w^2,1,0,1,w^2,0,w^2,0,0,w,w^2,0,w^2,w^2,1,w,w^2,0,w,0,1,w^2,0,0,
+    w,w,1,w,1,0,0,0,0,w^2,w,1,1,w^2,0,w,w,w,w^2,w^2,w^2,0,w,0,
+    0,0,w^2,w^2,1,0,0,0,0,0,0,1,w,1,1,w^2,w^2,w,1,1,w^2,1,w,0,
+    0,1,0,w^2,0,w,0,1,0,w^2,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,0,
+    0,w,0,w,0,0,0,1,0,0,0,w,w^2,w,0,w^2,0,w,0,0,0,0,w,0,
+    1,0,w,0,w^2,0,1,0,w,0,w^2,w,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w,1
+]);
 assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 24;
 assert RowSpace(Submatrix(GX4,1,1,10,23)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[5] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,24,10,1) eq VerticalJoin(ZeroMatrix(F,9,1),IdentityMatrix(F,1));
+Table1Generators[4]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 24 and Dimension(Q) eq 10;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[4]:=[24,10,9,14];
+Table1DistanceTypes[4]:="exact";
 
-// Table 1, No. 006 | source H06 | HullIncreasing.m
-// Gsrc: [24,10]_4, hull 3; X4: [[25,6,10;11]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,10,24,[
-    1,0,0,0,0,0,0,0,0,w^2,1,w^2,0,1,w^2,1,w^2,0,0,w^2,w,w^2,0,w,
-    0,1,0,0,0,0,0,0,0,w,0,w^2,0,1,1,w,1,1,w,0,0,w,1,w^2,
-    0,0,1,0,0,0,0,0,0,w,1,w,0,0,0,1,w^2,w,w,w^2,w,1,1,w^2,
-    0,0,0,1,0,0,0,0,0,1,0,0,0,1,w,1,w^2,0,1,0,w^2,0,w,1,
-    0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,w^2,0,w,1,0,1,w,1,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,1,0,w^2,w,w^2,0,w^2,1,w,w^2,w,1,w,
-    0,0,0,0,0,0,1,0,0,w^2,1,w^2,0,w^2,w,1,w,w,1,0,w,w,0,1,
-    0,0,0,0,0,0,0,1,0,w,0,w^2,0,w,0,0,w,w^2,w^2,w,0,1,w^2,0,
-    0,0,0,0,0,0,0,0,1,w,1,w,0,w^2,0,w^2,w,w,w^2,1,w^2,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,24,[
-            1,0,1,1,0,1,1,0,1,1,0,1,0,w^2,1,0,w^2,1,0,w^2,1,0,w^2,1,
-            0,1,1,0,1,1,0,1,1,0,1,1,0,w,w^2,0,w,w^2,0,w,w^2,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,
-            0,0,0,w^2,w,0,0,0,w,0,0,w^2,0,0,1,w^2,1,0,0,w,1,0,1,1,
-            0,0,0,w^2,w^2,0,0,0,w^2,w,0,1,0,w,1,w^2,w^2,0,w,w^2,w^2,0,1,0,
-            0,0,w,1,0,0,0,1,w,w^2,0,w^2,0,w,w,w,w^2,w^2,0,1,1,0,1,w^2,
-            0,0,0,w^2,w,0,0,1,0,1,w,w^2,0,w^2,1,w,0,0,w,w,0,w,0,w,
-            0,0,w^2,w^2,w^2,w,1,0,w^2,0,w,1,0,0,0,0,w^2,w,0,w,1,w,0,0,
-            0,0,1,0,w^2,0,1,w^2,w^2,1,0,w,0,w^2,w,0,1,w,0,1,1,0,w^2,1
-        ]),
-        ZeroMatrix(F,9,1)),
-    HorizontalJoin(
-        Matrix(F,1,24,[
-            0,0,0,0,0,0,w^2,0,0,w,w^2,w,0,w,1,w^2,1,1,w^2,0,1,1,0,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 25;
-assert RowSpace(Submatrix(GX4,1,1,10,24)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[6] := <Gsrc,GX4>;
-
-// Table 1, No. 007 | source H07 | HullIncreasing.m
-// Gsrc: [24,10]_4, hull 2; X4: [[25,7,10;12]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,10,24,[
+// Table 1, No. 5 | H09
+// [[25,9,10;14]]_2, distance exact.
+Gsrc:=Matrix(F,10,24,[
     1,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,0,1,1,w,0,1,w^2,0,0,0,
     0,1,0,0,0,0,0,0,0,w^2,0,w,0,1,1,1,0,w^2,w,1,w,w^2,0,0,
     0,0,1,0,0,0,0,0,0,1,w,w,0,w,1,w^2,w^2,w^2,w^2,0,0,w,w^2,0,
@@ -286,118 +181,31 @@ Gsrc := Matrix(F,10,24,[
     0,0,0,0,0,0,0,0,1,1,w,w,0,w,0,0,1,w,0,w^2,w,w,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,24,[
-            1,0,w,0,w^2,0,1,0,w,0,w^2,0,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w,w,
-            0,1,0,w,0,w^2,0,1,0,w,0,w^2,w,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w,
-            0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,w^2,w,1,w^2,w^2,w,0,1,w,
-            0,0,0,1,0,0,0,0,0,1,0,0,0,w,w,w^2,1,0,w^2,1,1,0,w,w^2,
-            0,0,w^2,0,1,1,0,0,0,w^2,0,0,0,w^2,0,w^2,w,1,w,w,w^2,0,w,w^2,
-            0,0,w,0,0,1,0,0,1,w^2,1,0,0,0,0,1,0,w,w,1,w^2,w,0,0,
-            0,0,1,1,w,w^2,w,1,1,w^2,w^2,w^2,0,1,w^2,w^2,w^2,1,w^2,0,0,w,0,0,
-            0,0,w,1,w,1,0,1,w,w,w,w^2,0,w,w,w^2,w^2,0,1,1,w,w,0,0,
-            0,0,w,w^2,0,w,1,w^2,w,w,w^2,w,1,1,w^2,1,1,1,w^2,w,1,w,w^2,w
-        ]),
-        ZeroMatrix(F,9,1)),
-    HorizontalJoin(
-        Matrix(F,1,24,[
-            0,0,0,0,0,0,0,1,0,w^2,0,w,0,0,w,w^2,1,0,1,w^2,w,w,w,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 25;
-assert RowSpace(Submatrix(GX4,1,1,10,24)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[7] := <Gsrc,GX4>;
-
-// Table 1, No. 008 | source H09 | HullDecreasing.m
-// Gsrc: [24,10]_4, hull 2; X4: [[25,9,10;14]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,10,24,[
-    1,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,0,1,1,w,0,1,w^2,0,0,0,
-    0,1,0,0,0,0,0,0,0,w^2,0,w,0,1,1,1,0,w^2,w,1,w,w^2,0,0,
-    0,0,1,0,0,0,0,0,0,1,w,w,0,w,1,w^2,w^2,w^2,w^2,0,0,w,w^2,0,
-    0,0,0,1,0,0,0,0,0,1,0,0,0,w,w,w^2,1,0,w^2,1,1,0,w,w^2,
-    0,0,0,0,1,0,0,0,0,0,1,0,0,w^2,1,1,0,w,w^2,0,w,w,w^2,1,
-    0,0,0,0,0,1,0,0,0,0,0,1,0,1,w,0,0,1,w^2,w,1,w^2,w^2,w,
-    0,0,0,0,0,0,1,0,0,w^2,w^2,1,0,w^2,w^2,1,w^2,0,w^2,0,w^2,w^2,1,1,
-    0,0,0,0,0,0,0,1,0,w^2,0,w,0,0,w,w^2,1,0,1,w^2,w,w,w,0,
-    0,0,0,0,0,0,0,0,1,1,w,w,0,w,0,0,1,w,0,w^2,w,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1
+GX4:=Matrix(F,10,25,[
+    0,1,0,w,0,w^2,0,1,0,w,0,w^2,w,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w,0,
+    0,0,w^2,1,0,0,0,0,0,w,1,1,0,w^2,1,1,w^2,w,1,1,1,1,0,w^2,0,
+    0,0,0,1,0,0,0,0,0,1,0,0,0,w,w,w^2,1,0,w^2,1,1,0,w,w^2,0,
+    0,0,0,0,1,0,0,0,0,0,1,0,0,w^2,1,1,0,w,w^2,0,w,w,w^2,1,0,
+    0,0,1,w^2,0,1,0,0,0,w,w,w^2,0,w,w,1,0,w,w,1,w,1,1,0,0,
+    0,0,1,0,0,w,0,1,0,w,w,w,0,0,0,0,w,1,w^2,0,0,1,0,w^2,0,
+    0,0,w,0,1,0,w^2,0,0,0,0,0,1,w^2,0,w,w,w,1,1,1,w,0,w^2,0,
+    0,0,w^2,w^2,0,w,0,w^2,0,w,1,w,1,w^2,1,w^2,w^2,1,w^2,w^2,1,0,w,0,0,
+    0,0,w,0,w^2,0,1,0,1,0,1,0,w^2,w^2,1,0,0,1,w^2,0,w^2,0,w^2,w^2,0,
+    1,0,w,0,w^2,0,1,0,w,0,w^2,0,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,24,[
-            0,1,0,w,0,w^2,0,1,0,w,0,w^2,w,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w,
-            0,0,w^2,1,0,0,0,0,0,w,1,1,0,w^2,1,1,w^2,w,1,1,1,1,0,w^2,
-            0,0,0,1,0,0,0,0,0,1,0,0,0,w,w,w^2,1,0,w^2,1,1,0,w,w^2,
-            0,0,0,0,1,0,0,0,0,0,1,0,0,w^2,1,1,0,w,w^2,0,w,w,w^2,1,
-            0,0,1,w^2,0,1,0,0,0,w,w,w^2,0,w,w,1,0,w,w,1,w,1,1,0,
-            0,0,1,0,0,w,0,1,0,w,w,w,0,0,0,0,w,1,w^2,0,0,1,0,w^2,
-            0,0,w,0,1,0,w^2,0,0,0,0,0,1,w^2,0,w,w,w,1,1,1,w,0,w^2,
-            0,0,w^2,w^2,0,w,0,w^2,0,w,1,w,1,w^2,1,w^2,w^2,1,w^2,w^2,1,0,w,0,
-            0,0,w,0,w^2,0,1,0,1,0,1,0,w^2,w^2,1,0,0,1,w^2,0,w^2,0,w^2,w^2
-        ]),
-        ZeroMatrix(F,9,1)),
-    HorizontalJoin(
-        Matrix(F,1,24,[
-            1,0,w,0,w^2,0,1,0,w,0,w^2,0,w^2,w^2,1,1,w,w,w^2,w^2,1,1,w,w
-        ]),
-        IdentityMatrix(F,1)));
 assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 25;
 assert RowSpace(Submatrix(GX4,1,1,10,24)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[8] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,25,10,1) eq VerticalJoin(ZeroMatrix(F,9,1),IdentityMatrix(F,1));
+Table1Generators[5]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 25 and Dimension(Q) eq 10;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[5]:=[25,9,10,14];
+Table1DistanceTypes[5]:="exact";
 
-// Table 1, No. 009 | source H10 | HullIncreasing.m
-// Gsrc: [24,10]_4, hull 3; X4: [[26,5,>=10;11]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,10,24,[
-    1,0,0,0,0,0,0,0,0,w^2,1,w^2,0,1,w^2,1,w^2,0,0,w^2,w,w^2,0,w,
-    0,1,0,0,0,0,0,0,0,w,0,w^2,0,1,1,w,1,1,w,0,0,w,1,w^2,
-    0,0,1,0,0,0,0,0,0,w,1,w,0,0,0,1,w^2,w,w,w^2,w,1,1,w^2,
-    0,0,0,1,0,0,0,0,0,1,0,0,0,1,w,1,w^2,0,1,0,w^2,0,w,1,
-    0,0,0,0,1,0,0,0,0,0,1,0,0,1,0,w^2,0,w,1,0,1,w,1,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,1,0,w^2,w,w^2,0,w^2,1,w,w^2,w,1,w,
-    0,0,0,0,0,0,1,0,0,w^2,1,w^2,0,w^2,w,1,w,w,1,0,w,w,0,1,
-    0,0,0,0,0,0,0,1,0,w,0,w^2,0,w,0,0,w,w^2,w^2,w,0,1,w^2,0,
-    0,0,0,0,0,0,0,0,1,w,1,w,0,w^2,0,w^2,w,w,w^2,1,w^2,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,8,24,[
-            1,0,1,1,0,1,1,0,1,1,0,1,0,w^2,1,0,w^2,1,0,w^2,1,0,w^2,1,
-            0,1,1,0,1,1,0,1,1,0,1,1,0,w,w^2,0,w,w^2,0,w,w^2,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,
-            0,0,w^2,1,0,0,0,0,w^2,1,0,0,0,w^2,w,0,0,0,w,1,0,w,w,w,
-            0,0,0,1,0,0,w,0,1,w,w^2,w^2,0,w^2,1,0,w,1,0,1,w^2,1,w^2,1,
-            0,0,w,w,1,0,1,0,0,w,w,0,0,0,1,w,w,w^2,1,1,1,w,0,1,
-            0,0,0,1,w^2,1,w^2,w,w,w^2,w,1,0,1,1,w,w,1,0,w^2,w^2,w^2,w^2,1,
-            0,0,w^2,w^2,0,1,0,w^2,w^2,w,0,w^2,0,w^2,w^2,1,0,1,w^2,w,w,w^2,w,w
-        ]),
-        ZeroMatrix(F,8,2)),
-    HorizontalJoin(
-        Matrix(F,2,24,[
-            0,0,1,0,0,0,0,0,0,w,1,w,0,0,0,1,w^2,w,w,w^2,w,1,1,w^2,
-            w,1,w,w,0,w,w,0,0,w^2,w,w,0,1,w^2,w^2,w^2,0,w^2,w^2,w^2,1,w,w
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 26;
-assert RowSpace(Submatrix(GX4,1,1,10,24)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[9] := <Gsrc,GX4>;
-
-// Table 1, No. 010 | source B25_17_s0 | HullDecreasing.m
-// Gsrc: [25,17]_4, hull 1; X4: [[26,17,6;9]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,17,25,[
+// Table 1, No. 6 | B25_17_s0
+// [[26,17,6;9]]_2, distance exact.
+Gsrc:=Matrix(F,17,25,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,1,0,w,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,1,w^2,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,0,1,1,w^2,
@@ -416,84 +224,38 @@ Gsrc := Matrix(F,17,25,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,1,1,1,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,0,w^2,1,0,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,16,25,[
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,1,w^2,w^2,
-            w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w^2,w^2,1,
-            0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w,w,w^2,w^2,
-            w^2,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,1,w^2,w^2,w,w^2,
-            w,1,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,1,w,1,1,
-            1,w,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w,1,w,w^2,
-            1,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,0,w,1,1,
-            w,0,w^2,0,1,w,0,1,0,0,0,0,0,0,0,0,0,1,w,0,0,1,1,1,1,
-            1,w,w^2,w,w^2,w^2,1,0,0,0,w,1,0,0,0,0,0,0,0,0,w^2,0,w,w^2,w,
-            0,w^2,1,0,1,w,w^2,1,0,0,0,1,0,0,0,0,0,w^2,w^2,w,w,w^2,1,w^2,w^2,
-            w,0,0,w^2,w,w,w^2,0,1,w^2,w,w,0,0,w,0,0,1,w^2,0,1,1,w^2,w,1,
-            0,0,w^2,w^2,w^2,1,w^2,1,0,w^2,1,w,0,0,w^2,0,0,w^2,w^2,1,1,0,1,w^2,w^2,
-            w^2,w^2,w^2,w^2,1,w^2,1,w^2,w,0,0,0,0,0,0,0,w,w^2,w^2,w,w,0,1,w,1,
-            w^2,w,w^2,0,w,w^2,0,w^2,w,0,w^2,0,0,0,0,0,w^2,w^2,0,w^2,w^2,1,1,w^2,0,
-            w,0,0,0,w,0,0,1,w^2,w,w^2,w,1,0,1,0,1,w,w^2,w^2,w,1,1,0,w,
-            1,w^2,0,1,0,0,w^2,0,0,1,1,1,w,1,w^2,0,0,w^2,w,w^2,1,0,0,0,1
-        ]),
-        ZeroMatrix(F,16,1)),
-    HorizontalJoin(
-        Matrix(F,1,25,[
-            1,1,w^2,w^2,1,w,1,w,w^2,w^2,0,w,1,1,w,1,0,w,0,0,w,w,w^2,0,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 17 and Rank(GX4) eq 17;
-assert Ncols(GX4) eq 26;
-assert RowSpace(Submatrix(GX4,1,1,17,25)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[10] := <Gsrc,GX4>;
-
-// Table 1, No. 011 | source EX03 | HullIncreasing.m
-// Gsrc: [26,10]_4, hull 0; X4: [[27,9,11;16]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,10,26,[
-    1,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,w,0,w,0,w,1,1,1,1,0,
-    0,1,0,0,0,0,0,0,0,0,1,0,1,1,w,w,w,0,w,0,w^2,w,0,0,0,1,
-    0,0,1,0,0,0,0,0,0,0,w,0,w^2,0,0,1,0,w^2,w^2,0,w,0,1,w^2,w^2,w,
-    0,0,0,1,0,0,0,0,0,0,w,w^2,w,w,w,w,w^2,0,1,w,1,0,w^2,w,0,0,
-    0,0,0,0,1,0,0,0,0,0,0,w^2,1,w^2,w^2,w^2,0,0,1,w^2,w,w^2,1,w,w^2,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,w,0,w^2,w,1,0,1,w,w,w^2,1,1,w^2,0,w,
-    0,0,0,0,0,0,1,0,0,0,w,w,w^2,w,w,1,w,0,w,w^2,w,w,1,1,w^2,w^2,
-    0,0,0,0,0,0,0,1,0,0,w,1,w,0,w^2,w^2,0,w,1,w^2,1,w,w^2,0,0,0,
-    0,0,0,0,0,0,0,0,1,0,1,1,0,1,0,w,w,0,w^2,w,0,0,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,1,w,0,w,1,w^2,w^2,0,w^2,w^2,1,0,w^2,w^2,w^2,w,0
+GX4:=Matrix(F,17,26,[
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,1,w^2,w^2,0,
+    w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w^2,w^2,1,0,
+    0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w,w,w^2,w^2,0,
+    w^2,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,1,w^2,w^2,w,w^2,0,
+    w,1,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,1,w,1,1,0,
+    1,w,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w,1,w,w^2,0,
+    1,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,0,w,1,1,0,
+    w,0,w^2,0,1,w,0,1,0,0,0,0,0,0,0,0,0,1,w,0,0,1,1,1,1,0,
+    1,w,w^2,w,w^2,w^2,1,0,0,0,w,1,0,0,0,0,0,0,0,0,w^2,0,w,w^2,w,0,
+    0,w^2,1,0,1,w,w^2,1,0,0,0,1,0,0,0,0,0,w^2,w^2,w,w,w^2,1,w^2,w^2,0,
+    w,0,0,w^2,w,w,w^2,0,1,w^2,w,w,0,0,w,0,0,1,w^2,0,1,1,w^2,w,1,0,
+    0,0,w^2,w^2,w^2,1,w^2,1,0,w^2,1,w,0,0,w^2,0,0,w^2,w^2,1,1,0,1,w^2,w^2,0,
+    w^2,w^2,w^2,w^2,1,w^2,1,w^2,w,0,0,0,0,0,0,0,w,w^2,w^2,w,w,0,1,w,1,0,
+    w^2,w,w^2,0,w,w^2,0,w^2,w,0,w^2,0,0,0,0,0,w^2,w^2,0,w^2,w^2,1,1,w^2,0,0,
+    w,0,0,0,w,0,0,1,w^2,w,w^2,w,1,0,1,0,1,w,w^2,w^2,w,1,1,0,w,0,
+    1,w^2,0,1,0,0,w^2,0,0,1,1,1,w,1,w^2,0,0,w^2,w,w^2,1,0,0,0,1,0,
+    1,1,w^2,w^2,1,w,1,w,w^2,w^2,0,w,1,1,w,1,0,w,0,0,w,w,w^2,0,w^2,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,26,[
-            0,1,0,0,0,0,0,0,0,0,1,0,1,1,w,w,w,0,w,0,w^2,w,0,0,0,1,
-            0,w,1,0,0,0,0,0,0,w^2,1,0,0,1,1,0,w^2,1,w,w^2,w^2,1,w^2,1,w,0,
-            w,1,0,0,w,0,0,0,0,w,w,w^2,w,0,w,1,1,1,w,w^2,w^2,0,1,0,0,0,
-            w,0,w^2,0,w^2,0,0,0,0,w^2,0,0,w,w^2,0,0,w^2,0,0,1,w^2,w,0,w^2,w^2,w^2,
-            w,1,1,1,w,0,0,0,0,w,w,0,w^2,w,0,w,w,w,0,1,0,0,w^2,1,w^2,w,
-            1,1,1,0,w,1,0,0,0,0,w^2,w,1,w,1,1,0,w,w^2,w^2,w^2,w^2,w^2,w,w^2,0,
-            w^2,w^2,w^2,0,1,1,1,0,0,0,0,0,0,w,w,0,w,w^2,w^2,w,1,w,1,1,1,0,
-            w,1,0,w,w^2,w,0,w,w,w^2,w,w,1,w,w^2,w,w^2,w^2,w,w^2,0,1,1,1,w,w^2,
-            1,w,1,w,w^2,1,0,w,w^2,w,0,1,0,0,0,1,1,0,0,1,w^2,w^2,w^2,1,w,1
-        ]),
-        ZeroMatrix(F,9,1)),
-    HorizontalJoin(
-        Matrix(F,1,26,[
-            1,1,1,0,w^2,0,w^2,w^2,w,w^2,0,w^2,w,w,1,w^2,w,0,1,w,0,w^2,0,0,0,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 27;
-assert RowSpace(Submatrix(GX4,1,1,10,26)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 0;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[11] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 17 and Rank(GX4) eq 17;
+assert RowSpace(Submatrix(GX4,1,1,17,25)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,26,17,1) eq VerticalJoin(ZeroMatrix(F,16,1),IdentityMatrix(F,1));
+Table1Generators[6]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 26 and Dimension(Q) eq 17;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[6]:=[26,17,6,9];
+Table1DistanceTypes[6]:="exact";
 
-// Table 1, No. 012 | source B27_9_puncture1_s0 | HullDecreasing.m
-// Gsrc: [26,9]_4, hull 1; X4: [[27,9,12;18]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,9,26,[
+// Table 1, No. 7 | B27_9_puncture1_s0
+// [[27,9,12;18]]_2, distance exact.
+Gsrc:=Matrix(F,9,26,[
     1,0,0,0,0,0,0,0,0,1,w,w^2,0,w,w,1,1,w,w^2,w,w,w^2,w,0,1,w,
     0,1,0,0,0,0,0,0,0,w,w,w,1,w,w^2,w^2,1,1,0,1,1,0,w^2,w^2,w,w^2,
     0,0,1,0,0,0,0,0,0,w^2,w^2,1,0,1,1,w^2,w,w,0,0,0,0,w,w,0,w,
@@ -504,35 +266,30 @@ Gsrc := Matrix(F,9,26,[
     0,0,0,0,0,0,0,1,0,0,1,w,1,w,w^2,w,1,w^2,1,0,w^2,w^2,1,0,1,0,
     0,0,0,0,0,0,0,0,1,w,w^2,0,w,w,1,1,0,w^2,w,w,w^2,w,0,1,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,8,26,[
-            w^2,w^2,w,0,0,0,0,0,0,w^2,1,1,w^2,w,1,0,w^2,1,w,w,w,w,0,1,w,0,
-            w^2,w^2,w^2,0,0,0,0,0,0,0,w,0,w^2,w^2,0,w^2,1,w^2,w,w,w,w,w,w^2,w,w,
-            0,1,0,1,0,0,0,0,0,0,w,w,w^2,w^2,w,1,w^2,0,w,0,w,0,1,w^2,w,w,
-            0,0,0,1,0,0,0,0,0,w,0,0,w,1,1,w,w,1,w,1,w^2,0,w,0,0,1,
-            w^2,w,w^2,w,0,1,0,0,0,w^2,w,w^2,0,w^2,0,1,0,w^2,w^2,1,w^2,0,0,w^2,w,1,
-            1,1,0,1,w,w^2,0,w,0,w,w^2,w^2,w^2,1,w,0,w,0,w^2,1,w^2,1,1,1,w,1,
-            1,w^2,w,1,w,w^2,0,w^2,0,0,0,0,0,w,w,w,w,w,w,w^2,w,w,w,w^2,0,w^2,
-            w^2,0,w^2,w,0,0,1,1,0,w^2,w,1,w,w,0,w,w,1,w,0,1,1,0,0,0,1
-        ]),
-        ZeroMatrix(F,8,1)),
-    HorizontalJoin(
-        Matrix(F,1,26,[
-            1,w^2,0,1,w^2,0,1,w^2,w,w^2,1,w,w^2,1,w,w^2,1,1,1,1,1,1,1,1,1,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,9,27,[
+    w^2,w^2,w,0,0,0,0,0,0,w^2,1,1,w^2,w,1,0,w^2,1,w,w,w,w,0,1,w,0,0,
+    w^2,w^2,w^2,0,0,0,0,0,0,0,w,0,w^2,w^2,0,w^2,1,w^2,w,w,w,w,w,w^2,w,w,0,
+    0,1,0,1,0,0,0,0,0,0,w,w,w^2,w^2,w,1,w^2,0,w,0,w,0,1,w^2,w,w,0,
+    0,0,0,1,0,0,0,0,0,w,0,0,w,1,1,w,w,1,w,1,w^2,0,w,0,0,1,0,
+    w^2,w,w^2,w,0,1,0,0,0,w^2,w,w^2,0,w^2,0,1,0,w^2,w^2,1,w^2,0,0,w^2,w,1,0,
+    1,1,0,1,w,w^2,0,w,0,w,w^2,w^2,w^2,1,w,0,w,0,w^2,1,w^2,1,1,1,w,1,0,
+    1,w^2,w,1,w,w^2,0,w^2,0,0,0,0,0,w,w,w,w,w,w,w^2,w,w,w,w^2,0,w^2,0,
+    w^2,0,w^2,w,0,0,1,1,0,w^2,w,1,w,w,0,w,w,1,w,0,1,1,0,0,0,1,0,
+    1,w^2,0,1,w^2,0,1,w^2,w,w^2,1,w,w^2,1,w,w^2,1,1,1,1,1,1,1,1,1,1,1
+]);
 assert Rank(Gsrc) eq 9 and Rank(GX4) eq 9;
-assert Ncols(GX4) eq 27;
 assert RowSpace(Submatrix(GX4,1,1,9,26)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[12] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,27,9,1) eq VerticalJoin(ZeroMatrix(F,8,1),IdentityMatrix(F,1));
+Table1Generators[7]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 27 and Dimension(Q) eq 9;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[7]:=[27,9,12,18];
+Table1DistanceTypes[7]:="exact";
 
-// Table 1, No. 013 | source B26_16_s2 | HullDecreasing.m
-// Gsrc: [26,16]_4, hull 3; X4: [[27,14,7;9]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,16,26,[
+// Table 1, No. 8 | B26_16_s2
+// [[27,14,7;9]]_2, distance exact.
+Gsrc:=Matrix(F,16,26,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,w^2,0,1,0,w^2,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,0,1,w,0,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,1,0,w,1,1,1,
@@ -550,42 +307,37 @@ Gsrc := Matrix(F,16,26,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,1,1,1,w^2,w,w^2,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,0,1,1,1,w^2,1,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,15,26,[
-            1,0,0,w,w^2,w^2,0,1,w,w^2,w,0,w^2,0,0,w,1,1,0,0,0,0,0,0,0,0,
-            0,1,0,w^2,0,w^2,0,1,w^2,w^2,w^2,w,0,w,1,1,1,1,w^2,0,0,0,0,0,0,0,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,0,w^2,0,0,1,1,
-            0,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w^2,w,w^2,w^2,0,w,
-            0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,0,w^2,1,1,1,
-            0,0,w^2,0,0,w^2,0,0,w,0,0,0,0,0,0,0,w,w,1,1,1,w,1,w,w^2,w,
-            0,0,w^2,w^2,w,0,0,0,w^2,0,0,0,0,0,0,0,w,1,w,1,0,1,w,w^2,w,w^2,
-            0,0,1,w^2,w,0,w,w,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w,w^2,1,w,0,
-            0,0,w,0,1,w,w,w^2,w,0,0,0,0,0,0,0,w^2,0,0,w^2,0,w,0,0,w,w^2,
-            0,0,w^2,w^2,1,w^2,w,w,0,0,0,1,0,0,0,0,0,w^2,1,w^2,w,w,w^2,w,0,w,
-            0,0,w^2,0,1,1,1,w,w,1,w,1,1,0,0,w^2,1,1,1,0,0,w,w^2,1,w,w,
-            0,0,w,0,w,1,0,w,w,w^2,0,1,1,0,0,w^2,w,1,w^2,w^2,1,w,0,w,w,0,
-            0,0,1,w,0,w^2,w,0,1,1,0,0,0,0,1,1,w^2,1,0,0,0,w,0,w^2,1,0,
-            0,0,w^2,0,1,0,w,w^2,1,0,0,w^2,0,0,1,1,w,w^2,1,1,0,1,1,0,0,1,
-            0,0,w^2,1,1,w,0,1,0,w^2,0,1,0,1,0,0,1,w^2,w,w^2,w^2,1,0,w,1,w
-        ]),
-        ZeroMatrix(F,15,1)),
-    HorizontalJoin(
-        Matrix(F,1,26,[
-            0,0,1,0,w^2,w^2,1,w,w^2,w^2,w,0,w^2,w^2,w^2,w^2,0,w^2,w^2,0,0,0,0,0,0,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,16,27,[
+    1,0,0,w,w^2,w^2,0,1,w,w^2,w,0,w^2,0,0,w,1,1,0,0,0,0,0,0,0,0,0,
+    0,1,0,w^2,0,w^2,0,1,w^2,w^2,w^2,w,0,w,1,1,1,1,w^2,0,0,0,0,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,0,w^2,0,0,1,1,0,
+    0,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w^2,w,w^2,w^2,0,w,0,
+    0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,0,w^2,1,1,1,0,
+    0,0,w^2,0,0,w^2,0,0,w,0,0,0,0,0,0,0,w,w,1,1,1,w,1,w,w^2,w,0,
+    0,0,w^2,w^2,w,0,0,0,w^2,0,0,0,0,0,0,0,w,1,w,1,0,1,w,w^2,w,w^2,0,
+    0,0,1,w^2,w,0,w,w,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w,w^2,1,w,0,0,
+    0,0,w,0,1,w,w,w^2,w,0,0,0,0,0,0,0,w^2,0,0,w^2,0,w,0,0,w,w^2,0,
+    0,0,w^2,w^2,1,w^2,w,w,0,0,0,1,0,0,0,0,0,w^2,1,w^2,w,w,w^2,w,0,w,0,
+    0,0,w^2,0,1,1,1,w,w,1,w,1,1,0,0,w^2,1,1,1,0,0,w,w^2,1,w,w,0,
+    0,0,w,0,w,1,0,w,w,w^2,0,1,1,0,0,w^2,w,1,w^2,w^2,1,w,0,w,w,0,0,
+    0,0,1,w,0,w^2,w,0,1,1,0,0,0,0,1,1,w^2,1,0,0,0,w,0,w^2,1,0,0,
+    0,0,w^2,0,1,0,w,w^2,1,0,0,w^2,0,0,1,1,w,w^2,1,1,0,1,1,0,0,1,0,
+    0,0,w^2,1,1,w,0,1,0,w^2,0,1,0,1,0,0,1,w^2,w,w^2,w^2,1,0,w,1,w,0,
+    0,0,1,0,w^2,w^2,1,w,w^2,w^2,w,0,w^2,w^2,w^2,w^2,0,w^2,w^2,0,0,0,0,0,0,0,1
+]);
 assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 27;
 assert RowSpace(Submatrix(GX4,1,1,16,26)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[13] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,27,16,1) eq VerticalJoin(ZeroMatrix(F,15,1),IdentityMatrix(F,1));
+Table1Generators[8]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 27 and Dimension(Q) eq 16;
+assert Dimension(HermitianHull(Q)) eq 2;
+Table1Parameters[8]:=[27,14,7,9];
+Table1DistanceTypes[8]:="exact";
 
-// Table 1, No. 014 | source B26_18_s1 | HullDecreasing.m
-// Gsrc: [26,18]_4, hull 2; X4: [[27,17,6;8]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,18,26,[
+// Table 1, No. 9 | B26_18_s1
+// [[27,17,6;8]]_2, distance exact.
+Gsrc:=Matrix(F,18,26,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,w^2,1,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w,1,w,w,
@@ -605,83 +357,39 @@ Gsrc := Matrix(F,18,26,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,w,w,0,w^2,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,1,w^2,0,1,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,17,26,[
-            1,1,w^2,0,1,w^2,w,0,w,0,w,1,w^2,0,0,w,1,1,w^2,w,1,w,w^2,0,w^2,w^2,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,1,w,w^2,
-            0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w,0,1,w^2,
-            0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,1,w^2,w^2,w^2,
-            0,w^2,0,w^2,1,w^2,0,0,w,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,1,1,w^2,
-            0,w^2,0,0,w^2,w,0,0,w^2,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,1,1,0,
-            0,w,0,0,w,w^2,w,w,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,0,w,0,0,
-            0,w^2,0,w^2,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,1,1,w^2,
-            0,1,w,0,w,w,w,0,w,0,0,0,0,0,0,0,w,0,w,w,1,1,0,w^2,0,w^2,
-            0,w,w,1,w^2,w^2,w,w^2,w^2,0,0,0,0,0,0,0,w^2,0,w,0,w^2,w^2,w,w^2,0,1,
-            0,w,0,0,w,w,0,w^2,w,0,1,0,0,0,0,0,w,0,w^2,0,w^2,w,0,1,w,w,
-            0,1,w,w,1,1,w^2,0,w,0,w,1,0,0,0,0,w^2,0,0,w,w^2,w,w,0,0,w^2,
-            0,1,1,0,w,1,w^2,0,w,0,1,w^2,1,0,0,0,w,0,w^2,w,0,w,1,1,1,w^2,
-            0,0,w,1,1,1,w,w,1,1,0,w^2,w,0,0,1,0,w^2,w,w,w,w,w^2,w,1,0,
-            0,w^2,w,1,w,1,1,w,w^2,0,0,0,1,0,0,1,w^2,w^2,w,w^2,w,1,1,w^2,0,1,
-            0,1,0,w^2,1,1,w^2,1,1,1,w^2,0,1,1,1,1,w^2,w^2,w^2,w^2,w,w,0,0,1,1,
-            0,w^2,0,1,w,w^2,0,0,w,0,w,1,1,0,1,w^2,1,w,0,1,1,w,0,0,w,1
-        ]),
-        ZeroMatrix(F,17,1)),
-    HorizontalJoin(
-        Matrix(F,1,26,[
-            0,0,0,1,0,w,1,w^2,w,1,w^2,1,w^2,w,w^2,1,w,1,1,w^2,1,0,0,0,0,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,18,27,[
+    1,1,w^2,0,1,w^2,w,0,w,0,w,1,w^2,0,0,w,1,1,w^2,w,1,w,w^2,0,w^2,w^2,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,1,w,w^2,0,
+    0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w,0,1,w^2,0,
+    0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,1,w^2,w^2,w^2,0,
+    0,w^2,0,w^2,1,w^2,0,0,w,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,1,1,w^2,0,
+    0,w^2,0,0,w^2,w,0,0,w^2,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,1,1,0,0,
+    0,w,0,0,w,w^2,w,w,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,0,w,0,0,0,
+    0,w^2,0,w^2,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,1,1,w^2,0,
+    0,1,w,0,w,w,w,0,w,0,0,0,0,0,0,0,w,0,w,w,1,1,0,w^2,0,w^2,0,
+    0,w,w,1,w^2,w^2,w,w^2,w^2,0,0,0,0,0,0,0,w^2,0,w,0,w^2,w^2,w,w^2,0,1,0,
+    0,w,0,0,w,w,0,w^2,w,0,1,0,0,0,0,0,w,0,w^2,0,w^2,w,0,1,w,w,0,
+    0,1,w,w,1,1,w^2,0,w,0,w,1,0,0,0,0,w^2,0,0,w,w^2,w,w,0,0,w^2,0,
+    0,1,1,0,w,1,w^2,0,w,0,1,w^2,1,0,0,0,w,0,w^2,w,0,w,1,1,1,w^2,0,
+    0,0,w,1,1,1,w,w,1,1,0,w^2,w,0,0,1,0,w^2,w,w,w,w,w^2,w,1,0,0,
+    0,w^2,w,1,w,1,1,w,w^2,0,0,0,1,0,0,1,w^2,w^2,w,w^2,w,1,1,w^2,0,1,0,
+    0,1,0,w^2,1,1,w^2,1,1,1,w^2,0,1,1,1,1,w^2,w^2,w^2,w^2,w,w,0,0,1,1,0,
+    0,w^2,0,1,w,w^2,0,0,w,0,w,1,1,0,1,w^2,1,w,0,1,1,w,0,0,w,1,0,
+    0,0,0,1,0,w,1,w^2,w,1,w^2,1,w^2,w,w^2,1,w,1,1,w^2,1,0,0,0,0,1,1
+]);
 assert Rank(Gsrc) eq 18 and Rank(GX4) eq 18;
-assert Ncols(GX4) eq 27;
 assert RowSpace(Submatrix(GX4,1,1,18,26)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[14] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,27,18,1) eq VerticalJoin(ZeroMatrix(F,17,1),IdentityMatrix(F,1));
+Table1Generators[9]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 27 and Dimension(Q) eq 18;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[9]:=[27,17,6,8];
+Table1DistanceTypes[9]:="exact";
 
-// Table 1, No. 015 | source BS001 | HullIncreasing.m
-// Gsrc: [27,9]_4, hull 2; X4: [[28,6,13;16]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,9,27,[
-    1,0,0,0,0,0,0,0,0,1,w,w^2,0,w,w,1,1,0,w^2,w,w,w^2,w,0,1,w,w,
-    0,1,0,0,0,0,0,0,0,0,1,w,w^2,0,w,w,1,1,w,w^2,w,w,w^2,w,0,1,w,
-    0,0,1,0,0,0,0,0,0,1,0,1,w,w^2,0,w,w,1,w,w,w^2,w,w,w^2,w,0,1,
-    0,0,0,1,0,0,0,0,0,1,1,0,1,w,w^2,0,w,w,1,w,w,w^2,w,w,w^2,w,0,
-    0,0,0,0,1,0,0,0,0,w,1,1,0,1,w,w^2,0,w,0,1,w,w,w^2,w,w,w^2,w,
-    0,0,0,0,0,1,0,0,0,w,w,1,1,0,1,w,w^2,0,w,0,1,w,w,w^2,w,w,w^2,
-    0,0,0,0,0,0,1,0,0,0,w,w,1,1,0,1,w,w^2,w^2,w,0,1,w,w,w^2,w,w,
-    0,0,0,0,0,0,0,1,0,w^2,0,w,w,1,1,0,1,w,w,w^2,w,0,1,w,w,w^2,w,
-    0,0,0,0,0,0,0,0,1,w,w^2,0,w,w,1,1,0,1,w,w,w^2,w,0,1,w,w,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,8,27,[
-            1,0,w,1,0,w,1,0,w,w,w^2,1,w,w^2,1,w,w^2,1,w,w,w,w,w,w,w,w,w,
-            0,1,w^2,0,1,w^2,0,1,w^2,w,w^2,1,w,w^2,1,w,w^2,1,1,1,1,1,1,1,1,1,1,
-            0,0,0,w^2,1,0,0,0,0,1,w,1,w^2,0,0,w^2,1,w^2,w^2,0,w^2,0,w,w^2,0,w,w,
-            0,0,0,0,1,0,0,w^2,0,0,1,0,1,w,1,w^2,w^2,w^2,1,w^2,w^2,w,0,w^2,w^2,1,w^2,
-            0,0,w,w^2,1,0,0,1,1,w,1,1,0,w,0,1,w^2,w,0,w,w^2,1,0,1,w^2,w^2,1,
-            0,0,0,0,w,0,0,1,1,w,1,0,0,1,w^2,0,1,0,0,w^2,w,1,0,0,w^2,0,w,
-            0,0,w,w,0,1,0,w^2,w^2,1,w,w,0,0,0,w,0,w^2,w^2,w^2,0,1,1,w^2,0,w,w,
-            0,0,w,1,w^2,0,1,w,w,0,1,0,w^2,0,w,w,1,w^2,1,w,0,w^2,w^2,1,w,0,w^2
-        ]),
-        ZeroMatrix(F,8,1)),
-    HorizontalJoin(
-        Matrix(F,1,27,[
-            1,w^2,w,1,w,0,w,0,0,1,1,1,w,1,w^2,0,0,1,1,0,w^2,w^2,w^2,w,w^2,1,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 9 and Rank(GX4) eq 9;
-assert Ncols(GX4) eq 28;
-assert RowSpace(Submatrix(GX4,1,1,9,27)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[15] := <Gsrc,GX4>;
-
-// Table 1, No. 016 | source B27_19_s2 | HullIncreasing.m
-// Gsrc: [27,19]_4, hull 1; X4: [[28,17,6;7]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,19,27,[
+// Table 1, No. 10 | B27_19_s0
+// [[28,19,6;9]]_2, distance exact.
+Gsrc:=Matrix(F,19,27,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w,w,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w,1,w^2,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w,w,w^2,
@@ -702,137 +410,40 @@ Gsrc := Matrix(F,19,27,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,w^2,1,w,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,1,0,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,18,27,[
-            1,1,w^2,w^2,1,w,1,w,w^2,w^2,0,w,1,1,w,1,0,w,0,0,w,w,w^2,0,w^2,0,0,
-            0,0,0,1,w,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w,w^2,w^2,1,1,w^2,1,
-            0,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,0,w,1,w,w^2,0,
-            0,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,0,w,1,w^2,1,w^2,
-            0,0,w,1,w,1,0,w,0,0,0,0,0,0,0,0,w^2,0,0,0,w,w^2,1,1,0,1,0,
-            0,0,w,0,0,w,0,w^2,0,0,0,0,0,0,0,0,w,0,0,w^2,0,w,w,1,1,w,w,
-            0,0,w^2,w,1,1,1,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,0,w^2,1,w,w^2,1,w,
-            0,0,w^2,w^2,1,1,w^2,0,1,0,0,0,0,0,0,0,w,0,0,1,w^2,1,w,w^2,w^2,1,1,
-            0,0,w,w,w,0,w,0,w^2,1,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,0,w,
-            0,w^2,0,1,w^2,1,w,0,w,1,0,0,0,0,0,0,0,0,1,w,1,w^2,w^2,w^2,1,0,w^2,
-            0,0,w,w^2,1,w^2,w^2,0,0,1,0,0,0,0,0,0,w,0,1,0,w,1,0,w^2,1,1,0,
-            0,0,w^2,0,w^2,1,0,w,0,w^2,0,1,0,0,0,0,0,0,0,w^2,1,1,w,w^2,w^2,0,w,
-            0,0,1,0,0,w^2,1,w,0,1,0,w,1,0,0,0,w^2,0,0,w,w^2,1,w,w^2,0,1,w,
-            0,w^2,w^2,w^2,1,0,w,w,0,0,0,w,1,1,0,0,0,0,1,w,1,w^2,w^2,w^2,0,1,w^2,
-            0,0,1,1,1,1,1,1,w^2,1,w,0,w,w,0,0,w,w,0,w,1,1,0,w^2,1,w,0,
-            0,w,w,0,1,0,1,w^2,w,w^2,w,1,w,w^2,0,0,0,w^2,w,0,1,w,0,0,w,0,1,
-            0,w,w^2,0,0,1,1,w^2,1,1,w^2,w,w^2,w^2,1,0,0,0,1,w,w^2,1,w^2,0,w^2,w,0,
-            0,w,w^2,w^2,0,0,w,1,0,w,1,1,0,w^2,w^2,1,0,w,w^2,1,0,1,w^2,1,0,w,1
-        ]),
-        ZeroMatrix(F,18,1)),
-    HorizontalJoin(
-        Matrix(F,1,27,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w,w,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 19 and Rank(GX4) eq 19;
-assert Ncols(GX4) eq 28;
-assert RowSpace(Submatrix(GX4,1,1,19,27)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[16] := <Gsrc,GX4>;
-
-// Table 1, No. 017 | source B27_19_s0 | HullDecreasing.m
-// Gsrc: [27,19]_4, hull 1; X4: [[28,19,6;9]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,19,27,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w,w,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w,1,w^2,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w,w,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,1,0,w^2,w^2,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,w,w^2,w,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,w^2,1,0,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,0,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,w,w^2,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w,0,w,0,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,1,w,w^2,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,w^2,w^2,w,w^2,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,w^2,w^2,0,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,w^2,w,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w,0,1,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,0,w,w,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,w^2,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,1,0,0,1
+GX4:=Matrix(F,19,28,[
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w,1,w^2,1,0,
+    0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,1,0,w^2,1,0,
+    0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w^2,0,w,0,
+    0,0,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,w,w^2,1,w^2,0,
+    0,1,w^2,w^2,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,0,1,1,0,
+    0,1,w^2,w,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w,w^2,1,1,0,
+    0,w^2,1,1,w^2,1,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,0,1,0,
+    0,w^2,w,w^2,w,1,w,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,w^2,0,0,
+    w^2,w^2,w,w,0,w^2,w^2,1,1,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,w,1,w,1,0,
+    0,w,0,w,w,w,1,w^2,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,w,0,w,0,0,
+    1,w,1,w^2,w^2,1,w,1,0,0,1,0,0,0,0,0,0,w^2,0,1,1,w,w^2,w,0,1,w^2,0,
+    w,1,w^2,1,1,0,0,0,w^2,1,w^2,0,1,0,0,0,0,w^2,0,1,0,w^2,1,1,w^2,w^2,w^2,0,
+    1,1,w^2,1,1,1,w^2,w^2,0,0,1,0,1,0,0,0,0,0,0,1,w,0,1,w,1,0,0,0,
+    w^2,0,w,0,0,w^2,1,w^2,0,0,w^2,1,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w^2,w,w^2,0,
+    0,1,w,1,1,0,w^2,0,1,w,w^2,w,0,w,w,0,0,w,0,w^2,w,1,1,1,0,w,1,0,
+    w^2,1,w^2,w^2,w^2,w^2,1,w,1,0,w,1,0,w,w^2,0,0,1,0,0,w,1,w^2,0,1,1,0,0,
+    w,w,0,w^2,1,w,w,1,0,0,w^2,0,w^2,0,w^2,0,w,1,w,1,w,w^2,w,w^2,1,w,w^2,0,
+    w,w,w,w,w^2,w^2,w^2,w^2,w,w^2,1,1,w,w,w^2,0,w,w^2,w^2,w,0,1,1,w,0,0,w,0,
+    1,1,w^2,w^2,1,w,1,w,w^2,w^2,0,w,1,1,w,1,0,w,0,0,w,w,w^2,0,w^2,0,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,18,27,[
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w,1,w^2,1,
-            0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,1,0,w^2,1,
-            0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w^2,0,w,
-            0,0,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,w,w^2,1,w^2,
-            0,1,w^2,w^2,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,0,1,1,
-            0,1,w^2,w,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w,w^2,1,1,
-            0,w^2,1,1,w^2,1,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,0,1,
-            0,w^2,w,w^2,w,1,w,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,w^2,0,
-            w^2,w^2,w,w,0,w^2,w^2,1,1,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,w,1,w,1,
-            0,w,0,w,w,w,1,w^2,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,w,0,w,0,
-            1,w,1,w^2,w^2,1,w,1,0,0,1,0,0,0,0,0,0,w^2,0,1,1,w,w^2,w,0,1,w^2,
-            w,1,w^2,1,1,0,0,0,w^2,1,w^2,0,1,0,0,0,0,w^2,0,1,0,w^2,1,1,w^2,w^2,w^2,
-            1,1,w^2,1,1,1,w^2,w^2,0,0,1,0,1,0,0,0,0,0,0,1,w,0,1,w,1,0,0,
-            w^2,0,w,0,0,w^2,1,w^2,0,0,w^2,1,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w^2,w,w^2,
-            0,1,w,1,1,0,w^2,0,1,w,w^2,w,0,w,w,0,0,w,0,w^2,w,1,1,1,0,w,1,
-            w^2,1,w^2,w^2,w^2,w^2,1,w,1,0,w,1,0,w,w^2,0,0,1,0,0,w,1,w^2,0,1,1,0,
-            w,w,0,w^2,1,w,w,1,0,0,w^2,0,w^2,0,w^2,0,w,1,w,1,w,w^2,w,w^2,1,w,w^2,
-            w,w,w,w,w^2,w^2,w^2,w^2,w,w^2,1,1,w,w,w^2,0,w,w^2,w^2,w,0,1,1,w,0,0,w
-        ]),
-        ZeroMatrix(F,18,1)),
-    HorizontalJoin(
-        Matrix(F,1,27,[
-            1,1,w^2,w^2,1,w,1,w,w^2,w^2,0,w,1,1,w,1,0,w,0,0,w,w,w^2,0,w^2,0,0
-        ]),
-        IdentityMatrix(F,1)));
 assert Rank(Gsrc) eq 19 and Rank(GX4) eq 19;
-assert Ncols(GX4) eq 28;
 assert RowSpace(Submatrix(GX4,1,1,19,27)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[17] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,28,19,1) eq VerticalJoin(ZeroMatrix(F,18,1),IdentityMatrix(F,1));
+Table1Generators[10]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 28 and Dimension(Q) eq 19;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[10]:=[28,19,6,9];
+Table1DistanceTypes[10]:="exact";
 
-// Table 1, No. 018 | source B28_6_s1 | HullIncreasing.m
-// Gsrc: [28,6]_4, hull 0; X4: [[29,5,17;22]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,6,28,[
-    1,0,0,0,0,0,1,w^2,0,w,w,w^2,w,w,w^2,w,w,1,0,w,0,w^2,1,1,0,w^2,0,0,
-    0,1,0,0,0,0,1,1,w^2,w,0,1,1,0,w^2,1,0,w^2,1,w,w,w^2,w,0,1,w^2,w^2,0,
-    0,0,1,0,0,0,1,w^2,1,1,0,w^2,w^2,w^2,1,1,w^2,1,w^2,w^2,w,w^2,w,w^2,0,w,w^2,w^2,
-    0,0,0,1,0,0,1,0,w^2,w^2,w^2,w^2,1,1,1,w^2,w^2,w,1,1,w^2,0,w,w^2,w^2,w^2,w,w^2,
-    0,0,0,0,1,0,1,w,0,1,1,0,1,w^2,0,w^2,1,w,w,w^2,1,0,1,w^2,w^2,0,w^2,w,
-    0,0,0,0,0,1,1,0,w,w,w^2,w,w,w^2,w,w,1,0,w,0,w^2,1,1,0,w^2,0,0,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,5,28,[
-            0,w^2,w,w,0,0,w^2,w,1,w,1,w^2,0,w^2,w,0,0,w^2,0,w,w^2,w^2,1,0,w,0,0,0,
-            0,w^2,w^2,0,0,0,0,1,1,w,0,1,1,w,1,0,w,1,1,w^2,0,0,0,w,w^2,w^2,0,w,
-            w^2,0,w^2,0,0,1,1,0,1,0,w,w,1,0,w^2,0,w,0,0,w^2,w,1,w^2,1,w^2,w^2,w,1,
-            0,0,1,w,0,1,w,w^2,w,w,w,0,w^2,w,1,w,w^2,w,w^2,1,0,w,0,w,w,w^2,0,1,
-            1,1,w^2,1,1,1,w,w,1,w^2,w^2,1,w^2,1,0,w,w^2,1,w,0,w,w^2,0,w^2,w,w,0,0
-        ]),
-        ZeroMatrix(F,5,1)),
-    HorizontalJoin(
-        Matrix(F,1,28,[
-            1,0,0,0,0,0,1,w^2,0,w,w,w^2,w,w,w^2,w,w,1,0,w,0,w^2,1,1,0,w^2,0,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 6 and Rank(GX4) eq 6;
-assert Ncols(GX4) eq 29;
-assert RowSpace(Submatrix(GX4,1,1,6,28)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 0;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[18] := <Gsrc,GX4>;
-
-// Table 1, No. 019 | source B28_16_s3 | HullDecreasing.m
-// Gsrc: [28,16]_4, hull 4; X4: [[29,13,8;10]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,16,28,[
+// Table 1, No. 11 | B28_16_s3
+// [[29,13,8;10]]_2, distance exact.
+Gsrc:=Matrix(F,16,28,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,0,0,w^2,w^2,0,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,w^2,0,w^2,1,1,w,1,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,w^2,0,w^2,1,1,w,1,
@@ -850,81 +461,37 @@ Gsrc := Matrix(F,16,28,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,w^2,w,w,w,w,0,w,1,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,w^2,w^2,w^2,w^2,w^2,1,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,15,28,[
-            1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,
-            0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,
-            0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w,w,1,w,1,
-            0,0,0,0,0,w,w,0,1,0,0,0,0,0,0,0,w,1,1,0,w^2,0,w,1,w,1,w,w,
-            0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,w,w,w^2,w^2,1,0,w,w^2,1,1,1,1,
-            0,0,0,0,0,w,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,0,w^2,w^2,w,w^2,
-            0,0,0,w,0,0,1,1,w^2,0,0,0,0,w,0,w^2,w,w^2,0,0,w,w,w^2,1,1,0,w^2,1,
-            0,0,0,w,1,w^2,1,0,0,0,0,0,0,w^2,0,1,0,1,w^2,1,w^2,w^2,w,w,w^2,w^2,0,0,
-            0,0,0,0,1,w,0,w^2,0,0,0,0,0,0,w,0,w^2,w,w,0,w,w,w,0,w^2,w,0,w,
-            0,0,0,0,1,w,w^2,w,w^2,0,0,0,0,0,w^2,0,w,0,1,1,1,w,1,w,1,w,w,1,
-            0,0,0,w,1,0,0,0,w,1,0,0,0,w^2,w^2,1,0,w,w,1,0,w^2,1,1,w,1,w^2,w^2,
-            0,0,0,w^2,0,w,w,w^2,0,w,w,1,0,1,w^2,w,w,0,w,w,w,1,1,1,w^2,1,w^2,1,
-            0,0,0,1,w^2,1,w,1,w,w,0,1,0,1,0,w,w,w,w,0,w,0,w,0,0,w,w,0,
-            0,0,0,w,0,0,w^2,w,w,w,w^2,0,1,0,w^2,1,0,w,w,w,1,w,1,w,w,0,w,1
-        ]),
-        ZeroMatrix(F,15,1)),
-    HorizontalJoin(
-        Matrix(F,1,28,[
-            0,0,0,1,1,1,w^2,1,1,w,0,w^2,w^2,1,w,w^2,0,1,w,w^2,w,w,0,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 29;
-assert RowSpace(Submatrix(GX4,1,1,16,28)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[19] := <Gsrc,GX4>;
-
-// Table 1, No. 020 | source B30_10_shorten12_s1 | HullIncreasing.m
-// Gsrc: [29,9]_4, hull 0; X4: [[30,8,14;20]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,9,29,[
-    1,0,0,0,0,0,0,0,0,w,w,1,0,1,1,w^2,w^2,w^2,w,w^2,w^2,0,0,0,0,0,w,1,w,
-    0,1,0,0,0,0,0,0,0,w,w,0,0,w,0,0,0,1,w^2,1,1,1,1,w^2,w,1,1,w,w,
-    0,0,1,0,0,0,0,0,0,w,w^2,0,1,w,w^2,1,w^2,w,1,1,w^2,w^2,0,w,1,w^2,0,1,1,
-    0,0,0,1,0,0,0,0,0,1,w^2,1,w,w^2,1,w,w^2,w^2,0,w^2,1,0,1,1,1,w^2,w^2,1,w,
-    0,0,0,0,1,0,0,0,0,0,w^2,w,w^2,w^2,w^2,w,w,1,0,w,1,w,w,0,w,w^2,w,1,w^2,
-    0,0,0,0,0,1,0,0,0,w,1,w^2,0,w^2,w,w^2,1,w^2,0,0,w^2,w,0,w^2,w^2,0,0,1,1,
-    0,0,0,0,0,0,1,0,0,0,1,w^2,0,w,w^2,w^2,w^2,w,w,1,w^2,w,1,w,w,0,w,w^2,w,
-    0,0,0,0,0,0,0,1,0,w^2,0,1,0,0,0,w^2,w,1,0,w^2,w^2,w,1,w^2,w^2,1,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,1,1,1,w^2,1,w^2,w^2,w,1,0,0,1,1,w^2,w,1,w^2,w^2,0,w,w
+GX4:=Matrix(F,16,29,[
+    1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,0,
+    0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,0,
+    0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w,w,1,w,1,0,
+    0,0,0,0,0,w,w,0,1,0,0,0,0,0,0,0,w,1,1,0,w^2,0,w,1,w,1,w,w,0,
+    0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,w,w,w^2,w^2,1,0,w,w^2,1,1,1,1,0,
+    0,0,0,0,0,w,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,0,w^2,w^2,w,w^2,0,
+    0,0,0,w,0,0,1,1,w^2,0,0,0,0,w,0,w^2,w,w^2,0,0,w,w,w^2,1,1,0,w^2,1,0,
+    0,0,0,w,1,w^2,1,0,0,0,0,0,0,w^2,0,1,0,1,w^2,1,w^2,w^2,w,w,w^2,w^2,0,0,0,
+    0,0,0,0,1,w,0,w^2,0,0,0,0,0,0,w,0,w^2,w,w,0,w,w,w,0,w^2,w,0,w,0,
+    0,0,0,0,1,w,w^2,w,w^2,0,0,0,0,0,w^2,0,w,0,1,1,1,w,1,w,1,w,w,1,0,
+    0,0,0,w,1,0,0,0,w,1,0,0,0,w^2,w^2,1,0,w,w,1,0,w^2,1,1,w,1,w^2,w^2,0,
+    0,0,0,w^2,0,w,w,w^2,0,w,w,1,0,1,w^2,w,w,0,w,w,w,1,1,1,w^2,1,w^2,1,0,
+    0,0,0,1,w^2,1,w,1,w,w,0,1,0,1,0,w,w,w,w,0,w,0,w,0,0,w,w,0,0,
+    0,0,0,w,0,0,w^2,w,w,w,w^2,0,1,0,w^2,1,0,w,w,w,1,w,1,w,w,0,w,1,0,
+    0,0,0,1,1,1,w^2,1,1,w,0,w^2,w^2,1,w,w^2,0,1,w,w^2,w,w,0,w,w^2,w,w,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,8,29,[
-            1,0,0,0,0,0,0,0,0,w,w,1,0,1,1,w^2,w^2,w^2,w,w^2,w^2,0,0,0,0,0,w,1,w,
-            w^2,1,0,w,0,0,0,0,1,0,w^2,w,w,w^2,w,w^2,w,w,w,w^2,0,w,1,0,w^2,w^2,1,1,w,
-            1,1,0,w^2,0,0,0,0,w^2,0,1,0,w,w^2,0,w^2,w,0,1,w^2,w,w^2,w^2,w^2,w^2,1,1,1,0,
-            1,w^2,w^2,0,0,0,0,1,1,0,0,w^2,w,w,0,1,w,0,w^2,1,0,0,0,1,w,w^2,0,w,1,
-            1,w^2,0,0,0,0,0,1,1,1,w,w^2,1,w^2,w,w,0,1,0,w,w,w,0,0,1,1,0,1,w,
-            1,w,0,w,0,1,0,w^2,0,w^2,1,w^2,w^2,0,1,1,w,0,w^2,w,w,1,w^2,w,0,0,w,w^2,1,
-            w^2,w^2,1,w^2,1,1,1,w,w^2,1,1,w,0,w,w^2,0,w^2,w^2,0,w^2,w,w^2,0,0,w^2,1,w,w^2,0,
-            w,w^2,0,w,0,w^2,1,1,w,0,w^2,1,1,w^2,w^2,w^2,0,w,w^2,w^2,0,w^2,w,1,1,w,w,1,0
-        ]),
-        ZeroMatrix(F,8,1)),
-    HorizontalJoin(
-        Matrix(F,1,29,[
-            1,0,0,0,0,0,0,0,1,w^2,w^2,w,1,w,w,1,w,w^2,w,w,w,w^2,w,1,w^2,w^2,w,w^2,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 9 and Rank(GX4) eq 9;
-assert Ncols(GX4) eq 30;
-assert RowSpace(Submatrix(GX4,1,1,9,29)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 0;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[20] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
+assert RowSpace(Submatrix(GX4,1,1,16,28)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,29,16,1) eq VerticalJoin(ZeroMatrix(F,15,1),IdentityMatrix(F,1));
+Table1Generators[11]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 29 and Dimension(Q) eq 16;
+assert Dimension(HermitianHull(Q)) eq 3;
+Table1Parameters[11]:=[29,13,8,10];
+Table1DistanceTypes[11]:="exact";
 
-// Table 1, No. 021 | source B29_17_s4 | HullDecreasing.m
-// Gsrc: [29,17]_4, hull 5; X4: [[30,13,8;9]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,17,29,[
+// Table 1, No. 12 | B29_17_s4
+// [[30,13,8;9]]_2, distance exact.
+Gsrc:=Matrix(F,17,29,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,0,0,w^2,w^2,0,w,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,0,0,w^2,w^2,0,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,w^2,0,w^2,1,1,w,1,0,
@@ -943,43 +510,38 @@ Gsrc := Matrix(F,17,29,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,w^2,w,w,w,w,0,w,1,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,w^2,w^2,w^2,w^2,w^2,1,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,16,29,[
-            1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,0,
-            0,1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,
-            0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,
-            0,0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w,w,1,w,1,
-            0,0,0,0,0,0,w,w,0,1,0,0,0,0,0,0,0,w,1,1,0,w^2,0,w,1,w,1,w,w,
-            0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,w,w,w^2,w^2,1,0,w,w^2,1,1,1,1,
-            0,0,0,0,0,0,w,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,0,w^2,w^2,w,w^2,
-            0,0,0,0,w,1,w,0,0,1,0,0,0,0,1,0,0,1,1,w,0,0,w^2,w^2,1,w,1,w^2,w,
-            0,0,0,0,w^2,1,w^2,w,w^2,1,0,0,0,0,1,0,0,w^2,0,w,w^2,w^2,1,w^2,w,w^2,0,1,w^2,
-            0,0,0,0,1,w,0,w^2,w^2,w,0,0,0,0,0,w,1,w,w^2,w^2,w,w^2,w,1,w^2,w^2,w,w,w,
-            0,0,0,0,1,w,1,1,w,w,0,0,0,0,0,w^2,w,w^2,w^2,w,w^2,0,0,1,0,w,w,1,w^2,
-            0,0,0,0,w,0,w,0,1,w,w,1,0,0,1,w^2,w,0,w,w^2,w^2,0,w,0,1,1,0,w,w,
-            0,0,0,0,w,w,1,w,w,0,0,1,0,0,w,w^2,w,1,w,0,w^2,w,0,w^2,1,1,w^2,w,w^2,
-            0,0,0,0,w,1,1,w,w,w,1,1,1,0,w,w^2,0,0,w,1,1,w,0,w,0,0,0,0,w,
-            0,0,0,0,w,w,w,0,0,w,w^2,w^2,1,1,1,0,w,0,w^2,0,w,w,1,0,0,w^2,0,w^2,1
-        ]),
-        ZeroMatrix(F,16,1)),
-    HorizontalJoin(
-        Matrix(F,1,29,[
-            0,0,0,0,1,1,1,w^2,1,1,w,0,w^2,w^2,1,w,w^2,0,1,w,w^2,w,w,0,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,17,30,[
+    1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,0,0,
+    0,1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,0,
+    0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,0,
+    0,0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w,w,1,w,1,0,
+    0,0,0,0,0,0,w,w,0,1,0,0,0,0,0,0,0,w,1,1,0,w^2,0,w,1,w,1,w,w,0,
+    0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,w,w,w^2,w^2,1,0,w,w^2,1,1,1,1,0,
+    0,0,0,0,0,0,w,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,0,w^2,w^2,w,w^2,0,
+    0,0,0,0,w,1,w,0,0,1,0,0,0,0,1,0,0,1,1,w,0,0,w^2,w^2,1,w,1,w^2,w,0,
+    0,0,0,0,w^2,1,w^2,w,w^2,1,0,0,0,0,1,0,0,w^2,0,w,w^2,w^2,1,w^2,w,w^2,0,1,w^2,0,
+    0,0,0,0,1,w,0,w^2,w^2,w,0,0,0,0,0,w,1,w,w^2,w^2,w,w^2,w,1,w^2,w^2,w,w,w,0,
+    0,0,0,0,1,w,1,1,w,w,0,0,0,0,0,w^2,w,w^2,w^2,w,w^2,0,0,1,0,w,w,1,w^2,0,
+    0,0,0,0,w,0,w,0,1,w,w,1,0,0,1,w^2,w,0,w,w^2,w^2,0,w,0,1,1,0,w,w,0,
+    0,0,0,0,w,w,1,w,w,0,0,1,0,0,w,w^2,w,1,w,0,w^2,w,0,w^2,1,1,w^2,w,w^2,0,
+    0,0,0,0,w,1,1,w,w,w,1,1,1,0,w,w^2,0,0,w,1,1,w,0,w,0,0,0,0,w,0,
+    0,0,0,0,w,w,w,0,0,w,w^2,w^2,1,1,1,0,w,0,w^2,0,w,w,1,0,0,w^2,0,w^2,1,0,
+    0,0,0,0,1,1,1,w^2,1,1,w,0,w^2,w^2,1,w,w^2,0,1,w,w^2,w,w,0,w,w^2,w,w,1,1
+]);
 assert Rank(Gsrc) eq 17 and Rank(GX4) eq 17;
-assert Ncols(GX4) eq 30;
 assert RowSpace(Submatrix(GX4,1,1,17,29)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 5;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[21] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,30,17,1) eq VerticalJoin(ZeroMatrix(F,16,1),IdentityMatrix(F,1));
+Table1Generators[12]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 30 and Dimension(Q) eq 17;
+assert Dimension(HermitianHull(Q)) eq 4;
+Table1Parameters[12]:=[30,13,8,9];
+Table1DistanceTypes[12]:="exact";
 
-// Table 1, No. 022 | source B29_21_s4 | HullDecreasing.m
-// Gsrc: [29,21]_4, hull 5; X4: [[30,17,6;5]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,21,29,[
+// Table 1, No. 13 | B29_21_s4
+// [[30,17,6;5]]_2, distance exact.
+Gsrc:=Matrix(F,21,29,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,0,w,w^2,0,w^2,w,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,0,w^2,w^2,0,w,w,w^2,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,1,w,w^2,w^2,w,0,
@@ -1002,92 +564,42 @@ Gsrc := Matrix(F,21,29,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,1,w,w,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,0,w,w^2,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,20,29,[
-            1,0,0,0,0,1,0,w^2,w,w^2,0,w^2,w,w^2,0,w,1,w,w^2,0,1,0,w,w,w^2,1,1,w,w,
-            0,1,0,0,0,w,w^2,w^2,w^2,w^2,w,0,0,0,1,1,1,1,w^2,w,w^2,w,0,1,0,w^2,w^2,0,0,
-            0,0,1,0,0,1,w,0,1,0,w^2,1,w,w^2,0,w,0,w^2,w,w^2,w^2,w^2,0,w,w,1,w,1,w,
-            0,0,0,1,0,w,w^2,1,0,0,1,w^2,w,0,1,1,1,0,w,w^2,0,0,w^2,w^2,0,w,w^2,w^2,w^2,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,0,w,0,w,1,0,w,w^2,
-            0,0,0,0,w,1,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,0,1,0,w,w^2,0,w^2,0,
-            0,0,0,0,w^2,w^2,1,w,0,0,0,0,0,0,w,0,0,0,0,0,0,0,0,w^2,1,0,1,w,0,
-            0,0,0,0,0,0,1,w^2,0,0,0,0,0,0,w,0,0,0,0,0,0,0,w,0,w^2,0,w^2,w^2,0,
-            0,0,0,0,w^2,0,1,w,1,1,0,0,0,0,w^2,0,0,0,0,0,0,0,w,1,0,0,w,1,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,0,0,0,0,0,0,0,0,1,0,w,w,w^2,1,
-            0,0,0,0,1,w,w^2,w,w^2,0,1,w,0,0,w,0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,0,w,
-            0,0,0,0,w^2,w^2,0,w,w,w,1,w^2,0,0,w^2,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,1,1,
-            0,0,0,0,w^2,w,1,w,w,0,w,w^2,0,0,1,1,0,0,0,0,0,0,0,1,1,0,w,0,w,
-            0,0,0,0,0,w^2,w^2,w,0,0,w^2,w,0,w,w,w,w,0,0,0,0,0,1,w,w^2,w^2,w,0,w,
-            0,0,0,0,0,w,w^2,0,w^2,w,w^2,1,0,w,1,w,w^2,0,0,0,0,0,0,w^2,w,1,w^2,1,0,
-            0,0,0,0,w^2,w^2,w^2,w^2,w^2,w^2,w,w,1,0,w,0,1,0,0,0,0,w,0,w,0,w^2,1,w^2,w,
-            0,0,0,0,1,1,1,w^2,w^2,0,w,w^2,1,w,w,0,w,0,0,0,0,w^2,1,w,0,1,1,0,1,
-            0,0,0,0,0,w^2,1,w^2,1,w,w,w,0,0,0,1,0,0,1,0,1,1,0,w,w,w,1,w^2,w^2,
-            0,0,0,0,1,w,0,w^2,1,w,0,w,w^2,0,1,1,0,w,1,w,w,0,1,w,w^2,w^2,0,0,0,
-            0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,w^2,1,w^2,0,w^2,w,w^2,w^2,w^2,1,1,1,w,0,w,1,w
-        ]),
-        ZeroMatrix(F,20,1)),
-    HorizontalJoin(
-        Matrix(F,1,29,[
-            0,0,0,0,1,w,1,1,w^2,1,w,w,0,w,w^2,0,1,w^2,1,0,w^2,1,w,0,w^2,1,0,w^2,w
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 21 and Rank(GX4) eq 21;
-assert Ncols(GX4) eq 30;
-assert RowSpace(Submatrix(GX4,1,1,21,29)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 5;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[22] := <Gsrc,GX4>;
-
-// Table 1, No. 023 | source H15 | HullIncreasing.m
-// Gsrc: [30,12]_4, hull 3; X4: [[31,8,>=12;15]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,12,30,[
-    1,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,0,1,w^2,w^2,w^2,w,w,1,1,0,1,w^2,w^2,w^2,
-    0,1,0,0,0,0,0,0,0,0,w^2,1,w^2,1,1,0,0,w,0,w,w^2,1,w^2,1,w,w,1,1,w,w,
-    0,0,1,0,0,0,0,0,0,0,w^2,1,0,w^2,0,0,0,w^2,0,w,w^2,1,1,w^2,1,0,w^2,0,w^2,0,
-    0,0,0,1,0,0,0,0,0,0,0,w^2,1,0,w^2,0,0,0,w^2,0,w,w^2,1,1,w^2,1,0,w^2,0,w^2,
-    0,0,0,0,1,0,0,0,0,0,w,1,0,1,w^2,0,0,0,0,w^2,1,w^2,1,0,0,0,w,1,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,w,w^2,w,0,w,0,0,w^2,w,w,1,0,w,w,w^2,0,w^2,0,w^2,1,
-    0,0,0,0,0,0,1,0,0,0,1,1,1,w,w,0,0,w^2,1,0,w,w,w,w^2,w^2,w,w,w^2,w,1,
-    0,0,0,0,0,0,0,1,0,0,1,w,w^2,1,0,0,0,w^2,1,w^2,0,1,0,w^2,w,w,0,w,1,0,
-    0,0,0,0,0,0,0,0,1,0,0,1,w,w^2,1,0,0,0,w^2,1,w^2,0,1,0,w^2,w,w,0,w,1,
-    0,0,0,0,0,0,0,0,0,1,w^2,w,0,w,w,0,0,0,0,w^2,w^2,1,w^2,w^2,w,w,w^2,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,1,0,1,w^2,w^2,1,0,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,0,1,w^2,w^2,1,0,1,w^2,w^2,1
+GX4:=Matrix(F,21,30,[
+    1,0,0,0,0,1,0,w^2,w,w^2,0,w^2,w,w^2,0,w,1,w,w^2,0,1,0,w,w,w^2,1,1,w,w,0,
+    0,1,0,0,0,w,w^2,w^2,w^2,w^2,w,0,0,0,1,1,1,1,w^2,w,w^2,w,0,1,0,w^2,w^2,0,0,0,
+    0,0,1,0,0,1,w,0,1,0,w^2,1,w,w^2,0,w,0,w^2,w,w^2,w^2,w^2,0,w,w,1,w,1,w,0,
+    0,0,0,1,0,w,w^2,1,0,0,1,w^2,w,0,1,1,1,0,w,w^2,0,0,w^2,w^2,0,w,w^2,w^2,w^2,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,0,w,0,w,1,0,w,w^2,0,
+    0,0,0,0,w,1,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,0,1,0,w,w^2,0,w^2,0,0,
+    0,0,0,0,w^2,w^2,1,w,0,0,0,0,0,0,w,0,0,0,0,0,0,0,0,w^2,1,0,1,w,0,0,
+    0,0,0,0,0,0,1,w^2,0,0,0,0,0,0,w,0,0,0,0,0,0,0,w,0,w^2,0,w^2,w^2,0,0,
+    0,0,0,0,w^2,0,1,w,1,1,0,0,0,0,w^2,0,0,0,0,0,0,0,w,1,0,0,w,1,w,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,0,0,0,0,0,0,0,0,1,0,w,w,w^2,1,0,
+    0,0,0,0,1,w,w^2,w,w^2,0,1,w,0,0,w,0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,0,w,0,
+    0,0,0,0,w^2,w^2,0,w,w,w,1,w^2,0,0,w^2,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,1,1,0,
+    0,0,0,0,w^2,w,1,w,w,0,w,w^2,0,0,1,1,0,0,0,0,0,0,0,1,1,0,w,0,w,0,
+    0,0,0,0,0,w^2,w^2,w,0,0,w^2,w,0,w,w,w,w,0,0,0,0,0,1,w,w^2,w^2,w,0,w,0,
+    0,0,0,0,0,w,w^2,0,w^2,w,w^2,1,0,w,1,w,w^2,0,0,0,0,0,0,w^2,w,1,w^2,1,0,0,
+    0,0,0,0,w^2,w^2,w^2,w^2,w^2,w^2,w,w,1,0,w,0,1,0,0,0,0,w,0,w,0,w^2,1,w^2,w,0,
+    0,0,0,0,1,1,1,w^2,w^2,0,w,w^2,1,w,w,0,w,0,0,0,0,w^2,1,w,0,1,1,0,1,0,
+    0,0,0,0,0,w^2,1,w^2,1,w,w,w,0,0,0,1,0,0,1,0,1,1,0,w,w,w,1,w^2,w^2,0,
+    0,0,0,0,1,w,0,w^2,1,w,0,w,w^2,0,1,1,0,w,1,w,w,0,1,w,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,w^2,1,w^2,0,w^2,w,w^2,w^2,w^2,1,1,1,w,0,w,1,w,0,
+    0,0,0,0,1,w,1,1,w^2,1,w,w,0,w,w^2,0,1,w^2,1,0,w^2,1,w,0,w^2,1,0,w^2,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,11,30,[
-            1,0,0,1,1,w,0,0,w,w,w^2,0,0,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,w^2,w,0,w,0,1,
-            0,1,0,w^2,w,0,w,0,1,w^2,0,w^2,0,w,1,w^2,w^2,w,w^2,1,1,1,w^2,1,w,w,w,1,w,w^2,
-            0,0,1,1,w,0,0,w,w,w^2,0,0,w^2,w^2,1,0,w^2,0,w,1,0,1,0,w^2,w,0,w,0,1,w^2,
-            0,0,0,0,0,1,0,0,0,0,w,w^2,w,0,w,0,0,w^2,w,w,1,0,w,w,w^2,0,w^2,0,w^2,1,
-            0,0,0,0,0,1,1,0,0,0,w^2,w,w^2,w,0,1,0,1,0,1,w,w,1,w,w^2,w^2,1,w,w,w^2,
-            0,0,0,w^2,w,w^2,1,0,0,w,w,0,w^2,w^2,w^2,1,0,0,1,w,w,w^2,w,w^2,w^2,w^2,w,w,w,0,
-            0,0,0,1,w,1,1,0,0,w^2,w,w,w,1,w^2,1,0,1,w^2,w,0,w^2,0,1,1,w^2,0,w^2,w^2,1,
-            0,0,0,w^2,0,1,w,0,0,0,0,w^2,w^2,w^2,w^2,0,1,1,1,w^2,w^2,0,1,w^2,1,0,1,0,w^2,0,
-            0,0,0,0,0,1,1,0,0,0,w^2,w,w^2,w,0,1,1,w,w^2,0,w,w^2,w,1,w,w^2,0,1,1,w,
-            0,0,0,0,1,w^2,1,1,1,0,w^2,1,1,1,1,0,w^2,0,0,w^2,w^2,w^2,1,w^2,w^2,w,w^2,w,w,0,
-            0,0,0,1,w,w^2,1,0,1,w,w,0,w^2,0,w^2,w^2,1,1,1,w^2,0,w^2,0,w^2,1,1,1,w,w,0
-        ]),
-        ZeroMatrix(F,11,1)),
-    HorizontalJoin(
-        Matrix(F,1,30,[
-            1,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,0,1,w^2,w^2,w^2,w,w,1,1,0,1,w^2,w^2,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 12 and Rank(GX4) eq 12;
-assert Ncols(GX4) eq 31;
-assert RowSpace(Submatrix(GX4,1,1,12,30)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[23] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 21 and Rank(GX4) eq 21;
+assert RowSpace(Submatrix(GX4,1,1,21,29)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,30,21,1) eq VerticalJoin(ZeroMatrix(F,20,1),IdentityMatrix(F,1));
+Table1Generators[13]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 30 and Dimension(Q) eq 21;
+assert Dimension(HermitianHull(Q)) eq 4;
+Table1Parameters[13]:=[30,17,6,5];
+Table1DistanceTypes[13]:="exact";
 
-// Table 1, No. 024 | source B31_12_puncture4_s1 | HullDecreasing.m
-// Gsrc: [30,12]_4, hull 2; X4: [[31,11,12;18]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,12,30,[
+// Table 1, No. 14 | B31_12_puncture4_s1
+// [[31,11,12;18]]_2, distance exact.
+Gsrc:=Matrix(F,12,30,[
     1,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,w,0,1,w^2,1,w,1,1,0,w,0,1,w^2,0,
     0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,0,0,w,w^2,w,0,w,0,1,0,1,0,1,
     0,0,1,0,0,0,0,0,0,0,0,0,w^2,1,w,0,w^2,w,0,w,w,1,w^2,w,1,w^2,0,w^2,w,1,
@@ -1101,38 +613,33 @@ Gsrc := Matrix(F,12,30,[
     0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,1,0,w,0,0,w,w,w^2,0,0,0,1,1,w^2,w^2,1,
     0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,1,w,w^2,w,1,w^2,0,w^2,0,1,1,w,1,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,11,30,[
-            1,0,1,w,w^2,0,w^2,0,1,w,0,w,0,w^2,1,w^2,0,0,w^2,w^2,w,0,0,w,w,1,0,0,1,0,
-            0,w,w,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w^2,0,w^2,0,0,w,1,1,0,w,w^2,0,w^2,w^2,0,
-            0,w,w^2,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,1,0,w,0,0,w,w,w^2,0,0,0,1,1,
-            0,0,w^2,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,0,0,w^2,w,w,0,w^2,1,0,1,0,
-            0,0,w,1,w^2,1,0,0,0,0,0,0,w^2,0,w^2,1,w,0,w^2,w^2,w^2,0,1,w^2,1,0,w,0,w,w,
-            0,w,w^2,1,0,1,0,0,0,0,0,0,w,1,w^2,0,w^2,w^2,w,1,1,w^2,w^2,1,0,w,w,w,w,0,
-            0,w^2,0,w^2,w^2,w^2,w,w,0,0,0,0,0,w,0,w^2,0,1,0,w^2,0,w^2,w,w^2,w^2,w^2,1,w,0,0,
-            0,w,0,w^2,w,w^2,w,w^2,0,0,0,0,w^2,0,1,0,w,0,0,w^2,w,w^2,1,w^2,w,w,1,0,w,1,
-            0,1,w^2,1,1,w,0,1,1,0,0,0,w,w^2,w,0,w,w^2,0,w,w,1,w^2,1,0,1,w,w^2,0,w^2,
-            0,0,w,0,0,1,w^2,w,1,w,w,w,0,0,w^2,w^2,w,0,1,0,w^2,w,1,1,w,w^2,w^2,1,1,0,
-            0,w^2,0,1,0,1,w^2,w^2,1,w,w^2,w,0,0,w^2,1,0,1,w,w,w,w,1,w^2,w,0,w^2,0,0,1
-        ]),
-        ZeroMatrix(F,11,1)),
-    HorizontalJoin(
-        Matrix(F,1,30,[
-            0,1,w,w,0,w^2,1,0,1,0,w,w^2,0,w^2,0,w,w,1,0,0,1,1,w^2,0,0,w^2,w^2,w,0,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,12,31,[
+    1,0,1,w,w^2,0,w^2,0,1,w,0,w,0,w^2,1,w^2,0,0,w^2,w^2,w,0,0,w,w,1,0,0,1,0,0,
+    0,w,w,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w^2,0,w^2,0,0,w,1,1,0,w,w^2,0,w^2,w^2,0,0,
+    0,w,w^2,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,1,0,w,0,0,w,w,w^2,0,0,0,1,1,0,
+    0,0,w^2,1,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,0,0,w^2,w,w,0,w^2,1,0,1,0,0,
+    0,0,w,1,w^2,1,0,0,0,0,0,0,w^2,0,w^2,1,w,0,w^2,w^2,w^2,0,1,w^2,1,0,w,0,w,w,0,
+    0,w,w^2,1,0,1,0,0,0,0,0,0,w,1,w^2,0,w^2,w^2,w,1,1,w^2,w^2,1,0,w,w,w,w,0,0,
+    0,w^2,0,w^2,w^2,w^2,w,w,0,0,0,0,0,w,0,w^2,0,1,0,w^2,0,w^2,w,w^2,w^2,w^2,1,w,0,0,0,
+    0,w,0,w^2,w,w^2,w,w^2,0,0,0,0,w^2,0,1,0,w,0,0,w^2,w,w^2,1,w^2,w,w,1,0,w,1,0,
+    0,1,w^2,1,1,w,0,1,1,0,0,0,w,w^2,w,0,w,w^2,0,w,w,1,w^2,1,0,1,w,w^2,0,w^2,0,
+    0,0,w,0,0,1,w^2,w,1,w,w,w,0,0,w^2,w^2,w,0,1,0,w^2,w,1,1,w,w^2,w^2,1,1,0,0,
+    0,w^2,0,1,0,1,w^2,w^2,1,w,w^2,w,0,0,w^2,1,0,1,w,w,w,w,1,w^2,w,0,w^2,0,0,1,0,
+    0,1,w,w,0,w^2,1,0,1,0,w,w^2,0,w^2,0,w,w,1,0,0,1,1,w^2,0,0,w^2,w^2,w,0,0,1
+]);
 assert Rank(Gsrc) eq 12 and Rank(GX4) eq 12;
-assert Ncols(GX4) eq 31;
 assert RowSpace(Submatrix(GX4,1,1,12,30)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[24] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,31,12,1) eq VerticalJoin(ZeroMatrix(F,11,1),IdentityMatrix(F,1));
+Table1Generators[14]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 31 and Dimension(Q) eq 12;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[14]:=[31,11,12,18];
+Table1DistanceTypes[14]:="exact";
 
-// Table 1, No. 025 | source B30_18_s5 | HullDecreasing.m
-// Gsrc: [30,18]_4, hull 6; X4: [[31,13,8;8]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,18,30,[
+// Table 1, No. 15 | B30_18_s5
+// [[31,13,8;8]]_2, distance exact.
+Gsrc:=Matrix(F,18,30,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,0,0,w^2,w^2,0,w,0,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,0,0,w^2,w^2,0,w,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,0,0,w^2,w^2,0,w,
@@ -1152,44 +659,39 @@ Gsrc := Matrix(F,18,30,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,w^2,w,w,w,w,0,w,1,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,w^2,w^2,w^2,w^2,w^2,1,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,17,30,[
-            1,0,0,0,0,0,0,w,0,1,0,1,0,0,w^2,0,w,w,w^2,1,w,w^2,w,0,w,1,w,1,w^2,w,
-            0,1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,0,
-            0,0,1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,
-            0,0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,
-            0,0,0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w,w,1,w,1,
-            0,0,0,0,0,0,0,w,w,0,1,0,0,0,0,0,0,0,w,1,1,0,w^2,0,w,1,w,1,w,w,
-            0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,w,w,w^2,w^2,1,0,w,w^2,1,1,1,1,
-            0,0,0,0,0,0,0,w,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,0,w^2,w^2,w,w^2,
-            0,0,0,0,0,0,w^2,1,w^2,w^2,1,0,0,0,0,w,0,w,w,1,1,0,1,w^2,0,0,w,w^2,0,w,
-            0,0,0,0,0,w,1,0,w,0,w,0,0,0,0,w^2,0,w^2,0,0,w,1,w^2,w,0,1,1,w^2,w^2,1,
-            0,0,0,0,0,w,w,w^2,w,1,w,0,0,0,0,0,w,1,w^2,0,w^2,0,1,w^2,1,1,0,1,w^2,1,
-            0,0,0,0,0,w,w,w,0,0,w,0,0,0,0,0,w^2,w,w,0,w,1,w,1,1,w,1,1,0,0,
-            0,0,0,0,0,w^2,w,0,0,1,0,0,1,0,0,w,w^2,w,w^2,w^2,0,0,1,w,w^2,w,0,w,0,w,
-            0,0,0,0,0,0,w^2,w^2,w^2,w,w^2,1,0,0,1,1,w,1,1,1,0,0,w,w^2,w,0,w,w^2,1,w^2,
-            0,0,0,0,0,w^2,w^2,0,w^2,1,w,0,1,0,1,0,w,w,w,1,0,1,0,0,w,0,w,w^2,w^2,w,
-            0,0,0,0,0,w^2,w^2,w,0,w^2,0,w,0,1,w^2,0,w^2,w,1,w,0,w^2,w,w^2,w^2,w,w^2,w,1,0
-        ]),
-        ZeroMatrix(F,17,1)),
-    HorizontalJoin(
-        Matrix(F,1,30,[
-            0,0,0,0,0,1,1,1,w^2,1,1,w,0,w^2,w^2,1,w,w^2,0,1,w,w^2,w,w,0,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,18,31,[
+    1,0,0,0,0,0,0,w,0,1,0,1,0,0,w^2,0,w,w,w^2,1,w,w^2,w,0,w,1,w,1,w^2,w,0,
+    0,1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,0,0,
+    0,0,1,0,0,0,0,w,w,0,1,w^2,w,w,0,1,w,w,1,w^2,w^2,w^2,1,w,1,w^2,w,w,w^2,w,0,
+    0,0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,0,
+    0,0,0,0,1,0,0,w,w,0,w^2,w,w^2,0,w,w^2,1,w^2,1,w^2,1,1,0,w,w,1,1,0,w^2,1,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w,w,1,w,1,0,
+    0,0,0,0,0,0,0,w,w,0,1,0,0,0,0,0,0,0,w,1,1,0,w^2,0,w,1,w,1,w,w,0,
+    0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,w,w,w^2,w^2,1,0,w,w^2,1,1,1,1,0,
+    0,0,0,0,0,0,0,w,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,0,w^2,w^2,w,w^2,0,
+    0,0,0,0,0,0,w^2,1,w^2,w^2,1,0,0,0,0,w,0,w,w,1,1,0,1,w^2,0,0,w,w^2,0,w,0,
+    0,0,0,0,0,w,1,0,w,0,w,0,0,0,0,w^2,0,w^2,0,0,w,1,w^2,w,0,1,1,w^2,w^2,1,0,
+    0,0,0,0,0,w,w,w^2,w,1,w,0,0,0,0,0,w,1,w^2,0,w^2,0,1,w^2,1,1,0,1,w^2,1,0,
+    0,0,0,0,0,w,w,w,0,0,w,0,0,0,0,0,w^2,w,w,0,w,1,w,1,1,w,1,1,0,0,0,
+    0,0,0,0,0,w^2,w,0,0,1,0,0,1,0,0,w,w^2,w,w^2,w^2,0,0,1,w,w^2,w,0,w,0,w,0,
+    0,0,0,0,0,0,w^2,w^2,w^2,w,w^2,1,0,0,1,1,w,1,1,1,0,0,w,w^2,w,0,w,w^2,1,w^2,0,
+    0,0,0,0,0,w^2,w^2,0,w^2,1,w,0,1,0,1,0,w,w,w,1,0,1,0,0,w,0,w,w^2,w^2,w,0,
+    0,0,0,0,0,w^2,w^2,w,0,w^2,0,w,0,1,w^2,0,w^2,w,1,w,0,w^2,w,w^2,w^2,w,w^2,w,1,0,0,
+    0,0,0,0,0,1,1,1,w^2,1,1,w,0,w^2,w^2,1,w,w^2,0,1,w,w^2,w,w,0,w,w^2,w,w,1,1
+]);
 assert Rank(Gsrc) eq 18 and Rank(GX4) eq 18;
-assert Ncols(GX4) eq 31;
 assert RowSpace(Submatrix(GX4,1,1,18,30)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[25] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,31,18,1) eq VerticalJoin(ZeroMatrix(F,17,1),IdentityMatrix(F,1));
+Table1Generators[15]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 31 and Dimension(Q) eq 18;
+assert Dimension(HermitianHull(Q)) eq 5;
+Table1Parameters[15]:=[31,13,8,8];
+Table1DistanceTypes[15]:="exact";
 
-// Table 1, No. 026 | source B30_21_s0 | HullDecreasing.m
-// Gsrc: [30,21]_4, hull 1; X4: [[31,21,6;10]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,21,30,[
+// Table 1, No. 16 | B30_21_s0
+// [[31,21,6;10]]_2, distance exact.
+Gsrc:=Matrix(F,21,30,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w,0,w^2,0,1,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,w,0,1,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,1,0,w,w^2,w^2,0,
@@ -1212,47 +714,42 @@ Gsrc := Matrix(F,21,30,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,0,1,w,0,w^2,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,w^2,w,w,0
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,20,30,[
-            0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,w^2,w^2,0,1,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,w^2,1,w^2,w,1,
-            1,0,0,w,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,1,
-            1,0,w,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,w,w^2,1,
-            1,0,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,w,1,0,w,w,
-            w,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,1,w,0,w,
-            w,0,1,w,0,1,1,w,0,w,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w,w^2,0,w,0,w,
-            0,0,0,1,w^2,w,1,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w,w^2,w,1,
-            1,0,1,0,w,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,1,w,0,w,
-            w,w^2,w^2,0,1,0,w,w^2,0,1,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w^2,w^2,0,0,w^2,w^2,
-            w^2,w^2,w^2,1,w,w,w,1,1,1,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,1,1,1,w^2,w,w,0,
-            0,w^2,w^2,w^2,1,0,w,w,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w,w^2,w,1,w,w^2,
-            1,w^2,w^2,w,w,w^2,1,w^2,w^2,w^2,0,w^2,1,0,w,0,0,0,0,1,1,0,1,0,0,w,w,w,w^2,1,
-            w,w^2,0,1,1,w,1,0,1,w,0,w^2,w^2,0,w^2,0,0,0,0,1,1,0,0,w^2,1,w,1,1,0,1,
-            0,w^2,1,w^2,1,1,0,1,0,w,0,1,w^2,1,w^2,0,0,0,0,w,0,0,1,w,w^2,0,0,1,1,0,
-            1,w^2,w,1,1,w,0,0,w,1,1,w,0,0,w^2,0,0,0,w,w^2,w,0,0,w,w^2,w^2,0,w^2,w^2,0,
-            1,w^2,0,0,w,w^2,0,w,1,w^2,1,0,1,w,w,0,0,0,w^2,w^2,1,0,w,w,0,0,1,w,0,w,
-            w,0,0,0,w^2,1,1,0,w^2,w,1,0,w^2,0,w^2,1,0,0,1,1,1,0,1,w^2,1,1,w^2,w^2,w,1,
-            w,1,0,0,1,0,w,w,1,w,w^2,0,0,1,w^2,w^2,1,w,0,0,w^2,0,1,w^2,0,w,w^2,w,1,w^2,
-            w,0,0,1,w^2,0,0,0,w,0,1,w,0,w,0,1,1,w^2,w^2,w^2,1,0,w,0,w^2,0,0,w^2,w^2,0
-        ]),
-        ZeroMatrix(F,20,1)),
-    HorizontalJoin(
-        Matrix(F,1,30,[
-            1,w,0,w,w^2,0,w,0,w,w^2,w,1,w^2,0,0,0,0,w,0,w^2,0,1,0,0,w^2,w,0,w^2,1,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,21,31,[
+    0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,w^2,w^2,0,1,1,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,w^2,1,w^2,w,1,0,
+    1,0,0,w,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,1,0,
+    1,0,w,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,w,w^2,1,0,
+    1,0,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,w,1,0,w,w,0,
+    w,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,1,w,0,w,0,
+    w,0,1,w,0,1,1,w,0,w,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w,w^2,0,w,0,w,0,
+    0,0,0,1,w^2,w,1,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w,w^2,w,1,0,
+    1,0,1,0,w,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,1,w,0,w,0,
+    w,w^2,w^2,0,1,0,w,w^2,0,1,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w^2,w^2,0,0,w^2,w^2,0,
+    w^2,w^2,w^2,1,w,w,w,1,1,1,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,1,1,1,w^2,w,w,0,0,
+    0,w^2,w^2,w^2,1,0,w,w,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w,w^2,w,1,w,w^2,0,
+    1,w^2,w^2,w,w,w^2,1,w^2,w^2,w^2,0,w^2,1,0,w,0,0,0,0,1,1,0,1,0,0,w,w,w,w^2,1,0,
+    w,w^2,0,1,1,w,1,0,1,w,0,w^2,w^2,0,w^2,0,0,0,0,1,1,0,0,w^2,1,w,1,1,0,1,0,
+    0,w^2,1,w^2,1,1,0,1,0,w,0,1,w^2,1,w^2,0,0,0,0,w,0,0,1,w,w^2,0,0,1,1,0,0,
+    1,w^2,w,1,1,w,0,0,w,1,1,w,0,0,w^2,0,0,0,w,w^2,w,0,0,w,w^2,w^2,0,w^2,w^2,0,0,
+    1,w^2,0,0,w,w^2,0,w,1,w^2,1,0,1,w,w,0,0,0,w^2,w^2,1,0,w,w,0,0,1,w,0,w,0,
+    w,0,0,0,w^2,1,1,0,w^2,w,1,0,w^2,0,w^2,1,0,0,1,1,1,0,1,w^2,1,1,w^2,w^2,w,1,0,
+    w,1,0,0,1,0,w,w,1,w,w^2,0,0,1,w^2,w^2,1,w,0,0,w^2,0,1,w^2,0,w,w^2,w,1,w^2,0,
+    w,0,0,1,w^2,0,0,0,w,0,1,w,0,w,0,1,1,w^2,w^2,w^2,1,0,w,0,w^2,0,0,w^2,w^2,0,0,
+    1,w,0,w,w^2,0,w,0,w,w^2,w,1,w^2,0,0,0,0,w,0,w^2,0,1,0,0,w^2,w,0,w^2,1,w,1
+]);
 assert Rank(Gsrc) eq 21 and Rank(GX4) eq 21;
-assert Ncols(GX4) eq 31;
 assert RowSpace(Submatrix(GX4,1,1,21,30)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[26] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,31,21,1) eq VerticalJoin(ZeroMatrix(F,20,1),IdentityMatrix(F,1));
+Table1Generators[16]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 31 and Dimension(Q) eq 21;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[16]:=[31,21,6,10];
+Table1DistanceTypes[16]:="exact";
 
-// Table 1, No. 027 | source BS003 | HullDecreasing.m
-// Gsrc: [30,7]_4, hull 4; X4: [[32,5,17;23]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,7,30,[
+// Table 1, No. 17 | BS003
+// [[32,5,17;23]]_2, distance exact.
+Gsrc:=Matrix(F,7,30,[
     1,0,0,0,0,0,0,1,0,w,1,0,0,w,0,1,w^2,w^2,0,0,1,w,0,w^2,1,w,w^2,w^2,w,w,
     0,1,0,0,0,0,0,1,1,w,w^2,1,0,w,w,1,0,0,w^2,0,1,w^2,w,w^2,w^2,w^2,1,0,1,0,
     0,0,1,0,0,0,0,1,1,w^2,w^2,w^2,1,w,w,w^2,0,w^2,0,w^2,1,w^2,w^2,1,w,1,0,w,w,w^2,
@@ -1261,78 +758,28 @@ Gsrc := Matrix(F,7,30,[
     0,0,0,0,0,1,0,1,w^2,1,0,w,w,1,1,w,w^2,0,1,w^2,w,w^2,0,0,1,0,1,0,w^2,w^2,
     0,0,0,0,0,0,1,1,w,1,0,0,w,0,1,0,w^2,0,0,1,w,0,w^2,w^2,w,w^2,w^2,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,5,30,[
-            1,0,0,0,0,1,1,1,1,w,1,w,0,w^2,0,w^2,w^2,w^2,1,w,1,1,w^2,0,w,1,1,1,w^2,0,
-            0,1,0,0,0,1,0,0,w,w^2,w^2,w^2,w,w^2,w^2,w^2,w^2,0,w,w^2,w^2,0,w,w^2,w,w^2,0,0,w,w^2,
-            0,0,1,0,0,0,0,1,1,w^2,w^2,w^2,1,w,w,w^2,0,w^2,0,w^2,1,w^2,w^2,1,w,1,0,w,w,w^2,
-            0,0,w^2,0,0,1,w,0,w^2,1,w,0,w,0,w,0,w,w,1,w^2,w,1,w^2,w,w^2,w,0,w,1,w^2,
-            0,0,1,0,0,1,w^2,w^2,w^2,1,w^2,1,w,w^2,0,1,1,w^2,1,w^2,w,0,1,w^2,w,w^2,w^2,w^2,0,w^2
-        ]),
-        ZeroMatrix(F,5,2)),
-    HorizontalJoin(
-        Matrix(F,2,30,[
-            0,0,1,0,w,w^2,w^2,w^2,w^2,1,0,1,0,w^2,w^2,w^2,1,1,w,w^2,w^2,1,0,w^2,w^2,0,0,1,w^2,1,
-            0,0,0,1,w^2,0,w^2,1,0,w^2,w^2,w,0,0,w^2,1,w,0,1,1,0,w^2,w^2,w,0,w^2,w,1,w,w
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 7 and Rank(GX4) eq 7;
-assert Ncols(GX4) eq 32;
-assert RowSpace(Submatrix(GX4,1,1,7,30)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[27] := <Gsrc,GX4>;
-
-// Table 1, No. 028 | source H16 | HullIncreasing.m
-// Gsrc: [30,12]_4, hull 3; X4: [[32,7,>=12;15]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,12,30,[
-    1,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,0,1,w^2,w^2,w^2,w,w,1,1,0,1,w^2,w^2,w^2,
-    0,1,0,0,0,0,0,0,0,0,w^2,1,w^2,1,1,0,0,w,0,w,w^2,1,w^2,1,w,w,1,1,w,w,
-    0,0,1,0,0,0,0,0,0,0,w^2,1,0,w^2,0,0,0,w^2,0,w,w^2,1,1,w^2,1,0,w^2,0,w^2,0,
-    0,0,0,1,0,0,0,0,0,0,0,w^2,1,0,w^2,0,0,0,w^2,0,w,w^2,1,1,w^2,1,0,w^2,0,w^2,
-    0,0,0,0,1,0,0,0,0,0,w,1,0,1,w^2,0,0,0,0,w^2,1,w^2,1,0,0,0,w,1,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,w,w^2,w,0,w,0,0,w^2,w,w,1,0,w,w,w^2,0,w^2,0,w^2,1,
-    0,0,0,0,0,0,1,0,0,0,1,1,1,w,w,0,0,w^2,1,0,w,w,w,w^2,w^2,w,w,w^2,w,1,
-    0,0,0,0,0,0,0,1,0,0,1,w,w^2,1,0,0,0,w^2,1,w^2,0,1,0,w^2,w,w,0,w,1,0,
-    0,0,0,0,0,0,0,0,1,0,0,1,w,w^2,1,0,0,0,w^2,1,w^2,0,1,0,w^2,w,w,0,w,1,
-    0,0,0,0,0,0,0,0,0,1,w^2,w,0,w,w,0,0,0,0,w^2,w^2,1,w^2,w^2,w,w,w^2,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,1,0,1,w^2,w^2,1,0,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,0,1,w^2,w^2,1,0,1,w^2,w^2,1
+GX4:=Matrix(F,7,32,[
+    1,0,0,0,0,1,1,1,1,w,1,w,0,w^2,0,w^2,w^2,w^2,1,w,1,1,w^2,0,w,1,1,1,w^2,0,0,0,
+    0,1,0,0,0,1,0,0,w,w^2,w^2,w^2,w,w^2,w^2,w^2,w^2,0,w,w^2,w^2,0,w,w^2,w,w^2,0,0,w,w^2,0,0,
+    0,0,1,0,0,0,0,1,1,w^2,w^2,w^2,1,w,w,w^2,0,w^2,0,w^2,1,w^2,w^2,1,w,1,0,w,w,w^2,0,0,
+    0,0,w^2,0,0,1,w,0,w^2,1,w,0,w,0,w,0,w,w,1,w^2,w,1,w^2,w,w^2,w,0,w,1,w^2,0,0,
+    0,0,1,0,0,1,w^2,w^2,w^2,1,w^2,1,w,w^2,0,1,1,w^2,1,w^2,w,0,1,w^2,w,w^2,w^2,w^2,0,w^2,0,0,
+    0,0,1,0,w,w^2,w^2,w^2,w^2,1,0,1,0,w^2,w^2,w^2,1,1,w,w^2,w^2,1,0,w^2,w^2,0,0,1,w^2,1,1,0,
+    0,0,0,1,w^2,0,w^2,1,0,w^2,w^2,w,0,0,w^2,1,w,0,1,1,0,w^2,w^2,w,0,w^2,w,1,w,w,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,10,30,[
-            1,0,0,1,1,w,0,0,w,w,w^2,0,0,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,w^2,w,0,w,0,1,
-            0,1,0,w^2,w,0,w,0,1,w^2,0,w^2,0,w,1,w^2,w^2,w,w^2,1,1,1,w^2,1,w,w,w,1,w,w^2,
-            0,0,1,1,w,0,0,w,w,w^2,0,0,w^2,w^2,1,0,w^2,0,w,1,0,1,0,w^2,w,0,w,0,1,w^2,
-            0,0,0,w^2,w,0,0,0,0,w,w,w^2,w^2,1,0,0,0,0,w,0,w,1,0,w,1,0,w,0,1,1,
-            0,0,0,w^2,w^2,0,0,0,0,1,w,w^2,w^2,1,w,w^2,0,w^2,0,w^2,w,1,0,w,w,w,w,w,0,w,
-            0,0,0,w^2,1,w,w,0,0,0,w^2,0,w,w,1,0,0,0,w^2,0,1,w,w,1,w,0,0,w,1,w,
-            0,0,0,1,w^2,w,w^2,0,0,0,1,w,1,w,w^2,0,0,w^2,w^2,1,w,0,0,0,0,0,1,w,w,w,
-            0,0,0,0,w^2,1,w^2,0,1,1,w^2,0,w^2,w^2,w,1,0,0,1,1,w,w,w^2,0,w^2,0,w,0,1,w,
-            0,0,0,0,w,1,w,w,w,0,1,w,w,w,w,0,1,0,0,1,1,1,w,1,1,w^2,1,w^2,w^2,0,
-            0,0,0,w,w,w^2,w,0,1,w,1,1,w^2,1,0,w,1,w,w^2,0,1,0,w^2,1,w,w,0,w^2,0,w
-        ]),
-        ZeroMatrix(F,10,2)),
-    HorizontalJoin(
-        Matrix(F,2,30,[
-            1,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,0,1,w^2,w^2,w^2,w,w,1,1,0,1,w^2,w^2,w^2,
-            1,1,1,w,0,0,w,w,w^2,0,w^2,1,w,1,1,0,0,0,0,1,1,w,w,1,w^2,1,1,1,w,1
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 12 and Rank(GX4) eq 12;
-assert Ncols(GX4) eq 32;
-assert RowSpace(Submatrix(GX4,1,1,12,30)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[28] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 7 and Rank(GX4) eq 7;
+assert RowSpace(Submatrix(GX4,1,1,7,30)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,31,7,2) eq VerticalJoin(ZeroMatrix(F,5,2),IdentityMatrix(F,2));
+Table1Generators[17]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 32 and Dimension(Q) eq 7;
+assert Dimension(HermitianHull(Q)) eq 2;
+Table1Parameters[17]:=[32,5,17,23];
+Table1DistanceTypes[17]:="exact";
 
-// Table 1, No. 029 | source B30_11_s1 | HullDecreasing.m
-// Gsrc: [30,11]_4, hull 3; X4: [[32,10,13;20]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,11,30,[
+// Table 1, No. 18 | B30_11_s1
+// [[32,10,13;20]]_2, distance exact.
+Gsrc:=Matrix(F,11,30,[
     1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,0,0,w^2,w,0,1,1,1,w^2,0,0,w,w,w^2,
     0,1,0,0,0,0,0,0,0,0,0,1,w,w,0,w^2,0,0,1,0,w,w,w^2,w^2,0,w^2,0,w^2,1,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w^2,0,0,1,0,w,w,w^2,w^2,0,w^2,0,w^2,1,
@@ -1345,37 +792,32 @@ Gsrc := Matrix(F,11,30,[
     0,0,0,0,0,0,0,0,0,1,0,0,w,1,w,0,1,w,w^2,w,0,0,w^2,1,0,w^2,0,w,1,0,
     0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w,0,0,1,w^2,0,w,w,w,1,0,0,w^2,w^2,1,0
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,30,[
-            1,0,0,1,w^2,w^2,0,0,w^2,w,w,0,0,w,1,w^2,w,1,w,w,w,1,w^2,1,1,1,w^2,w,w^2,w^2,
-            0,1,w,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,0,1,w,w,1,0,w,1,w^2,1,w^2,0,1,
-            0,1,w^2,0,0,0,0,0,0,0,0,1,1,w^2,1,1,w,0,1,w^2,w,w^2,w,1,w,w^2,w,w^2,w^2,0,
-            0,0,1,1,1,0,0,0,0,0,0,w,w,0,1,0,1,0,1,1,w,0,1,w,w,1,0,w,w,w^2,
-            0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,w^2,0,w,0,0,1,1,0,1,0,w^2,1,
-            0,1,w^2,w^2,1,0,1,0,0,0,0,w,w,0,1,w^2,1,w^2,0,w,1,0,1,w^2,w,w^2,w,1,1,w^2,
-            0,w^2,1,w,1,1,w^2,0,1,0,w^2,0,1,1,1,w,w^2,w,w,0,0,w,1,0,1,w,0,w^2,0,w,
-            0,1,w,1,w^2,0,1,0,1,0,w^2,0,0,1,w^2,0,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,0,1,w^2,1,
-            0,0,w,1,1,w,0,0,0,1,0,0,0,1,0,w,1,0,1,1,w^2,w^2,0,w^2,0,w^2,1,0,w^2,1
-        ]),
-        ZeroMatrix(F,9,2)),
-    HorizontalJoin(
-        Matrix(F,2,30,[
-            0,1,0,1,w,0,w^2,0,w^2,1,0,w,0,w,w^2,0,1,w^2,w^2,0,0,w^2,w,w,0,0,w,1,1,0,
-            0,0,1,w^2,w^2,0,0,w^2,w,w,0,0,w,1,1,w,1,w,w,w,1,w^2,1,1,1,w^2,w,w^2,w^2,w^2
-        ]),
-        IdentityMatrix(F,2)));
+GX4:=Matrix(F,11,32,[
+    1,0,0,1,w^2,w^2,0,0,w^2,w,w,0,0,w,1,w^2,w,1,w,w,w,1,w^2,1,1,1,w^2,w,w^2,w^2,0,0,
+    0,1,w,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,0,1,w,w,1,0,w,1,w^2,1,w^2,0,1,0,0,
+    0,1,w^2,0,0,0,0,0,0,0,0,1,1,w^2,1,1,w,0,1,w^2,w,w^2,w,1,w,w^2,w,w^2,w^2,0,0,0,
+    0,0,1,1,1,0,0,0,0,0,0,w,w,0,1,0,1,0,1,1,w,0,1,w,w,1,0,w,w,w^2,0,0,
+    0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,w^2,0,w,0,0,1,1,0,1,0,w^2,1,0,0,
+    0,1,w^2,w^2,1,0,1,0,0,0,0,w,w,0,1,w^2,1,w^2,0,w,1,0,1,w^2,w,w^2,w,1,1,w^2,0,0,
+    0,w^2,1,w,1,1,w^2,0,1,0,w^2,0,1,1,1,w,w^2,w,w,0,0,w,1,0,1,w,0,w^2,0,w,0,0,
+    0,1,w,1,w^2,0,1,0,1,0,w^2,0,0,1,w^2,0,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,0,1,w^2,1,0,0,
+    0,0,w,1,1,w,0,0,0,1,0,0,0,1,0,w,1,0,1,1,w^2,w^2,0,w^2,0,w^2,1,0,w^2,1,0,0,
+    0,1,0,1,w,0,w^2,0,w^2,1,0,w,0,w,w^2,0,1,w^2,w^2,0,0,w^2,w,w,0,0,w,1,1,0,1,0,
+    0,0,1,w^2,w^2,0,0,w^2,w,w,0,0,w,1,1,w,1,w,w,w,1,w^2,1,1,1,w^2,w,w^2,w^2,w^2,0,1
+]);
 assert Rank(Gsrc) eq 11 and Rank(GX4) eq 11;
-assert Ncols(GX4) eq 32;
 assert RowSpace(Submatrix(GX4,1,1,11,30)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[29] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,31,11,2) eq VerticalJoin(ZeroMatrix(F,9,2),IdentityMatrix(F,2));
+Table1Generators[18]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 32 and Dimension(Q) eq 11;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[18]:=[32,10,13,20];
+Table1DistanceTypes[18]:="exact";
 
-// Table 1, No. 030 | source BS017 | HullDecreasing.m
-// Gsrc: [31,16]_4, hull 5; X4: [[32,12,10;12]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,16,31,[
+// Table 1, No. 19 | BS017
+// [[32,12,10;12]]_2, distance exact.
+Gsrc:=Matrix(F,16,31,[
     1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,0,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,w,1,w,0,0,0,0,0,0,0,w,0,w,1,w,1,w,w,w^2,
@@ -1393,103 +835,37 @@ Gsrc := Matrix(F,16,31,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,1,0,w,w,w,1,1,w,w^2,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w^2,1,0,1,w^2,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,15,31,[
-            1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,w,
-            0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,
-            0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,
-            0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,
-            0,0,0,0,1,0,w,0,0,0,0,0,w^2,1,w^2,0,0,0,0,0,w,1,w,w,w,0,w,1,w,w^2,1,
-            0,0,0,0,1,0,w^2,0,0,0,0,0,0,w^2,1,0,0,0,0,w^2,1,1,w,0,1,w,0,w,0,1,w,
-            0,0,0,0,w,1,w,0,0,1,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,1,0,w^2,w,w^2,1,w^2,
-            0,0,0,0,w,0,w^2,0,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,0,1,w,0,
-            0,0,0,0,1,0,w,1,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w^2,w^2,w,w,1,w,w,w,w,0,
-            0,0,0,0,1,w,0,w^2,1,w,0,0,0,0,1,0,0,0,0,w^2,w,w,0,w^2,0,0,w,w^2,w,w,w,
-            0,0,0,0,w^2,w^2,0,w^2,0,0,1,0,1,0,w,0,0,0,0,0,0,0,1,1,0,1,w^2,0,w^2,w^2,w^2,
-            0,0,0,0,w,1,0,w,0,w,w,w,w^2,1,1,0,1,0,0,1,w,w,0,1,1,1,w,1,0,w,0,
-            0,0,0,0,0,0,1,0,w,0,w,0,1,1,w^2,0,1,0,0,w,w^2,w,w^2,1,0,w,1,w^2,0,w^2,1,
-            0,0,0,0,0,w^2,1,w,w,0,1,w,0,0,1,0,w^2,1,0,0,0,0,w^2,0,w^2,0,1,w,w,0,1,
-            0,0,0,0,w^2,w,1,w^2,w,w,1,0,0,1,w,0,w^2,0,1,1,w,w^2,0,1,w^2,1,1,0,w,w^2,w
-        ]),
-        ZeroMatrix(F,15,1)),
-    HorizontalJoin(
-        Matrix(F,1,31,[
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,16,32,[
+    1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,w,0,
+    0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,0,
+    0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,0,
+    0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,
+    0,0,0,0,1,0,w,0,0,0,0,0,w^2,1,w^2,0,0,0,0,0,w,1,w,w,w,0,w,1,w,w^2,1,0,
+    0,0,0,0,1,0,w^2,0,0,0,0,0,0,w^2,1,0,0,0,0,w^2,1,1,w,0,1,w,0,w,0,1,w,0,
+    0,0,0,0,w,1,w,0,0,1,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,1,0,w^2,w,w^2,1,w^2,0,
+    0,0,0,0,w,0,w^2,0,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,0,1,w,0,0,
+    0,0,0,0,1,0,w,1,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w^2,w^2,w,w,1,w,w,w,w,0,0,
+    0,0,0,0,1,w,0,w^2,1,w,0,0,0,0,1,0,0,0,0,w^2,w,w,0,w^2,0,0,w,w^2,w,w,w,0,
+    0,0,0,0,w^2,w^2,0,w^2,0,0,1,0,1,0,w,0,0,0,0,0,0,0,1,1,0,1,w^2,0,w^2,w^2,w^2,0,
+    0,0,0,0,w,1,0,w,0,w,w,w,w^2,1,1,0,1,0,0,1,w,w,0,1,1,1,w,1,0,w,0,0,
+    0,0,0,0,0,0,1,0,w,0,w,0,1,1,w^2,0,1,0,0,w,w^2,w,w^2,1,0,w,1,w^2,0,w^2,1,0,
+    0,0,0,0,0,w^2,1,w,w,0,1,w,0,0,1,0,w^2,1,0,0,0,0,w^2,0,w^2,0,1,w,w,0,1,0,
+    0,0,0,0,w^2,w,1,w^2,w,w,1,0,0,1,w,0,w^2,0,1,1,w,w^2,0,1,w^2,1,1,0,w,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w,1
+]);
 assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 32;
 assert RowSpace(Submatrix(GX4,1,1,16,31)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 5;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[30] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,32,16,1) eq VerticalJoin(ZeroMatrix(F,15,1),IdentityMatrix(F,1));
+Table1Generators[19]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 32 and Dimension(Q) eq 16;
+assert Dimension(HermitianHull(Q)) eq 4;
+Table1Parameters[19]:=[32,12,10,12];
+Table1DistanceTypes[19]:="exact";
 
-// Table 1, No. 031 | source B32_21_shorten5_s2 | HullIncreasing.m
-// Gsrc: [31,20]_4, hull 1; X4: [[32,18,7;10]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,20,31,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,0,0,1,1,w,w^2,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,0,0,1,w,w^2,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w^2,w^2,0,1,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,1,w^2,0,w,w^2,w^2,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,w^2,1,0,1,w^2,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,w^2,1,w^2,0,w^2,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,1,w^2,w^2,w,0,w^2,w^2,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,1,w,w^2,0,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w^2,w,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w^2,w,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w,1,0,0,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w^2,w,w^2,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,w^2,0,w,w,0,1,0,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,w^2,0,w^2,w^2,w,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w,0,w,w^2,1,1,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w,0,w,w^2,1,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,w^2,0,w^2,0,1,1,0,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,0,w,w,0,w,0,0,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,0,1,1,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w,1,w^2,w^2,w^2,w,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,19,31,[
-            1,w^2,w,1,0,w,w^2,1,0,1,1,0,w^2,0,w,0,w^2,0,1,1,0,1,w^2,0,0,1,w,w^2,w,w,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,1,0,0,w^2,1,1,w,w^2,
-            0,0,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w,w,w,1,w,1,1,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,w,0,0,w,0,w,w,w^2,
-            0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w,1,1,0,w^2,w,0,w,w,
-            0,1,w^2,w,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,1,w,0,w,0,w,1,
-            0,0,w,0,w^2,1,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w,0,w,0,1,1,1,1,w,1,0,
-            0,w,0,w^2,0,w,1,1,0,w,0,0,0,0,0,0,0,0,0,w,1,w,1,0,w,1,w,w^2,w,w,w^2,
-            0,w^2,0,1,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,w^2,w,w,0,w^2,1,1,
-            0,w^2,w^2,w^2,0,w^2,w^2,0,1,w,0,0,0,0,0,0,0,0,0,w^2,w,w,0,w^2,1,1,1,w,1,0,w,
-            0,0,w^2,1,w^2,0,0,w^2,0,w,0,0,w,1,0,0,0,0,0,w^2,0,1,w,0,w^2,1,w,1,w,w,w,
-            0,w^2,0,1,0,w^2,w,w^2,w,w,0,w^2,w^2,1,0,0,0,0,0,w^2,w,0,0,1,w^2,0,0,w,0,w^2,w^2,
-            0,w^2,1,w,w^2,0,w,0,w,w,0,w,w,0,w,0,0,0,0,w,w,1,w^2,w,0,w,w^2,0,w^2,1,0,
-            0,1,w,1,w,w,1,w^2,w^2,w^2,0,w,w,0,w^2,0,0,0,0,0,1,w,w,w^2,w,w,w^2,1,w,w,w^2,
-            0,w,w,0,w,0,w^2,w^2,1,w,w,1,w,0,0,0,0,0,1,w^2,w^2,w,0,1,w,w,w^2,1,w^2,0,w^2,
-            0,w,w,w,0,0,0,w,w^2,w,0,w^2,0,w^2,w^2,0,0,0,1,w^2,0,w^2,0,0,1,w^2,1,0,0,w,w,
-            0,w,0,w,0,w,0,1,1,0,w^2,0,1,0,1,0,1,0,1,w,w^2,w^2,1,0,w,w^2,w^2,1,1,w,w,
-            0,0,0,w,1,0,1,w^2,0,w^2,1,0,w,1,w^2,w^2,w,1,w^2,w,w,w,w^2,w^2,w,w^2,0,1,1,0,w^2,
-            0,w^2,0,w,w^2,0,0,w^2,w,1,0,w^2,w^2,1,w,0,w,1,w,1,w,0,1,1,w^2,w^2,w,w,1,w,0
-        ]),
-        ZeroMatrix(F,19,1)),
-    HorizontalJoin(
-        Matrix(F,1,31,[
-            w,w,1,w^2,0,1,w,w^2,0,w^2,w^2,0,w,0,1,0,w,0,w^2,0,w^2,w^2,w^2,1,w^2,1,w,1,w,1,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 20 and Rank(GX4) eq 20;
-assert Ncols(GX4) eq 32;
-assert RowSpace(Submatrix(GX4,1,1,20,31)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[31] := <Gsrc,GX4>;
-
-// Table 1, No. 032 | source B32_16_s7 | HullIncreasing.m
-// Gsrc: [32,16]_4, hull 6; X4: [[33,9,11;10]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,16,32,[
+// Table 1, No. 20 | B32_16_s5
+// [[33,11,11;12]]_2, distance exact.
+Gsrc:=Matrix(F,16,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,0,w^2,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,w^2,w,
     0,0,1,0,0,0,0,0,0,0,0,0,w,1,w,0,0,0,0,0,0,0,w,0,w,1,w,1,w,w,w^2,0,
@@ -1507,264 +883,37 @@ Gsrc := Matrix(F,16,32,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,1,0,w,w,w,1,1,w,w^2,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w^2,1,0,1,w^2,1,0
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,15,32,[
-            1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,
-            0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,0,
-            0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,0,
-            0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,
-            0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w,0,
-            0,0,0,0,0,0,w,1,0,0,0,0,w,w,1,0,0,0,1,w,0,0,w,0,0,1,w,w,w,1,1,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,w^2,1,w,0,0,0,0,w,1,w,1,0,0,1,0,w^2,0,1,1,1,
-            0,0,0,0,0,0,0,w,1,1,0,0,0,1,w^2,0,0,0,w,w,0,w,w^2,1,w^2,1,w^2,w^2,0,w,0,0,
-            0,0,0,0,0,0,0,w,0,1,0,0,w^2,0,w,0,0,0,1,w,1,w^2,0,1,1,0,0,w^2,w^2,w,1,w,
-            0,0,0,0,0,w,1,1,w,w,0,0,w,1,w^2,0,0,1,0,1,1,1,w^2,w^2,1,w^2,0,0,w^2,0,w,w,
-            0,0,0,0,0,0,w^2,1,w^2,1,0,0,1,1,1,0,0,1,0,w^2,1,1,w^2,0,w^2,1,1,w,1,1,0,1,
-            0,0,0,0,0,1,w,w^2,0,w,0,1,w^2,1,1,0,0,w^2,w,1,1,w,w^2,w^2,w^2,0,w,w^2,1,w,w^2,0,
-            0,0,0,0,0,0,0,w^2,1,w,w^2,1,0,w^2,0,0,1,0,w^2,w^2,1,w,1,1,w,w,1,1,0,w,0,1,
-            0,0,0,0,0,w^2,w,w^2,w^2,0,0,0,1,w,0,0,1,w,w,1,0,0,w^2,0,w^2,0,1,0,0,1,0,w
-        ]),
-        ZeroMatrix(F,15,1)),
-    HorizontalJoin(
-        Matrix(F,1,32,[
-            0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,w^2,w^2,w^2,w,1,w,w,w,0,0,w,0,0,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,16,33,[
+    1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,0,
+    0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,0,0,
+    0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,0,0,
+    0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,0,
+    0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,1,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,w,0,0,0,0,w^2,w^2,0,0,w,w^2,w,w,w^2,w,w,w^2,w,0,
+    0,0,0,0,0,w^2,1,w,0,0,0,0,w,1,0,0,0,0,0,0,w,1,1,w^2,0,w,0,1,w,w^2,1,w^2,0,
+    0,0,0,0,0,w^2,w^2,w^2,0,0,0,0,0,w^2,1,0,0,0,0,w^2,w,w^2,0,0,1,0,w^2,w^2,1,1,1,1,0,
+    0,0,0,0,0,0,w^2,w,1,0,0,0,0,w,w^2,0,0,0,0,w,1,w^2,w^2,w^2,w^2,0,1,w^2,1,1,w,1,0,
+    0,0,0,0,0,w,w^2,0,0,1,0,0,0,0,w^2,0,0,0,0,w,w^2,w^2,w^2,0,0,1,1,w,w^2,0,0,w^2,0,
+    0,0,0,0,0,0,0,w,1,w^2,0,1,0,w,w,1,0,0,0,w,1,1,1,w^2,0,1,w^2,w^2,w^2,1,w^2,1,0,
+    0,0,0,0,0,0,0,1,1,0,0,0,0,0,w^2,1,0,0,1,w,w,0,0,0,1,w^2,0,1,1,w,0,w^2,0,
+    0,0,0,0,0,1,1,0,w,0,w,w,0,w^2,0,0,0,1,0,0,w,w^2,0,w,0,w^2,1,w^2,w^2,0,0,1,0,
+    0,0,0,0,0,1,w,w,w,w,0,1,1,w,1,w^2,0,1,w,1,0,w,w,0,1,w,w^2,w^2,w,0,0,w,0,
+    0,0,0,0,0,w,w,0,w,w^2,1,w^2,1,0,1,w^2,1,1,0,1,w,1,1,w,w,0,w,w,w^2,1,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w,0,1
+]);
 assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 33;
 assert RowSpace(Submatrix(GX4,1,1,16,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 7;
-Table1Generators[32] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,33,16,1) eq VerticalJoin(ZeroMatrix(F,15,1),IdentityMatrix(F,1));
+Table1Generators[20]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 33 and Dimension(Q) eq 16;
+assert Dimension(HermitianHull(Q)) eq 5;
+Table1Parameters[20]:=[33,11,11,12];
+Table1DistanceTypes[20]:="exact";
 
-// Table 1, No. 033 | source B32_11_s1 | HullIncreasing.m
-// Gsrc: [32,11]_4, hull 0; X4: [[33,10,14;21]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,11,32,[
-    1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,
-    0,1,0,0,0,0,0,0,0,0,0,w,1,0,0,0,1,0,w,w^2,w,w,1,w^2,0,1,1,0,w,w,1,1,
-    0,0,1,0,0,0,0,0,0,0,0,w,w,1,0,0,0,1,0,w,w^2,w,1,1,w^2,0,1,1,0,w,w,1,
-    0,0,0,1,0,0,0,0,0,0,0,w,w,w,1,0,0,0,1,0,w,w^2,1,1,1,w^2,0,1,1,0,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,w^2,w,w,w,1,0,0,0,1,0,w,1,1,1,1,w^2,0,1,1,0,w,
-    0,0,0,0,0,1,0,0,0,0,0,w,w^2,w,w,w,1,0,0,0,1,0,w,1,1,1,1,w^2,0,1,1,0,
-    0,0,0,0,0,0,1,0,0,0,0,0,w,w^2,w,w,w,1,0,0,0,1,w,w,1,1,1,1,w^2,0,1,1,
-    0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,0,0,0,w,w,1,1,1,1,w^2,0,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,0,1,0,w,w,1,1,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,1,1,0,w,w,1,1,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,1,1,0,w,w,1,1,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,10,32,[
-            1,1,0,0,0,0,0,0,0,w,0,w^2,1,w,0,w,0,1,w,w,w,0,0,1,1,w^2,w,0,w,1,w,1,
-            0,1,0,0,0,0,0,0,0,w,0,w,1,w,0,w^2,0,w^2,1,0,0,w,w^2,1,0,w,w,w,0,0,w^2,0,
-            w,1,1,0,0,0,0,0,0,w^2,0,w,w^2,w,0,w^2,w^2,w^2,w,w^2,1,w^2,w,1,1,w,1,1,w,1,w,0,
-            w^2,w,w,1,w,0,0,0,0,1,0,0,0,w,w,w^2,1,1,w,w^2,0,1,0,1,1,w,w^2,w^2,0,0,1,1,
-            w,w,0,1,w^2,0,0,0,0,w^2,0,1,1,0,0,0,0,w,w,0,1,w,w,0,0,1,1,1,1,1,1,1,
-            w^2,0,w,0,0,0,1,0,0,0,0,0,1,1,w,1,w,w,w,w,0,w^2,w,0,w^2,w,w^2,w,w,0,1,0,
-            w,0,w,w^2,1,0,w^2,1,0,1,0,w,1,0,w^2,w,0,w,1,w^2,w,w^2,1,w,0,1,1,1,w^2,w,w,w,
-            w^2,w^2,w^2,w,w,1,w^2,1,0,w^2,1,w,0,w,0,1,1,1,w^2,w^2,1,1,w,1,0,1,1,0,1,1,w,w,
-            1,0,w^2,w^2,w^2,0,0,0,0,w^2,1,w^2,1,0,w^2,w^2,0,w^2,w^2,w^2,0,1,w^2,1,w,1,w,w^2,0,1,w^2,1,
-            w,w,w,0,1,0,w,1,1,0,1,0,1,w^2,1,1,w^2,0,w^2,w^2,w^2,w,w,w,1,0,w^2,1,1,0,w^2,w
-        ]),
-        ZeroMatrix(F,10,1)),
-    HorizontalJoin(
-        Matrix(F,1,32,[
-            0,0,0,1,0,0,0,0,0,w^2,0,w,w,1,1,1,w,1,0,1,1,w^2,w,w,1,w,1,w,w,w^2,1,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 11 and Rank(GX4) eq 11;
-assert Ncols(GX4) eq 33;
-assert RowSpace(Submatrix(GX4,1,1,11,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 0;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[33] := <Gsrc,GX4>;
-
-// Table 1, No. 034 | source B32_16_s5 | HullDecreasing.m
-// Gsrc: [32,16]_4, hull 6; X4: [[33,11,11;12]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,16,32,[
-    1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,0,w^2,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,w^2,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,w,1,w,0,0,0,0,0,0,0,w,0,w,1,w,1,w,w,w^2,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,w,w,1,1,w,w,0,w^2,w^2,w,1,1,w^2,
-    0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,0,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,w,0,0,0,0,w^2,w^2,0,0,w,w^2,w,w,w^2,w,w,w^2,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,w^2,1,w,0,0,0,0,w,1,w,1,0,0,1,0,w^2,0,1,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,1,0,0,0,0,w^2,1,0,1,w,1,w^2,0,0,0,w,w,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,0,0,0,0,0,w^2,w,1,w,0,1,1,w,w,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w,0,0,0,0,w,w,0,0,w^2,1,w,w,1,0,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,0,0,0,w,w^2,w,1,0,1,1,1,w,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,w^2,1,1,w,1,w,0,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,1,1,w^2,w,0,w,w,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,1,0,w,w,w,1,1,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w^2,1,0,1,w^2,1,0
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,15,32,[
-            1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,
-            0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,0,
-            0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,0,
-            0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,
-            0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,1,
-            0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,w,0,0,0,0,w^2,w^2,0,0,w,w^2,w,w,w^2,w,w,w^2,w,
-            0,0,0,0,0,w^2,1,w,0,0,0,0,w,1,0,0,0,0,0,0,w,1,1,w^2,0,w,0,1,w,w^2,1,w^2,
-            0,0,0,0,0,w^2,w^2,w^2,0,0,0,0,0,w^2,1,0,0,0,0,w^2,w,w^2,0,0,1,0,w^2,w^2,1,1,1,1,
-            0,0,0,0,0,0,w^2,w,1,0,0,0,0,w,w^2,0,0,0,0,w,1,w^2,w^2,w^2,w^2,0,1,w^2,1,1,w,1,
-            0,0,0,0,0,w,w^2,0,0,1,0,0,0,0,w^2,0,0,0,0,w,w^2,w^2,w^2,0,0,1,1,w,w^2,0,0,w^2,
-            0,0,0,0,0,0,0,w,1,w^2,0,1,0,w,w,1,0,0,0,w,1,1,1,w^2,0,1,w^2,w^2,w^2,1,w^2,1,
-            0,0,0,0,0,0,0,1,1,0,0,0,0,0,w^2,1,0,0,1,w,w,0,0,0,1,w^2,0,1,1,w,0,w^2,
-            0,0,0,0,0,1,1,0,w,0,w,w,0,w^2,0,0,0,1,0,0,w,w^2,0,w,0,w^2,1,w^2,w^2,0,0,1,
-            0,0,0,0,0,1,w,w,w,w,0,1,1,w,1,w^2,0,1,w,1,0,w,w,0,1,w,w^2,w^2,w,0,0,w,
-            0,0,0,0,0,w,w,0,w,w^2,1,w^2,1,0,1,w^2,1,1,0,1,w,1,1,w,w,0,w,w,w^2,1,w^2,w^2
-        ]),
-        ZeroMatrix(F,15,1)),
-    HorizontalJoin(
-        Matrix(F,1,32,[
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 33;
-assert RowSpace(Submatrix(GX4,1,1,16,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[34] := <Gsrc,GX4>;
-
-// Table 1, No. 035 | source B33_22_shorten10_s3 | HullIncreasing.m
-// Gsrc: [32,21]_4, hull 2; X4: [[33,18,7;9]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,21,32,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w,0,w^2,w^2,1,w,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,0,0,1,w,w^2,1,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,w,1,1,w^2,0,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,0,w,1,1,0,1,w^2,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,w,w,0,0,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,w,w,1,w,w,w,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w,w,w^2,w,w^2,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,0,w^2,1,0,1,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,0,0,w,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w^2,w,w,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,1,w,w^2,1,w,1,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,w^2,1,w^2,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,w,1,w,1,0,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,0,1,w,0,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,w,w,w,0,w^2,w^2,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w,0,w,w^2,1,0,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w,w^2,0,w^2,0,w,w^2,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w,0,1,w,w^2,w^2,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,w^2,0,1,w,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,w,0,w,1,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,w,1,w,1,w,w,w
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,20,32,[
-            1,0,1,w^2,1,1,w,w,1,0,w,w,w,w,1,1,1,w,w,w,w,0,0,w,w,1,1,w^2,1,1,1,1,
-            0,1,1,w^2,w,w,0,w,0,w,1,w^2,w,w^2,1,w,w^2,w^2,1,1,w^2,w,1,w^2,w^2,0,1,0,1,1,0,w,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w^2,w^2,0,1,w,0,
-            0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,1,1,w^2,w^2,1,1,0,
-            0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,0,1,w,0,0,w,w^2,
-            0,0,1,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,w^2,0,0,0,1,0,1,w,
-            0,0,1,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,1,0,0,1,1,w^2,w,
-            0,0,w^2,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,1,w,0,w,w,w,0,w^2,
-            0,0,w,0,w^2,w,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w^2,w^2,w^2,1,w^2,w,w^2,
-            0,0,w,w,w,w,w,1,w^2,w^2,1,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,w,w^2,w,0,0,w,w,w,
-            0,0,w,0,0,0,w,1,w,0,1,0,0,0,0,0,0,0,0,0,w,w,1,1,w,1,w^2,w^2,w,w,w^2,w,
-            0,0,w,0,0,0,1,0,1,w,0,0,1,w,0,0,0,0,0,0,w^2,w^2,w,1,w^2,w,w,w^2,w^2,1,0,w,
-            0,0,w^2,w^2,1,w^2,0,1,w^2,w,0,0,1,w^2,0,0,0,0,0,0,w^2,w,1,0,0,0,0,1,w^2,w^2,w,w^2,
-            0,0,w,0,w^2,w,1,w,1,w,0,0,w,1,w,w,0,0,0,0,w^2,w^2,0,0,0,1,w^2,0,w,1,w,w^2,
-            0,0,w,w^2,w^2,0,w,1,1,w,1,0,1,w^2,w,w^2,0,0,0,0,w^2,1,0,w,1,w^2,0,w,w,1,w^2,0,
-            0,0,w,0,0,w^2,w,w^2,1,0,w,1,w,0,1,0,0,0,1,0,w^2,0,0,w^2,1,w^2,w,0,0,w,0,w,
-            0,0,w^2,w^2,0,1,w^2,w,w^2,1,w,0,w,1,1,w,0,0,1,0,0,w^2,w,w^2,1,w^2,0,1,w,w^2,w^2,w,
-            0,0,0,w,w,1,0,1,w^2,w^2,1,1,0,0,w,1,w^2,w,w,0,0,w,0,0,w,w^2,w,w,1,0,w^2,1,
-            0,0,w^2,0,0,0,1,0,w,w,w^2,w^2,0,1,0,w,w^2,w^2,w,0,1,1,1,1,w,w^2,0,1,w^2,0,1,1,
-            0,0,w,w^2,0,1,w,w^2,w,0,0,0,w,0,1,w,0,1,0,1,w^2,0,w,0,w,w,w,1,0,1,0,1
-        ]),
-        ZeroMatrix(F,20,1)),
-    HorizontalJoin(
-        Matrix(F,1,32,[
-            0,w,w^2,w,w,w,w,1,1,w^2,0,w^2,1,w^2,w^2,w,0,w^2,0,0,0,w^2,w,w^2,w^2,w,0,1,w^2,w^2,w,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 21 and Rank(GX4) eq 21;
-assert Ncols(GX4) eq 33;
-assert RowSpace(Submatrix(GX4,1,1,21,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[35] := <Gsrc,GX4>;
-
-// Table 1, No. 036 | source B32_21_s2 | HullIncreasing.m
-// Gsrc: [32,21]_4, hull 1; X4: [[33,19,7;10]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,21,32,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,0,0,1,1,w,w^2,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,0,0,1,w,w^2,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w^2,w^2,0,1,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,1,w^2,0,w,w^2,w^2,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,0,w^2,w,1,0,w^2,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,w^2,1,0,1,w^2,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,w^2,1,w^2,0,w^2,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,1,w^2,w^2,w,0,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,1,w,w^2,0,1,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w^2,w,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w^2,w,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w,1,0,0,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w^2,w,w^2,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,w^2,0,w,w,0,1,0,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,w^2,0,w^2,w^2,w,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w,0,w,w^2,1,1,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w,0,w,w^2,1,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,w^2,0,w^2,0,1,1,0,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,0,w,w,0,w,0,0,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,0,1,1,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w,1,w^2,w^2,w^2,w,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,20,32,[
-            1,w^2,w,1,0,0,w,w^2,1,0,1,1,0,w^2,0,w,0,w^2,0,1,1,0,1,w^2,0,0,1,w,w^2,w,w,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,w,w,w,w^2,0,w^2,1,1,
-            0,w,0,0,1,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,w^2,1,w^2,1,1,w,w^2,
-            0,w,0,0,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w^2,0,w,0,1,w,w,w,
-            0,w^2,0,0,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w^2,w,0,0,1,w,0,w,
-            0,w^2,0,w,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,1,0,0,0,w,w,0,w,
-            0,w^2,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,1,0,w^2,w,w^2,w^2,w^2,w^2,1,
-            0,w^2,0,1,1,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,1,1,w^2,1,w^2,w,w^2,w^2,
-            0,w^2,0,0,w^2,w,w,0,1,w^2,w,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,0,1,w,w^2,w,w^2,w,
-            0,1,0,w,w^2,w^2,0,0,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,1,0,w,w^2,w^2,0,
-            0,w,w,1,0,w^2,0,w^2,w^2,w,1,0,0,0,0,0,0,0,0,w,w^2,0,w^2,1,0,w,0,w,0,0,w,0,
-            0,w^2,w,w,1,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,w^2,0,w^2,0,w^2,1,w,w,w,w^2,1,1,w^2,
-            0,w,1,1,w,1,w,1,w^2,w^2,1,0,w^2,w,0,0,0,0,0,1,1,w,w,0,w^2,w,0,w^2,1,0,0,1,
-            0,0,w^2,w^2,0,w^2,0,1,w^2,1,0,0,w^2,w^2,0,0,0,0,0,w^2,w,1,w,w,1,0,0,0,1,w,0,w,
-            0,w,0,w^2,w^2,0,w,1,w,w,0,0,0,w^2,1,0,0,0,0,w,1,0,0,1,w^2,0,w^2,0,w,1,0,w,
-            0,1,1,w,0,0,1,w,0,w^2,w^2,w^2,w,w^2,w,0,0,0,w,w^2,1,w^2,w^2,1,1,1,w,w^2,w^2,w^2,w,w^2,
-            0,w^2,w,w^2,w,w^2,w^2,0,1,0,w^2,w^2,1,w^2,0,0,0,0,w^2,1,1,1,0,w^2,w,w,1,1,w,w^2,0,w^2,
-            0,w^2,w^2,w^2,0,w^2,1,w^2,1,1,0,w^2,1,1,w,1,0,0,w^2,w,1,1,w,w^2,w^2,1,w,w^2,w,w^2,0,0,
-            0,0,w,0,1,w,1,w,w,w^2,0,w^2,w,w,1,1,1,0,0,w^2,w^2,w,w^2,w^2,w^2,1,w^2,0,w,w,w^2,1,
-            0,0,0,w,0,1,w,w^2,1,0,1,0,w,w,0,w,w,1,0,w,0,w^2,w,0,1,1,w^2,w,w^2,1,w^2,0
-        ]),
-        ZeroMatrix(F,20,1)),
-    HorizontalJoin(
-        Matrix(F,1,32,[
-            w,w,1,w^2,0,0,1,w,w^2,0,w^2,w^2,0,w,0,1,0,w,0,w^2,0,w^2,w^2,w^2,1,w^2,1,w,1,w,1,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 21 and Rank(GX4) eq 21;
-assert Ncols(GX4) eq 33;
-assert RowSpace(Submatrix(GX4,1,1,21,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[36] := <Gsrc,GX4>;
-
-// Table 1, No. 037 | source B32_23_s0 | HullDecreasing.m
-// Gsrc: [32,23]_4, hull 1; X4: [[33,23,6;10]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,23,32,[
+// Table 1, No. 21 | B32_23_s0
+// [[33,23,6;10]]_2, distance exact.
+Gsrc:=Matrix(F,23,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,w^2,1,w,w,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,w^2,w,w^2,w^2,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,w^2,w^2,w,w,
@@ -1789,49 +938,44 @@ Gsrc := Matrix(F,23,32,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w^2,w,w,0,w^2,w^2,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w^2,0,1,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,22,32,[
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,w^2,w^2,w,w,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,0,w^2,0,1,
-            0,0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,0,w,1,0,
-            0,0,0,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,w,0,w,
-            0,w,w,w^2,w,1,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w^2,w,0,
-            0,w,0,0,w^2,w,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w,w^2,1,1,
-            0,1,1,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,0,w,w^2,0,1,
-            0,1,1,1,0,w^2,0,1,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w^2,w,w^2,0,w,
-            0,0,1,w^2,0,1,1,1,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,w^2,1,w,0,
-            0,w,0,w,w^2,w^2,w,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w,0,0,w^2,1,
-            w^2,0,w^2,1,1,w,w^2,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,0,1,1,0,1,1,
-            0,w^2,w,w^2,w^2,w^2,w,w,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,1,0,w^2,1,w^2,1,
-            w^2,w,w^2,0,w,w,0,w,w,0,w,0,0,1,0,0,0,0,0,0,0,0,1,w^2,w,w,w,w,w,1,w,w^2,
-            1,1,w^2,w^2,0,w^2,0,w^2,w^2,w^2,w,0,w^2,w,0,w,0,0,0,0,0,0,w,w,1,w,w^2,1,w,1,0,w,
-            1,1,w,w,w^2,w^2,w^2,w^2,w^2,1,w^2,0,w^2,1,0,w^2,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w,w^2,
-            1,0,1,w^2,w,w^2,1,w,1,1,w,0,w,w,1,w,0,0,0,0,0,0,1,w,0,w^2,0,1,w^2,1,w^2,0,
-            1,w^2,w^2,w,0,0,w^2,0,w,w,w^2,1,w,0,w,w,0,0,0,0,1,0,w^2,1,0,1,w,w^2,w,w^2,w,0,
-            w^2,0,1,w^2,w,w,w^2,w,1,0,1,0,1,w,0,1,0,0,0,0,1,0,1,0,w,w^2,1,w^2,0,1,1,w^2,
-            w,w,0,w^2,0,0,w^2,w^2,w^2,w^2,w,1,0,w^2,1,w,0,1,0,0,1,0,0,w,1,0,w,w^2,w,w^2,w,0,
-            0,1,1,w^2,0,0,w^2,1,w,w^2,w^2,w^2,1,1,w,1,w^2,1,0,w,w^2,0,w^2,w^2,1,w,0,0,w^2,w^2,1,1,
-            w^2,1,w,w^2,0,w,w^2,w,0,0,w^2,w^2,w^2,1,0,1,w^2,w,0,w^2,1,0,w,w,0,w,w^2,w,w,1,w^2,w,
-            w,0,1,1,w,w,0,w^2,w,1,w,w,w,1,1,1,1,w^2,1,0,w,0,1,1,w^2,1,0,1,w^2,1,1,w
-        ]),
-        ZeroMatrix(F,22,1)),
-    HorizontalJoin(
-        Matrix(F,1,32,[
-            1,w^2,w,w^2,w^2,w^2,0,w^2,1,w^2,1,w^2,w^2,1,w,1,w^2,w,1,w,1,w^2,0,0,0,w,0,1,w^2,w^2,1,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,23,33,[
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,w^2,w^2,w,w,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,0,w^2,0,1,0,
+    0,0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,0,w,1,0,0,
+    0,0,0,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,w,0,w,0,
+    0,w,w,w^2,w,1,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w^2,w,0,0,
+    0,w,0,0,w^2,w,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w,w^2,1,1,0,
+    0,1,1,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,0,w,w^2,0,1,0,
+    0,1,1,1,0,w^2,0,1,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w^2,w,w^2,0,w,0,
+    0,0,1,w^2,0,1,1,1,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,w^2,1,w,0,0,
+    0,w,0,w,w^2,w^2,w,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w,0,0,w^2,1,0,
+    w^2,0,w^2,1,1,w,w^2,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,0,1,1,0,1,1,0,
+    0,w^2,w,w^2,w^2,w^2,w,w,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,1,0,w^2,1,w^2,1,0,
+    w^2,w,w^2,0,w,w,0,w,w,0,w,0,0,1,0,0,0,0,0,0,0,0,1,w^2,w,w,w,w,w,1,w,w^2,0,
+    1,1,w^2,w^2,0,w^2,0,w^2,w^2,w^2,w,0,w^2,w,0,w,0,0,0,0,0,0,w,w,1,w,w^2,1,w,1,0,w,0,
+    1,1,w,w,w^2,w^2,w^2,w^2,w^2,1,w^2,0,w^2,1,0,w^2,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w,w^2,0,
+    1,0,1,w^2,w,w^2,1,w,1,1,w,0,w,w,1,w,0,0,0,0,0,0,1,w,0,w^2,0,1,w^2,1,w^2,0,0,
+    1,w^2,w^2,w,0,0,w^2,0,w,w,w^2,1,w,0,w,w,0,0,0,0,1,0,w^2,1,0,1,w,w^2,w,w^2,w,0,0,
+    w^2,0,1,w^2,w,w,w^2,w,1,0,1,0,1,w,0,1,0,0,0,0,1,0,1,0,w,w^2,1,w^2,0,1,1,w^2,0,
+    w,w,0,w^2,0,0,w^2,w^2,w^2,w^2,w,1,0,w^2,1,w,0,1,0,0,1,0,0,w,1,0,w,w^2,w,w^2,w,0,0,
+    0,1,1,w^2,0,0,w^2,1,w,w^2,w^2,w^2,1,1,w,1,w^2,1,0,w,w^2,0,w^2,w^2,1,w,0,0,w^2,w^2,1,1,0,
+    w^2,1,w,w^2,0,w,w^2,w,0,0,w^2,w^2,w^2,1,0,1,w^2,w,0,w^2,1,0,w,w,0,w,w^2,w,w,1,w^2,w,0,
+    w,0,1,1,w,w,0,w^2,w,1,w,w,w,1,1,1,1,w^2,1,0,w,0,1,1,w^2,1,0,1,w^2,1,1,w,0,
+    1,w^2,w,w^2,w^2,w^2,0,w^2,1,w^2,1,w^2,w^2,1,w,1,w^2,w,1,w,1,w^2,0,0,0,w,0,1,w^2,w^2,1,0,1
+]);
 assert Rank(Gsrc) eq 23 and Rank(GX4) eq 23;
-assert Ncols(GX4) eq 33;
 assert RowSpace(Submatrix(GX4,1,1,23,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[37] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,33,23,1) eq VerticalJoin(ZeroMatrix(F,22,1),IdentityMatrix(F,1));
+Table1Generators[21]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 33 and Dimension(Q) eq 23;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[21]:=[33,23,6,10];
+Table1DistanceTypes[21]:="exact";
 
-// Table 1, No. 038 | source H18 | HullDecreasing.m
-// Gsrc: [33,11]_4, hull 6; X4: [[34,6,15;18]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,11,33,[
+// Table 1, No. 22 | H18
+// [[34,6,15;18]]_2, distance exact.
+Gsrc:=Matrix(F,11,33,[
     1,0,0,0,0,0,0,0,0,0,1,0,1,1,0,w^2,w,1,w,1,w,w,w^2,0,0,0,0,w,w,0,w,w,w,
     0,1,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,1,w^2,1,1,1,1,w,w,0,w^2,w^2,w^2,1,w^2,1,1,w^2,w^2,
     0,0,1,0,0,0,0,0,0,0,1,0,w^2,0,0,w,1,0,1,w,1,1,w^2,1,w^2,0,0,w,0,0,0,0,w,
@@ -1844,133 +988,32 @@ Gsrc := Matrix(F,11,33,[
     0,0,0,0,0,0,0,0,0,1,1,0,0,1,w,w^2,0,w^2,0,w^2,w^2,1,w,w,w,w,0,0,w,0,0,0,1,
     0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,w,w,w,w,w,w,w,w,w,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,10,33,[
-            1,0,0,0,0,1,w^2,w^2,0,w,w,w,0,w^2,0,w,0,w^2,w^2,w,w^2,w,0,0,0,w^2,w^2,1,w^2,1,w^2,1,1,
-            0,1,0,0,0,w,0,w,w^2,w^2,1,1,w,1,w^2,w^2,w,1,w,0,w^2,0,1,0,0,1,w,1,0,1,0,1,w^2,
-            0,0,1,0,0,1,1,w^2,w,1,1,w,1,1,1,1,w^2,1,w,0,w^2,1,w^2,1,0,w^2,w,w^2,w,1,w,1,0,
-            0,0,0,1,0,1,w,w,w^2,0,w^2,w^2,w,w,1,w^2,1,0,w,0,w^2,1,0,w^2,1,w^2,0,w^2,0,w^2,w,w^2,0,
-            0,0,0,0,1,w^2,w^2,0,w,w,1,0,w^2,0,w,0,w^2,w^2,w,w^2,w,w,0,0,w^2,w^2,1,w^2,1,w^2,1,1,0,
-            0,0,0,0,0,w^2,w,0,0,0,1,0,1,w^2,w^2,w^2,w^2,1,0,0,0,0,w,0,w^2,w,0,0,w^2,w,0,w,0,
-            0,0,0,0,0,w^2,w^2,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,1,1,w,0,w,w,w^2,w,w,w,1,w^2,w^2,w^2,w^2,
-            0,0,0,0,0,w,w,1,0,0,1,1,w,0,0,0,w^2,w^2,1,0,1,w^2,0,0,1,0,0,0,w,1,0,w,0,
-            0,0,0,0,0,0,w^2,1,1,1,w,w^2,w,w,w^2,0,0,w,0,1,w,1,0,1,w,w,w^2,1,w^2,w^2,w^2,1,1,
-            0,0,0,0,0,w,0,w,0,1,1,0,w^2,w,1,0,w,w,0,1,w^2,w,w,1,w,w,w^2,w^2,w^2,w,w^2,w^2,w
-        ]),
-        ZeroMatrix(F,10,1)),
-    HorizontalJoin(
-        Matrix(F,1,33,[
-            w,0,0,0,0,w,1,1,0,w^2,w^2,0,w^2,w,w^2,0,w^2,w,w,0,w,0,1,1,1,0,0,w^2,0,w^2,0,w^2,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 11 and Rank(GX4) eq 11;
-assert Ncols(GX4) eq 34;
-assert RowSpace(Submatrix(GX4,1,1,11,33)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[38] := <Gsrc,GX4>;
-
-// Table 1, No. 039 | source DV03 | HullIncreasing.m
-// Gsrc: [32,16]_4, hull 6; X4: [[34,8,11;10]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,16,32,[
-    1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,0,w^2,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,w^2,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,w,1,w,0,0,0,0,0,0,0,w,0,w,1,w,1,w,w,w^2,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,w,w,1,1,w,w,0,w^2,w^2,w,1,1,w^2,
-    0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,0,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,w,0,0,0,0,w^2,w^2,0,0,w,w^2,w,w,w^2,w,w,w^2,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,w^2,1,w,0,0,0,0,w,1,w,1,0,0,1,0,w^2,0,1,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,1,0,0,0,0,w^2,1,0,1,w,1,w^2,0,0,0,w,w,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,0,0,0,0,0,w^2,w,1,w,0,1,1,w,w,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w,0,0,0,0,w,w,0,0,w^2,1,w,w,1,0,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,0,0,0,w,w^2,w,1,0,1,1,1,w,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,w^2,1,1,w,1,w,0,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,1,1,w^2,w,0,w,w,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,1,0,w,w,w,1,1,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w^2,1,0,1,w^2,1,0
+GX4:=Matrix(F,11,34,[
+    1,0,0,0,0,1,w^2,w^2,0,w,w,w,0,w^2,0,w,0,w^2,w^2,w,w^2,w,0,0,0,w^2,w^2,1,w^2,1,w^2,1,1,0,
+    0,1,0,0,0,w,0,w,w^2,w^2,1,1,w,1,w^2,w^2,w,1,w,0,w^2,0,1,0,0,1,w,1,0,1,0,1,w^2,0,
+    0,0,1,0,0,1,1,w^2,w,1,1,w,1,1,1,1,w^2,1,w,0,w^2,1,w^2,1,0,w^2,w,w^2,w,1,w,1,0,0,
+    0,0,0,1,0,1,w,w,w^2,0,w^2,w^2,w,w,1,w^2,1,0,w,0,w^2,1,0,w^2,1,w^2,0,w^2,0,w^2,w,w^2,0,0,
+    0,0,0,0,1,w^2,w^2,0,w,w,1,0,w^2,0,w,0,w^2,w^2,w,w^2,w,w,0,0,w^2,w^2,1,w^2,1,w^2,1,1,0,0,
+    0,0,0,0,0,w^2,w,0,0,0,1,0,1,w^2,w^2,w^2,w^2,1,0,0,0,0,w,0,w^2,w,0,0,w^2,w,0,w,0,0,
+    0,0,0,0,0,w^2,w^2,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,1,1,w,0,w,w,w^2,w,w,w,1,w^2,w^2,w^2,w^2,0,
+    0,0,0,0,0,w,w,1,0,0,1,1,w,0,0,0,w^2,w^2,1,0,1,w^2,0,0,1,0,0,0,w,1,0,w,0,0,
+    0,0,0,0,0,0,w^2,1,1,1,w,w^2,w,w,w^2,0,0,w,0,1,w,1,0,1,w,w,w^2,1,w^2,w^2,w^2,1,1,0,
+    0,0,0,0,0,w,0,w,0,1,1,0,w^2,w,1,0,w,w,0,1,w^2,w,w,1,w,w,w^2,w^2,w^2,w,w^2,w^2,w,0,
+    w,0,0,0,0,w,1,1,0,w^2,w^2,0,w^2,w,w^2,0,w^2,w,w,0,w,0,1,1,1,0,0,w^2,0,w^2,0,w^2,w^2,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,14,32,[
-            1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,
-            0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,0,
-            0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,0,
-            0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,
-            0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w,0,
-            0,0,0,0,0,w,1,0,0,0,0,0,w^2,1,1,0,0,0,w^2,0,1,0,0,w^2,w,1,0,1,1,w,0,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,w,0,0,0,0,w^2,w^2,0,0,w,w^2,w,w,w^2,w,w,w^2,w,
-            0,0,0,0,0,w^2,w^2,w^2,w,0,0,0,1,1,w^2,0,0,0,0,w,0,w^2,w,w^2,w^2,1,w^2,w^2,1,w,w,w,
-            0,0,0,0,0,0,1,w^2,w^2,0,0,0,w^2,w,0,0,0,0,1,1,w^2,w^2,w^2,0,1,0,w^2,1,w^2,w^2,0,0,
-            0,0,0,0,0,1,0,w^2,w^2,1,0,0,w,0,1,0,0,0,0,w^2,w,0,0,1,w,w^2,w,1,w,0,0,w^2,
-            0,0,0,0,0,w,1,0,0,w^2,1,0,0,w^2,0,0,0,0,w,w^2,1,w^2,0,w,w,w^2,0,1,1,0,0,w,
-            0,0,0,0,0,1,w,w,1,w,w^2,w,0,w^2,1,0,1,w,1,0,w,0,1,1,w^2,w,w,w^2,w^2,w,w,1,
-            0,0,0,0,0,w,0,1,w,1,w^2,0,1,0,w^2,0,1,0,w^2,w,w,w,w^2,w^2,w^2,1,w,w,w^2,0,w,1
-        ]),
-        ZeroMatrix(F,14,2)),
-    HorizontalJoin(
-        Matrix(F,2,32,[
-            0,1,w^2,1,w^2,w^2,0,0,0,w^2,0,0,w,0,w^2,0,0,0,0,1,w,w,w,1,w^2,0,w^2,w,0,w^2,1,1,
-            1,1,0,1,0,0,w^2,0,0,w^2,0,0,w,w^2,w,0,0,0,w^2,0,w,1,w^2,1,w,w^2,1,1,w,w,1,w
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 34;
-assert RowSpace(Submatrix(GX4,1,1,16,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 8;
-Table1Generators[39] := <Gsrc,GX4>;
-
-// Table 1, No. 040 | source H19 | HullIncreasing.m
-// Gsrc: [33,11]_4, hull 0; X4: [[34,10,15;22]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,11,33,[
-    1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,1,
-    0,1,0,0,0,0,0,0,0,0,0,w,1,0,0,0,1,0,w,w^2,w,w,1,w^2,0,1,1,0,w,w,1,1,1,
-    0,0,1,0,0,0,0,0,0,0,0,w,w,1,0,0,0,1,0,w,w^2,w,1,1,w^2,0,1,1,0,w,w,1,1,
-    0,0,0,1,0,0,0,0,0,0,0,w,w,w,1,0,0,0,1,0,w,w^2,1,1,1,w^2,0,1,1,0,w,w,1,
-    0,0,0,0,1,0,0,0,0,0,0,w^2,w,w,w,1,0,0,0,1,0,w,1,1,1,1,w^2,0,1,1,0,w,w,
-    0,0,0,0,0,1,0,0,0,0,0,w,w^2,w,w,w,1,0,0,0,1,0,w,1,1,1,1,w^2,0,1,1,0,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,w,w^2,w,w,w,1,0,0,0,1,w,w,1,1,1,1,w^2,0,1,1,0,
-    0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,0,0,0,w,w,1,1,1,1,w^2,0,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,0,1,0,w,w,1,1,1,1,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,1,1,0,w,w,1,1,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,1,1,0,w,w,1,1,1,1,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,10,33,[
-            1,w,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w,w,0,w^2,1,1,1,1,1,w^2,w,w,1,w,w^2,w^2,w^2,
-            1,w^2,0,0,0,0,0,0,0,0,1,0,w^2,0,1,1,1,1,0,w,1,w,0,w^2,0,w,1,0,w,1,w^2,w^2,1,
-            w,0,1,0,1,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,w,1,w^2,w,w,w,1,1,1,w^2,0,0,w^2,0,1,0,w,
-            w,0,0,0,1,0,0,0,0,0,w^2,1,w,w,1,w^2,1,1,0,w^2,w,w,0,w,0,w^2,w,w,1,0,1,w^2,w,
-            w,w,0,1,w,0,0,0,0,0,1,w,w^2,1,w^2,0,0,0,1,w,0,1,0,w^2,0,1,1,0,w,w,w^2,0,1,
-            0,w^2,w,w,1,1,w,0,0,0,0,0,1,0,1,0,1,0,w^2,0,w,w^2,w^2,1,1,0,1,1,w^2,w,0,w,w^2,
-            w,1,w^2,w^2,w^2,1,w^2,0,0,0,w^2,0,w,w^2,w,w,0,1,1,w^2,w,w^2,0,w^2,1,0,w^2,w,0,0,w,0,w,
-            w^2,0,w,1,w^2,w,w^2,1,0,0,1,w,0,w,0,0,w^2,1,0,w^2,w,w,0,0,w,w^2,w,w^2,1,w^2,w,1,0,
-            1,0,1,0,w^2,0,w^2,w^2,w,w,1,w,0,1,0,0,0,w,w,0,1,w^2,0,1,1,w,0,1,1,w^2,w,1,w^2,
-            0,w,1,0,1,w^2,0,0,w,w^2,0,w^2,w,1,0,0,0,w^2,1,1,0,w^2,w,1,w,w,0,w,w^2,w,1,w^2,w
-        ]),
-        ZeroMatrix(F,10,1)),
-    HorizontalJoin(
-        Matrix(F,1,33,[
-            0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,0,w^2,1,w^2,w^2,w^2,w,0,w,w,0,w^2,w^2,w,w,w,w,1
-        ]),
-        IdentityMatrix(F,1)));
 assert Rank(Gsrc) eq 11 and Rank(GX4) eq 11;
-assert Ncols(GX4) eq 34;
 assert RowSpace(Submatrix(GX4,1,1,11,33)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 0;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[40] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,34,11,1) eq VerticalJoin(ZeroMatrix(F,10,1),IdentityMatrix(F,1));
+Table1Generators[22]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 34 and Dimension(Q) eq 11;
+assert Dimension(HermitianHull(Q)) eq 5;
+Table1Parameters[22]:=[34,6,15,18];
+Table1DistanceTypes[22]:="exact";
 
-// Table 1, No. 041 | source H20 | HullDecreasing.m
-// Gsrc: [32,8]_4, hull 7; X4: [[35,4,>=17;23]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,8,32,[
+// Table 1, No. 23 | H20
+// [[35,4,17;23]]_2, distance lower_bound.
+Gsrc:=Matrix(F,8,32,[
     1,0,0,0,0,0,0,0,w^2,0,1,w^2,0,w,0,w,0,w^2,w^2,w,w,1,0,w,1,1,w,w,w^2,0,0,0,
     0,1,0,0,0,0,0,0,w,w^2,0,1,w^2,0,w,0,w,0,w^2,w^2,w,w,1,0,0,1,1,w,w,w^2,0,0,
     0,0,1,0,0,0,0,0,0,w,w^2,0,1,w^2,0,w,0,w,0,w^2,w^2,w,w,1,0,0,1,1,w,w,w^2,0,
@@ -1980,34 +1023,29 @@ Gsrc := Matrix(F,8,32,[
     0,0,0,0,0,0,1,0,1,w^2,0,w,0,w,w^2,0,w^2,w,w,1,0,w,0,w^2,w,w,w^2,0,0,0,1,1,
     0,0,0,0,0,0,0,1,0,1,w^2,0,w,0,w,w^2,w^2,w^2,w,w,1,0,w,0,1,w,w,w^2,0,0,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,5,32,[
-            1,0,0,0,0,0,0,1,w^2,1,w,w^2,w,w,w,1,w^2,0,1,0,w^2,1,w,w,0,w^2,0,1,w^2,0,0,1,
-            0,1,0,0,0,0,0,1,w,w,w^2,1,1,0,0,w^2,1,w^2,1,1,w^2,w,w^2,0,1,w^2,w^2,1,w,w^2,0,1,
-            0,0,1,0,0,0,0,1,0,w^2,0,0,w^2,w^2,w,1,w^2,1,w,1,w,w,0,1,1,w,w^2,w,w,w,w^2,1,
-            0,0,0,1,0,0,0,1,w,1,1,w^2,w,1,1,w^2,w,w^2,0,w,w,w^2,0,w,1,w,w,w,1,w,w,w,
-            0,0,0,0,0,0,0,1,0,1,w^2,0,w,0,w,w^2,w^2,w^2,w,w,1,0,w,0,1,w,w,w^2,0,0,0,1
-        ]),
-        ZeroMatrix(F,5,3)),
-    HorizontalJoin(
-        Matrix(F,3,32,[
-            0,0,0,0,1,0,0,1,0,w^2,w^2,w,1,0,w^2,0,1,w,w,0,1,w^2,1,w,w,w,w,w^2,1,1,w,w^2,
-            0,0,0,0,0,1,0,1,w^2,1,1,0,0,w^2,w,w,1,1,w^2,w,w^2,0,1,w^2,w^2,1,w,w^2,0,1,1,w^2,
-            0,0,0,0,0,0,1,1,1,w,w^2,w,w,w,1,w^2,0,1,0,w^2,1,w,w,w^2,w^2,0,1,w^2,0,0,1,0
-        ]),
-        IdentityMatrix(F,3)));
+GX4:=Matrix(F,8,35,[
+    1,0,0,0,0,0,0,1,w^2,1,w,w^2,w,w,w,1,w^2,0,1,0,w^2,1,w,w,0,w^2,0,1,w^2,0,0,1,0,0,0,
+    0,1,0,0,0,0,0,1,w,w,w^2,1,1,0,0,w^2,1,w^2,1,1,w^2,w,w^2,0,1,w^2,w^2,1,w,w^2,0,1,0,0,0,
+    0,0,1,0,0,0,0,1,0,w^2,0,0,w^2,w^2,w,1,w^2,1,w,1,w,w,0,1,1,w,w^2,w,w,w,w^2,1,0,0,0,
+    0,0,0,1,0,0,0,1,w,1,1,w^2,w,1,1,w^2,w,w^2,0,w,w,w^2,0,w,1,w,w,w,1,w,w,w,0,0,0,
+    0,0,0,0,0,0,0,1,0,1,w^2,0,w,0,w,w^2,w^2,w^2,w,w,1,0,w,0,1,w,w,w^2,0,0,0,1,0,0,0,
+    0,0,0,0,1,0,0,1,0,w^2,w^2,w,1,0,w^2,0,1,w,w,0,1,w^2,1,w,w,w,w,w^2,1,1,w,w^2,1,0,0,
+    0,0,0,0,0,1,0,1,w^2,1,1,0,0,w^2,w,w,1,1,w^2,w,w^2,0,1,w^2,w^2,1,w,w^2,0,1,1,w^2,0,1,0,
+    0,0,0,0,0,0,1,1,1,w,w^2,w,w,w,1,w^2,0,1,0,w^2,1,w,w,w^2,w^2,0,1,w^2,0,0,1,0,0,0,1
+]);
 assert Rank(Gsrc) eq 8 and Rank(GX4) eq 8;
-assert Ncols(GX4) eq 35;
 assert RowSpace(Submatrix(GX4,1,1,8,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 7;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[41] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,33,8,3) eq VerticalJoin(ZeroMatrix(F,5,3),IdentityMatrix(F,3));
+Table1Generators[23]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 35 and Dimension(Q) eq 8;
+assert Dimension(HermitianHull(Q)) eq 4;
+Table1Parameters[23]:=[35,4,17,23];
+Table1DistanceTypes[23]:="lower_bound";
 
-// Table 1, No. 042 | source BS006 | HullDecreasing.m
-// Gsrc: [34,14]_4, hull 9; X4: [[35,6,13;13]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,14,34,[
+// Table 1, No. 24 | BS006
+// [[35,6,13;13]]_2, distance exact.
+Gsrc:=Matrix(F,14,34,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,1,w^2,w^2,1,1,w^2,w^2,1,w^2,w^2,w,0,0,0,w,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,1,0,w,1,w^2,0,w,1,0,w,0,1,w,w^2,1,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,1,0,w,1,w^2,0,w,1,0,w,w,w^2,0,1,0,
@@ -2023,81 +1061,35 @@ Gsrc := Matrix(F,14,34,[
     0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,0,1,w,0,w^2,1,w,0,1,w,w^2,w,w,1,0,0,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,1,w^2,w^2,1,1,w^2,w^2,1,w^2,w^2,w,1,w,0,w,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,13,34,[
-            1,0,0,0,0,0,0,0,0,1,0,0,w,w^2,1,w,1,w^2,w,w^2,0,w^2,1,w,w,1,1,w,1,0,0,0,0,0,
-            0,1,0,0,0,0,0,0,0,w^2,1,w,w^2,1,w^2,w^2,1,w,0,w^2,0,0,w,0,w,w,w,w^2,0,0,0,0,0,0,
-            0,0,1,0,0,0,0,0,0,w^2,w,w^2,w^2,0,w^2,0,0,1,1,w,w,1,w^2,w^2,0,w^2,0,w^2,w,0,0,0,0,0,
-            0,0,0,1,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,w^2,w,1,w,0,w^2,1,0,1,0,0,0,w^2,0,0,0,0,0,
-            0,0,0,0,1,0,0,0,0,0,1,w,1,1,1,w,w^2,0,w^2,1,1,w,0,0,0,w,0,1,0,0,0,0,0,0,
-            0,0,0,0,0,1,0,0,0,w,w^2,0,w,1,w^2,w^2,1,w,w,w^2,w,w^2,0,w,1,w^2,0,1,1,0,0,0,0,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,w^2,0,w^2,w,1,0,w,0,w^2,1,1,w,w,w^2,0,0,0,0,0,
-            0,0,0,0,0,0,0,1,0,0,0,w^2,w^2,1,1,w,1,1,w,1,w^2,0,w^2,w,w,w,w^2,w,w^2,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,1,w,w,1,w^2,1,w^2,0,1,1,w^2,w^2,w^2,0,1,w,0,
-            0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,w^2,w^2,1,w^2,1,w^2,0,w^2,1,1,0,0,1,0,1,w^2,1,1,w^2,
-            0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,w^2,w^2,w^2,0,0,w,w,1,w^2,1,1,w,w^2,w,w^2,w^2,1,w,1,1,
-            0,0,0,0,0,0,0,0,0,w,1,w^2,1,0,0,0,0,0,w^2,1,w,w^2,0,1,1,1,w^2,1,1,1,1,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,1,w,w,w,1,1,1,0,w,1,0,w^2,0,1,w^2,w,1,1,0,w,w^2,0,0,w,w^2
-        ]),
-        ZeroMatrix(F,13,1)),
-    HorizontalJoin(
-        Matrix(F,1,34,[
-            0,0,0,0,0,0,0,0,1,w,w,0,w,w^2,1,0,1,w^2,0,w^2,w,w^2,w^2,1,w^2,0,0,w^2,w^2,0,0,0,0,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 14 and Rank(GX4) eq 14;
-assert Ncols(GX4) eq 35;
-assert RowSpace(Submatrix(GX4,1,1,14,34)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 9;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 8;
-Table1Generators[42] := <Gsrc,GX4>;
-
-// Table 1, No. 043 | source BS005 | HullIncreasing.m
-// Gsrc: [34,10]_4, hull 2; X4: [[35,7,16;22]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,10,34,[
-    1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w^2,0,1,1,0,0,w,0,1,w^2,0,0,1,w,w,1,1,0,w,
-    0,1,0,0,0,0,0,0,0,0,w^2,1,0,w,0,w^2,1,0,1,0,0,w,1,1,w^2,w^2,w^2,w^2,0,0,0,w^2,w^2,0,
-    0,0,1,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,w^2,0,1,1,0,w,w,0,w^2,w^2,w^2,w,1,w,1,1,w^2,1,
-    0,0,0,1,0,0,0,0,0,0,w,w,w,w,1,1,w,w,1,w,1,w^2,0,0,1,w^2,1,0,w^2,w,w,1,0,1,
-    0,0,0,0,1,0,0,0,0,0,w,0,w,0,w^2,w^2,0,w^2,w^2,w,w,w,1,w,1,1,1,w,1,0,w,w,0,w,
-    0,0,0,0,0,1,0,0,0,0,w^2,w,w,1,1,w,1,1,w,w,w,w,1,1,0,1,w,w^2,1,1,w^2,1,0,w,
-    0,0,0,0,0,0,1,0,0,0,w^2,1,w^2,1,w,1,0,w,w,w^2,w,1,1,w^2,1,0,w,w,w^2,w,0,w,w^2,1,
-    0,0,0,0,0,0,0,1,0,0,w,w,w,1,w^2,w,0,w,0,1,w^2,0,w^2,0,w^2,1,w,w,w,1,1,w^2,w^2,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,w,w,w^2,w,w,w,0,0,1,0,0,1,1,w^2,1,0,1,1,w^2,w^2,w^2,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,1,w,w,w^2,w,w,w,0,0,1,0,0,0,1,w^2,1,0,1,1,w^2,w^2,w^2
+GX4:=Matrix(F,14,35,[
+    1,0,0,0,0,0,0,0,0,1,0,0,w,w^2,1,w,1,w^2,w,w^2,0,w^2,1,w,w,1,1,w,1,0,0,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,w^2,1,w,w^2,1,w^2,w^2,1,w,0,w^2,0,0,w,0,w,w,w,w^2,0,0,0,0,0,0,0,
+    0,0,1,0,0,0,0,0,0,w^2,w,w^2,w^2,0,w^2,0,0,1,1,w,w,1,w^2,w^2,0,w^2,0,w^2,w,0,0,0,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,w^2,w,1,w,0,w^2,1,0,1,0,0,0,w^2,0,0,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,1,w,1,1,1,w,w^2,0,w^2,1,1,w,0,0,0,w,0,1,0,0,0,0,0,0,0,
+    0,0,0,0,0,1,0,0,0,w,w^2,0,w,1,w^2,w^2,1,w,w,w^2,w,w^2,0,w,1,w^2,0,1,1,0,0,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,w^2,0,w^2,w,1,0,w,0,w^2,1,1,w,w,w^2,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,w^2,w^2,1,1,w,1,1,w,1,w^2,0,w^2,w,w,w,w^2,w,w^2,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,1,w,w,1,w^2,1,w^2,0,1,1,w^2,w^2,w^2,0,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,w^2,w^2,1,w^2,1,w^2,0,w^2,1,1,0,0,1,0,1,w^2,1,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,w^2,w^2,w^2,0,0,w,w,1,w^2,1,1,w,w^2,w,w^2,w^2,1,w,1,1,0,
+    0,0,0,0,0,0,0,0,0,w,1,w^2,1,0,0,0,0,0,w^2,1,w,w^2,0,1,1,1,w^2,1,1,1,1,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,1,w,w,w,1,1,1,0,w,1,0,w^2,0,1,w^2,w,1,1,0,w,w^2,0,0,w,w^2,0,
+    0,0,0,0,0,0,0,0,1,w,w,0,w,w^2,1,0,1,w^2,0,w^2,w,w^2,w^2,1,w^2,0,0,w^2,w^2,0,0,0,0,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,34,[
-            1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,0,0,0,0,0,0,0,0,0,0,
-            0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,1,0,0,0,0,w^2,w,0,1,1,w,1,1,w,w,w,w,1,1,w,1,w,w^2,1,1,w^2,1,0,w,0,
-            0,0,1,0,1,1,0,0,0,w^2,1,0,w^2,0,0,0,w^2,w^2,1,1,0,1,w,w^2,w,0,w,0,1,0,w^2,0,1,w^2,
-            0,0,0,0,0,1,0,0,0,0,w^2,w,w,1,1,w,1,1,w,w,w,w,1,1,0,1,w,w^2,1,1,w^2,1,0,w,
-            0,0,w^2,w^2,1,w,0,0,1,0,w,w^2,w,1,w^2,w^2,w^2,w,0,w^2,w^2,w,w,1,1,0,w,w,w^2,w^2,w,w^2,1,1,
-            0,0,w^2,0,1,w,0,0,1,w,w^2,w,1,w^2,w^2,1,1,0,0,w,0,w,w,1,w,0,0,0,1,0,1,1,0,w^2,
-            0,0,w^2,0,0,0,1,0,0,0,w^2,0,w^2,1,0,w^2,w,w,1,0,w,0,0,w^2,w^2,w,0,w^2,0,w^2,w^2,1,1,w,
-            0,0,w,w,w^2,w,0,1,1,w,1,1,w^2,1,0,w^2,1,0,w,w,w,w,1,w,w,1,1,w^2,1,0,1,w,0,w^2
-        ]),
-        ZeroMatrix(F,9,1)),
-    HorizontalJoin(
-        Matrix(F,1,34,[
-            1,w^2,w^2,0,1,w^2,1,w^2,0,0,0,w,0,0,w^2,1,w,w,1,0,w^2,0,w^2,0,1,1,w^2,1,1,1,1,1,1,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 35;
-assert RowSpace(Submatrix(GX4,1,1,10,34)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[43] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 14 and Rank(GX4) eq 14;
+assert RowSpace(Submatrix(GX4,1,1,14,34)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,35,14,1) eq VerticalJoin(ZeroMatrix(F,13,1),IdentityMatrix(F,1));
+Table1Generators[24]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 35 and Dimension(Q) eq 14;
+assert Dimension(HermitianHull(Q)) eq 8;
+Table1Parameters[24]:=[35,6,13,13];
+Table1DistanceTypes[24]:="exact";
 
-// Table 1, No. 044 | source B34_19_s6 | HullDecreasing.m
-// Gsrc: [34,19]_4, hull 7; X4: [[35,13,9;10]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,19,34,[
+// Table 1, No. 25 | B34_19_s6
+// [[35,13,9;10]]_2, distance exact.
+Gsrc:=Matrix(F,19,34,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w^2,w^2,w,0,0,1,w,1,w,w^2,1,
@@ -2118,45 +1110,40 @@ Gsrc := Matrix(F,19,34,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,0,1,0,1,w,w,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w^2,w,w,w^2,w^2,w,0,w,0,1,0,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,18,34,[
-            1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,
-            0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,
-            0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,
-            0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,
-            0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,
-            0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,
-            0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,
-            0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,0,
-            0,0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w,0,w,0,w^2,w^2,w,0,
-            0,0,0,0,0,0,0,w,1,1,1,1,0,0,0,0,0,0,0,1,w^2,w,w,w,0,1,w^2,0,1,1,w^2,0,w^2,1,
-            0,0,0,0,0,0,w^2,w,w^2,0,w^2,1,0,0,0,0,0,0,0,w,w,0,1,w,w^2,0,1,1,0,w^2,w,1,1,w^2,
-            0,0,0,0,0,0,1,w^2,w^2,w^2,0,w,w^2,0,w,0,0,0,0,w,0,w,w,0,1,w^2,0,1,w^2,w,1,1,w^2,w^2,
-            0,0,0,0,0,0,1,w^2,0,0,1,w^2,w^2,0,w^2,0,0,w^2,0,1,1,w^2,w,0,0,0,w,0,w,1,0,w,w^2,1,
-            0,0,0,0,0,0,w,0,1,w,w^2,w,0,1,w,0,0,0,w,w,w,w,1,w,w,1,0,1,w^2,w^2,w,w^2,0,w,
-            0,0,0,0,0,0,0,1,w,w^2,0,0,0,1,0,0,0,1,w^2,0,w,w^2,w,w^2,1,0,0,1,w^2,1,w^2,w^2,0,w^2,
-            0,0,0,0,0,0,1,1,1,w,0,1,w^2,0,1,1,1,w,1,w,0,1,0,w,w,w^2,w^2,w^2,0,0,0,0,0,w^2,
-            0,0,0,0,0,0,w,1,w,1,w^2,w^2,w^2,w,w,0,1,w,0,w,1,w^2,w,0,w^2,0,1,1,w,1,0,w,w,1
-        ]),
-        ZeroMatrix(F,18,1)),
-    HorizontalJoin(
-        Matrix(F,1,34,[
-            0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,19,35,[
+    1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,
+    0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,
+    0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,0,
+    0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,0,
+    0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,0,
+    0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,0,
+    0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,0,
+    0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,0,0,
+    0,0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w,0,w,0,w^2,w^2,w,0,0,
+    0,0,0,0,0,0,0,w,1,1,1,1,0,0,0,0,0,0,0,1,w^2,w,w,w,0,1,w^2,0,1,1,w^2,0,w^2,1,0,
+    0,0,0,0,0,0,w^2,w,w^2,0,w^2,1,0,0,0,0,0,0,0,w,w,0,1,w,w^2,0,1,1,0,w^2,w,1,1,w^2,0,
+    0,0,0,0,0,0,1,w^2,w^2,w^2,0,w,w^2,0,w,0,0,0,0,w,0,w,w,0,1,w^2,0,1,w^2,w,1,1,w^2,w^2,0,
+    0,0,0,0,0,0,1,w^2,0,0,1,w^2,w^2,0,w^2,0,0,w^2,0,1,1,w^2,w,0,0,0,w,0,w,1,0,w,w^2,1,0,
+    0,0,0,0,0,0,w,0,1,w,w^2,w,0,1,w,0,0,0,w,w,w,w,1,w,w,1,0,1,w^2,w^2,w,w^2,0,w,0,
+    0,0,0,0,0,0,0,1,w,w^2,0,0,0,1,0,0,0,1,w^2,0,w,w^2,w,w^2,1,0,0,1,w^2,1,w^2,w^2,0,w^2,0,
+    0,0,0,0,0,0,1,1,1,w,0,1,w^2,0,1,1,1,w,1,w,0,1,0,w,w,w^2,w^2,w^2,0,0,0,0,0,w^2,0,
+    0,0,0,0,0,0,w,1,w,1,w^2,w^2,w^2,w,w,0,1,w,0,w,1,w^2,w,0,w^2,0,1,1,w,1,0,w,w,1,0,
+    0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,1
+]);
 assert Rank(Gsrc) eq 19 and Rank(GX4) eq 19;
-assert Ncols(GX4) eq 35;
 assert RowSpace(Submatrix(GX4,1,1,19,34)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 7;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 6;
-Table1Generators[44] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,35,19,1) eq VerticalJoin(ZeroMatrix(F,18,1),IdentityMatrix(F,1));
+Table1Generators[25]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 35 and Dimension(Q) eq 19;
+assert Dimension(HermitianHull(Q)) eq 6;
+Table1Parameters[25]:=[35,13,9,10];
+Table1DistanceTypes[25]:="exact";
 
-// Table 1, No. 045 | source B32_16_s3 | HullDecreasing.m
-// Gsrc: [32,16]_4, hull 6; X4: [[35,13,11;16]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,16,32,[
+// Table 1, No. 26 | B32_16_s3
+// [[35,13,11;16]]_2, distance exact.
+Gsrc:=Matrix(F,16,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,0,w^2,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,w^2,w^2,0,1,0,w^2,0,1,w,w^2,w,
     0,0,1,0,0,0,0,0,0,0,0,0,w,1,w,0,0,0,0,0,0,0,w,0,w,1,w,1,w,w,w^2,0,
@@ -2174,42 +1161,37 @@ Gsrc := Matrix(F,16,32,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,1,0,w,w,w,1,1,w,w^2,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w^2,1,0,1,w^2,1,0
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,13,32,[
-            1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,
-            0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,0,
-            0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,0,
-            0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,0,1,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,1,
-            0,0,0,0,w^2,w,1,0,0,0,0,0,w,0,1,0,0,0,0,0,w^2,w,w^2,w,w^2,1,0,1,1,0,w^2,w^2,
-            0,0,0,0,1,1,w^2,1,0,0,0,0,w^2,0,1,0,0,0,0,1,1,0,w,w,0,0,w^2,0,0,1,w^2,0,
-            0,0,0,w^2,w,1,1,1,0,0,0,0,1,w,1,0,0,w,0,0,0,w,0,0,1,w,w^2,1,w,0,1,w,
-            0,0,0,w^2,1,w^2,0,w,0,0,0,0,1,1,1,0,0,w^2,0,0,w,0,0,0,0,w,w,w^2,1,0,1,w,
-            0,0,0,w^2,w,1,w,0,w,1,0,w,w,w,0,0,w,0,0,w,0,w,w^2,w^2,w^2,0,w^2,1,w,w,1,w^2,
-            0,0,0,w,0,w^2,1,w,0,1,0,0,1,w^2,w^2,0,0,1,0,w,0,0,w,0,1,1,1,w^2,1,1,1,w,
-            0,0,0,w,w^2,w^2,w,0,1,0,w,w^2,w^2,w^2,0,w,1,0,w,w^2,w,0,1,0,w^2,0,w^2,w^2,w,w^2,1,0,
-            0,0,0,w^2,1,w,w^2,0,w,w^2,w,0,1,w,w^2,w^2,w^2,0,w,1,w^2,0,w,0,1,w^2,w,1,w^2,w,w^2,0
-        ]),
-        ZeroMatrix(F,13,3)),
-    HorizontalJoin(
-        Matrix(F,3,32,[
-            0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,
-            0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w,0
-        ]),
-        IdentityMatrix(F,3)));
+GX4:=Matrix(F,16,35,[
+    1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,0,0,0,
+    0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,0,1,1,0,1,1,1,0,0,0,0,1,0,1,w,0,0,0,0,
+    0,0,1,0,0,0,1,1,1,1,0,1,0,1,1,0,1,1,0,0,1,0,0,0,1,1,1,1,0,1,0,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,0,1,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,w,w,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,1,0,1,0,0,0,
+    0,0,0,0,w^2,w,1,0,0,0,0,0,w,0,1,0,0,0,0,0,w^2,w,w^2,w,w^2,1,0,1,1,0,w^2,w^2,0,0,0,
+    0,0,0,0,1,1,w^2,1,0,0,0,0,w^2,0,1,0,0,0,0,1,1,0,w,w,0,0,w^2,0,0,1,w^2,0,0,0,0,
+    0,0,0,w^2,w,1,1,1,0,0,0,0,1,w,1,0,0,w,0,0,0,w,0,0,1,w,w^2,1,w,0,1,w,0,0,0,
+    0,0,0,w^2,1,w^2,0,w,0,0,0,0,1,1,1,0,0,w^2,0,0,w,0,0,0,0,w,w,w^2,1,0,1,w,0,0,0,
+    0,0,0,w^2,w,1,w,0,w,1,0,w,w,w,0,0,w,0,0,w,0,w,w^2,w^2,w^2,0,w^2,1,w,w,1,w^2,0,0,0,
+    0,0,0,w,0,w^2,1,w,0,1,0,0,1,w^2,w^2,0,0,1,0,w,0,0,w,0,1,1,1,w^2,1,1,1,w,0,0,0,
+    0,0,0,w,w^2,w^2,w,0,1,0,w,w^2,w^2,w^2,0,w,1,0,w,w^2,w,0,1,0,w^2,0,w^2,w^2,w,w^2,1,0,0,0,0,
+    0,0,0,w^2,1,w,w^2,0,w,w^2,w,0,1,w,w^2,w^2,w^2,0,w,1,w^2,0,w,0,1,w^2,w,1,w^2,w,w^2,0,0,0,0,
+    0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,0,1,1,0,0,
+    0,0,0,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1,1,1,1,0,1,0,1,1,0,0,1,0,1,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,w,0,0,0,1
+]);
 assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 35;
 assert RowSpace(Submatrix(GX4,1,1,16,32)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[45] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,33,16,3) eq VerticalJoin(ZeroMatrix(F,13,3),IdentityMatrix(F,3));
+Table1Generators[26]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 35 and Dimension(Q) eq 16;
+assert Dimension(HermitianHull(Q)) eq 3;
+Table1Parameters[26]:=[35,13,11,16];
+Table1DistanceTypes[26]:="exact";
 
-// Table 1, No. 046 | source B35_19_puncture4_s0 | HullDecreasing.m
-// Gsrc: [34,19]_4, hull 1; X4: [[35,19,9;16]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,19,34,[
+// Table 1, No. 27 | B35_19_puncture4_s0
+// [[35,19,9;16]]_2, distance exact.
+Gsrc:=Matrix(F,19,34,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,0,w^2,0,0,w,0,0,w,0,w^2,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,0,w^2,w,1,1,0,w,w,1,0,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,0,0,w^2,0,1,w,1,1,1,w,1,
@@ -2230,45 +1212,40 @@ Gsrc := Matrix(F,19,34,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,0,0,w^2,0,w^2,1,w,1,w^2,w^2,0,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,1,w,0,w,0,w,0,w,w^2,1,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,18,34,[
-            0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,0,w^2,w^2,1,w^2,w^2,0,0,w^2,w^2,1,
-            0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,0,0,w^2,0,1,w,1,1,1,w,1,0,
-            0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,w,0,1,1,1,1,w,w,
-            0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w,w,1,w^2,1,w^2,w^2,w^2,w,w,w,
-            0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,0,1,1,w^2,w,0,w,w,w,w^2,1,
-            0,w^2,w^2,w^2,w^2,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,w,1,1,w,w^2,w^2,w^2,0,w^2,w^2,
-            0,w,0,w^2,w^2,w^2,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,w,w^2,1,0,w,1,1,0,
-            0,w^2,0,0,0,0,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,0,w^2,w,w^2,1,0,0,1,w^2,
-            1,1,w^2,0,w,1,1,1,w,0,0,0,0,0,0,0,w,0,0,0,w^2,0,w^2,w^2,1,w^2,1,w,w,w,w,0,w,w^2,
-            1,0,w,w,1,w,0,1,w,0,0,0,0,0,0,0,w^2,0,0,w^2,w^2,w^2,w^2,1,w^2,w^2,w,0,w^2,0,w^2,0,1,0,
-            w,0,1,w,w,0,1,w^2,w^2,0,1,0,0,0,0,0,w,0,0,w^2,w^2,0,1,w^2,1,w,0,1,w,0,1,w^2,1,1,
-            1,0,1,1,w^2,w,1,w^2,w^2,w^2,0,0,1,0,0,0,w^2,0,0,1,w^2,1,0,w^2,w^2,w^2,w,1,w^2,1,0,w^2,1,0,
-            w^2,1,1,0,1,w,0,1,w^2,0,w^2,0,1,0,0,0,w^2,0,0,w^2,w^2,w^2,0,1,1,0,w^2,w,w,1,w^2,w^2,0,0,
-            0,0,1,1,0,1,1,w,0,w,w,1,1,0,0,0,w,0,0,1,w,w,w^2,w,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,1,1,
-            0,w,w,w^2,w^2,1,w,0,w^2,0,1,0,1,w^2,w,0,w^2,0,0,w^2,1,1,w,0,w^2,1,0,w,0,w,0,1,1,w,
-            1,0,1,w,w,w,0,w,w^2,w^2,0,w,w,w^2,w^2,0,0,0,0,w,w^2,1,0,w^2,1,0,w^2,w^2,w^2,w,0,0,w,1,
-            w^2,w,w^2,0,w,1,0,1,w^2,w,1,w,1,0,w,1,0,0,0,w,0,1,1,1,w,1,w^2,0,0,1,w,w,1,w^2,
-            w^2,w^2,0,w^2,1,0,w,1,w^2,w,0,1,1,w,1,1,w,1,0,0,w^2,1,w^2,1,w^2,w^2,1,w,w^2,1,w,w,w,1
-        ]),
-        ZeroMatrix(F,18,1)),
-    HorizontalJoin(
-        Matrix(F,1,34,[
-            0,1,w^2,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,19,35,[
+    0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,0,w^2,w^2,1,w^2,w^2,0,0,w^2,w^2,1,0,
+    0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,0,0,w^2,0,1,w,1,1,1,w,1,0,0,
+    0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,w,0,1,1,1,1,w,w,0,
+    0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w,w,1,w^2,1,w^2,w^2,w^2,w,w,w,0,
+    0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,0,1,1,w^2,w,0,w,w,w,w^2,1,0,
+    0,w^2,w^2,w^2,w^2,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,w,1,1,w,w^2,w^2,w^2,0,w^2,w^2,0,
+    0,w,0,w^2,w^2,w^2,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,w,w^2,1,0,w,1,1,0,0,
+    0,w^2,0,0,0,0,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,0,w^2,w,w^2,1,0,0,1,w^2,0,
+    1,1,w^2,0,w,1,1,1,w,0,0,0,0,0,0,0,w,0,0,0,w^2,0,w^2,w^2,1,w^2,1,w,w,w,w,0,w,w^2,0,
+    1,0,w,w,1,w,0,1,w,0,0,0,0,0,0,0,w^2,0,0,w^2,w^2,w^2,w^2,1,w^2,w^2,w,0,w^2,0,w^2,0,1,0,0,
+    w,0,1,w,w,0,1,w^2,w^2,0,1,0,0,0,0,0,w,0,0,w^2,w^2,0,1,w^2,1,w,0,1,w,0,1,w^2,1,1,0,
+    1,0,1,1,w^2,w,1,w^2,w^2,w^2,0,0,1,0,0,0,w^2,0,0,1,w^2,1,0,w^2,w^2,w^2,w,1,w^2,1,0,w^2,1,0,0,
+    w^2,1,1,0,1,w,0,1,w^2,0,w^2,0,1,0,0,0,w^2,0,0,w^2,w^2,w^2,0,1,1,0,w^2,w,w,1,w^2,w^2,0,0,0,
+    0,0,1,1,0,1,1,w,0,w,w,1,1,0,0,0,w,0,0,1,w,w,w^2,w,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,1,1,0,
+    0,w,w,w^2,w^2,1,w,0,w^2,0,1,0,1,w^2,w,0,w^2,0,0,w^2,1,1,w,0,w^2,1,0,w,0,w,0,1,1,w,0,
+    1,0,1,w,w,w,0,w,w^2,w^2,0,w,w,w^2,w^2,0,0,0,0,w,w^2,1,0,w^2,1,0,w^2,w^2,w^2,w,0,0,w,1,0,
+    w^2,w,w^2,0,w,1,0,1,w^2,w,1,w,1,0,w,1,0,0,0,w,0,1,1,1,w,1,w^2,0,0,1,w,w,1,w^2,0,
+    w^2,w^2,0,w^2,1,0,w,1,w^2,w,0,1,1,w,1,1,w,1,0,0,w^2,1,w^2,1,w^2,w^2,1,w,w^2,1,w,w,w,1,0,
+    0,1,w^2,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,1
+]);
 assert Rank(Gsrc) eq 19 and Rank(GX4) eq 19;
-assert Ncols(GX4) eq 35;
 assert RowSpace(Submatrix(GX4,1,1,19,34)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
-Table1Generators[46] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,35,19,1) eq VerticalJoin(ZeroMatrix(F,18,1),IdentityMatrix(F,1));
+Table1Generators[27]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 35 and Dimension(Q) eq 19;
+assert Dimension(HermitianHull(Q)) eq 0;
+Table1Parameters[27]:=[35,19,9,16];
+Table1DistanceTypes[27]:="exact";
 
-// Table 1, No. 047 | source BS007 | HullDecreasing.m
-// Gsrc: [35,10]_4, hull 5; X4: [[36,6,17;22]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,10,35,[
+// Table 1, No. 28 | BS007
+// [[36,6,17;22]]_2, distance exact.
+Gsrc:=Matrix(F,10,35,[
     1,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,w,1,0,w^2,0,w^2,w^2,1,0,0,1,w^2,w,1,w^2,w,w,w,
     0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,0,0,w,w,1,0,w^2,0,w^2,1,1,0,0,1,w^2,w,1,w^2,w,w,
     0,0,1,0,0,0,0,0,0,0,w^2,0,w,w,w^2,w^2,w^2,w^2,0,w,0,0,w,1,0,1,1,w,1,w,1,w^2,w,0,1,
@@ -2280,36 +1257,31 @@ Gsrc := Matrix(F,10,35,[
     0,0,0,0,0,0,0,0,1,0,w^2,0,0,0,1,1,w^2,0,w,0,w,w,w,w,0,w^2,w,1,w^2,w,1,1,1,w^2,w^2,
     0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,1,w^2,0,w,0,w,w,w,0,0,w^2,w,1,w^2,w,1,1,1,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,9,35,[
-            1,0,0,0,0,w^2,1,0,0,0,0,w^2,w^2,w,w,w,w^2,w^2,w^2,w,w,w,w^2,w^2,1,w,w,0,1,0,1,w,w,0,1,
-            0,1,0,0,0,0,0,1,0,0,0,0,w,w,w,0,w^2,w,w,w,w,0,w^2,w,w,w^2,w^2,w,0,0,w,w^2,w^2,w,0,
-            0,0,1,0,0,0,0,0,1,0,0,0,w,w,w,w,0,w^2,w,w,w,w,0,w^2,0,w,w^2,w^2,w,0,0,w,w^2,w^2,w,
-            0,0,0,1,0,w^2,0,0,0,1,0,w^2,w,w,0,w^2,w^2,1,w,w,0,w^2,w^2,1,w,1,w,w^2,w,0,w,1,w,w^2,w,
-            0,0,0,0,0,1,0,0,0,w,0,0,1,0,w^2,0,0,w^2,w,w^2,w^2,1,1,1,w^2,w,1,w^2,0,w,0,0,w,w,w^2,
-            0,0,0,0,w,0,1,0,0,1,0,w^2,w^2,0,w^2,1,w,0,w^2,1,0,w,0,0,1,w^2,1,0,w^2,w,w^2,1,1,0,0,
-            0,0,0,0,0,w^2,1,0,0,0,w,w^2,0,1,w,w,1,1,w,w,1,w,0,0,0,w,w,1,w,w,0,1,0,w,w^2,
-            0,0,0,0,0,w^2,w^2,w^2,w,w,0,w^2,w,0,w^2,w^2,0,0,0,0,w,1,0,1,1,w^2,1,w^2,w^2,w,w,0,0,w,1,
-            0,0,0,0,w^2,w,1,w^2,w^2,w,w^2,w,w,0,0,0,0,w^2,1,1,w^2,1,w^2,w,0,w^2,0,1,1,1,w,w^2,1,w^2,1
-        ]),
-        ZeroMatrix(F,9,1)),
-    HorizontalJoin(
-        Matrix(F,1,35,[
-            0,0,0,0,1,1,0,0,0,0,1,1,w,w^2,1,0,0,0,w,w^2,1,0,0,0,1,w,0,w,1,0,1,w,0,w,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,10,36,[
+    1,0,0,0,0,w^2,1,0,0,0,0,w^2,w^2,w,w,w,w^2,w^2,w^2,w,w,w,w^2,w^2,1,w,w,0,1,0,1,w,w,0,1,0,
+    0,1,0,0,0,0,0,1,0,0,0,0,w,w,w,0,w^2,w,w,w,w,0,w^2,w,w,w^2,w^2,w,0,0,w,w^2,w^2,w,0,0,
+    0,0,1,0,0,0,0,0,1,0,0,0,w,w,w,w,0,w^2,w,w,w,w,0,w^2,0,w,w^2,w^2,w,0,0,w,w^2,w^2,w,0,
+    0,0,0,1,0,w^2,0,0,0,1,0,w^2,w,w,0,w^2,w^2,1,w,w,0,w^2,w^2,1,w,1,w,w^2,w,0,w,1,w,w^2,w,0,
+    0,0,0,0,0,1,0,0,0,w,0,0,1,0,w^2,0,0,w^2,w,w^2,w^2,1,1,1,w^2,w,1,w^2,0,w,0,0,w,w,w^2,0,
+    0,0,0,0,w,0,1,0,0,1,0,w^2,w^2,0,w^2,1,w,0,w^2,1,0,w,0,0,1,w^2,1,0,w^2,w,w^2,1,1,0,0,0,
+    0,0,0,0,0,w^2,1,0,0,0,w,w^2,0,1,w,w,1,1,w,w,1,w,0,0,0,w,w,1,w,w,0,1,0,w,w^2,0,
+    0,0,0,0,0,w^2,w^2,w^2,w,w,0,w^2,w,0,w^2,w^2,0,0,0,0,w,1,0,1,1,w^2,1,w^2,w^2,w,w,0,0,w,1,0,
+    0,0,0,0,w^2,w,1,w^2,w^2,w,w^2,w,w,0,0,0,0,w^2,1,1,w^2,1,w^2,w,0,w^2,0,1,1,1,w,w^2,1,w^2,1,0,
+    0,0,0,0,1,1,0,0,0,0,1,1,w,w^2,1,0,0,0,w,w^2,1,0,0,0,1,w,0,w,1,0,1,w,0,w,1,1
+]);
 assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert Ncols(GX4) eq 36;
 assert RowSpace(Submatrix(GX4,1,1,10,35)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 5;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[47] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,36,10,1) eq VerticalJoin(ZeroMatrix(F,9,1),IdentityMatrix(F,1));
+Table1Generators[28]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 36 and Dimension(Q) eq 10;
+assert Dimension(HermitianHull(Q)) eq 4;
+Table1Parameters[28]:=[36,6,17,22];
+Table1DistanceTypes[28]:="exact";
 
-// Table 1, No. 048 | source B35_20_s7 | HullDecreasing.m
-// Gsrc: [35,20]_4, hull 8; X4: [[36,13,9;9]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,20,35,[
+// Table 1, No. 29 | B35_20_s7
+// [[36,13,9;9]]_2, distance exact.
+Gsrc:=Matrix(F,20,35,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,0,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,
@@ -2331,46 +1303,41 @@ Gsrc := Matrix(F,20,35,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,0,1,0,1,w,w,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w^2,w,w,w^2,w^2,w,0,w,0,1,0,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,19,35,[
-            1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,
-            0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,
-            0,0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,
-            0,0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,
-            0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,
-            0,0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,
-            0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,
-            0,0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,
-            0,0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,0,
-            0,0,0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w,0,w,0,w^2,w^2,w,0,
-            0,0,0,0,0,0,0,1,1,0,1,w,1,0,0,0,0,0,0,w^2,w^2,w,0,0,1,w^2,1,1,1,0,w^2,1,w^2,w^2,0,
-            0,0,0,0,0,0,0,w,1,w,0,0,1,0,0,0,0,0,0,w^2,0,w^2,w,w^2,1,0,0,w^2,0,1,1,0,w,1,w,
-            0,0,0,0,0,0,0,1,1,1,w^2,1,w^2,0,1,0,0,0,0,w,0,w^2,1,w^2,0,1,0,w^2,w^2,0,w^2,w,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,1,1,0,0,0,w,0,w^2,1,w^2,w^2,0,w^2,1,w^2,0,w,1,0,w^2,0,
-            0,0,0,0,0,0,0,w,w^2,1,1,w^2,0,0,1,1,0,0,0,w^2,1,w^2,w,w,0,1,w,0,1,1,w,0,w^2,0,w^2,
-            0,0,0,0,0,0,0,w^2,1,w,1,w,1,w,w,1,0,1,0,w^2,1,0,w,w^2,0,w^2,0,1,w^2,1,0,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,w,1,w,w,1,w,1,1,w^2,w,w,w,w^2,1,w^2,w^2,w,w,0,0,1,1,
-            0,0,0,0,0,0,0,0,w,w^2,0,0,w^2,1,1,0,w,1,w^2,w^2,w^2,0,1,1,w,w^2,1,w^2,w,0,1,1,1,w,0
-        ]),
-        ZeroMatrix(F,19,1)),
-    HorizontalJoin(
-        Matrix(F,1,35,[
-            0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,20,36,[
+    1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,0,
+    0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,
+    0,0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,
+    0,0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,0,
+    0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,0,
+    0,0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,0,
+    0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,0,
+    0,0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,0,0,
+    0,0,0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w,0,w,0,w^2,w^2,w,0,0,
+    0,0,0,0,0,0,0,1,1,0,1,w,1,0,0,0,0,0,0,w^2,w^2,w,0,0,1,w^2,1,1,1,0,w^2,1,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,w,1,w,0,0,1,0,0,0,0,0,0,w^2,0,w^2,w,w^2,1,0,0,w^2,0,1,1,0,w,1,w,0,
+    0,0,0,0,0,0,0,1,1,1,w^2,1,w^2,0,1,0,0,0,0,w,0,w^2,1,w^2,0,1,0,w^2,w^2,0,w^2,w,w^2,1,1,0,
+    0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,1,1,0,0,0,w,0,w^2,1,w^2,w^2,0,w^2,1,w^2,0,w,1,0,w^2,0,0,
+    0,0,0,0,0,0,0,w,w^2,1,1,w^2,0,0,1,1,0,0,0,w^2,1,w^2,w,w,0,1,w,0,1,1,w,0,w^2,0,w^2,0,
+    0,0,0,0,0,0,0,w^2,1,w,1,w,1,w,w,1,0,1,0,w^2,1,0,w,w^2,0,w^2,0,1,w^2,1,0,w,0,w^2,w^2,0,
+    0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,w,1,w,w,1,w,1,1,w^2,w,w,w,w^2,1,w^2,w^2,w,w,0,0,1,1,0,
+    0,0,0,0,0,0,0,0,w,w^2,0,0,w^2,1,1,0,w,1,w^2,w^2,w^2,0,1,1,w,w^2,1,w^2,w,0,1,1,1,w,0,0,
+    0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,1
+]);
 assert Rank(Gsrc) eq 20 and Rank(GX4) eq 20;
-assert Ncols(GX4) eq 36;
 assert RowSpace(Submatrix(GX4,1,1,20,35)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 8;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 7;
-Table1Generators[48] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,36,20,1) eq VerticalJoin(ZeroMatrix(F,19,1),IdentityMatrix(F,1));
+Table1Generators[29]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 36 and Dimension(Q) eq 20;
+assert Dimension(HermitianHull(Q)) eq 7;
+Table1Parameters[29]:=[36,13,9,9];
+Table1DistanceTypes[29]:="exact";
 
-// Table 1, No. 049 | source B35_19_s1 | HullDecreasing.m
-// Gsrc: [35,19]_4, hull 2; X4: [[36,18,10;16]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,19,35,[
+// Table 1, No. 30 | B35_19_s1
+// [[36,18,10;16]]_2, distance exact.
+Gsrc:=Matrix(F,19,35,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,1,1,0,w,w,w,0,0,w^2,w,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,w^2,w,w,0,1,1,w,w^2,w^2,w^2,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w,1,w,w^2,w,1,0,1,w^2,w,w^2,w,
@@ -2391,135 +1358,40 @@ Gsrc := Matrix(F,19,35,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w^2,w,1,0,1,w,w^2,w^2,0,1,w,w,w,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,18,35,[
-            1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,w,w,0,w,w,0,w,w,0,w,w,0,w,w,0,w,w,
-            0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,0,w,0,w^2,1,w^2,w^2,w^2,1,w^2,0,
-            0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,1,0,w^2,1,0,w^2,w,0,w^2,0,w,
-            0,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,0,w,1,0,0,1,0,w^2,0,0,1,1,
-            0,w^2,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,0,w^2,0,0,w,1,1,w,1,1,w^2,w^2,
-            0,w,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,w^2,1,1,w^2,w,w^2,1,w^2,w,1,1,
-            0,0,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w,0,w^2,w,w^2,w^2,w^2,0,w,0,1,w,w^2,
-            0,w^2,w,1,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,w,w,w,1,1,w,w,1,w^2,w,
-            0,1,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,1,w^2,1,w,0,0,w,1,
-            0,w,1,w,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w,w,0,0,1,w,w,w^2,0,1,1,1,0,1,
-            0,w^2,1,w^2,1,w^2,0,w^2,w^2,w^2,1,w,0,0,0,0,0,0,0,w^2,0,0,w^2,w,w,1,0,w,w^2,w,1,w^2,w^2,w^2,w,
-            0,1,w,1,w^2,1,w,w^2,w,w^2,1,w^2,0,0,0,0,0,0,0,0,w,1,1,1,1,0,1,0,w^2,0,0,w,0,1,w,
-            0,1,1,1,0,w^2,w,w,0,w,w,w^2,0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,0,1,0,w,0,1,1,w^2,1,w,
-            0,0,w^2,1,0,0,0,w^2,0,1,0,w^2,w,1,0,1,0,0,0,1,1,w^2,w,w^2,w,w,1,w^2,w,w^2,1,0,w,w,w^2,
-            0,0,w^2,w,1,w,0,0,w,w,0,w^2,0,w,0,1,0,0,0,w,w^2,w,w,1,w^2,1,w^2,0,w,1,w,w^2,w^2,1,0,
-            0,w,w^2,0,w^2,w^2,1,w,1,w,w^2,0,0,w^2,0,0,1,0,w^2,0,1,1,1,w,w,1,1,0,0,w,w,1,w^2,0,0,
-            0,1,w,0,1,0,1,0,w^2,w^2,1,w,w^2,0,1,w^2,1,1,1,1,1,w,0,w,w^2,w,0,0,0,1,w^2,1,w^2,w^2,0,
-            0,1,w,1,0,w^2,1,1,w^2,0,1,w,1,0,0,0,0,1,w,w,0,w^2,w^2,w,w^2,0,1,w^2,w,0,w,w,0,0,w
-        ]),
-        ZeroMatrix(F,18,1)),
-    HorizontalJoin(
-        Matrix(F,1,35,[
-            0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,19,36,[
+    1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,w,w,0,w,w,0,w,w,0,w,w,0,w,w,0,w,w,0,
+    0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,0,w,0,w^2,1,w^2,w^2,w^2,1,w^2,0,0,
+    0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,1,0,w^2,1,0,w^2,w,0,w^2,0,w,0,
+    0,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,0,w,1,0,0,1,0,w^2,0,0,1,1,0,
+    0,w^2,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,0,w^2,0,0,w,1,1,w,1,1,w^2,w^2,0,
+    0,w,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,w^2,1,1,w^2,w,w^2,1,w^2,w,1,1,0,
+    0,0,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w,0,w^2,w,w^2,w^2,w^2,0,w,0,1,w,w^2,0,
+    0,w^2,w,1,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,w,w,w,1,1,w,w,1,w^2,w,0,
+    0,1,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,1,w^2,1,w,0,0,w,1,0,
+    0,w,1,w,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w,w,0,0,1,w,w,w^2,0,1,1,1,0,1,0,
+    0,w^2,1,w^2,1,w^2,0,w^2,w^2,w^2,1,w,0,0,0,0,0,0,0,w^2,0,0,w^2,w,w,1,0,w,w^2,w,1,w^2,w^2,w^2,w,0,
+    0,1,w,1,w^2,1,w,w^2,w,w^2,1,w^2,0,0,0,0,0,0,0,0,w,1,1,1,1,0,1,0,w^2,0,0,w,0,1,w,0,
+    0,1,1,1,0,w^2,w,w,0,w,w,w^2,0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,0,1,0,w,0,1,1,w^2,1,w,0,
+    0,0,w^2,1,0,0,0,w^2,0,1,0,w^2,w,1,0,1,0,0,0,1,1,w^2,w,w^2,w,w,1,w^2,w,w^2,1,0,w,w,w^2,0,
+    0,0,w^2,w,1,w,0,0,w,w,0,w^2,0,w,0,1,0,0,0,w,w^2,w,w,1,w^2,1,w^2,0,w,1,w,w^2,w^2,1,0,0,
+    0,w,w^2,0,w^2,w^2,1,w,1,w,w^2,0,0,w^2,0,0,1,0,w^2,0,1,1,1,w,w,1,1,0,0,w,w,1,w^2,0,0,0,
+    0,1,w,0,1,0,1,0,w^2,w^2,1,w,w^2,0,1,w^2,1,1,1,1,1,w,0,w,w^2,w,0,0,0,1,w^2,1,w^2,w^2,0,0,
+    0,1,w,1,0,w^2,1,1,w^2,0,1,w,1,0,0,0,0,1,w,w,0,w^2,w^2,w,w^2,0,1,w^2,w,0,w,w,0,0,w,0,
+    0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,0,1,w^2,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,0,w^2,w,1
+]);
 assert Rank(Gsrc) eq 19 and Rank(GX4) eq 19;
-assert Ncols(GX4) eq 36;
 assert RowSpace(Submatrix(GX4,1,1,19,35)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[49] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,36,19,1) eq VerticalJoin(ZeroMatrix(F,18,1),IdentityMatrix(F,1));
+Table1Generators[30]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 36 and Dimension(Q) eq 19;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[30]:=[36,18,10,16];
+Table1DistanceTypes[30]:="exact";
 
-// Table 1, No. 050 | source H21 | HullIncreasing.m
-// Gsrc: [36,9]_4, hull 4; X4: [[37,4,18;23]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,9,36,[
-    1,0,0,0,0,0,0,0,0,w,0,w,w,1,w^2,1,0,0,w,w,0,0,1,w^2,w^2,0,1,w^2,w^2,0,1,0,w^2,w,w^2,0,
-    0,1,0,0,0,0,0,0,0,0,w,0,w,w,1,w^2,1,0,1,w,w,0,0,1,w^2,w^2,0,0,w^2,w^2,0,1,0,w^2,w,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,w,0,w,w,1,w^2,1,0,1,w,w,0,0,1,w^2,w^2,w^2,0,w^2,w^2,0,1,0,w^2,w,
-    0,0,0,1,0,0,0,0,0,1,0,0,w,0,w,w,1,w^2,w^2,0,1,w,w,0,0,1,w^2,w,w^2,0,w^2,w^2,0,1,0,w^2,
-    0,0,0,0,1,0,0,0,0,w^2,1,0,0,w,0,w,w,1,w^2,w^2,0,1,w,w,0,0,1,w^2,w,w^2,0,w^2,w^2,0,1,0,
-    0,0,0,0,0,1,0,0,0,1,w^2,1,0,0,w,0,w,w,1,w^2,w^2,0,1,w,w,0,0,0,w^2,w,w^2,0,w^2,w^2,0,1,
-    0,0,0,0,0,0,1,0,0,w,1,w^2,1,0,0,w,0,w,0,1,w^2,w^2,0,1,w,w,0,1,0,w^2,w,w^2,0,w^2,w^2,0,
-    0,0,0,0,0,0,0,1,0,w,w,1,w^2,1,0,0,w,0,0,0,1,w^2,w^2,0,1,w,w,0,1,0,w^2,w,w^2,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,1,0,w,w,1,w^2,1,0,0,w,w,0,0,1,w^2,w^2,0,1,w,w^2,0,1,0,w^2,w,w^2,0,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,8,36,[
-            1,0,0,0,w^2,1,w,w,w^2,1,0,1,w,0,w,w^2,0,w^2,0,1,0,0,w,0,0,w^2,0,1,w^2,w,0,w,w,w,0,w,
-            0,1,0,0,w,0,0,w^2,0,0,1,w^2,0,w,1,0,w^2,w,0,w^2,1,0,1,w,0,w,w^2,1,w^2,w,w,1,w^2,w^2,w,1,
-            0,0,1,0,0,w,0,0,w^2,w,0,1,w^2,0,w,1,0,w^2,w^2,0,w^2,1,0,1,w,0,w,1,1,w^2,w,w,1,w^2,w^2,w,
-            0,0,0,1,w,w^2,w^2,1,w,0,w,w^2,0,w^2,1,0,1,w,w,0,0,w^2,0,0,1,0,0,1,w^2,0,w^2,w^2,w^2,0,w^2,w,
-            0,0,0,0,1,1,0,0,w^2,w,w^2,0,w^2,0,1,w,0,w,w^2,0,w^2,w,1,w,w,w^2,0,1,1,w,w^2,1,1,1,1,w^2,
-            0,0,0,0,0,1,0,0,1,1,1,w^2,1,w^2,w^2,0,w,0,w^2,w^2,w^2,1,w,1,w,1,w,w^2,w^2,w^2,w^2,w^2,1,0,0,w,
-            0,0,0,0,w,w^2,w,1,w,w^2,w^2,0,w^2,w^2,w^2,0,0,w^2,1,1,w,w,w,1,w^2,w^2,w^2,w,0,w^2,w,w^2,w^2,w,0,1,
-            0,0,0,0,1,w^2,0,1,w,w,w,1,1,w,w^2,w,1,w^2,w^2,1,w^2,0,w^2,w,0,0,0,w,1,0,1,0,1,w^2,w,1
-        ]),
-        ZeroMatrix(F,8,1)),
-    HorizontalJoin(
-        Matrix(F,1,36,[
-            0,0,0,0,w,0,0,0,0,1,w,0,0,w^2,0,w^2,w^2,w,1,1,0,w,w^2,w^2,0,0,w,1,w^2,1,0,1,1,0,w,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 9 and Rank(GX4) eq 9;
-assert Ncols(GX4) eq 37;
-assert RowSpace(Submatrix(GX4,1,1,9,36)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[50] := <Gsrc,GX4>;
-
-// Table 1, No. 051 | source BS011 | HullIncreasing.m
-// Gsrc: [36,15]_4, hull 3; X4: [[37,11,13;18]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,15,36,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,0,w^2,w^2,0,0,1,0,w^2,w,w^2,w^2,1,w,0,w,1,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,0,w^2,w^2,0,0,1,0,w^2,w,w^2,w^2,1,w,0,w,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,0,1,0,1,1,w^2,w^2,w^2,w,0,1,w^2,w,0,w,1,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,0,1,0,1,1,w^2,w^2,w^2,w,0,1,w^2,w,0,w,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w,1,0,w^2,w,w,w,1,1,0,1,0,0,w,w,1,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w,1,0,w^2,w,w,w,1,1,0,1,0,0,w,w,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,w,w,w^2,w,0,1,0,0,w,w,0,0,1,0,w^2,0,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,w,w,w^2,w,0,1,0,0,w,w,0,0,1,0,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,w,w,w^2,w^2,0,1,w^2,w^2,1,0,1,0,w,w,w,1,w^2,0,w,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,w^2,w,w,w,0,w^2,1,0,w,w,w^2,w^2,1,w,w^2,0,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,w^2,w,w,w,0,w^2,1,0,w,w,w^2,w^2,1,w,w^2,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,w^2,0,0,w,w^2,w,0,w,0,w,w,0,1,0,w^2,0,w^2,w^2,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,w,0,1,w^2,w^2,0,w,1,w^2,0,0,w^2,w,0,w,1,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,w,w^2,w,w^2,w,1,0,w^2,w,1,w,1,w,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,1,1,0,w,w,w^2,w^2,w,w,w^2,w^2,0,1,1,0,1,w,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,14,36,[
-            1,0,0,0,w^2,w,1,0,1,1,w^2,w,0,w^2,w,w^2,w^2,w,1,w,w,1,w^2,w^2,0,w^2,0,w^2,w,0,w,1,w^2,w^2,w,w,
-            0,1,0,1,w^2,0,w^2,w,1,0,w^2,w,w,w,0,w,w^2,1,0,1,w,w^2,0,w^2,w^2,w^2,w,0,1,w^2,w,0,w,1,0,1,
-            0,0,1,w^2,w^2,1,w^2,1,1,w,1,0,w,w^2,0,0,w,w,0,0,1,1,0,0,w^2,1,0,w,1,w,w,w^2,w,w^2,w^2,w,
-            0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,w,w,w,w^2,w^2,w,w^2,1,0,0,1,0,0,1,w,w^2,w,w,w^2,w^2,w^2,
-            0,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,w^2,w^2,w,w,w,w^2,1,1,1,w^2,w^2,w,0,1,w,w^2,
-            0,0,0,1,0,1,0,w,0,0,0,0,0,0,0,0,w,1,w^2,w,0,w^2,w^2,w^2,0,1,w^2,w,w^2,w^2,w^2,w^2,w,0,0,1,
-            0,0,0,w,0,1,0,w^2,0,0,0,0,0,0,0,0,0,0,1,1,1,w,1,w^2,1,w^2,0,0,w,1,w,1,w^2,1,1,1,
-            0,0,0,1,1,0,w^2,1,w,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,1,0,w,0,w^2,w,1,w,0,1,0,1,w,w^2,w,0,
-            0,0,0,1,w,w^2,w^2,1,w^2,0,0,0,0,0,0,w^2,1,w^2,w,w^2,w^2,w,w^2,0,w,w,w,w,1,0,1,0,0,w^2,w,w,
-            0,0,0,w,w^2,0,0,w^2,w,0,w,1,0,0,0,w^2,1,0,w^2,w^2,0,0,w,w^2,w,w,w,1,0,0,1,0,1,1,w^2,1,
-            0,0,0,w,0,w,1,w^2,w,0,0,1,0,0,0,1,0,1,w^2,1,1,w^2,w^2,0,w,1,1,w^2,1,0,1,w^2,0,w^2,1,1,
-            0,0,0,w^2,w,0,w,0,1,w^2,w,w^2,1,0,w^2,0,0,0,w,w^2,w,1,0,w^2,0,1,w^2,w^2,1,w^2,w^2,w^2,1,w^2,w,w^2,
-            0,0,0,1,w,0,1,0,w^2,0,0,1,1,0,w^2,w^2,0,0,0,0,0,0,1,0,w,1,1,w^2,1,w^2,0,1,0,0,0,w^2,
-            0,0,0,1,w,w^2,w^2,1,0,w,w,w^2,0,1,w^2,1,0,w,w^2,0,w^2,1,w^2,w^2,1,w,w^2,w^2,w^2,w^2,w,1,0,w,w,0
-        ]),
-        ZeroMatrix(F,14,1)),
-    HorizontalJoin(
-        Matrix(F,1,36,[
-            0,1,1,w^2,0,w,1,0,0,w^2,1,0,0,0,0,w^2,w,w,w,w^2,w^2,w,w^2,1,w,w^2,1,1,w,0,1,1,1,w^2,w,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 15 and Rank(GX4) eq 15;
-assert Ncols(GX4) eq 37;
-assert RowSpace(Submatrix(GX4,1,1,15,36)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[51] := <Gsrc,GX4>;
-
-// Table 1, No. 052 | source B36_21_s8 | HullDecreasing.m
-// Gsrc: [36,21]_4, hull 9; X4: [[37,13,9;8]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,21,36,[
+// Table 1, No. 31 | B36_21_s8
+// [[37,13,9;8]]_2, distance exact.
+Gsrc:=Matrix(F,21,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,1,w^2,0,0,w^2,1,1,0,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,0,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,0,
@@ -2542,47 +1414,42 @@ Gsrc := Matrix(F,21,36,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,0,1,0,1,w,w,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w^2,w,w,w^2,w^2,w,0,w,0,1,0,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,20,36,[
-            1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,0,
-            0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,
-            0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,
-            0,0,0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,
-            0,0,0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,
-            0,0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,
-            0,0,0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,
-            0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,
-            0,0,0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,0,
-            0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,0,0,0,0,0,1,0,w,0,w,w,w,w,w,w,w^2,0,w^2,1,0,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,w,1,1,1,0,0,0,0,0,w,0,w,w,w^2,w^2,w,0,w^2,w^2,1,w,0,0,1,1,w,
-            0,0,0,0,0,0,0,0,w^2,w^2,1,0,w^2,1,0,0,0,0,0,1,0,0,1,w^2,w,w,w^2,1,1,w,w,0,0,w,0,1,
-            0,0,0,0,0,0,0,0,w,1,w,0,1,1,w,1,0,0,0,w^2,0,1,w^2,w,1,w^2,w^2,0,w^2,w,0,w,w^2,w,0,0,
-            0,0,0,0,0,0,0,0,1,w,1,1,0,1,0,1,0,0,0,1,0,1,1,1,w^2,w^2,1,0,1,w^2,1,w^2,w^2,1,w^2,w,
-            0,0,0,0,0,0,0,0,w,w,w^2,1,1,w^2,0,w,1,0,0,0,0,w^2,0,0,w,1,w^2,w,0,w^2,1,1,w,w,0,w^2,
-            0,0,0,0,0,0,0,0,w,1,w,1,w,1,0,w^2,1,1,w,0,0,w^2,w^2,w^2,w^2,1,0,w^2,1,0,1,w^2,0,0,w,w^2,
-            0,0,0,0,0,0,0,0,w^2,w^2,0,w,1,1,1,1,1,1,w^2,1,0,w^2,0,1,0,w,0,w,w,1,w^2,w,0,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,w^2,0,0,1,w^2,0,w^2,w^2,1,w,w,1,0,1,0,w,0,w^2,1,1,w,0,w^2,0,w,1,w^2
-        ]),
-        ZeroMatrix(F,20,1)),
-    HorizontalJoin(
-        Matrix(F,1,36,[
-            0,0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,21,37,[
+    1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,
+    0,0,0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,
+    0,0,0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,0,
+    0,0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,0,
+    0,0,0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,0,
+    0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,0,0,
+    0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,0,0,0,0,0,1,0,w,0,w,w,w,w,w,w,w^2,0,w^2,1,0,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,w,1,1,1,0,0,0,0,0,w,0,w,w,w^2,w^2,w,0,w^2,w^2,1,w,0,0,1,1,w,0,
+    0,0,0,0,0,0,0,0,w^2,w^2,1,0,w^2,1,0,0,0,0,0,1,0,0,1,w^2,w,w,w^2,1,1,w,w,0,0,w,0,1,0,
+    0,0,0,0,0,0,0,0,w,1,w,0,1,1,w,1,0,0,0,w^2,0,1,w^2,w,1,w^2,w^2,0,w^2,w,0,w,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,0,1,w,1,1,0,1,0,1,0,0,0,1,0,1,1,1,w^2,w^2,1,0,1,w^2,1,w^2,w^2,1,w^2,w,0,
+    0,0,0,0,0,0,0,0,w,w,w^2,1,1,w^2,0,w,1,0,0,0,0,w^2,0,0,w,1,w^2,w,0,w^2,1,1,w,w,0,w^2,0,
+    0,0,0,0,0,0,0,0,w,1,w,1,w,1,0,w^2,1,1,w,0,0,w^2,w^2,w^2,w^2,1,0,w^2,1,0,1,w^2,0,0,w,w^2,0,
+    0,0,0,0,0,0,0,0,w^2,w^2,0,w,1,1,1,1,1,1,w^2,1,0,w^2,0,1,0,w,0,w,w,1,w^2,w,0,1,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,w^2,0,0,1,w^2,0,w^2,w^2,1,w,w,1,0,1,0,w,0,w^2,1,1,w,0,w^2,0,w,1,w^2,0,
+    0,0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,1
+]);
 assert Rank(Gsrc) eq 21 and Rank(GX4) eq 21;
-assert Ncols(GX4) eq 37;
 assert RowSpace(Submatrix(GX4,1,1,21,36)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 9;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 8;
-Table1Generators[52] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,37,21,1) eq VerticalJoin(ZeroMatrix(F,20,1),IdentityMatrix(F,1));
+Table1Generators[31]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 37 and Dimension(Q) eq 21;
+assert Dimension(HermitianHull(Q)) eq 8;
+Table1Parameters[31]:=[37,13,9,8];
+Table1DistanceTypes[31]:="exact";
 
-// Table 1, No. 053 | source B36_20_s2 | HullDecreasing.m
-// Gsrc: [36,20]_4, hull 3; X4: [[37,18,10;15]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,20,36,[
+// Table 1, No. 32 | B36_20_s2
+// [[37,18,10;15]]_2, distance exact.
+Gsrc:=Matrix(F,20,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,1,0,1,w,w^2,w^2,0,1,w,w,w,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,1,1,0,w,w,w,0,0,w^2,w,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,w^2,w,w,0,1,1,w,w^2,w^2,w^2,1,
@@ -2604,134 +1471,41 @@ Gsrc := Matrix(F,20,36,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,19,36,[
-            1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,
-            0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,
-            0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,0,w,0,w^2,1,w^2,w^2,w^2,1,w^2,0,
-            0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,1,0,w^2,1,0,w^2,w,0,w^2,0,w,
-            0,0,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,0,w,1,0,0,1,0,w^2,0,0,1,1,
-            0,0,w^2,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,0,w^2,0,0,w,1,1,w,1,1,w^2,w^2,
-            0,0,w,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,w^2,1,1,w^2,w,w^2,1,w^2,w,1,1,
-            0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w,0,w^2,w,w^2,w^2,w^2,0,w,0,1,w,w^2,
-            0,0,w^2,w,1,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,w,w,w,1,1,w,w,1,w^2,w,
-            0,0,1,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,1,w^2,1,w,0,0,w,1,
-            0,0,w,1,w,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w,w,0,0,1,w,w,w^2,0,1,1,1,0,1,
-            0,0,w^2,1,w^2,1,w^2,0,w^2,w^2,w^2,1,w,0,0,0,0,0,0,0,w^2,0,0,w^2,w,w,1,0,w,w^2,w,1,w^2,w^2,w^2,w,
-            0,0,1,w,1,w^2,1,w,w^2,w,w^2,1,w^2,0,0,0,0,0,0,0,0,w,1,1,1,1,0,1,0,w^2,0,0,w,0,1,w,
-            0,0,1,1,1,0,w^2,w,w,0,w,w,w^2,0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,0,1,0,w,0,1,1,w^2,1,w,
-            0,0,w,w^2,1,w,w,w,w^2,0,w^2,1,1,w^2,1,0,0,0,0,w,w^2,0,1,1,0,1,1,1,1,w,w^2,w,w^2,w^2,1,w^2,
-            0,0,w^2,1,1,w,1,w^2,w,w,w,w,w,w^2,1,0,0,0,0,w^2,w,w,w^2,w,w,w^2,1,0,1,w^2,w^2,0,w,0,1,w,
-            0,0,1,w,0,0,w,w^2,1,1,0,w,0,w^2,1,w^2,w,0,0,0,1,w,1,1,w^2,0,1,w,1,1,0,1,w,1,1,w,
-            0,0,w,0,0,w,w^2,0,0,w^2,w^2,0,1,w,1,w^2,w^2,0,0,w^2,w,1,1,1,w,1,w,w^2,w^2,0,0,0,0,w^2,w,w^2,
-            0,0,0,0,1,w^2,0,0,w^2,1,1,w,1,w^2,0,1,w,0,1,0,w,0,0,w,1,w,0,w,w^2,1,1,w^2,0,w,w,1
-        ]),
-        ZeroMatrix(F,19,1)),
-    HorizontalJoin(
-        Matrix(F,1,36,[
-            0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,20,37,[
+    1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,0,
+    0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,0,
+    0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,0,w,0,w^2,1,w^2,w^2,w^2,1,w^2,0,0,
+    0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,1,0,w^2,1,0,w^2,w,0,w^2,0,w,0,
+    0,0,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,0,w,1,0,0,1,0,w^2,0,0,1,1,0,
+    0,0,w^2,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,0,w^2,0,0,w,1,1,w,1,1,w^2,w^2,0,
+    0,0,w,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,w^2,1,1,w^2,w,w^2,1,w^2,w,1,1,0,
+    0,0,0,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w,0,w^2,w,w^2,w^2,w^2,0,w,0,1,w,w^2,0,
+    0,0,w^2,w,1,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,w,w,w,1,1,w,w,1,w^2,w,0,
+    0,0,1,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,1,w^2,1,w,0,0,w,1,0,
+    0,0,w,1,w,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w,w,0,0,1,w,w,w^2,0,1,1,1,0,1,0,
+    0,0,w^2,1,w^2,1,w^2,0,w^2,w^2,w^2,1,w,0,0,0,0,0,0,0,w^2,0,0,w^2,w,w,1,0,w,w^2,w,1,w^2,w^2,w^2,w,0,
+    0,0,1,w,1,w^2,1,w,w^2,w,w^2,1,w^2,0,0,0,0,0,0,0,0,w,1,1,1,1,0,1,0,w^2,0,0,w,0,1,w,0,
+    0,0,1,1,1,0,w^2,w,w,0,w,w,w^2,0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,0,1,0,w,0,1,1,w^2,1,w,0,
+    0,0,w,w^2,1,w,w,w,w^2,0,w^2,1,1,w^2,1,0,0,0,0,w,w^2,0,1,1,0,1,1,1,1,w,w^2,w,w^2,w^2,1,w^2,0,
+    0,0,w^2,1,1,w,1,w^2,w,w,w,w,w,w^2,1,0,0,0,0,w^2,w,w,w^2,w,w,w^2,1,0,1,w^2,w^2,0,w,0,1,w,0,
+    0,0,1,w,0,0,w,w^2,1,1,0,w,0,w^2,1,w^2,w,0,0,0,1,w,1,1,w^2,0,1,w,1,1,0,1,w,1,1,w,0,
+    0,0,w,0,0,w,w^2,0,0,w^2,w^2,0,1,w,1,w^2,w^2,0,0,w^2,w,1,1,1,w,1,w,w^2,w^2,0,0,0,0,w^2,w,w^2,0,
+    0,0,0,0,1,w^2,0,0,w^2,1,1,w,1,w^2,0,1,w,0,1,0,w,0,0,w,1,w,0,w,w^2,1,1,w^2,0,w,w,1,0,
+    0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,1
+]);
 assert Rank(Gsrc) eq 20 and Rank(GX4) eq 20;
-assert Ncols(GX4) eq 37;
 assert RowSpace(Submatrix(GX4,1,1,20,36)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[53] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,37,20,1) eq VerticalJoin(ZeroMatrix(F,19,1),IdentityMatrix(F,1));
+Table1Generators[32]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 37 and Dimension(Q) eq 20;
+assert Dimension(HermitianHull(Q)) eq 2;
+Table1Parameters[32]:=[37,18,10,15];
+Table1DistanceTypes[32]:="exact";
 
-// Table 1, No. 054 | source H24 | HullIncreasing.m
-// Gsrc: [33,11]_4, hull 0; X4: [[38,6,>=15;22]]_2.
-// lambda=5; the final 5 rows carry the matched block [W1 | I_5].
-Gsrc := Matrix(F,11,33,[
-    1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,1,
-    0,1,0,0,0,0,0,0,0,0,0,w,1,0,0,0,1,0,w,w^2,w,w,1,w^2,0,1,1,0,w,w,1,1,1,
-    0,0,1,0,0,0,0,0,0,0,0,w,w,1,0,0,0,1,0,w,w^2,w,1,1,w^2,0,1,1,0,w,w,1,1,
-    0,0,0,1,0,0,0,0,0,0,0,w,w,w,1,0,0,0,1,0,w,w^2,1,1,1,w^2,0,1,1,0,w,w,1,
-    0,0,0,0,1,0,0,0,0,0,0,w^2,w,w,w,1,0,0,0,1,0,w,1,1,1,1,w^2,0,1,1,0,w,w,
-    0,0,0,0,0,1,0,0,0,0,0,w,w^2,w,w,w,1,0,0,0,1,0,w,1,1,1,1,w^2,0,1,1,0,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,w,w^2,w,w,w,1,0,0,0,1,w,w,1,1,1,1,w^2,0,1,1,0,
-    0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,0,0,0,w,w,1,1,1,1,w^2,0,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,0,1,0,w,w,1,1,1,1,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,1,1,0,w,w,1,1,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,1,0,1,1,0,w,w,1,1,1,1,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,6,33,[
-            0,w^2,w,0,0,0,w,w^2,0,0,1,1,w^2,w,0,w,w^2,w,0,w^2,w,1,w,w^2,w^2,w,w,1,w,1,w^2,1,1,
-            0,w^2,w^2,0,0,0,1,1,1,1,0,1,1,w^2,w^2,1,w,0,0,0,w,1,w,0,w^2,w^2,w^2,w^2,w^2,w^2,1,w^2,0,
-            w^2,1,1,0,0,1,1,w,1,w,w,w^2,w^2,1,1,0,1,w,0,1,0,w,1,w,w^2,1,w^2,0,w^2,w,w^2,w^2,w^2,
-            0,0,w^2,0,0,1,w,w,w^2,w,1,1,w,1,0,w^2,w^2,w^2,w,w^2,w^2,w,w^2,1,w,w^2,0,w^2,w^2,1,w^2,w^2,w^2,
-            1,w^2,w^2,1,0,1,1,0,w^2,w^2,0,1,w,w^2,0,w,w^2,0,w^2,w^2,1,0,w,0,w^2,1,w,w,1,0,0,0,1,
-            1,w,w,w,1,w^2,w^2,w,1,1,w,w,w,w,1,w,1,1,w^2,1,w,0,0,w,0,1,1,w,0,0,w^2,0,w
-        ]),
-        ZeroMatrix(F,6,5)),
-    HorizontalJoin(
-        Matrix(F,5,33,[
-            1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,1,
-            0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,0,0,w,w^2,w,w^2,1,1,0,w^2,1,0,1,1,1,w,w,w^2,
-            1,0,0,0,0,0,0,0,0,w,1,1,0,w,1,w,w^2,w,w,w^2,w,w^2,1,w^2,0,w,1,w,1,w,w,1,w,
-            1,0,0,0,0,0,0,0,w,1,w,1,w,1,1,w,w^2,w,1,1,0,0,0,w^2,0,0,w^2,w,w^2,0,w^2,0,w,
-            0,0,0,0,1,0,0,1,0,1,w,w,w,1,w^2,1,w,1,0,0,w,0,0,0,1,w,w^2,w^2,w^2,1,w^2,w,w
-        ]),
-        IdentityMatrix(F,5)));
-assert Rank(Gsrc) eq 11 and Rank(GX4) eq 11;
-assert Ncols(GX4) eq 38;
-assert RowSpace(Submatrix(GX4,1,1,11,33)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 0;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[54] := <Gsrc,GX4>;
-
-// Table 1, No. 055 | source H25 | HullIncreasing.m
-// Gsrc: [36,12]_4, hull 2; X4: [[38,8,>=15;22]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,12,36,[
-    1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,1,w,w,w,0,w^2,w^2,1,0,w^2,1,0,1,w^2,0,0,0,w^2,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,1,w,w,w,0,w^2,w,1,0,w^2,1,0,1,w^2,0,0,0,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,0,w,w^2,1,w,w,w,0,w^2,w,1,0,w^2,1,0,1,w^2,0,0,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,0,w,w^2,1,w,w,w,0,w^2,w,1,0,w^2,1,0,1,w^2,0,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,w,0,w^2,w^2,1,1,0,w,w^2,1,w,w,0,0,w^2,w,1,0,w^2,1,0,1,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w^2,w^2,1,1,0,w,w^2,1,w,0,0,0,w^2,w,1,0,w^2,1,0,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,w,w,w,0,w^2,w^2,1,1,0,w,w^2,1,w^2,0,0,0,w^2,w,1,0,w^2,1,0,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,1,w,w,w,0,w^2,w^2,1,1,0,w,w^2,1,w^2,0,0,0,w^2,w,1,0,w^2,1,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,w,w,w,0,w^2,w^2,1,1,0,w,0,1,w^2,0,0,0,w^2,w,1,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,1,w,w,w,0,w^2,w^2,1,1,0,1,0,1,w^2,0,0,0,w^2,w,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,1,w,w,w,0,w^2,w^2,1,1,w^2,1,0,1,w^2,0,0,0,w^2,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w^2,1,w,w,w,0,w^2,w^2,1,0,w^2,1,0,1,w^2,0,0,0,w^2,w,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,10,36,[
-            1,0,w^2,1,0,w^2,1,0,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,1,w^2,w,1,w^2,w,1,w^2,w,1,w^2,w,
-            0,1,w,0,1,w,0,1,w,0,1,w,1,1,1,1,1,1,1,1,1,1,1,1,1,w^2,w,1,w^2,w,1,w^2,w,1,w^2,w,
-            0,0,1,0,0,0,0,0,0,0,1,w,1,1,1,1,0,w^2,w,w,1,0,w,w^2,0,w,w^2,1,w,0,0,1,0,w^2,w,w,
-            0,0,w^2,1,0,0,0,0,0,0,0,1,w^2,1,w,1,0,w^2,w,w,0,0,0,w^2,w,1,0,1,w^2,w^2,1,w^2,w^2,0,w,1,
-            0,0,0,1,w^2,w,0,0,0,0,w^2,w^2,1,1,w,w^2,1,1,0,w^2,w,0,0,0,w,w,w^2,w,1,w^2,w^2,w,1,w^2,w,w,
-            0,0,w^2,0,w^2,w^2,0,0,0,0,w^2,0,w,w,w^2,0,0,0,0,w,0,w,0,w^2,0,w,1,0,w,0,w,w,w^2,w,w,w,
-            0,0,w^2,w^2,w,w^2,1,0,0,0,w,1,w^2,0,1,w,w,w,0,1,w^2,0,w,1,0,w,w,0,w,w^2,w^2,w^2,0,1,w,w,
-            0,0,1,w^2,w,0,w^2,1,0,0,1,w^2,w^2,0,w^2,w,w,w,1,w^2,w,1,w^2,0,w^2,0,w,1,w^2,w^2,w^2,w,1,0,0,0,
-            0,0,0,1,0,0,w^2,1,1,0,w,0,w^2,w,w^2,w^2,w,w,w,w,0,w^2,0,w,w,w^2,1,w^2,w^2,1,w^2,w^2,w^2,0,0,w,
-            0,0,1,0,w,w^2,0,1,w^2,1,w^2,w,w,1,w^2,1,0,0,w^2,1,1,w^2,w^2,1,1,0,1,1,0,0,1,w,w^2,0,1,0
-        ]),
-        ZeroMatrix(F,10,2)),
-    HorizontalJoin(
-        Matrix(F,2,36,[
-            1,w,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,0,0,0,1,1,w^2,w^2,w,w,w,w^2,0,w,1,1,1,0,0,w^2,w^2,
-            w^2,0,w^2,w^2,0,w,w^2,0,w,w^2,0,0,w^2,1,0,w,0,w^2,w,0,0,1,1,0,0,1,w,w^2,w^2,1,w^2,w^2,w,w,1,w^2
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 12 and Rank(GX4) eq 12;
-assert Ncols(GX4) eq 38;
-assert RowSpace(Submatrix(GX4,1,1,12,36)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[55] := <Gsrc,GX4>;
-
-// Table 1, No. 056 | source H26 | HullDecreasing.m
-// Gsrc: [36,20]_4, hull 3; X4: [[38,19,>=10;17]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,20,36,[
+// Table 1, No. 33 | H26
+// [[38,19,10;17]]_2, distance lower_bound.
+Gsrc:=Matrix(F,20,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,1,0,1,w,w^2,w^2,0,1,w,w,w,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,1,1,0,w,w,w,0,0,w^2,w,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,w^2,w,w,0,1,1,w,w^2,w^2,w^2,1,
@@ -2753,46 +1527,41 @@ Gsrc := Matrix(F,20,36,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,18,36,[
-            1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,
-            0,0,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w,1,1,1,w,0,w^2,1,1,1,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,w,0,w^2,1,0,0,1,1,w^2,w,w,0,
-            0,0,0,0,w^2,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,w,w^2,w^2,1,w^2,0,0,w^2,w,w^2,0,1,
-            0,0,0,0,w,0,1,w,w^2,0,0,w,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w,w,w^2,0,1,w,1,1,0,w,1,
-            0,0,0,0,w^2,0,1,w^2,w,0,0,w^2,0,0,0,0,0,0,0,0,1,w,0,w^2,0,1,1,w^2,w,0,0,w,1,w^2,w^2,w,
-            0,0,0,0,w,0,0,w,w,w,w,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,w,0,1,0,1,w^2,w^2,0,w^2,0,
-            0,0,0,0,1,0,1,1,0,w,w^2,w^2,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w^2,w,w^2,1,w^2,w,w^2,w,0,w^2,1,
-            0,0,0,w^2,w,0,1,0,w,w,w,1,0,0,0,0,0,0,w,0,1,0,1,w^2,1,w^2,0,0,w,w^2,0,0,w^2,1,w^2,1,
-            0,0,0,w^2,0,0,1,w,1,w,w,w,0,0,0,0,0,0,w^2,0,w,1,w^2,w,w^2,w^2,w^2,0,0,1,w,w^2,w,1,0,w^2,
-            0,0,0,0,0,1,0,1,w,w^2,w,0,0,0,0,0,0,0,0,1,w^2,w^2,0,1,0,1,w^2,w^2,w,0,0,w,w^2,w,w,0,
-            0,0,0,0,0,0,0,w^2,0,0,0,w^2,0,0,0,0,0,0,0,1,w,1,1,1,w,w^2,1,w,1,w,w^2,0,0,w^2,w,1,
-            0,0,0,0,w,1,w^2,w^2,1,0,w^2,w^2,0,1,0,0,0,0,0,w,w,w,w^2,w,1,w^2,w^2,w^2,1,w,1,w,1,w^2,w^2,w,
-            0,0,0,1,w,0,w^2,1,1,w^2,w,1,0,0,1,0,0,0,0,1,1,w^2,w,w^2,1,w^2,w^2,0,w^2,w^2,w,0,w^2,w^2,0,w,
-            0,0,0,1,0,w,0,0,0,0,1,0,w^2,w^2,1,0,0,1,w^2,1,1,w,w^2,w,0,w,w,0,w^2,1,w^2,w^2,w,w^2,1,w^2,
-            0,0,0,w,0,0,w^2,1,w,w^2,0,w,0,w^2,w^2,0,0,1,w,w,w,1,1,0,0,1,1,w^2,w^2,w^2,1,0,1,0,0,0,
-            0,0,0,w^2,1,1,w,1,0,w,0,0,w^2,1,1,1,0,1,w,0,w,w,1,w^2,0,1,0,w^2,1,w,w,0,w,w,w,w,
-            0,0,0,1,w^2,1,0,w,1,1,w,0,1,w^2,1,0,1,0,w^2,1,1,w^2,1,0,w,w^2,0,1,0,0,w^2,1,1,w^2,1,w^2
-        ]),
-        ZeroMatrix(F,18,2)),
-    HorizontalJoin(
-        Matrix(F,2,36,[
-            0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,
-            0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1
-        ]),
-        IdentityMatrix(F,2)));
+GX4:=Matrix(F,20,38,[
+    1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,0,0,
+    0,0,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w,1,1,1,w,0,w^2,1,1,1,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,w,0,w^2,1,0,0,1,1,w^2,w,w,0,0,0,
+    0,0,0,0,w^2,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,w,w^2,w^2,1,w^2,0,0,w^2,w,w^2,0,1,0,0,
+    0,0,0,0,w,0,1,w,w^2,0,0,w,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w,w,w^2,0,1,w,1,1,0,w,1,0,0,
+    0,0,0,0,w^2,0,1,w^2,w,0,0,w^2,0,0,0,0,0,0,0,0,1,w,0,w^2,0,1,1,w^2,w,0,0,w,1,w^2,w^2,w,0,0,
+    0,0,0,0,w,0,0,w,w,w,w,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,w,0,1,0,1,w^2,w^2,0,w^2,0,0,0,
+    0,0,0,0,1,0,1,1,0,w,w^2,w^2,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w^2,w,w^2,1,w^2,w,w^2,w,0,w^2,1,0,0,
+    0,0,0,w^2,w,0,1,0,w,w,w,1,0,0,0,0,0,0,w,0,1,0,1,w^2,1,w^2,0,0,w,w^2,0,0,w^2,1,w^2,1,0,0,
+    0,0,0,w^2,0,0,1,w,1,w,w,w,0,0,0,0,0,0,w^2,0,w,1,w^2,w,w^2,w^2,w^2,0,0,1,w,w^2,w,1,0,w^2,0,0,
+    0,0,0,0,0,1,0,1,w,w^2,w,0,0,0,0,0,0,0,0,1,w^2,w^2,0,1,0,1,w^2,w^2,w,0,0,w,w^2,w,w,0,0,0,
+    0,0,0,0,0,0,0,w^2,0,0,0,w^2,0,0,0,0,0,0,0,1,w,1,1,1,w,w^2,1,w,1,w,w^2,0,0,w^2,w,1,0,0,
+    0,0,0,0,w,1,w^2,w^2,1,0,w^2,w^2,0,1,0,0,0,0,0,w,w,w,w^2,w,1,w^2,w^2,w^2,1,w,1,w,1,w^2,w^2,w,0,0,
+    0,0,0,1,w,0,w^2,1,1,w^2,w,1,0,0,1,0,0,0,0,1,1,w^2,w,w^2,1,w^2,w^2,0,w^2,w^2,w,0,w^2,w^2,0,w,0,0,
+    0,0,0,1,0,w,0,0,0,0,1,0,w^2,w^2,1,0,0,1,w^2,1,1,w,w^2,w,0,w,w,0,w^2,1,w^2,w^2,w,w^2,1,w^2,0,0,
+    0,0,0,w,0,0,w^2,1,w,w^2,0,w,0,w^2,w^2,0,0,1,w,w,w,1,1,0,0,1,1,w^2,w^2,w^2,1,0,1,0,0,0,0,0,
+    0,0,0,w^2,1,1,w,1,0,w,0,0,w^2,1,1,1,0,1,w,0,w,w,1,w^2,0,1,0,w^2,1,w,w,0,w,w,w,w,0,0,
+    0,0,0,1,w^2,1,0,w,1,1,w,0,1,w^2,1,0,1,0,w^2,1,1,w^2,1,0,w,w^2,0,1,0,0,w^2,1,1,w^2,1,w^2,0,0,
+    0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,0,
+    0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,w^2,1,1,0,1
+]);
 assert Rank(Gsrc) eq 20 and Rank(GX4) eq 20;
-assert Ncols(GX4) eq 38;
 assert RowSpace(Submatrix(GX4,1,1,20,36)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[56] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,37,20,2) eq VerticalJoin(ZeroMatrix(F,18,2),IdentityMatrix(F,2));
+Table1Generators[33]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 38 and Dimension(Q) eq 20;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[33]:=[38,19,10,17];
+Table1DistanceTypes[33]:="lower_bound";
 
-// Table 1, No. 057 | source B38_14_s2 | HullDecreasing.m
-// Gsrc: [38,14]_4, hull 3; X4: [[39,12,15;23]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,14,38,[
+// Table 1, No. 34 | B38_14_s2
+// [[39,12,15;23]]_2, distance exact.
+Gsrc:=Matrix(F,14,38,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,1,w^2,w^2,0,1,w,w,w^2,0,1,w,1,w^2,1,w^2,1,w,w,0,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w,w^2,0,1,1,0,0,w,1,w,w,
@@ -2808,40 +1577,35 @@ Gsrc := Matrix(F,14,38,[
     0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,0,1,w^2,0,w^2,w,w^2,1,0,0,w^2,w,w^2,w,1,w^2,0,w^2,w^2,w^2,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,1,0,w,w^2,w^2,1,1,0,w,w,w^2,w,1,1,w,0,w,0,1,w,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,13,38,[
-            1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,
-            0,1,w^2,0,w,0,1,w^2,0,w,0,1,w^2,0,w,0,1,w^2,0,w,w^2,w,1,0,0,w^2,w,1,0,0,w^2,w,1,0,0,w^2,w,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w,w^2,0,1,1,0,0,w,1,w,w,
-            0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,w,w,1,w^2,1,0,w,w^2,0,0,w^2,1,1,w,0,0,0,w,
-            0,0,w,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w^2,1,w^2,0,1,0,w^2,1,w,0,1,0,0,w^2,w,w,0,1,w,0,
-            0,0,0,1,0,1,0,0,0,0,0,0,0,0,w,1,0,0,1,w,0,0,w^2,w,1,w^2,1,0,0,0,w,1,w^2,w,1,1,0,0,
-            0,0,0,w,w^2,0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,1,1,0,0,0,0,w,w^2,1,0,w,w,1,w,1,1,w^2,1,0,w,
-            0,0,1,1,w,1,0,1,0,0,0,0,0,0,1,1,0,0,1,w^2,0,w,w^2,0,w,1,w,1,w^2,w^2,w,1,1,w^2,1,w^2,1,w^2,
-            0,0,w,w^2,w^2,0,w,w^2,1,0,0,0,0,0,1,w^2,1,w,1,1,w^2,1,w,w^2,0,0,w^2,w,w^2,w^2,0,1,0,w^2,0,0,0,w^2,
-            0,0,1,w,w,0,w,1,w,1,0,0,0,0,1,w^2,1,w^2,w^2,1,0,1,w^2,0,1,w,1,0,1,1,1,1,0,w,w^2,0,w,0,
-            0,0,0,w^2,w^2,0,w,w,0,0,1,0,0,0,0,w,1,1,0,0,w^2,w,w,w^2,0,1,w^2,0,w,w,0,0,0,w,1,1,w,1,
-            0,0,w^2,w,w,0,1,1,w,w,w,w,1,0,0,w,w^2,w^2,0,0,w^2,1,1,w,w,1,1,1,w,w,1,w^2,w^2,0,0,w^2,w^2,w^2,
-            0,0,1,1,w^2,1,0,0,0,0,w,0,1,0,w,w,1,1,0,0,w,1,w^2,1,0,w^2,w^2,0,w^2,w^2,w^2,w,0,w^2,w,w^2,1,w
-        ]),
-        ZeroMatrix(F,13,1)),
-    HorizontalJoin(
-        Matrix(F,1,38,[
-            0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,w,1,0,0,0,w,1,0,0,0,w,1,0,0,0,w,1,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,14,39,[
+    1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,0,
+    0,1,w^2,0,w,0,1,w^2,0,w,0,1,w^2,0,w,0,1,w^2,0,w,w^2,w,1,0,0,w^2,w,1,0,0,w^2,w,1,0,0,w^2,w,1,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w,w^2,0,1,1,0,0,w,1,w,w,0,
+    0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,w,w,1,w^2,1,0,w,w^2,0,0,w^2,1,1,w,0,0,0,w,0,
+    0,0,w,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w^2,1,w^2,0,1,0,w^2,1,w,0,1,0,0,w^2,w,w,0,1,w,0,0,
+    0,0,0,1,0,1,0,0,0,0,0,0,0,0,w,1,0,0,1,w,0,0,w^2,w,1,w^2,1,0,0,0,w,1,w^2,w,1,1,0,0,0,
+    0,0,0,w,w^2,0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,1,1,0,0,0,0,w,w^2,1,0,w,w,1,w,1,1,w^2,1,0,w,0,
+    0,0,1,1,w,1,0,1,0,0,0,0,0,0,1,1,0,0,1,w^2,0,w,w^2,0,w,1,w,1,w^2,w^2,w,1,1,w^2,1,w^2,1,w^2,0,
+    0,0,w,w^2,w^2,0,w,w^2,1,0,0,0,0,0,1,w^2,1,w,1,1,w^2,1,w,w^2,0,0,w^2,w,w^2,w^2,0,1,0,w^2,0,0,0,w^2,0,
+    0,0,1,w,w,0,w,1,w,1,0,0,0,0,1,w^2,1,w^2,w^2,1,0,1,w^2,0,1,w,1,0,1,1,1,1,0,w,w^2,0,w,0,0,
+    0,0,0,w^2,w^2,0,w,w,0,0,1,0,0,0,0,w,1,1,0,0,w^2,w,w,w^2,0,1,w^2,0,w,w,0,0,0,w,1,1,w,1,0,
+    0,0,w^2,w,w,0,1,1,w,w,w,w,1,0,0,w,w^2,w^2,0,0,w^2,1,1,w,w,1,1,1,w,w,1,w^2,w^2,0,0,w^2,w^2,w^2,0,
+    0,0,1,1,w^2,1,0,0,0,0,w,0,1,0,w,w,1,1,0,0,w,1,w^2,1,0,w^2,w^2,0,w^2,w^2,w^2,w,0,w^2,w,w^2,1,w,0,
+    0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,w,1,0,0,0,w,1,0,0,0,w,1,0,0,0,w,1,0,1
+]);
 assert Rank(Gsrc) eq 14 and Rank(GX4) eq 14;
-assert Ncols(GX4) eq 39;
 assert RowSpace(Submatrix(GX4,1,1,14,38)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[57] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,39,14,1) eq VerticalJoin(ZeroMatrix(F,13,1),IdentityMatrix(F,1));
+Table1Generators[34]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 39 and Dimension(Q) eq 14;
+assert Dimension(HermitianHull(Q)) eq 2;
+Table1Parameters[34]:=[39,12,15,23];
+Table1DistanceTypes[34]:="exact";
 
-// Table 1, No. 058 | source B38_23_s10 | HullDecreasing.m
-// Gsrc: [38,23]_4, hull 11; X4: [[39,13,9;6]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,23,38,[
+// Table 1, No. 35 | B38_23_s10
+// [[39,13,9;6]]_2, distance exact.
+Gsrc:=Matrix(F,23,38,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w^2,w^2,1,1,w^2,0,w^2,0,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,1,w^2,0,0,w^2,1,1,0,w,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,1,w^2,0,0,w^2,1,1,0,w,
@@ -2866,49 +1630,44 @@ Gsrc := Matrix(F,23,38,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,0,1,0,1,w,w,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w^2,w,w,w^2,w^2,w,0,w,0,1,0,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,22,38,[
-            1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w^2,w,w^2,1,w^2,1,0,1,0,w^2,w^2,w^2,1,w^2,1,0,w,1,w^2,w,0,w,1,
-            0,1,0,0,0,0,0,0,0,0,0,1,w^2,1,w,1,w,w,1,w,w,0,w^2,w,w,0,1,w^2,0,0,w,0,0,w,w^2,w,w^2,w^2,
-            0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,0,
-            0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,
-            0,0,0,0,0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,
-            0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,
-            0,0,0,0,0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,
-            0,0,0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w,0,w,0,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w,1,0,0,0,0,0,0,w^2,w^2,w,0,0,1,w^2,1,1,1,0,w^2,1,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,w,w^2,1,1,0,0,1,0,0,w,w^2,w,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,1,w,0,w^2,1,0,0,0,w,1,0,1,1,w^2,w^2,w,w^2,0,w,0,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,w,w,0,0,1,0,0,0,w,1,w^2,1,w,1,0,w,0,w,0,0,w,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w^2,w,1,w,0,0,1,1,w,1,1,0,w,0,w,w^2,0,1,w,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w^2,0,w,1,0,0,1,w^2,w^2,1,0,w,0,w,0,0,1,0,0,1,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,1,w,w^2,0,1,1,0,1,w^2,0,w,1,w,1,0,w^2,1,w^2,1,1,0,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,w^2,0,w,w^2,1,1,1,w,w^2,w,w,1,w,0,0,1,0,0,w,w,0,1
-        ]),
-        ZeroMatrix(F,22,1)),
-    HorizontalJoin(
-        Matrix(F,1,38,[
-            0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,23,39,[
+    1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w^2,w,w^2,1,w^2,1,0,1,0,w^2,w^2,w^2,1,w^2,1,0,w,1,w^2,w,0,w,1,0,
+    0,1,0,0,0,0,0,0,0,0,0,1,w^2,1,w,1,w,w,1,w,w,0,w^2,w,w,0,1,w^2,0,0,w,0,0,w,w^2,w,w^2,w^2,0,
+    0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,w,w,w^2,w^2,1,1,w,1,w^2,0,1,1,0,w,w,w,1,w,w,w^2,0,
+    0,0,0,0,0,1,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w,0,1,0,1,w^2,0,0,0,w^2,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,
+    0,0,0,0,0,0,1,0,0,0,0,1,w^2,w,w,w^2,1,1,1,1,1,0,w^2,w,1,w^2,w,0,w,0,0,w^2,w,0,0,w,w,1,0,
+    0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,0,
+    0,0,0,0,0,0,0,0,1,0,0,w^2,1,0,w^2,0,w^2,w,0,1,1,w^2,w,1,1,w,w^2,1,1,w^2,w^2,w^2,1,w^2,1,0,w,w,0,
+    0,0,0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,1,w^2,0,w^2,0,1,w,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,w^2,w,0,w,0,w^2,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w,1,0,0,0,0,0,0,w^2,w^2,w,0,0,1,w^2,1,1,1,0,w^2,1,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,w,w^2,1,1,0,0,1,0,0,w,w^2,w,w^2,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,1,w,0,w^2,1,0,0,0,w,1,0,1,1,w^2,w^2,w,w^2,0,w,0,w^2,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,w,w,0,0,1,0,0,0,w,1,w^2,1,w,1,0,w,0,w,0,0,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w^2,w,1,w,0,0,1,1,w,1,1,0,w,0,w,w^2,0,1,w,w^2,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w^2,0,w,1,0,0,1,w^2,w^2,1,0,w,0,w,0,0,1,0,0,1,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,1,w,w^2,0,1,1,0,1,w^2,0,w,1,w,1,0,w^2,1,w^2,1,1,0,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,w^2,0,w,w^2,1,1,1,w,w^2,w,w,1,w,0,0,1,0,0,w,w,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w,1,0,w,w^2,1,1,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,w,w^2,0,0,w^2,1,1,1
+]);
 assert Rank(Gsrc) eq 23 and Rank(GX4) eq 23;
-assert Ncols(GX4) eq 39;
 assert RowSpace(Submatrix(GX4,1,1,23,38)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 11;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 10;
-Table1Generators[58] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,39,23,1) eq VerticalJoin(ZeroMatrix(F,22,1),IdentityMatrix(F,1));
+Table1Generators[35]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 39 and Dimension(Q) eq 23;
+assert Dimension(HermitianHull(Q)) eq 10;
+Table1Parameters[35]:=[39,13,9,6];
+Table1DistanceTypes[35]:="exact";
 
-// Table 1, No. 059 | source B38_22_s9 | HullDecreasing.m
-// Gsrc: [38,22]_4, hull 10; X4: [[39,13,9;8]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,22,38,[
+// Table 1, No. 36 | B38_22_s9
+// [[39,13,9;8]]_2, distance exact.
+Gsrc:=Matrix(F,22,38,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w^2,w^2,1,1,w^2,0,w^2,0,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,1,w^2,0,0,w^2,1,1,0,w,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,1,w^2,0,0,w^2,1,1,0,w,
@@ -2932,79 +1691,69 @@ Gsrc := Matrix(F,22,38,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,w,1,w,w^2,0,w^2,1,w,w,1,0,w,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,0,1,0,1,w,w,w,1,1,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,21,38,[
-            1,0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,1,w,0,0,1,w^2,1,0,w^2,w,0,w^2,w^2,w,0,0,1,0,w^2,w,1,0,w^2,
-            0,1,0,0,0,0,0,0,0,0,1,1,1,w,0,0,w,0,w,w^2,w^2,w^2,0,0,1,w,1,w,w^2,w^2,w,w,w^2,w,w^2,1,w,w,
-            0,0,1,0,0,0,0,0,0,0,w^2,w^2,0,0,w,0,w,w^2,1,0,w,w^2,0,0,1,1,1,w,w,0,w,w^2,w^2,w,w,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,w,0,0,0,1,1,w^2,1,w^2,1,1,0,0,1,0,0,0,w^2,0,1,w,1,w^2,1,w,w^2,1,w,
-            0,0,0,0,1,0,0,0,0,0,w,0,w^2,w,w,0,w^2,0,w^2,0,1,w,0,w,w^2,w,w^2,w,0,0,0,1,w^2,w,1,w^2,0,1,
-            0,0,0,0,0,1,0,0,0,0,w,w^2,w^2,0,w,w,1,0,w^2,w,w^2,1,0,0,1,w^2,0,1,w,w,w^2,w^2,w,0,w,0,w,w^2,
-            0,0,0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,0,
-            0,0,0,0,0,0,0,1,0,0,1,1,w^2,w,w^2,1,w,w^2,0,w^2,1,w^2,0,w,w^2,0,1,w^2,w,w,w^2,w,w,1,0,w^2,0,w,
-            0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,w,w,w^2,w^2,w^2,w,w,w,1,0,0,w^2,w^2,w^2,w,w^2,1,w^2,w,w^2,w^2,1,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,
-            0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,w^2,0,0,w,0,w,w^2,0,w,w^2,1,w^2,1,0,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,0,1,1,w,w,w^2,0,w^2,1,0,w,
-            0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,0,0,0,0,0,0,0,w,0,w,w^2,w,w^2,w,1,0,w,0,w^2,1,0,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,1,0,1,w^2,w^2,w^2,0,0,1,w^2,w^2,w^2,0,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,0,0,0,0,w,0,w,0,0,1,w^2,1,0,w,w^2,1,1,w^2,w,w,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,1,w,1,w^2,0,w,0,0,0,0,w^2,0,0,0,0,w^2,w,0,1,1,0,0,w,1,w,w^2,0,w,0,
-            0,0,0,0,0,0,0,0,0,w,0,0,0,w,1,0,1,0,0,w^2,0,1,0,w,0,w^2,w,0,1,w^2,1,w,w,0,w^2,0,w,1,
-            0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,1,0,w,w,w,0,w^2,0,0,0,w,w,1,0,0,w,w,w^2,1,w^2,1,w^2,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,w,w,0,w^2,0,w^2,0,0,0,0,w,0,w,0,0,1,w^2,w^2,w,1,0,w,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,w,1,w^2,w,w,w,w,w^2,w,1,0,w,0,0,0,0,w,w^2,w,0,w^2,w,1,1,w^2,1,0,w,0,
-            0,0,0,0,0,0,0,0,0,w^2,w,0,0,w^2,1,0,0,w^2,1,w^2,w^2,1,0,w,1,w^2,0,w^2,0,w,w^2,w^2,w^2,w,w,1,0,w
-        ]),
-        ZeroMatrix(F,21,1)),
-    HorizontalJoin(
-        Matrix(F,1,38,[
-            0,0,0,0,0,0,0,0,0,1,w^2,w,w,0,0,w^2,w,w,w^2,w,0,1,0,w,0,1,1,0,1,w,w,w,w,0,w^2,w^2,w,w^2
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,22,39,[
+    1,0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,1,w,0,0,1,w^2,1,0,w^2,w,0,w^2,w^2,w,0,0,1,0,w^2,w,1,0,w^2,0,
+    0,1,0,0,0,0,0,0,0,0,1,1,1,w,0,0,w,0,w,w^2,w^2,w^2,0,0,1,w,1,w,w^2,w^2,w,w,w^2,w,w^2,1,w,w,0,
+    0,0,1,0,0,0,0,0,0,0,w^2,w^2,0,0,w,0,w,w^2,1,0,w,w^2,0,0,1,1,1,w,w,0,w,w^2,w^2,w,w,1,w^2,w^2,0,
+    0,0,0,1,0,0,0,0,0,0,w,0,0,0,1,1,w^2,1,w^2,1,1,0,0,1,0,0,0,w^2,0,1,w,1,w^2,1,w,w^2,1,w,0,
+    0,0,0,0,1,0,0,0,0,0,w,0,w^2,w,w,0,w^2,0,w^2,0,1,w,0,w,w^2,w,w^2,w,0,0,0,1,w^2,w,1,w^2,0,1,0,
+    0,0,0,0,0,1,0,0,0,0,w,w^2,w^2,0,w,w,1,0,w^2,w,w^2,1,0,0,1,w^2,0,1,w,w,w^2,w^2,w,0,w,0,w,w^2,0,
+    0,0,0,0,0,0,1,0,0,0,1,1,1,1,0,w,1,w^2,w,0,0,w^2,0,0,w,1,w,1,1,w^2,0,1,1,0,0,1,w^2,0,0,
+    0,0,0,0,0,0,0,1,0,0,1,1,w^2,w,w^2,1,w,w^2,0,w^2,1,w^2,0,w,w^2,0,1,w^2,w,w,w^2,w,w,1,0,w^2,0,w,0,
+    0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,w,w,w^2,w^2,w^2,w,w,w,1,0,0,w^2,w^2,w^2,w,w^2,1,w^2,w,w^2,w^2,1,w,1,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,0,1,w,w,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,w^2,0,0,w,0,w,w^2,0,w,w^2,1,w^2,1,0,1,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,0,1,1,w,w,w^2,0,w^2,1,0,w,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,0,0,0,0,0,0,0,w,0,w,w^2,w,w^2,w,1,0,w,0,w^2,1,0,w,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,1,0,1,w^2,w^2,w^2,0,0,1,w^2,w^2,w^2,0,0,1,1,w,0,
+    0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,0,0,0,0,w,0,w,0,0,1,w^2,1,0,w,w^2,1,1,w^2,w,w,w^2,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,1,w,1,w^2,0,w,0,0,0,0,w^2,0,0,0,0,w^2,w,0,1,1,0,0,w,1,w,w^2,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,w,0,0,0,w,1,0,1,0,0,w^2,0,1,0,w,0,w^2,w,0,1,w^2,1,w,w,0,w^2,0,w,1,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,1,0,w,w,w,0,w^2,0,0,0,w,w,1,0,0,w,w,w^2,1,w^2,1,w^2,1,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,w,w,0,w^2,0,w^2,0,0,0,0,w,0,w,0,0,1,w^2,w^2,w,1,0,w,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,w,1,w^2,w,w,w,w,w^2,w,1,0,w,0,0,0,0,w,w^2,w,0,w^2,w,1,1,w^2,1,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,0,0,w^2,1,0,0,w^2,1,w^2,w^2,1,0,w,1,w^2,0,w^2,0,w,w^2,w^2,w^2,w,w,1,0,w,0,
+    0,0,0,0,0,0,0,0,0,1,w^2,w,w,0,0,w^2,w,w,w^2,w,0,1,0,w,0,1,1,0,1,w,w,w,w,0,w^2,w^2,w,w^2,1
+]);
 assert Rank(Gsrc) eq 22 and Rank(GX4) eq 22;
-assert Ncols(GX4) eq 39;
 assert RowSpace(Submatrix(GX4,1,1,22,38)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 10;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 9;
-Table1Generators[59] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,39,22,1) eq VerticalJoin(ZeroMatrix(F,21,1),IdentityMatrix(F,1));
+Table1Generators[36]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 39 and Dimension(Q) eq 22;
+assert Dimension(HermitianHull(Q)) eq 9;
+Table1Parameters[36]:=[39,13,9,8];
+Table1DistanceTypes[36]:="exact";
 
-// Table 1, No. 060 | source B38_5_s1 | HullDecreasing.m
-// Gsrc: [38,5]_4, hull 3; X4: [[40,4,26;34]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,5,38,[
+// Table 1, No. 37 | B38_5_s1
+// [[40,4,26;34]]_2, distance exact.
+Gsrc:=Matrix(F,5,38,[
     1,0,0,0,0,w^2,w,w^2,w,w^2,w^2,w^2,w^2,0,1,0,0,1,w,1,0,w^2,0,1,w,0,1,1,1,w,0,w,1,0,w^2,1,1,w^2,
     0,1,0,0,0,w^2,w^2,w,w^2,w,1,w^2,w^2,w^2,0,1,0,0,1,w,w,0,w^2,0,1,w,0,1,1,1,w^2,0,w,1,0,1,1,1,
     0,0,1,0,0,w,w^2,w^2,w,w^2,0,1,w^2,w^2,w^2,w,1,0,0,1,1,w,0,w^2,0,1,w,0,1,1,0,w^2,0,w,1,w^2,1,1,
     0,0,0,1,0,w^2,w,w^2,w^2,w,w^2,0,1,w^2,w^2,1,w,1,0,0,0,1,w,0,w^2,1,1,w,0,1,1,0,w^2,0,w,w^2,w^2,1,
     0,0,0,0,1,w,w^2,w,w^2,w^2,w^2,w^2,0,1,w^2,0,1,w,1,0,w^2,0,1,w,0,1,1,1,w,0,w,1,0,w^2,0,1,w^2,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,3,38,[
-            1,0,1,0,w,w,0,w^2,1,1,w,w^2,0,1,w^2,w,w^2,w,0,0,0,1,w,1,w,w^2,1,w^2,w^2,w^2,w^2,w^2,1,w^2,w,0,1,w^2,
-            0,w^2,w,0,w^2,0,1,1,w^2,w,1,w,w^2,0,w^2,0,1,1,0,w^2,1,w^2,1,0,w^2,0,0,0,0,1,w^2,w,1,w,w,1,w^2,w^2,
-            0,w^2,w^2,0,1,1,w^2,1,0,0,0,w,0,1,1,w,w,w,w,w,1,1,w^2,0,w^2,w^2,0,w,w,0,0,w^2,1,1,w^2,0,w^2,w^2
-        ]),
-        ZeroMatrix(F,3,2)),
-    HorizontalJoin(
-        Matrix(F,2,38,[
-            0,1,0,0,w^2,w,1,w^2,1,0,w^2,1,w^2,0,w,1,w^2,1,w,w,0,0,0,1,1,1,w^2,w,0,1,w,w^2,w,w^2,0,w,w^2,w^2,
-            0,0,0,1,1,1,1,1,0,1,0,w^2,1,w,0,1,w^2,w^2,1,0,w^2,1,w^2,w,w^2,0,0,w^2,w,1,w^2,1,w^2,w^2,w,w,0,w
-        ]),
-        IdentityMatrix(F,2)));
+GX4:=Matrix(F,5,40,[
+    1,0,1,0,w,w,0,w^2,1,1,w,w^2,0,1,w^2,w,w^2,w,0,0,0,1,w,1,w,w^2,1,w^2,w^2,w^2,w^2,w^2,1,w^2,w,0,1,w^2,0,0,
+    0,w^2,w,0,w^2,0,1,1,w^2,w,1,w,w^2,0,w^2,0,1,1,0,w^2,1,w^2,1,0,w^2,0,0,0,0,1,w^2,w,1,w,w,1,w^2,w^2,0,0,
+    0,w^2,w^2,0,1,1,w^2,1,0,0,0,w,0,1,1,w,w,w,w,w,1,1,w^2,0,w^2,w^2,0,w,w,0,0,w^2,1,1,w^2,0,w^2,w^2,0,0,
+    0,1,0,0,w^2,w,1,w^2,1,0,w^2,1,w^2,0,w,1,w^2,1,w,w,0,0,0,1,1,1,w^2,w,0,1,w,w^2,w,w^2,0,w,w^2,w^2,1,0,
+    0,0,0,1,1,1,1,1,0,1,0,w^2,1,w,0,1,w^2,w^2,1,0,w^2,1,w^2,w,w^2,0,0,w^2,w,1,w^2,1,w^2,w^2,w,w,0,w,0,1
+]);
 assert Rank(Gsrc) eq 5 and Rank(GX4) eq 5;
-assert Ncols(GX4) eq 40;
 assert RowSpace(Submatrix(GX4,1,1,5,38)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[60] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,39,5,2) eq VerticalJoin(ZeroMatrix(F,3,2),IdentityMatrix(F,2));
+Table1Generators[37]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 40 and Dimension(Q) eq 5;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[37]:=[40,4,26,34];
+Table1DistanceTypes[37]:="exact";
 
-// Table 1, No. 061 | source B39_15_s3 | HullDecreasing.m
-// Gsrc: [39,15]_4, hull 4; X4: [[40,12,15;22]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,15,39,[
+// Table 1, No. 38 | B39_15_s3
+// [[40,12,15;22]]_2, distance exact.
+Gsrc:=Matrix(F,15,39,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,w,w,w^2,0,0,0,w,w,1,w,1,w^2,w,0,w^2,w^2,1,1,w^2,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,
@@ -3021,41 +1770,36 @@ Gsrc := Matrix(F,15,39,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,0,1,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w,w^2,w^2,w,w^2,1,1,w^2,1,0,0,0,0,w,w,1,w^2,w,w^2,w^2,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,14,39,[
-            1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,0,
-            0,1,0,0,w,0,1,0,0,w,0,1,0,0,w,0,1,0,0,w,0,w^2,w^2,w^2,0,0,w^2,w^2,w^2,0,0,w^2,w^2,w^2,0,0,w^2,w^2,w^2,
-            0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,
-            0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,1,1,1,w,w^2,1,w,0,0,0,w^2,0,w,w,0,w,1,w^2,0,1,1,w,0,w^2,
-            0,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,0,0,1,1,w^2,w,w^2,0,1,w,0,0,w,w^2,w^2,1,0,0,0,1,
-            0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,1,w,1,1,w,w,w,w^2,w,0,0,w^2,0,0,w,0,1,0,1,w,
-            0,0,0,w^2,1,w^2,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w^2,w,w,1,w^2,w,w^2,1,1,0,w^2,1,1,1,1,w^2,w,0,w^2,0,
-            0,0,0,1,1,1,w,w,1,0,0,0,0,0,0,0,w^2,w^2,1,0,0,w^2,0,w,w,w^2,w^2,1,0,0,0,w,w^2,w,w^2,w,w^2,w^2,1,
-            0,0,0,1,w,0,0,1,1,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w,w^2,w,0,w,w,w^2,w,1,1,w^2,w^2,1,w,0,0,0,w,
-            0,0,0,w,w,w,w^2,w^2,w,0,1,w,0,0,0,1,w^2,1,w,0,w^2,1,1,w,w,w,w^2,1,1,0,w^2,w^2,w,w^2,0,0,w^2,0,w,
-            0,0,0,0,w,0,w^2,w,0,0,1,w^2,0,0,0,1,0,w,0,w,w,w,w^2,w^2,1,w,w^2,w,w^2,0,w,1,w,1,1,w,0,w^2,1,
-            0,0,0,w^2,1,0,w^2,0,w,1,w,w^2,0,0,w,1,w^2,w^2,w,1,w^2,w^2,w,1,w^2,w,1,w,0,0,w^2,0,w^2,w^2,0,1,1,0,1,
-            0,0,0,0,w,0,w,1,1,1,w^2,w,0,0,w^2,w^2,0,1,1,0,w,0,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,w,w^2,0,0,0,w,
-            0,0,0,1,0,1,0,w^2,0,0,1,1,1,0,1,0,1,w,1,1,1,1,w^2,w^2,1,0,0,w^2,w^2,1,0,0,w,w,0,1,1,w,w
-        ]),
-        ZeroMatrix(F,14,1)),
-    HorizontalJoin(
-        Matrix(F,1,39,[
-            0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,w,1,0,0,0,w,1,0,0,0,w,1,0,0,0,w,1,0,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,15,40,[
+    1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,1,0,0,0,w^2,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,0,0,0,1,w^2,0,0,
+    0,1,0,0,w,0,1,0,0,w,0,1,0,0,w,0,1,0,0,w,0,w^2,w^2,w^2,0,0,w^2,w^2,w^2,0,0,w^2,w^2,w^2,0,0,w^2,w^2,w^2,0,
+    0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,
+    0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,1,1,1,w,w^2,1,w,0,0,0,w^2,0,w,w,0,w,1,w^2,0,1,1,w,0,w^2,0,
+    0,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,0,0,1,1,w^2,w,w^2,0,1,w,0,0,w,w^2,w^2,1,0,0,0,1,0,
+    0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,1,w,1,1,w,w,w,w^2,w,0,0,w^2,0,0,w,0,1,0,1,w,0,
+    0,0,0,w^2,1,w^2,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w^2,w,w,1,w^2,w,w^2,1,1,0,w^2,1,1,1,1,w^2,w,0,w^2,0,0,
+    0,0,0,1,1,1,w,w,1,0,0,0,0,0,0,0,w^2,w^2,1,0,0,w^2,0,w,w,w^2,w^2,1,0,0,0,w,w^2,w,w^2,w,w^2,w^2,1,0,
+    0,0,0,1,w,0,0,1,1,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w,w^2,w,0,w,w,w^2,w,1,1,w^2,w^2,1,w,0,0,0,w,0,
+    0,0,0,w,w,w,w^2,w^2,w,0,1,w,0,0,0,1,w^2,1,w,0,w^2,1,1,w,w,w,w^2,1,1,0,w^2,w^2,w,w^2,0,0,w^2,0,w,0,
+    0,0,0,0,w,0,w^2,w,0,0,1,w^2,0,0,0,1,0,w,0,w,w,w,w^2,w^2,1,w,w^2,w,w^2,0,w,1,w,1,1,w,0,w^2,1,0,
+    0,0,0,w^2,1,0,w^2,0,w,1,w,w^2,0,0,w,1,w^2,w^2,w,1,w^2,w^2,w,1,w^2,w,1,w,0,0,w^2,0,w^2,w^2,0,1,1,0,1,0,
+    0,0,0,0,w,0,w,1,1,1,w^2,w,0,0,w^2,w^2,0,1,1,0,w,0,0,w^2,w^2,0,w,w^2,w^2,0,w,w,w^2,w,w^2,0,0,0,w,0,
+    0,0,0,1,0,1,0,w^2,0,0,1,1,1,0,1,0,1,w,1,1,1,1,w^2,w^2,1,0,0,w^2,w^2,1,0,0,w,w,0,1,1,w,w,0,
+    0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,0,0,0,1,w,w,1,0,0,0,w,1,0,0,0,w,1,0,0,0,w,1,0,0,1
+]);
 assert Rank(Gsrc) eq 15 and Rank(GX4) eq 15;
-assert Ncols(GX4) eq 40;
 assert RowSpace(Submatrix(GX4,1,1,15,39)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[61] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,40,15,1) eq VerticalJoin(ZeroMatrix(F,14,1),IdentityMatrix(F,1));
+Table1Generators[38]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 40 and Dimension(Q) eq 15;
+assert Dimension(HermitianHull(Q)) eq 3;
+Table1Parameters[38]:=[40,12,15,22];
+Table1DistanceTypes[38]:="exact";
 
-// Table 1, No. 062 | source B39_26_s9 | HullDecreasing.m
-// Gsrc: [39,26]_4, hull 10; X4: [[40,17,8;5]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,26,39,[
+// Table 1, No. 39 | B39_26_s9
+// [[40,17,8;5]]_2, distance exact.
+Gsrc:=Matrix(F,26,39,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w^2,1,0,w^2,1,0,0,1,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,w,0,w,w^2,w,1,1,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,w,w^2,w,0,w^2,1,1,0,
@@ -3083,296 +1827,47 @@ Gsrc := Matrix(F,26,39,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,0,w,1,w^2,w,1,w^2,w^2,1,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,w,w^2,0,0,w,w,w^2,1,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,25,39,[
-            1,0,0,0,0,w^2,0,0,0,0,0,w^2,0,w^2,w^2,0,1,w,0,0,w^2,w,w,1,w^2,w,1,w,1,w^2,w^2,0,w,1,1,w,0,0,0,
-            0,1,0,0,0,1,0,0,0,0,0,w,1,w^2,1,1,w,w,w,w,w,w^2,0,0,w,0,1,1,0,w^2,w^2,1,w,w^2,w^2,0,0,0,0,
-            0,0,1,0,0,w,0,0,0,0,0,0,0,w^2,0,w,0,1,w,w^2,w,1,w^2,0,1,0,w,w,w^2,1,w^2,1,w^2,w^2,0,1,0,0,0,
-            0,0,0,1,0,1,0,0,0,0,0,1,1,w,w^2,0,w^2,w^2,1,w,0,1,0,1,0,0,0,w^2,w^2,0,w^2,1,w^2,w,w^2,w^2,0,0,0,
-            0,0,0,0,1,w^2,0,0,0,0,0,1,1,w,w,w^2,w,0,w^2,0,w,0,0,w^2,1,1,w,1,w^2,0,1,1,w^2,w,w,w^2,0,0,0,
-            0,0,0,0,0,0,1,0,0,0,0,1,w,w^2,0,1,w^2,w,0,w^2,w,1,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,0,0,w^2,w^2,0,0,0,
-            0,0,0,0,0,0,0,1,0,0,0,1,w,w^2,w,w,1,w,w,w^2,1,w^2,1,1,w^2,w,0,1,0,1,w^2,0,w^2,0,w^2,1,0,0,0,
-            0,0,0,0,0,0,0,0,1,0,0,1,w,w^2,w,0,w,0,w,1,1,0,w^2,w^2,1,w,w,w,w^2,1,1,1,0,w^2,w^2,w^2,0,0,0,
-            0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w,0,0,w^2,0,1,w^2,0,0,1,w^2,0,w,0,0,w,1,w^2,1,0,0,1,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,1,0,0,0,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w,0,w^2,w,0,w,1,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,1,1,w,1,w^2,
-            0,0,0,0,0,w,0,0,0,0,w,0,w,0,0,0,1,0,0,0,0,0,0,0,0,1,1,w,0,1,1,0,w^2,1,0,w^2,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,0,0,1,0,0,0,0,0,0,0,0,1,0,w,0,0,1,0,0,0,w,w^2,w,w,0,
-            0,0,0,0,0,1,0,0,0,0,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,w,w^2,w,w,w^2,1,0,1,
-            0,0,0,0,0,w^2,0,0,0,0,0,w^2,w,w,0,w,w^2,0,0,0,0,0,0,0,0,w^2,w,1,0,1,w,0,0,w^2,w,1,1,w,w^2,
-            0,0,0,0,0,w,0,0,0,0,1,1,w,w,w^2,w^2,w^2,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,w^2,0,w,w,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,w,0,0,0,0,1,w,w,w,w^2,w,0,1,0,0,0,0,0,0,0,w^2,w,w,w^2,1,0,1,w,1,0,w,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,w^2,w,0,1,0,0,0,0,0,0,w^2,w,0,1,w^2,w,w^2,w^2,0,w,w,w,w,0,
-            0,0,0,0,0,w,0,0,0,0,1,0,1,w,0,1,w^2,1,w^2,1,0,0,0,0,0,w,1,0,w^2,w^2,w,w^2,w^2,1,w^2,w,w,w,0,
-            0,0,0,0,0,1,0,0,0,0,1,w^2,w,w,0,w,w^2,1,1,0,1,0,0,0,0,w,w,1,0,0,0,1,w^2,w,1,1,1,w,w^2,
-            0,0,0,0,0,w^2,0,0,0,0,1,w^2,w^2,1,w^2,w^2,1,0,w,w,w,w^2,w,0,0,0,w,0,1,w^2,1,w^2,w,1,1,1,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w^2,w^2,w^2,1,0,w^2,w^2,w^2,0,0,0,1,0,0,w^2,1,1,w^2,1,0,0,w,w,0,
-            0,0,0,0,0,1,0,0,0,0,w,w^2,w^2,w^2,w^2,1,w^2,1,1,w^2,1,1,w^2,1,0,w,0,1,w,1,w,w^2,w,w^2,w^2,w,1,1,0,
-            0,0,0,0,0,w^2,0,0,0,0,1,w,w,w,1,1,w^2,w^2,1,w,1,w^2,w,w,1,w^2,1,w,1,w^2,w,w^2,w,w^2,1,w,1,1,0
-        ]),
-        ZeroMatrix(F,25,1)),
-    HorizontalJoin(
-        Matrix(F,1,39,[
-            0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w,0,1,0,w^2,w,1,0,w,0,1,0,w,w,1,0,w,0,0,w^2,w^2,w,0,0,0
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,26,40,[
+    1,0,0,0,0,w^2,0,0,0,0,0,w^2,0,w^2,w^2,0,1,w,0,0,w^2,w,w,1,w^2,w,1,w,1,w^2,w^2,0,w,1,1,w,0,0,0,0,
+    0,1,0,0,0,1,0,0,0,0,0,w,1,w^2,1,1,w,w,w,w,w,w^2,0,0,w,0,1,1,0,w^2,w^2,1,w,w^2,w^2,0,0,0,0,0,
+    0,0,1,0,0,w,0,0,0,0,0,0,0,w^2,0,w,0,1,w,w^2,w,1,w^2,0,1,0,w,w,w^2,1,w^2,1,w^2,w^2,0,1,0,0,0,0,
+    0,0,0,1,0,1,0,0,0,0,0,1,1,w,w^2,0,w^2,w^2,1,w,0,1,0,1,0,0,0,w^2,w^2,0,w^2,1,w^2,w,w^2,w^2,0,0,0,0,
+    0,0,0,0,1,w^2,0,0,0,0,0,1,1,w,w,w^2,w,0,w^2,0,w,0,0,w^2,1,1,w,1,w^2,0,1,1,w^2,w,w,w^2,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,1,w,w^2,0,1,w^2,w,0,w^2,w,1,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,0,0,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,1,w,w^2,w,w,1,w,w,w^2,1,w^2,1,1,w^2,w,0,1,0,1,w^2,0,w^2,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,1,w,w^2,w,0,w,0,w,1,1,0,w^2,w^2,1,w,w,w,w^2,1,1,1,0,w^2,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w,0,0,w^2,0,1,w^2,0,0,1,w^2,0,w,0,0,w,1,w^2,1,0,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,1,0,0,0,w,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w,0,w^2,w,0,w,1,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,1,1,w,1,w^2,0,
+    0,0,0,0,0,w,0,0,0,0,w,0,w,0,0,0,1,0,0,0,0,0,0,0,0,1,1,w,0,1,1,0,w^2,1,0,w^2,w,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,0,0,1,0,0,0,0,0,0,0,0,1,0,w,0,0,1,0,0,0,w,w^2,w,w,0,0,
+    0,0,0,0,0,1,0,0,0,0,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,w,w^2,w,w,w^2,1,0,1,0,
+    0,0,0,0,0,w^2,0,0,0,0,0,w^2,w,w,0,w,w^2,0,0,0,0,0,0,0,0,w^2,w,1,0,1,w,0,0,w^2,w,1,1,w,w^2,0,
+    0,0,0,0,0,w,0,0,0,0,1,1,w,w,w^2,w^2,w^2,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,w^2,0,w,w,w^2,1,0,1,w^2,w,0,
+    0,0,0,0,0,w,0,0,0,0,1,w,w,w,w^2,w,0,1,0,0,0,0,0,0,0,w^2,w,w,w^2,1,0,1,w,1,0,w,w^2,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,w^2,w,0,1,0,0,0,0,0,0,w^2,w,0,1,w^2,w,w^2,w^2,0,w,w,w,w,0,0,
+    0,0,0,0,0,w,0,0,0,0,1,0,1,w,0,1,w^2,1,w^2,1,0,0,0,0,0,w,1,0,w^2,w^2,w,w^2,w^2,1,w^2,w,w,w,0,0,
+    0,0,0,0,0,1,0,0,0,0,1,w^2,w,w,0,w,w^2,1,1,0,1,0,0,0,0,w,w,1,0,0,0,1,w^2,w,1,1,1,w,w^2,0,
+    0,0,0,0,0,w^2,0,0,0,0,1,w^2,w^2,1,w^2,w^2,1,0,w,w,w,w^2,w,0,0,0,w,0,1,w^2,1,w^2,w,1,1,1,w^2,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w^2,w^2,w^2,1,0,w^2,w^2,w^2,0,0,0,1,0,0,w^2,1,1,w^2,1,0,0,w,w,0,0,
+    0,0,0,0,0,1,0,0,0,0,w,w^2,w^2,w^2,w^2,1,w^2,1,1,w^2,1,1,w^2,1,0,w,0,1,w,1,w,w^2,w,w^2,w^2,w,1,1,0,0,
+    0,0,0,0,0,w^2,0,0,0,0,1,w,w,w,1,1,w^2,w^2,1,w,1,w^2,w,w,1,w^2,1,w,1,w^2,w,w^2,w,w^2,1,w,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w,0,1,0,w^2,w,1,0,w,0,1,0,w,w,1,0,w,0,0,w^2,w^2,w,0,0,0,1
+]);
 assert Rank(Gsrc) eq 26 and Rank(GX4) eq 26;
-assert Ncols(GX4) eq 40;
 assert RowSpace(Submatrix(GX4,1,1,26,39)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 10;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 9;
-Table1Generators[62] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,40,26,1) eq VerticalJoin(ZeroMatrix(F,25,1),IdentityMatrix(F,1));
+Table1Generators[39]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 40 and Dimension(Q) eq 26;
+assert Dimension(HermitianHull(Q)) eq 9;
+Table1Parameters[39]:=[40,17,8,5];
+Table1DistanceTypes[39]:="exact";
 
-// Table 1, No. 063 | source B40_26_shorten13_s4 | HullIncreasing.m
-// Gsrc: [39,25]_4, hull 3; X4: [[40,21,8;11]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,25,39,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w^2,w,0,w,1,w,1,w^2,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,w^2,w^2,w,0,w^2,0,w^2,1,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,1,w,w^2,w^2,w,w^2,0,w^2,w^2,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,1,w,w^2,w^2,w,w^2,0,w^2,w^2,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,w^2,w,1,0,w,1,0,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w^2,w^2,w,1,w^2,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w^2,w^2,w,1,w^2,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w^2,w^2,w,1,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w,w,w^2,w^2,w,w^2,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w,w,w,w^2,1,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w,w,w,w^2,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w^2,0,1,w^2,w,1,1,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,0,1,w^2,1,w,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,0,1,w^2,1,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,0,1,w^2,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w,w^2,w,w,w^2,1,1,0,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w,w^2,w,w,w^2,1,1,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,w,0,w,0,w^2,w,w,0,w,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,1,w^2,1,w^2,0,w^2,w,0,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,w,0,w,0,w^2,0,w^2,0,w,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,0,w,0,0,w^2,0,0,w^2,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w,w,0,0,0,w^2,w^2,w^2,0,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,24,39,[
-            1,0,0,w,0,w,w^2,w,w,w^2,w,w^2,w,0,1,w^2,0,1,1,w,w,0,w^2,w,0,1,0,w^2,1,w^2,1,1,w^2,1,0,1,0,0,w,
-            0,1,0,1,0,w^2,1,w,w^2,w^2,w,1,w^2,w^2,1,0,w,w,w,0,w,1,1,1,w,w,0,0,w^2,1,0,0,w,w,0,w^2,w,w^2,0,
-            0,0,1,0,w^2,0,0,0,w^2,1,w^2,w,w^2,1,w^2,w^2,w,w,w^2,0,0,1,1,w,w^2,w^2,0,0,0,w^2,1,0,w^2,0,w^2,0,0,1,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,w^2,0,1,w,0,w,w^2,1,1,1,
-            0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,1,w,w,w,w^2,0,w,w^2,1,0,
-            0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,1,w,w,0,w,w,w,0,1,
-            0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,0,w,w,0,w,w^2,0,0,0,0,
-            0,0,0,1,w^2,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,1,w^2,w^2,w^2,0,w,w,0,0,w,
-            0,0,0,0,w,w,w,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,w^2,0,0,0,0,0,w^2,1,1,0,w^2,
-            0,0,0,w,1,0,0,0,w^2,1,0,w,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,1,0,0,0,w^2,w^2,1,1,0,w,
-            0,0,0,1,1,w,1,0,w^2,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,w^2,1,0,w,0,1,w^2,0,w,
-            0,0,0,0,1,1,w,0,0,0,1,w,w^2,w,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,w^2,0,w^2,w^2,w^2,1,w^2,0,w,1,0,
-            0,0,0,w,1,w^2,w,0,w^2,1,w^2,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w^2,w,0,w^2,1,0,w,w^2,w,0,1,
-            0,0,0,0,1,0,1,w^2,w^2,0,1,0,w^2,1,0,0,0,0,0,0,0,0,0,1,1,w^2,0,w,1,1,w^2,w,w^2,w,1,w,w,0,1,
-            0,0,0,0,1,0,1,0,1,w,1,w,w,0,0,0,0,0,0,0,0,0,0,1,w,w,1,w^2,w,w^2,0,1,w^2,0,w^2,w^2,w,w^2,1,
-            0,0,0,0,0,1,w,w,0,1,1,0,0,w^2,0,1,0,0,0,0,0,0,0,1,w,0,w,w^2,1,w,0,w^2,0,w,1,w,0,w,w,
-            0,0,0,0,w^2,w^2,w^2,w,1,w^2,w,1,0,w^2,w^2,0,1,0,0,0,0,0,0,w^2,w,1,0,1,w^2,w^2,w^2,1,w^2,w,w,w,w,w,0,
-            0,0,0,0,0,w,1,w^2,w^2,0,1,w^2,w,w,0,w^2,1,0,0,0,0,0,0,w,1,1,0,w,1,0,0,w^2,w^2,0,w,w^2,0,w^2,w^2,
-            0,0,0,w,w^2,0,w^2,1,1,1,w,1,0,1,w^2,0,w^2,w^2,1,0,0,0,0,w^2,w^2,1,1,w,1,w,1,1,0,w,w^2,0,0,w,0,
-            0,0,0,w,0,1,1,0,w^2,w^2,0,1,w^2,0,w^2,1,w,0,1,0,0,0,0,w^2,0,w,0,0,w,w,w^2,w,w^2,w^2,1,w^2,w^2,0,w^2,
-            0,0,0,0,0,1,w,0,0,0,0,0,1,1,0,0,1,0,1,w,w,0,0,1,w^2,w,0,1,1,1,0,w,1,0,w^2,w^2,1,w^2,w,
-            0,0,0,1,0,w^2,1,1,w,0,w,w^2,1,w,0,1,w,w,1,w,w^2,0,0,0,0,w,0,w^2,1,0,1,w^2,w,w^2,w,w,1,w,w^2,
-            0,0,0,w^2,w^2,w^2,0,1,1,0,0,0,0,w,w,0,w^2,w^2,w^2,0,0,1,0,0,w^2,1,0,0,1,1,w^2,0,w^2,0,0,w^2,0,0,w,
-            0,0,0,w,w,w^2,1,w^2,w^2,w^2,0,0,1,w^2,1,1,w^2,1,w,w^2,1,1,1,w,w^2,w,w,w^2,w,w^2,w,w,1,w,w^2,1,w^2,1,0
-        ]),
-        ZeroMatrix(F,24,1)),
-    HorizontalJoin(
-        Matrix(F,1,39,[
-            w,w^2,1,w,w^2,w^2,1,0,0,1,w^2,w^2,0,w^2,w^2,1,w^2,0,1,1,0,w,0,0,0,1,w^2,1,1,1,1,1,0,1,w^2,w,0,w,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 25 and Rank(GX4) eq 25;
-assert Ncols(GX4) eq 40;
-assert RowSpace(Submatrix(GX4,1,1,25,39)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[63] := <Gsrc,GX4>;
-
-// Table 1, No. 064 | source B39_25_s2 | HullIncreasing.m
-// Gsrc: [39,25]_4, hull 1; X4: [[40,23,8;13]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,25,39,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,w^2,w^2,w,0,w^2,0,w^2,1,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,1,w,w^2,w^2,w,w^2,0,w^2,w^2,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,1,w,w^2,w^2,w,w^2,0,w^2,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,w^2,w,1,0,w,1,0,1,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w^2,w^2,w,1,w^2,1,w,0,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w^2,w^2,w,1,w^2,1,w,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w^2,w^2,w,1,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w,w,w^2,w^2,w,w^2,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w,w,w,w^2,1,0,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w,w,w,w^2,1,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w,w,w,w^2,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w^2,0,1,w^2,w,1,1,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,0,1,w^2,1,w,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,0,1,w^2,1,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,0,1,w^2,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w,w^2,w,w,w^2,1,1,0,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w,w^2,w,w,w^2,1,1,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,w,0,w,0,w^2,w,w,0,w,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,1,w^2,1,w^2,0,w^2,w,0,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,w,0,w,0,w^2,0,w^2,0,w,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,0,w,0,0,w^2,0,0,w^2,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w,w,0,0,0,w^2,w^2,w^2,0,1,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,24,39,[
-            1,1,1,w^2,w^2,1,w,0,w,1,w^2,0,0,w,w,w^2,0,0,1,0,w,0,0,w^2,1,1,0,0,w^2,w,1,0,1,w,w^2,w^2,w,w,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,
-            0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,1,w^2,0,w^2,1,w,0,0,w^2,0,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,
-            0,0,0,1,1,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w^2,1,1,w^2,w,1,w,w^2,w,0,1,
-            0,0,0,1,1,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,w,w,0,0,0,1,w,0,0,1,
-            0,0,w,1,0,1,w^2,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w,0,0,w,0,0,1,1,w,w^2,
-            0,0,0,w,w^2,w^2,0,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,0,w^2,w,1,w^2,0,1,1,1,w,w,
-            0,0,w^2,1,0,w,0,0,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,w^2,w,1,w^2,0,1,w,1,w,0,
-            0,0,w^2,w^2,w^2,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,w^2,w,w,0,1,1,1,0,1,
-            0,0,w^2,0,0,w^2,w,w,w^2,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,0,w,1,0,w,1,w,w^2,0,w^2,w^2,
-            0,0,w,0,w,w,1,1,w,w,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,w^2,0,0,w,0,0,w^2,0,0,w^2,
-            0,w,0,0,0,w^2,0,w,1,w^2,w,w,w,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,0,w,w,0,1,w^2,w,w,1,w,w,0,
-            0,w,w,w,w,w,1,w^2,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,1,w,w^2,w,w,w,w^2,w,1,1,w,w,
-            0,0,w^2,0,w^2,0,w,1,0,w,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w^2,0,1,1,w,w^2,w^2,w,1,w^2,w^2,
-            0,1,1,w,0,1,w^2,w^2,w,0,w^2,0,w,1,w,0,w,0,0,0,0,0,0,1,1,w^2,0,w,0,1,0,1,1,0,w,w,0,0,0,
-            0,0,w^2,w,0,1,1,1,w,w,1,1,w,1,w,0,w^2,0,0,0,0,0,0,w,w^2,w^2,1,w,0,1,1,w,w,w,w^2,w,1,w^2,0,
-            0,w,1,w,w^2,1,w,w^2,1,0,0,1,w,w,w^2,0,0,1,0,0,0,0,0,1,w,1,1,0,w^2,w^2,0,w,0,w^2,1,0,1,0,0,
-            0,0,0,1,w,1,w^2,w^2,1,w,1,w,0,0,0,w,0,0,0,0,0,w,0,0,w^2,0,w^2,0,w^2,w,w,0,w^2,w^2,w^2,1,0,w,0,
-            0,w^2,0,1,w^2,w,1,w^2,w^2,w^2,1,1,0,0,0,w,0,1,0,0,0,w^2,0,w^2,w^2,w^2,w,1,w^2,w^2,1,w,1,w^2,w,w^2,1,1,1,
-            0,1,w,1,w,1,w,w,0,w,w^2,w,0,1,1,w^2,w,1,1,w,0,0,0,1,1,w,w,1,w^2,w^2,w^2,w^2,w^2,1,0,0,w,1,w^2,
-            0,w^2,w,0,0,w^2,1,1,1,w^2,w,w^2,w^2,0,1,w,w,w,1,w^2,0,w,0,w^2,0,1,0,0,1,w^2,1,0,w,1,1,w,0,w^2,0,
-            0,1,w,w^2,0,1,w,w^2,0,w,w,w,w,w^2,1,w^2,w^2,w^2,w^2,w,1,0,w,0,1,w,0,w^2,1,1,0,w^2,1,1,w^2,1,0,1,1,
-            0,w^2,w^2,0,0,1,w,w^2,w^2,1,w,w,w,w,w,w^2,w^2,1,w,w,1,w^2,w^2,w^2,0,0,0,w,1,0,w^2,w^2,w^2,w^2,0,0,1,0,w^2
-        ]),
-        ZeroMatrix(F,24,1)),
-    HorizontalJoin(
-        Matrix(F,1,39,[
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 25 and Rank(GX4) eq 25;
-assert Ncols(GX4) eq 40;
-assert RowSpace(Submatrix(GX4,1,1,25,39)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[64] := <Gsrc,GX4>;
-
-// Table 1, No. 065 | source DV01 | HullIncreasing.m
-// Gsrc: [40,14]_4, hull 6; X4: [[41,7,16;20]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,14,40,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,0,w,w^2,0,w^2,0,1,1,w,w,w,1,w,w,0,1,0,w,1,w,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w,w^2,1,w^2,1,w^2,1,w^2,w,w^2,w,1,1,0,w,1,w,w,1,w^2,0,w,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,w^2,0,1,1,1,1,0,1,w,w^2,0,w,1,w^2,1,1,w,0,0,1,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,w^2,1,1,1,1,1,0,1,w,w^2,0,w,1,w^2,1,1,w,0,0,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,1,1,0,w,1,w^2,1,w,w,1,0,w^2,0,1,w^2,1,0,1,0,1,1,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,1,1,w,w,1,w^2,1,w,w,1,0,w^2,0,1,w^2,1,0,1,0,1,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,0,w,0,w^2,0,w,1,1,w,0,0,0,w^2,1,1,w,1,w,1,w,0,w,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,0,w,0,w^2,w,1,w,0,0,1,w,1,1,1,1,0,0,0,w,w,w,0,1,1,w,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,w^2,1,w^2,0,1,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w,w,0,w^2,w,0,1,w^2,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,w^2,1,w^2,w^2,1,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w,w,0,w^2,w,0,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,1,w,w^2,w^2,0,w^2,w^2,w^2,w,0,w^2,1,w,w,0,w,1,w,1,0,w,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,1,w,w^2,w^2,1,w^2,w^2,w^2,w,0,w^2,1,w,w,0,w,1,w,1,0,w,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w^2,w,w,w,w,w^2,1,1,w^2,0,1,1,w,0,1,w^2,1,w,w,w,0,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,0,w,1,0,w^2,0,1,1,w,w,w,1,w,w,0,1,0,w,1,w,0,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,13,40,[
-            1,0,0,0,0,0,1,1,w^2,0,w^2,0,w^2,0,0,w^2,0,w^2,0,w^2,1,w,w,1,w^2,1,w^2,1,1,w^2,w^2,1,1,w^2,1,w^2,1,w,w,0,
-            0,1,0,0,0,0,1,0,w,w^2,w^2,w^2,w^2,w^2,0,w^2,w^2,w^2,w^2,w^2,w,w,0,w^2,w,w,w,w,0,w,0,w,0,w,w,w,w,w^2,0,w,
-            0,0,1,0,0,0,w^2,w,w^2,1,w,1,w,0,w,w^2,0,w,1,w,w^2,w^2,0,w,w,0,w,w,1,0,w,1,w^2,w,w,w,0,0,w^2,w^2,
-            0,0,0,1,0,0,1,w,w^2,w,w^2,1,w^2,w^2,w,w^2,w,w,1,w^2,w,1,0,w^2,0,1,0,w,w^2,1,0,0,w^2,0,w,w,1,w^2,0,w,
-            0,0,0,0,1,0,w^2,w,1,0,w^2,1,0,0,w,1,0,w^2,0,0,w^2,w^2,w^2,w,w,w,1,0,1,w^2,1,1,1,1,0,w,0,w^2,w^2,w^2,
-            0,0,0,0,0,1,1,w,w^2,0,w,0,w^2,1,w,w^2,0,w,0,w,0,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,w,1,0,1,w^2,w^2,w,
-            0,0,0,0,0,0,w,1,0,0,0,0,0,0,1,w^2,w^2,0,0,w,0,w,w^2,w,w^2,1,1,1,1,0,w,w,w^2,0,1,0,w^2,1,w,0,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,0,w,0,w^2,w,1,w,0,0,1,w,1,1,1,1,0,0,0,w,w,w,0,1,1,w,
-            0,0,0,0,0,0,w^2,w,1,1,0,0,w,0,w,w^2,1,0,1,w,0,0,0,0,w^2,w,w^2,0,1,0,w,0,w^2,1,w,w,w^2,w,0,0,
-            0,0,0,0,0,0,w,0,0,1,0,0,w^2,0,0,1,w,1,1,0,w^2,1,1,w^2,w^2,w^2,w^2,0,w,w,w,0,w,1,w,0,1,w,0,w,
-            0,0,0,0,0,0,w,w^2,w^2,w^2,1,0,1,0,w^2,w^2,1,w,1,1,w,0,w^2,w^2,w,w,w^2,w^2,w^2,0,1,w,w^2,w,w^2,w,0,w,w^2,w,
-            0,0,0,0,0,0,w,w^2,w,1,0,w^2,w,1,1,0,w,0,w,w,1,w,w,1,0,w,w,w^2,w^2,0,0,w,1,0,1,1,0,w^2,w,0,
-            0,0,0,0,0,0,0,w^2,w^2,w^2,0,0,1,1,0,1,0,1,1,0,w,w^2,0,w,w^2,0,w,0,w^2,w,1,0,1,w^2,1,w,0,1,1,w
-        ]),
-        ZeroMatrix(F,13,1)),
-    HorizontalJoin(
-        Matrix(F,1,40,[
-            1,w,w,1,w^2,1,w^2,w,0,0,0,0,0,0,w^2,w,1,1,0,w^2,1,w,w,w,w^2,1,w^2,0,0,1,w,1,w,w,w,w^2,1,0,w,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 14 and Rank(GX4) eq 14;
-assert Ncols(GX4) eq 41;
-assert RowSpace(Submatrix(GX4,1,1,14,40)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 7;
-Table1Generators[65] := <Gsrc,GX4>;
-
-// Table 1, No. 066 | source H28 | HullIncreasing.m
-// Gsrc: [40,16]_4, hull 5; X4: [[41,10,>=15;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,16,40,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,w^2,w,w,w^2,1,w,0,w^2,w^2,w,1,w^2,w,w^2,0,1,0,w,w,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,1,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,w,0,w,w^2,0,w^2,0,w,1,1,w^2,0,w,w,w^2,w^2,1,w^2,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w,1,w,w,w^2,w^2,1,w^2,0,0,w,1,w,w,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w,w,w^2,w^2,1,w^2,0,0,w,1,w,w,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w^2,0,0,w,1,w,w,w^2,w^2,1,w^2,0,0,w,1,w,w,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,w,1,w,w,w^2,w^2,1,w^2,0,0,w,1,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,w^2,0,1,w,w,w,1,0,w,0,w^2,0,0,1,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,0,1,1,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,0,1,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,0,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,w,w^2,w,w^2,0,1,w^2,w,1,1,w^2,1,1,w,0,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,w,w,w^2,1,w,0,w^2,w^2,w,1,w^2,w,w^2,0,1,0,w,w,w,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,15,40,[
-            1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,
-            0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,
-            0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,
-            0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,
-            0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,1,w^2,0,1,w,w,w,1,0,w,0,w^2,0,0,1,w,w^2,0,0,0,
-            0,0,0,0,0,0,0,w^2,1,1,0,1,0,0,0,w,w^2,1,w^2,w^2,0,w^2,1,w^2,w^2,1,1,w,1,w,0,0,0,1,w^2,w^2,0,1,1,0,
-            0,0,0,0,0,w^2,w,w,1,0,0,1,0,0,0,1,1,0,w^2,w,0,w^2,w,w,0,0,1,1,0,1,0,0,w^2,0,0,w,0,w,0,w^2,
-            0,0,0,0,0,1,1,1,w,0,0,0,1,0,0,1,1,0,w,0,w^2,0,1,w,w,0,w,0,1,w,w,w,w,w^2,w,1,0,w^2,0,w,
-            0,0,0,0,0,w^2,0,w,w^2,1,0,0,1,0,0,w^2,0,w^2,w^2,1,w^2,1,w,1,w,1,w,w^2,w,w,w,w^2,1,0,w,0,0,0,w^2,w,
-            0,0,0,0,0,0,0,w^2,w^2,w,0,0,0,1,0,w^2,w^2,0,1,1,0,w^2,0,0,0,1,1,1,0,w,w^2,w,w,0,w^2,1,w^2,0,w^2,w,
-            0,0,0,0,0,w,0,w^2,0,w,0,0,0,1,0,1,w^2,0,w,1,w^2,w,w,w^2,w,w^2,1,w,w^2,0,0,w^2,0,w^2,1,w^2,w^2,w^2,0,0,
-            0,0,0,0,0,w^2,0,1,0,0,0,0,0,0,1,0,w^2,w,w^2,w,w,1,w^2,w^2,w^2,w^2,w,w^2,w^2,0,0,1,w,w,w,w,1,1,1,w,
-            0,0,0,0,0,0,0,0,0,w,0,0,0,0,1,w^2,w^2,w^2,w^2,0,0,w,1,0,w^2,0,0,0,1,0,w,w,0,1,w,1,w^2,w,w^2,w,
-            0,0,0,0,0,w^2,1,0,0,1,1,1,1,1,1,w,0,1,1,0,1,1,w,w^2,0,1,1,w,w^2,0,0,0,w^2,w,1,0,0,w^2,w,1
-        ]),
-        ZeroMatrix(F,15,1)),
-    HorizontalJoin(
-        Matrix(F,1,40,[
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,w,0,w,w^2,0,w^2,0,w,1,1,w^2,0,w,w,w^2,w^2,1,w^2,1,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 41;
-assert RowSpace(Submatrix(GX4,1,1,16,40)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 5;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 6;
-Table1Generators[66] := <Gsrc,GX4>;
-
-// Table 1, No. 067 | source DV04 | HullDecreasing.m
-// Gsrc: [40,26]_4, hull 2; X4: [[41,25,8;14]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,26,40,[
+// Table 1, No. 40 | DV04
+// [[41,25,8;14]]_2, distance exact.
+Gsrc:=Matrix(F,26,40,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w^2,w,0,w,1,w,1,w^2,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,w^2,w^2,w,0,w^2,0,w^2,1,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,1,w,w^2,w^2,w,w^2,0,w^2,w^2,0,
@@ -3400,52 +1895,47 @@ Gsrc := Matrix(F,26,40,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,0,w,0,0,w^2,0,0,w^2,1,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w,w,0,0,0,w^2,w^2,w^2,0,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,25,40,[
-            1,0,0,w,0,w,w^2,w,w,w^2,w,w^2,0,w,0,1,w^2,0,1,1,w,w,0,w^2,w,0,1,0,w^2,1,w^2,1,1,w^2,1,0,1,0,0,w,
-            0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w,w^2,w,w,1,1,1,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,0,
-            0,0,0,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,w^2,1,w,0,w,0,0,1,0,
-            0,0,0,w,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,1,0,1,0,0,1,0,w,w,w,
-            0,w^2,w,1,w^2,w,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,w^2,w,0,w^2,w^2,w^2,w^2,w,w,w^2,
-            0,w,0,w^2,w^2,w,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w^2,0,1,1,1,w,w,0,w^2,w^2,
-            0,w^2,0,1,w,w,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,w,1,1,0,w^2,w^2,1,1,1,w,
-            0,0,0,w,0,w,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,w^2,0,0,0,0,w,w^2,1,0,w^2,
-            0,w,w,0,1,w,w,1,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w,w^2,w,1,0,w,w^2,w,w,0,0,
-            0,w^2,w,1,w^2,w^2,w,1,1,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w,w,0,w,0,w,w,0,
-            0,0,1,w^2,w,1,1,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,w^2,w^2,0,w^2,0,w^2,w^2,
-            0,w^2,w,0,0,1,w^2,1,w,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,0,0,w^2,1,w,w,w,0,w^2,
-            0,w^2,0,w^2,w^2,w^2,1,0,w^2,1,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w^2,0,1,w,1,w^2,0,w,w^2,
-            0,w^2,w^2,1,w,1,w^2,w^2,1,w^2,w^2,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w,1,w,0,0,w,w^2,w,w^2,w,
-            0,w,w^2,w^2,w,w^2,w,w,1,w^2,0,1,1,0,w,1,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,0,0,1,w^2,w,0,w^2,0,0,
-            0,0,1,w^2,w,w,0,w,0,w,w,w^2,0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,w,0,w,w,w,1,0,w^2,w,
-            0,0,1,w^2,0,w,1,w^2,1,w^2,0,0,w^2,0,0,w,w,1,1,0,0,0,0,0,0,0,1,1,w^2,1,0,0,w,w^2,w^2,1,0,0,w^2,0,
-            0,w,w,w^2,0,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,0,w^2,0,0,0,0,0,0,0,w,0,w,w,w^2,0,1,0,w^2,1,w,1,1,0,1,w^2,
-            0,1,w^2,w^2,1,w,0,1,0,w,w,w^2,w,1,w,w^2,0,w,w,0,0,0,0,0,w^2,0,w^2,0,w,1,1,w^2,w,1,0,0,w,1,w^2,w,
-            0,0,0,w,w,0,w^2,w,w^2,w,w,w,1,w,w^2,w,1,0,1,1,1,0,0,0,w,0,w^2,1,0,0,w,w^2,w,1,0,0,w^2,w,w,w,
-            0,1,w,0,w,1,w^2,w^2,1,w^2,0,w,0,1,w^2,w^2,w^2,1,w^2,0,1,0,0,0,0,0,0,w^2,0,w,w,w,w,0,0,w^2,1,1,1,0,
-            0,0,w,1,w,w,1,1,w^2,1,1,1,1,w,w^2,0,1,0,0,w,w^2,1,0,0,w^2,0,0,0,1,w^2,0,0,0,1,w,w,0,w^2,0,w,
-            0,w,w^2,w,1,1,w^2,1,1,w,1,w,1,0,w^2,w^2,1,w^2,w,w^2,0,1,1,w,w^2,0,0,w,w^2,w^2,w^2,1,0,0,w^2,0,w^2,1,w,0,
-            0,1,w,1,w,w^2,0,0,0,w^2,w,w^2,w^2,1,1,w,1,w^2,w^2,0,1,w,1,w^2,w^2,0,1,w^2,w,w^2,0,w^2,w,w^2,w^2,0,w,0,w,w
-        ]),
-        ZeroMatrix(F,25,1)),
-    HorizontalJoin(
-        Matrix(F,1,40,[
-            0,1,1,1,w^2,w^2,1,w,0,w,1,w^2,0,0,w,w,w^2,0,0,1,0,w,0,0,w^2,1,1,0,0,w^2,w,1,0,1,w,w^2,w^2,w,w,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,26,41,[
+    1,0,0,w,0,w,w^2,w,w,w^2,w,w^2,0,w,0,1,w^2,0,1,1,w,w,0,w^2,w,0,1,0,w^2,1,w^2,1,1,w^2,1,0,1,0,0,w,0,
+    0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w,w^2,w,w,1,1,1,1,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,0,0,
+    0,0,0,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,w^2,1,w,0,w,0,0,1,0,0,
+    0,0,0,w,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,1,0,1,0,0,1,0,w,w,w,0,
+    0,w^2,w,1,w^2,w,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,w^2,w,0,w^2,w^2,w^2,w^2,w,w,w^2,0,
+    0,w,0,w^2,w^2,w,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w^2,0,1,1,1,w,w,0,w^2,w^2,0,
+    0,w^2,0,1,w,w,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,w,1,1,0,w^2,w^2,1,1,1,w,0,
+    0,0,0,w,0,w,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,w^2,0,0,0,0,w,w^2,1,0,w^2,0,
+    0,w,w,0,1,w,w,1,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w,w^2,w,1,0,w,w^2,w,w,0,0,0,
+    0,w^2,w,1,w^2,w^2,w,1,1,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w,w,0,w,0,w,w,0,0,
+    0,0,1,w^2,w,1,1,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,w^2,w^2,0,w^2,0,w^2,w^2,0,
+    0,w^2,w,0,0,1,w^2,1,w,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,0,0,w^2,1,w,w,w,0,w^2,0,
+    0,w^2,0,w^2,w^2,w^2,1,0,w^2,1,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w^2,0,1,w,1,w^2,0,w,w^2,0,
+    0,w^2,w^2,1,w,1,w^2,w^2,1,w^2,w^2,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w,1,w,0,0,w,w^2,w,w^2,w,0,
+    0,w,w^2,w^2,w,w^2,w,w,1,w^2,0,1,1,0,w,1,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w,0,0,1,w^2,w,0,w^2,0,0,0,
+    0,0,1,w^2,w,w,0,w,0,w,w,w^2,0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,w,0,w,w,w,1,0,w^2,w,0,
+    0,0,1,w^2,0,w,1,w^2,1,w^2,0,0,w^2,0,0,w,w,1,1,0,0,0,0,0,0,0,1,1,w^2,1,0,0,w,w^2,w^2,1,0,0,w^2,0,0,
+    0,w,w,w^2,0,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,0,w^2,0,0,0,0,0,0,0,w,0,w,w,w^2,0,1,0,w^2,1,w,1,1,0,1,w^2,0,
+    0,1,w^2,w^2,1,w,0,1,0,w,w,w^2,w,1,w,w^2,0,w,w,0,0,0,0,0,w^2,0,w^2,0,w,1,1,w^2,w,1,0,0,w,1,w^2,w,0,
+    0,0,0,w,w,0,w^2,w,w^2,w,w,w,1,w,w^2,w,1,0,1,1,1,0,0,0,w,0,w^2,1,0,0,w,w^2,w,1,0,0,w^2,w,w,w,0,
+    0,1,w,0,w,1,w^2,w^2,1,w^2,0,w,0,1,w^2,w^2,w^2,1,w^2,0,1,0,0,0,0,0,0,w^2,0,w,w,w,w,0,0,w^2,1,1,1,0,0,
+    0,0,w,1,w,w,1,1,w^2,1,1,1,1,w,w^2,0,1,0,0,w,w^2,1,0,0,w^2,0,0,0,1,w^2,0,0,0,1,w,w,0,w^2,0,w,0,
+    0,w,w^2,w,1,1,w^2,1,1,w,1,w,1,0,w^2,w^2,1,w^2,w,w^2,0,1,1,w,w^2,0,0,w,w^2,w^2,w^2,1,0,0,w^2,0,w^2,1,w,0,0,
+    0,1,w,1,w,w^2,0,0,0,w^2,w,w^2,w^2,1,1,w,1,w^2,w^2,0,1,w,1,w^2,w^2,0,1,w^2,w,w^2,0,w^2,w,w^2,w^2,0,w,0,w,w,0,
+    0,1,1,1,w^2,w^2,1,w,0,w,1,w^2,0,0,w,w,w^2,0,0,1,0,w,0,0,w^2,1,1,0,0,w^2,w,1,0,1,w,w^2,w^2,w,w,w,1
+]);
 assert Rank(Gsrc) eq 26 and Rank(GX4) eq 26;
-assert Ncols(GX4) eq 41;
 assert RowSpace(Submatrix(GX4,1,1,26,40)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 1;
-Table1Generators[67] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,41,26,1) eq VerticalJoin(ZeroMatrix(F,25,1),IdentityMatrix(F,1));
+Table1Generators[40]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 41 and Dimension(Q) eq 26;
+assert Dimension(HermitianHull(Q)) eq 1;
+Table1Parameters[40]:=[41,25,8,14];
+Table1DistanceTypes[40]:="exact";
 
-// Table 1, No. 068 | source DV02 | HullDecreasing.m
-// Gsrc: [41,13]_4, hull 7; X4: [[42,7,18;23]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,13,41,[
+// Table 1, No. 41 | DV02
+// [[42,7,18;23]]_2, distance exact.
+Gsrc:=Matrix(F,13,41,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,0,w,w^2,0,w^2,0,1,1,w,w,w,1,w,w,0,1,0,w,1,w,0,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w^2,w,1,0,1,w,w^2,1,0,w^2,0,w,0,1,w^2,w,w^2,w,w,w,1,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,w^2,1,0,w,1,0,1,w^2,w,w,1,0,w,1,w,w^2,w^2,1,1,w,w^2,1,w^2,0,
@@ -3460,90 +1950,34 @@ Gsrc := Matrix(F,13,41,[
     0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w^2,w,0,1,1,w,w^2,1,0,w^2,0,w,0,1,w^2,w,w^2,w,w,w,1,1,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,0,w,1,0,w^2,0,1,1,w,w,w,1,w,w,0,1,0,w,1,w,0,w^2,0,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,12,41,[
-            1,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w^2,1,1,w^2,w^2,w,w^2,w^2,w,w^2,1,w^2,1,w,w^2,0,w,w,w,w,0,w^2,w,1,w^2,1,w^2,w,
-            0,1,0,0,0,0,0,1,0,0,w^2,1,w^2,0,1,1,0,w^2,1,w^2,0,w,1,w^2,w,w,w^2,0,1,w^2,1,1,w^2,1,0,w^2,w,w,w^2,1,w,
-            0,0,1,0,0,0,0,1,w,w^2,w,0,w,w,1,w,w,w,0,w,w,w^2,w^2,w,w,0,1,w^2,w,w^2,1,w^2,1,0,w^2,1,0,w^2,1,1,1,
-            0,0,0,1,0,0,0,w^2,1,1,w^2,w^2,w^2,0,w^2,1,1,w,w^2,w^2,0,1,1,w^2,0,1,1,0,w,0,1,w^2,0,w^2,0,w^2,1,w,w^2,1,w,
-            0,0,0,0,1,0,0,1,0,w,w^2,0,0,w,1,0,w,w^2,1,0,w,w^2,0,w,w,w,w,1,w,0,w,w^2,w^2,w^2,1,1,0,0,1,1,1,
-            0,0,0,0,0,1,0,w^2,1,w^2,w,w,w^2,w,w^2,1,w^2,w,w,w,w,1,1,0,0,1,w^2,w^2,0,0,w,0,0,1,w^2,1,1,w,0,1,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,0,1,w^2,w^2,w^2,w,w,w,0,w,1,0,0,0,w,1,1,0,1,w,w^2,w^2,0,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,w,w^2,1,w^2,w,w^2,w,1,w^2,0,w,1,w,w^2,0,0,1,0,w^2,w,0,0,0,0,w^2,1,w,1,
-            0,0,0,0,0,0,0,1,1,1,0,1,0,w,1,w^2,0,0,w^2,0,w^2,1,1,w,w^2,w,1,1,w^2,1,w,1,w,w^2,w^2,1,0,1,w,0,w,
-            0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,w^2,w,0,1,w^2,w^2,w^2,0,w^2,w^2,1,w^2,0,w,w,0,w,w,w,0,1,1,1,0,0,w,
-            0,0,0,0,0,0,0,w^2,0,w,1,1,0,1,w^2,0,w,w,w,1,0,w,1,w^2,w,w,w,w,w^2,w^2,1,0,0,0,w,w^2,0,w,1,w^2,0,
-            0,0,0,0,0,0,0,1,w^2,1,0,0,1,0,w^2,w^2,0,0,1,w^2,0,1,1,1,1,w,w,1,w,0,w,w,w,w,w,w,w,1,1,w^2,w
-        ]),
-        ZeroMatrix(F,12,1)),
-    HorizontalJoin(
-        Matrix(F,1,41,[
-            0,0,0,0,0,0,1,1,w,w^2,0,w,0,w^2,1,w,w^2,0,w,0,w,0,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,w,1,0,1,w^2,w^2,w
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 13 and Rank(GX4) eq 13;
-assert Ncols(GX4) eq 42;
-assert RowSpace(Submatrix(GX4,1,1,13,41)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 7;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 6;
-Table1Generators[68] := <Gsrc,GX4>;
-
-// Table 1, No. 069 | source H29 | HullIncreasing.m
-// Gsrc: [45,15]_4, hull 4; X4: [[46,10,>=18;26]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,15,45,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,1,1,0,w,0,0,1,0,0,1,w,0,0,w^2,w^2,0,w,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,1,1,1,w,0,0,1,0,0,1,w,0,0,w^2,w^2,0,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,1,w,1,w,0,0,1,0,0,1,w,0,0,w^2,w^2,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,0,w,1,w,0,0,1,0,0,1,w,0,0,w^2,w^2,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,w^2,0,w,1,w,0,0,1,0,0,1,w,0,0,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,0,1,1,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,w^2,0,w,1,w,0,0,1,0,0,1,w,0,0,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,1,1,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,0,w^2,w^2,0,w,1,w,0,0,1,0,0,1,w,0,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,0,1,1,0,1,w^2,w^2,w^2,w^2,w^2,0,1,0,0,w^2,w^2,0,w,1,w,0,0,1,0,0,1,w,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,w,w^2,0,1,1,0,1,w^2,w^2,w^2,w^2,w^2,0,w,0,0,w^2,w^2,0,w,1,w,0,0,1,0,0,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,w,w^2,0,1,1,0,1,w^2,w^2,w^2,w^2,w^2,1,w,0,0,w^2,w^2,0,w,1,w,0,0,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,0,1,1,w,w^2,0,1,1,0,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w^2,w^2,0,w,1,w,0,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w^2,0,1,1,w,w^2,0,1,1,0,1,w^2,w^2,w^2,0,0,1,w,0,0,w^2,w^2,0,w,1,w,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,w^2,0,1,1,w,w^2,0,1,1,0,1,w^2,w^2,1,0,0,1,w,0,0,w^2,w^2,0,w,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,1,1,0,1,w^2,0,1,0,0,1,w,0,0,w^2,w^2,0,w,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,1,1,0,1,0,0,1,0,0,1,w,0,0,w^2,w^2,0,w,1,w
+GX4:=Matrix(F,13,42,[
+    1,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w^2,1,1,w^2,w^2,w,w^2,w^2,w,w^2,1,w^2,1,w,w^2,0,w,w,w,w,0,w^2,w,1,w^2,1,w^2,w,0,
+    0,1,0,0,0,0,0,1,0,0,w^2,1,w^2,0,1,1,0,w^2,1,w^2,0,w,1,w^2,w,w,w^2,0,1,w^2,1,1,w^2,1,0,w^2,w,w,w^2,1,w,0,
+    0,0,1,0,0,0,0,1,w,w^2,w,0,w,w,1,w,w,w,0,w,w,w^2,w^2,w,w,0,1,w^2,w,w^2,1,w^2,1,0,w^2,1,0,w^2,1,1,1,0,
+    0,0,0,1,0,0,0,w^2,1,1,w^2,w^2,w^2,0,w^2,1,1,w,w^2,w^2,0,1,1,w^2,0,1,1,0,w,0,1,w^2,0,w^2,0,w^2,1,w,w^2,1,w,0,
+    0,0,0,0,1,0,0,1,0,w,w^2,0,0,w,1,0,w,w^2,1,0,w,w^2,0,w,w,w,w,1,w,0,w,w^2,w^2,w^2,1,1,0,0,1,1,1,0,
+    0,0,0,0,0,1,0,w^2,1,w^2,w,w,w^2,w,w^2,1,w^2,w,w,w,w,1,1,0,0,1,w^2,w^2,0,0,w,0,0,1,w^2,1,1,w,0,1,w,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,0,1,w^2,w^2,w^2,w,w,w,0,w,1,0,0,0,w,1,1,0,1,w,w^2,w^2,0,1,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,w,w^2,1,w^2,w,w^2,w,1,w^2,0,w,1,w,w^2,0,0,1,0,w^2,w,0,0,0,0,w^2,1,w,1,0,
+    0,0,0,0,0,0,0,1,1,1,0,1,0,w,1,w^2,0,0,w^2,0,w^2,1,1,w,w^2,w,1,1,w^2,1,w,1,w,w^2,w^2,1,0,1,w,0,w,0,
+    0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,w^2,w,0,1,w^2,w^2,w^2,0,w^2,w^2,1,w^2,0,w,w,0,w,w,w,0,1,1,1,0,0,w,0,
+    0,0,0,0,0,0,0,w^2,0,w,1,1,0,1,w^2,0,w,w,w,1,0,w,1,w^2,w,w,w,w,w^2,w^2,1,0,0,0,w,w^2,0,w,1,w^2,0,0,
+    0,0,0,0,0,0,0,1,w^2,1,0,0,1,0,w^2,w^2,0,0,1,w^2,0,1,1,1,1,w,w,1,w,0,w,w,w,w,w,w,w,1,1,w^2,w,0,
+    0,0,0,0,0,0,1,1,w,w^2,0,w,0,w^2,1,w,w^2,0,w,0,w,0,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,w,1,0,1,w^2,w^2,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,14,45,[
-            1,0,0,0,w^2,w,0,0,0,1,w^2,0,0,0,w,w^2,0,1,1,w^2,1,0,w,w,1,w,0,w^2,w^2,w,0,0,w,1,0,0,0,w^2,w,0,0,0,1,w^2,0,
-            0,1,0,0,1,0,w,0,0,w,0,w^2,0,0,w^2,w^2,w^2,w,w^2,0,1,1,w^2,1,0,w,w,1,w,0,0,0,w^2,0,1,0,0,1,0,w,0,0,w,0,w^2,
-            0,0,1,0,w,0,0,w,0,w^2,0,0,w^2,0,1,w,w^2,0,1,1,w^2,1,0,w,w,1,w,0,w^2,w^2,w^2,0,1,0,0,1,0,w,0,0,w,0,w^2,0,0,
-            0,0,0,1,w^2,0,0,0,w,1,0,0,0,w^2,w,0,w,w,1,w,0,w^2,w^2,w,w^2,0,1,1,w^2,1,0,w^2,w,0,0,0,1,w^2,0,0,0,w,1,0,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,1,0,0,0,w^2,1,0,w,w^2,1,w,1,w^2,0,w^2,1,0,w,w^2,1,0,0,0,1,0,w,0,w^2,
-            0,0,0,0,0,0,0,w,1,0,0,0,0,0,w^2,1,0,1,1,0,w^2,w,1,1,0,w,1,1,w^2,1,w,0,w,w,w^2,0,1,w,w,w,0,1,1,1,w^2,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,w,w,1,0,w^2,1,0,1,w^2,0,w^2,w,w,w^2,1,w,0,1,w^2,w^2,1,0,1,w,w^2,w^2,1,w,1,w^2,
-            0,0,0,0,w^2,w^2,1,0,1,0,0,1,0,0,w^2,0,0,0,w,1,w,0,0,w,w^2,w,1,w^2,w^2,w,w,1,0,w^2,w^2,w^2,w,1,1,1,0,1,1,1,w^2,
-            0,0,0,0,w,w^2,1,w,0,0,0,1,0,0,0,1,1,0,w^2,0,w,1,w,0,0,0,1,w^2,w,0,w^2,1,0,0,w,w^2,w^2,w,w^2,w^2,1,w,0,0,w^2,
-            0,0,0,0,1,w,w^2,w^2,0,0,0,0,0,w,w,w^2,w,1,1,0,0,1,w,0,w^2,w^2,1,w^2,1,w^2,w,1,0,0,w^2,0,1,0,w^2,w^2,w^2,w^2,1,w^2,1,
-            0,0,0,0,1,w,1,w,w,0,0,0,0,w^2,w,0,0,w,1,w^2,w,0,0,w^2,0,1,w^2,1,w^2,w^2,1,1,w,w,0,w,0,0,w^2,w,w,w^2,w,w^2,1,
-            0,0,0,0,0,1,w,0,w,1,w,w^2,0,w,w,1,0,1,1,0,1,0,0,w^2,0,0,1,w,0,w^2,1,0,w^2,w,w,w^2,0,w,1,w^2,1,1,0,0,w,
-            0,0,0,0,w^2,w^2,0,0,w^2,1,w^2,w^2,0,w^2,0,w^2,1,1,1,w,w,w^2,w^2,1,0,w^2,0,1,0,w,0,0,w^2,1,0,1,1,0,0,w,1,1,w^2,w,w,
-            0,0,0,0,w,0,w^2,1,1,w^2,0,w,1,w^2,1,w,w^2,w,w,w,0,1,w,w^2,0,w,w,1,0,0,1,0,1,0,w,w^2,1,w,0,0,0,1,w^2,0,w
-        ]),
-        ZeroMatrix(F,14,1)),
-    HorizontalJoin(
-        Matrix(F,1,45,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,1,1,0,w,0,0,1,0,0,1,w,0,0,w^2,w^2,0,w,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 15 and Rank(GX4) eq 15;
-assert Ncols(GX4) eq 46;
-assert RowSpace(Submatrix(GX4,1,1,15,45)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[69] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 13 and Rank(GX4) eq 13;
+assert RowSpace(Submatrix(GX4,1,1,13,41)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,42,13,1) eq VerticalJoin(ZeroMatrix(F,12,1),IdentityMatrix(F,1));
+Table1Generators[41]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 42 and Dimension(Q) eq 13;
+assert Dimension(HermitianHull(Q)) eq 6;
+Table1Parameters[41]:=[42,7,18,23];
+Table1DistanceTypes[41]:="exact";
 
-// Table 1, No. 070 | source DV05 | HullDecreasing.m
-// Gsrc: [46,16]_4, hull 9; X4: [[47,8,18;23]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,16,46,[
+// Table 1, No. 42 | DV05
+// [[47,8,18;23]]_2, distance exact.
+Gsrc:=Matrix(F,16,46,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,w,w,0,w^2,w,w^2,w^2,0,w^2,w,w^2,1,1,w,0,1,1,1,w^2,w,w^2,w,w^2,0,0,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,0,w^2,w^2,0,0,w,w^2,w,0,0,w^2,0,w^2,w^2,w,w,w^2,w^2,1,1,0,0,0,w^2,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,w,w^2,w^2,0,w^2,1,w,0,w,w^2,w^2,w^2,0,0,1,w^2,0,0,w^2,1,w,w^2,w,w,w,
@@ -3561,115 +1995,37 @@ Gsrc := Matrix(F,16,46,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,0,w^2,w,0,w,w,w^2,0,w,0,w,w,0,0,w,1,w^2,1,w,0,0,w,w,1,1,1,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w,w^2,w^2,w^2,1,0,w,0,0,w,0,w,1,w,w^2,w^2,0,w^2,0,w,w^2,1,0,w,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,15,46,[
-            1,0,0,0,0,0,0,0,0,w,w^2,w^2,w,1,w,w,1,0,0,1,1,w^2,w^2,w^2,w,0,1,w^2,w^2,1,w,w,1,w,1,w,1,w^2,0,1,1,0,w,w,w,0,
-            0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,w,w^2,1,1,1,1,w,w,w,w,w,w,0,w^2,w,w^2,w,1,0,w^2,0,1,1,1,1,w^2,0,1,w^2,1,1,0,0,
-            0,0,1,0,0,0,0,0,0,0,w,w^2,w^2,w^2,1,w^2,w^2,0,0,w,w^2,1,w^2,w^2,1,w,1,1,0,1,w,1,w,0,w^2,1,0,w^2,1,w,1,w^2,0,w^2,1,0,
-            0,0,0,1,0,0,0,0,0,w^2,w^2,w,w^2,0,0,1,w,w,w^2,w^2,w,1,w^2,w,1,w^2,w^2,w^2,1,w^2,w^2,w,w^2,w^2,0,0,0,0,w^2,1,0,w,1,w,1,0,
-            0,0,0,0,1,0,0,0,0,w^2,w^2,w^2,w,w,1,0,0,0,0,1,w^2,w^2,0,w,w^2,1,1,0,w,w^2,w^2,w,0,w,w,1,w,1,w^2,0,1,w,0,w^2,w,0,
-            0,0,0,0,0,1,0,0,0,1,1,1,w,1,1,0,w,0,0,w^2,1,w^2,w,w,1,w,0,0,w,1,1,0,0,0,0,1,0,0,1,w,w^2,w^2,1,1,w,0,
-            0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1,w,1,w^2,0,1,0,0,1,w,1,w,1,w^2,w^2,w^2,w,w,1,1,w,w,1,0,w,w,w^2,w,w^2,0,
-            0,0,0,0,0,0,0,1,0,0,1,w^2,w,w,0,w,w,0,w,w,w,1,1,w^2,0,w^2,w,0,w,1,w^2,w,0,1,w,0,1,w^2,1,w,w^2,w,w,w,w,0,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,0,1,1,1,w^2,0,0,1,w^2,w,0,w,0,0,w^2,0,0,w,1,w,w^2,1,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,1,w,0,0,w,w,0,0,w^2,1,w^2,0,w^2,0,1,1,w,0,w,1,1,0,w,w,1,w^2,0,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,1,0,w^2,w^2,w^2,1,1,w,1,w^2,w^2,w^2,1,0,0,1,0,w^2,0,w^2,w^2,w^2,0,w^2,0,w^2,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,w,w,w^2,w,0,0,w,1,1,w^2,w,w,w^2,0,1,0,w^2,0,1,1,0,1,w^2,0,w^2,w^2,w,w^2,0,1,0,0,w,0,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,w,w,1,0,0,0,w^2,0,1,w^2,w,w^2,0,0,w^2,0,w^2,w^2,0,1,1,w,1,w^2,0,0,w,w,1,1,w^2,1,w^2,w,0,w,0,
-            0,0,0,0,0,0,0,0,0,w,1,0,w,1,0,1,w,w^2,w,1,0,1,w,w^2,w,w,0,0,0,w,1,w^2,1,1,0,w^2,w^2,1,w,w^2,0,1,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,w,1,1,1,0,1,w,1,w^2,1,w,w,w^2,0,w^2,0,1,w,1,0,w^2,w,w^2,w,1,0,w^2,0,0,w,w^2,1,w,0,w^2,w^2,w^2
-        ]),
-        ZeroMatrix(F,15,1)),
-    HorizontalJoin(
-        Matrix(F,1,46,[
-            0,0,0,0,0,0,0,0,1,w,1,w^2,w^2,0,1,0,w,1,0,1,0,0,w,w^2,1,1,1,1,0,0,1,w,1,w^2,1,1,w,w^2,1,0,0,w,w^2,0,0,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
-assert Ncols(GX4) eq 47;
-assert RowSpace(Submatrix(GX4,1,1,16,46)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 9;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 8;
-Table1Generators[70] := <Gsrc,GX4>;
-
-// Table 1, No. 071 | source DV06 | HullIncreasing.m
-// Gsrc: [47,26]_4, hull 2; X4: [[48,23,12;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,26,47,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,1,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,1,1,w^2,0,w^2,w,w^2,w^2,w,w,0,0,1,1,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w^2,0,w^2,w,1,0,1,w,1,w^2,0,1,w,0,w,w^2,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,1,0,w,w,w^2,1,0,1,w,1,0,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,w^2,0,0,0,w^2,0,1,0,0,0,w^2,1,0,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,w,0,w^2,w,w^2,1,1,w^2,0,w,w^2,w,w^2,w^2,w^2,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,w^2,w,w,w,1,1,1,w,0,w,w^2,w^2,w^2,1,1,w^2,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w^2,w,w,w,0,w^2,1,w^2,1,w^2,0,w^2,1,1,1,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
+GX4:=Matrix(F,16,47,[
+    1,0,0,0,0,0,0,0,0,w,w^2,w^2,w,1,w,w,1,0,0,1,1,w^2,w^2,w^2,w,0,1,w^2,w^2,1,w,w,1,w,1,w,1,w^2,0,1,1,0,w,w,w,0,0,
+    0,1,0,0,0,0,0,0,0,1,w^2,w,w^2,w,w^2,1,1,1,1,w,w,w,w,w,w,0,w^2,w,w^2,w,1,0,w^2,0,1,1,1,1,w^2,0,1,w^2,1,1,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,w,w^2,w^2,w^2,1,w^2,w^2,0,0,w,w^2,1,w^2,w^2,1,w,1,1,0,1,w,1,w,0,w^2,1,0,w^2,1,w,1,w^2,0,w^2,1,0,0,
+    0,0,0,1,0,0,0,0,0,w^2,w^2,w,w^2,0,0,1,w,w,w^2,w^2,w,1,w^2,w,1,w^2,w^2,w^2,1,w^2,w^2,w,w^2,w^2,0,0,0,0,w^2,1,0,w,1,w,1,0,0,
+    0,0,0,0,1,0,0,0,0,w^2,w^2,w^2,w,w,1,0,0,0,0,1,w^2,w^2,0,w,w^2,1,1,0,w,w^2,w^2,w,0,w,w,1,w,1,w^2,0,1,w,0,w^2,w,0,0,
+    0,0,0,0,0,1,0,0,0,1,1,1,w,1,1,0,w,0,0,w^2,1,w^2,w,w,1,w,0,0,w,1,1,0,0,0,0,1,0,0,1,w,w^2,w^2,1,1,w,0,0,
+    0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1,w,1,w^2,0,1,0,0,1,w,1,w,1,w^2,w^2,w^2,w,w,1,1,w,w,1,0,w,w,w^2,w,w^2,0,0,
+    0,0,0,0,0,0,0,1,0,0,1,w^2,w,w,0,w,w,0,w,w,w,1,1,w^2,0,w^2,w,0,w,1,w^2,w,0,1,w,0,1,w^2,1,w,w^2,w,w,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,0,1,1,1,w^2,0,0,1,w^2,w,0,w,0,0,w^2,0,0,w,1,w,w^2,1,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,1,w,0,0,w,w,0,0,w^2,1,w^2,0,w^2,0,1,1,w,0,w,1,1,0,w,w,1,w^2,0,w,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,1,0,w^2,w^2,w^2,1,1,w,1,w^2,w^2,w^2,1,0,0,1,0,w^2,0,w^2,w^2,w^2,0,w^2,0,w^2,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,w^2,w,0,0,w,1,1,w^2,w,w,w^2,0,1,0,w^2,0,1,1,0,1,w^2,0,w^2,w^2,w,w^2,0,1,0,0,w,0,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,1,0,0,0,w^2,0,1,w^2,w,w^2,0,0,w^2,0,w^2,w^2,0,1,1,w,1,w^2,0,0,w,w,1,1,w^2,1,w^2,w,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,w,1,0,w,1,0,1,w,w^2,w,1,0,1,w,w^2,w,w,0,0,0,w,1,w^2,1,1,0,w^2,w^2,1,w,w^2,0,1,1,w^2,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,w,1,1,1,0,1,w,1,w^2,1,w,w,w^2,0,w^2,0,1,w,1,0,w^2,w,w^2,w,1,0,w^2,0,0,w,w^2,1,w,0,w^2,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,1,w,1,w^2,w^2,0,1,0,w,1,0,1,0,0,w,w^2,1,1,1,1,0,0,1,w,1,w^2,1,1,w,w^2,1,0,0,w,w^2,0,0,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,25,47,[
-            1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,0,0,
-            0,0,0,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w^2,0,0,0,w^2,0,1,w,w^2,0,0,w,1,w^2,0,w^2,w^2,0,w^2,
-            0,0,0,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,1,w^2,0,0,w,0,w,w,w,1,1,1,w,w,w^2,1,w^2,0,
-            0,0,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,1,w,w,w,w^2,w,w,0,1,1,0,0,1,0,w,0,0,
-            0,0,0,w^2,w,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w,0,w^2,w,1,w^2,0,0,w^2,1,w^2,w^2,w,1,1,1,0,1,
-            0,0,1,w^2,w^2,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,1,1,w^2,w^2,0,w^2,1,0,w^2,1,0,1,w,0,w,w^2,
-            0,0,0,1,w^2,w^2,1,w^2,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,0,0,1,w,w^2,w^2,w^2,w^2,1,1,0,w^2,w,1,w,w^2,w,
-            0,0,w^2,0,w,w,w,w^2,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w,w,1,0,w,0,w^2,w^2,w,1,1,w^2,1,1,w,w,1,w^2,0,
-            0,0,w,0,w,w^2,0,1,0,w,w^2,0,0,w^2,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,w,w^2,0,w,w,w,w,w,w,w^2,w^2,w^2,w,1,0,w,1,0,
-            0,0,w,0,1,w^2,1,1,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,0,1,w^2,w^2,w,w^2,1,1,1,w,w,w^2,1,w,1,1,0,w^2,w^2,
-            0,0,w,1,1,w^2,0,w,0,0,w^2,0,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,w^2,1,1,w,1,1,0,0,0,w,0,w^2,w,w,0,1,0,w,w^2,
-            0,0,w^2,w^2,w^2,w^2,w^2,0,0,w^2,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w,1,0,0,1,1,w^2,1,1,1,1,w^2,1,1,w,0,w,1,1,
-            0,0,w,w^2,0,w^2,w^2,1,w,w^2,0,w,w,1,1,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,0,w,1,1,0,w^2,w,w^2,w^2,1,w,1,w,w^2,0,w^2,w,0,0,
-            0,0,w^2,w,0,w^2,0,w,w,1,w,0,w,w,0,1,1,0,0,0,0,0,0,0,1,0,1,w,w^2,1,w,1,0,w,0,w,w,w^2,1,w^2,0,w^2,w,0,w^2,1,w,
-            0,0,1,1,w^2,0,0,w^2,0,0,1,0,w,1,0,0,1,0,0,0,0,0,0,0,w,0,1,0,0,0,w^2,w,0,1,w,1,w^2,w^2,w^2,w^2,w,w^2,1,0,w^2,1,1,
-            0,0,0,0,w,w,1,1,1,w,1,0,0,0,0,1,1,0,w,w,0,0,0,0,1,0,w^2,w,1,1,0,w^2,0,w^2,w,1,w^2,0,w,1,0,w,w,w,w^2,w^2,w^2,
-            0,0,1,1,0,0,w,w,w^2,w,1,w,0,1,w,w^2,w^2,0,w,w^2,0,0,0,0,w,0,1,1,0,w^2,1,w,w,w,w^2,w^2,1,w^2,w^2,w^2,w,w^2,0,w,0,1,w,
-            0,0,w^2,w^2,w,1,0,0,0,0,w,w,w^2,0,w,1,w,1,w,w,0,0,0,0,w^2,1,w,1,1,w,w,w^2,w^2,0,w^2,w,1,0,0,w^2,w,w^2,1,w^2,w^2,w,1,
-            0,0,1,0,w,1,w,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w,1,w,0,0,0,0,0,0,0,0,1,1,w^2,w^2,w,w^2,1,0,0,w,w,w,w,0,w^2,w^2,w,w,1,w^2,0,0,
-            0,0,w,0,w^2,w,w,1,w^2,0,0,w,0,1,w,1,0,w^2,1,0,w,w,0,0,0,0,w^2,w,1,w^2,1,0,w,w^2,0,0,1,w,0,0,w,w^2,1,w^2,0,1,w^2,
-            0,0,w,w^2,w,w^2,1,w^2,0,0,1,0,0,w^2,1,w,0,1,w^2,0,w,w^2,0,0,1,w,1,w^2,1,1,w,w^2,w^2,1,w^2,1,w,w,0,w^2,0,w^2,0,w^2,1,w,0,
-            0,0,w^2,0,w^2,1,1,0,w^2,0,0,1,w^2,w,1,1,1,0,0,1,1,w^2,w,1,1,1,0,w,0,w^2,w^2,w,0,0,1,1,w,w,0,1,w^2,1,1,0,w,w^2,1,
-            0,0,w^2,w,w^2,w,w^2,1,w,0,w,w,w^2,w^2,0,1,0,1,w^2,1,1,w,0,1,1,1,1,w,1,w^2,0,w,1,w^2,1,1,w^2,w,w^2,w^2,0,w,w,1,w,1,w
-        ]),
-        ZeroMatrix(F,25,1)),
-    HorizontalJoin(
-        Matrix(F,1,47,[
-            0,1,w,1,0,w,w,w,w,1,0,w,1,w,0,0,1,0,0,w,w^2,w^2,1,0,0,0,w^2,0,w^2,w,w,w,w,1,w^2,w^2,1,w,1,1,w,1,w^2,w,0,0,0
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 26 and Rank(GX4) eq 26;
-assert Ncols(GX4) eq 48;
-assert RowSpace(Submatrix(GX4,1,1,26,47)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[71] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
+assert RowSpace(Submatrix(GX4,1,1,16,46)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,47,16,1) eq VerticalJoin(ZeroMatrix(F,15,1),IdentityMatrix(F,1));
+Table1Generators[42]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 47 and Dimension(Q) eq 16;
+assert Dimension(HermitianHull(Q)) eq 8;
+Table1Parameters[42]:=[47,8,18,23];
+Table1DistanceTypes[42]:="exact";
 
-// Table 1, No. 072 | source H30 | HullDecreasing.m
-// Gsrc: [48,18]_4, hull 6; X4: [[49,13,>=18;26]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,18,48,[
+// Table 1, No. 43 | H30
+// [[49,13,18;26]]_2, distance lower_bound.
+Gsrc:=Matrix(F,18,48,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,1,1,1,0,1,w,w^2,0,0,0,1,1,w^2,0,1,w^2,1,1,w^2,w,w^2,w^2,1,0,w,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,1,0,w,1,1,w^2,1,w^2,0,0,1,0,w,w^2,1,w,w,0,w,1,1,0,w,1,w,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,1,1,w,1,1,w^2,1,w^2,0,0,1,0,w,w^2,1,w,w,0,w,1,1,0,w,1,w,
@@ -3689,117 +2045,39 @@ Gsrc := Matrix(F,18,48,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,0,0,w,w,1,w,1,0,0,w,0,w^2,1,w,w^2,w^2,0,w^2,w,w,0,w^2,w,w^2,w,w^2,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,w,w,0,w,w^2,1,0,0,0,w,w,1,0,w,1,w,w,1,w^2,1,1,w,0,w^2,1,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,17,48,[
-            1,0,0,0,0,0,w,1,w,w^2,1,w,1,0,0,0,0,0,w,1,w,w^2,1,w,w,1,1,1,w^2,1,1,0,w^2,w,w,w^2,w,1,1,1,w^2,1,1,0,w^2,w,w,w^2,
-            0,1,0,0,0,0,w^2,0,w,w^2,1,w,0,1,0,0,0,0,w^2,0,w,w^2,1,w,0,0,w^2,w^2,0,1,w^2,1,1,0,1,w^2,0,0,w^2,w^2,0,1,w^2,1,1,0,1,w^2,
-            0,0,1,0,0,0,w^2,1,w^2,w^2,1,w,0,0,1,0,0,0,w^2,1,w^2,w^2,1,w,0,w,w,1,w,w,w^2,w^2,0,w,w^2,0,0,w,w,1,w,w,w^2,w^2,0,w,w^2,0,
-            0,0,0,1,0,0,w^2,1,w,w,1,w,0,0,0,1,0,0,w^2,1,w,w,1,w,w^2,w,0,0,0,0,0,w^2,w,w^2,1,w,w^2,w,0,0,0,0,0,w^2,w,w^2,1,w,
-            0,0,0,0,1,0,w^2,1,w,w^2,0,w,0,0,0,0,1,0,w^2,1,w,w^2,0,w,1,1,0,w,1,w,w,0,w,1,0,0,1,1,0,w,1,w,w,0,w,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,w,1,0,0,w,w^2,w,w,1,w,w,1,1,w,1,1,1,w,w^2,w,1,0,1,1,w^2,w^2,w^2,1,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,w,0,0,1,w,0,w,1,w,w^2,1,0,1,w,w,0,1,w,w,1,1,w,1,w^2,w^2,1,w,1,0,
-            0,0,0,0,0,0,w^2,w^2,w^2,w,w,w^2,0,0,w,0,0,0,1,w^2,w^2,w,0,w^2,1,w,w^2,w,1,1,1,0,1,w,w,1,w^2,w^2,w,1,w^2,0,0,w^2,w^2,w^2,w^2,w,
-            0,0,0,0,0,0,1,w,w,w,0,1,0,0,w^2,0,0,0,w,w,w,w,w^2,1,w,1,1,w^2,0,w,0,w^2,w^2,w,0,1,1,w^2,w^2,w,w^2,0,w,w,0,0,w,0,
-            0,0,0,0,0,0,1,w,0,w,w^2,w^2,0,0,0,w,0,0,1,0,0,w,w^2,1,w^2,w^2,1,0,1,w,w^2,w^2,1,w^2,1,w,0,1,0,1,w,0,w,w,w,1,0,w^2,
-            0,0,0,0,0,0,w,1,1,w^2,w,w,0,0,0,w^2,0,0,w,w,1,w^2,w,1,w,0,0,0,w^2,1,0,1,w,w^2,1,w,w^2,w^2,w,w,w,w,w,w^2,w^2,0,w^2,0,
-            0,0,0,0,0,0,w,1,1,1,1,w,0,0,0,0,w,0,1,1,w,1,0,w,w^2,0,1,w,0,w,1,w^2,0,w,w,w,w^2,w,w^2,0,w,w,0,w,w^2,w^2,1,1,
-            0,0,0,0,0,0,w,1,1,1,1,1,0,0,0,0,w^2,0,w^2,1,0,1,w^2,1,1,0,0,w,w,1,w^2,0,w,w,0,w,1,w^2,w^2,1,1,1,1,w,w^2,0,1,w^2,
-            0,0,0,0,0,0,1,0,1,1,0,1,0,0,0,0,0,w,w^2,w,1,w,w^2,w,w,1,w^2,0,w^2,1,0,w^2,1,w,1,w,0,1,1,0,w,w^2,w,w^2,w,1,w^2,w,
-            0,0,0,0,0,0,1,0,1,1,w,w,0,0,0,0,0,w^2,w,w^2,1,0,w^2,w^2,1,w,w^2,0,w^2,w,w,w^2,w^2,w^2,w^2,w,w,w,0,0,1,1,1,w^2,w,w,0,w,
-            0,0,0,0,0,0,1,w^2,0,w^2,w,0,w^2,w,1,w^2,w,1,w,1,1,0,0,1,1,w,w,w,1,0,1,0,w^2,w,w^2,w^2,w^2,w^2,1,0,0,w^2,w^2,1,0,0,w,0,
-            0,0,0,0,0,0,w^2,0,w,1,w,1,w^2,w^2,w^2,w^2,w^2,w^2,0,w^2,1,w,1,w,0,1,w^2,1,w^2,1,0,1,w,w^2,1,1,w,w^2,1,w^2,1,w^2,w,w^2,0,1,w^2,w^2
-        ]),
-        ZeroMatrix(F,17,1)),
-    HorizontalJoin(
-        Matrix(F,1,48,[
-            0,0,0,0,0,1,w^2,1,w,w^2,1,w^2,0,0,0,0,0,1,w^2,1,w,w^2,1,w^2,w^2,w^2,w^2,w,w^2,w^2,0,w,1,1,w,1,w^2,w^2,w^2,w,w^2,w^2,0,w,1,1,w,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 18 and Rank(GX4) eq 18;
-assert Ncols(GX4) eq 49;
-assert RowSpace(Submatrix(GX4,1,1,18,48)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[72] := <Gsrc,GX4>;
-
-// Table 1, No. 073 | source DV07 | HullIncreasing.m
-// Gsrc: [47,26]_4, hull 2; X4: [[49,22,12;19]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,26,47,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,1,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,1,1,w^2,0,w^2,w,w^2,w^2,w,w,0,0,1,1,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w^2,0,w^2,w,1,0,1,w,1,w^2,0,1,w,0,w,w^2,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,1,0,w,w,w^2,1,0,1,w,1,0,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,w^2,0,0,0,w^2,0,1,0,0,0,w^2,1,0,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,w,0,w^2,w,w^2,1,1,w^2,0,w,w^2,w,w^2,w^2,w^2,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,w^2,w,w,w,1,1,1,w,0,w,w^2,w^2,w^2,1,1,w^2,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w^2,w,w,w,0,w^2,1,w^2,1,w^2,0,w^2,1,1,1,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
+GX4:=Matrix(F,18,49,[
+    1,0,0,0,0,0,w,1,w,w^2,1,w,1,0,0,0,0,0,w,1,w,w^2,1,w,w,1,1,1,w^2,1,1,0,w^2,w,w,w^2,w,1,1,1,w^2,1,1,0,w^2,w,w,w^2,0,
+    0,1,0,0,0,0,w^2,0,w,w^2,1,w,0,1,0,0,0,0,w^2,0,w,w^2,1,w,0,0,w^2,w^2,0,1,w^2,1,1,0,1,w^2,0,0,w^2,w^2,0,1,w^2,1,1,0,1,w^2,0,
+    0,0,1,0,0,0,w^2,1,w^2,w^2,1,w,0,0,1,0,0,0,w^2,1,w^2,w^2,1,w,0,w,w,1,w,w,w^2,w^2,0,w,w^2,0,0,w,w,1,w,w,w^2,w^2,0,w,w^2,0,0,
+    0,0,0,1,0,0,w^2,1,w,w,1,w,0,0,0,1,0,0,w^2,1,w,w,1,w,w^2,w,0,0,0,0,0,w^2,w,w^2,1,w,w^2,w,0,0,0,0,0,w^2,w,w^2,1,w,0,
+    0,0,0,0,1,0,w^2,1,w,w^2,0,w,0,0,0,0,1,0,w^2,1,w,w^2,0,w,1,1,0,w,1,w,w,0,w,1,0,0,1,1,0,w,1,w,w,0,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,w,1,0,0,w,w^2,w,w,1,w,w,1,1,w,1,1,1,w,w^2,w,1,0,1,1,w^2,w^2,w^2,1,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,w,0,0,1,w,0,w,1,w,w^2,1,0,1,w,w,0,1,w,w,1,1,w,1,w^2,w^2,1,w,1,0,0,
+    0,0,0,0,0,0,w^2,w^2,w^2,w,w,w^2,0,0,w,0,0,0,1,w^2,w^2,w,0,w^2,1,w,w^2,w,1,1,1,0,1,w,w,1,w^2,w^2,w,1,w^2,0,0,w^2,w^2,w^2,w^2,w,0,
+    0,0,0,0,0,0,1,w,w,w,0,1,0,0,w^2,0,0,0,w,w,w,w,w^2,1,w,1,1,w^2,0,w,0,w^2,w^2,w,0,1,1,w^2,w^2,w,w^2,0,w,w,0,0,w,0,0,
+    0,0,0,0,0,0,1,w,0,w,w^2,w^2,0,0,0,w,0,0,1,0,0,w,w^2,1,w^2,w^2,1,0,1,w,w^2,w^2,1,w^2,1,w,0,1,0,1,w,0,w,w,w,1,0,w^2,0,
+    0,0,0,0,0,0,w,1,1,w^2,w,w,0,0,0,w^2,0,0,w,w,1,w^2,w,1,w,0,0,0,w^2,1,0,1,w,w^2,1,w,w^2,w^2,w,w,w,w,w,w^2,w^2,0,w^2,0,0,
+    0,0,0,0,0,0,w,1,1,1,1,w,0,0,0,0,w,0,1,1,w,1,0,w,w^2,0,1,w,0,w,1,w^2,0,w,w,w,w^2,w,w^2,0,w,w,0,w,w^2,w^2,1,1,0,
+    0,0,0,0,0,0,w,1,1,1,1,1,0,0,0,0,w^2,0,w^2,1,0,1,w^2,1,1,0,0,w,w,1,w^2,0,w,w,0,w,1,w^2,w^2,1,1,1,1,w,w^2,0,1,w^2,0,
+    0,0,0,0,0,0,1,0,1,1,0,1,0,0,0,0,0,w,w^2,w,1,w,w^2,w,w,1,w^2,0,w^2,1,0,w^2,1,w,1,w,0,1,1,0,w,w^2,w,w^2,w,1,w^2,w,0,
+    0,0,0,0,0,0,1,0,1,1,w,w,0,0,0,0,0,w^2,w,w^2,1,0,w^2,w^2,1,w,w^2,0,w^2,w,w,w^2,w^2,w^2,w^2,w,w,w,0,0,1,1,1,w^2,w,w,0,w,0,
+    0,0,0,0,0,0,1,w^2,0,w^2,w,0,w^2,w,1,w^2,w,1,w,1,1,0,0,1,1,w,w,w,1,0,1,0,w^2,w,w^2,w^2,w^2,w^2,1,0,0,w^2,w^2,1,0,0,w,0,0,
+    0,0,0,0,0,0,w^2,0,w,1,w,1,w^2,w^2,w^2,w^2,w^2,w^2,0,w^2,1,w,1,w,0,1,w^2,1,w^2,1,0,1,w,w^2,1,1,w,w^2,1,w^2,1,w^2,w,w^2,0,1,w^2,w^2,0,
+    0,0,0,0,0,1,w^2,1,w,w^2,1,w^2,0,0,0,0,0,1,w^2,1,w,w^2,1,w^2,w^2,w^2,w^2,w,w^2,w^2,0,w,1,1,w,1,w^2,w^2,w^2,w,w^2,w^2,0,w,1,1,w,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,24,47,[
-            1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,w^2,1,0,w^2,w,0,w^2,0,w^2,1,0,1,w^2,w,w,w^2,1,w^2,0,w,
-            0,0,0,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w,w,w^2,w^2,0,w^2,w,0,w^2,0,1,0,0,0,1,1,0,w^2,w,w^2,0,
-            0,0,0,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,w,w,w,w^2,w,1,1,w^2,w,1,w^2,0,w,0,w,0,w,1,1,w,w^2,
-            0,0,0,w^2,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,0,w,1,w,w^2,w,0,w^2,w^2,1,0,w^2,0,w^2,1,1,1,w,1,1,
-            0,0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w,0,w,1,w,0,w^2,1,1,1,w,0,w,w^2,w,w^2,1,w,1,0,1,
-            0,0,0,1,w^2,w,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,w,1,w,w^2,w,1,w,w,1,0,w^2,1,1,w^2,w^2,0,1,w^2,w,0,w,
-            0,0,0,1,w,1,0,w^2,w,1,1,w,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,w,0,0,w^2,w^2,1,1,w,w,w,w,1,0,0,0,w,w^2,w^2,
-            0,0,0,w^2,1,1,w,w,1,w,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,w,1,0,w,w^2,w,w,0,0,1,1,w,w,w,1,w^2,w,w,w^2,w,0,
-            0,0,0,w,1,w,w^2,0,w^2,w^2,1,0,w,0,0,0,0,0,0,0,0,0,w,0,w,0,w,w^2,w^2,1,1,w,w,0,0,0,0,0,w^2,0,0,w,w,0,1,w^2,w,
-            0,0,0,w,w,w^2,w,1,w^2,1,1,0,w^2,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,1,1,0,w,w^2,w^2,0,1,w,0,1,0,1,w,w,0,w,1,1,w,
-            0,0,w^2,0,w^2,w,0,0,1,1,0,0,w,0,0,0,0,0,0,0,1,0,w^2,0,w,0,0,1,w^2,w,w^2,1,0,w,w^2,w,w^2,0,0,0,w,1,0,0,w,w,1,
-            0,0,0,1,w,w^2,w,w,w^2,w^2,w,0,w^2,0,0,0,0,0,0,0,1,0,w,0,w^2,0,0,1,0,0,w,w,0,w^2,w^2,1,w^2,0,1,0,w^2,0,1,1,1,1,0,
-            0,0,0,w,1,1,1,0,w^2,0,0,1,w,0,1,0,0,0,0,0,w^2,0,1,0,0,0,w,1,w^2,w^2,1,0,1,w,w^2,1,1,0,0,0,0,0,w,w^2,w^2,w^2,w^2,
-            0,0,0,w^2,w,w,0,0,0,0,w^2,w,w,1,w,w,0,0,0,0,1,0,w^2,0,0,0,w^2,1,w^2,1,1,w,w,w^2,w,0,0,0,w,0,w,1,w^2,0,w,w,1,
-            0,0,0,w,w^2,w^2,w^2,w,0,1,0,0,w,1,1,w^2,0,0,0,0,0,0,w,0,w^2,0,1,1,w,1,w^2,w^2,0,w,0,0,w^2,w^2,w^2,1,w^2,1,w^2,0,w^2,w,1,
-            0,0,1,0,w,1,0,1,1,w,1,1,1,w^2,w,0,1,0,0,0,w^2,0,w^2,0,1,0,w,w^2,0,0,w^2,1,1,w^2,1,1,w,w,1,w,1,0,1,w^2,1,0,0,
-            0,0,1,0,w^2,0,w,w,w,0,0,w^2,w^2,w,0,0,1,1,0,0,0,0,1,0,0,0,1,1,w,1,w,0,w^2,0,w,1,w,0,w^2,1,0,w,0,0,0,1,1,
-            0,0,w^2,0,0,w^2,w,0,1,w,w^2,w^2,1,w^2,0,0,1,w^2,0,1,0,0,w,0,w^2,0,w,1,0,w^2,w,w,0,1,1,1,0,0,w,0,1,1,1,1,1,0,w^2,
-            0,0,0,1,w,w^2,w,w,w^2,w,w,w,1,1,w^2,w^2,w,w,0,0,w,1,w^2,0,w^2,0,1,1,w,1,1,1,1,w,w^2,1,w^2,w,w^2,w,w,w,w,1,1,0,w,
-            0,0,0,1,w,0,1,0,1,w^2,0,1,w,1,w,0,1,w^2,w^2,w,w^2,w^2,w,1,0,0,w^2,w^2,w^2,w^2,w^2,w,1,w,w,w^2,0,w^2,w,w,w^2,0,0,0,0,1,w,
-            0,0,0,w^2,w,w^2,w^2,1,0,w^2,w,w,w,0,w^2,0,0,w,0,w,w^2,w,0,1,0,0,w,w^2,w,w^2,0,w,0,1,w,w^2,1,w^2,1,0,0,w^2,w^2,1,0,w^2,1,
-            0,0,w^2,w^2,1,1,w^2,0,w,w^2,0,w,0,0,w,1,1,w^2,w^2,w,1,w^2,w,0,0,1,1,0,0,w^2,w^2,0,0,0,w^2,w^2,w^2,w^2,w^2,0,w,0,0,1,w^2,1,w
-        ]),
-        ZeroMatrix(F,24,2)),
-    HorizontalJoin(
-        Matrix(F,2,47,[
-            1,0,w,w^2,1,w^2,1,0,0,0,0,0,w^2,0,0,w,w,w^2,w^2,1,w,1,1,0,0,0,0,1,0,w^2,w^2,0,1,w^2,w,0,1,w^2,1,0,0,0,1,w^2,w^2,1,1,
-            0,1,w,1,0,w,w,w,w,1,0,w,1,w,0,0,1,0,0,w,w^2,w^2,1,0,0,0,w^2,0,w^2,w,w,w,w,1,w^2,w^2,1,w,1,1,w,1,w^2,w,0,0,0
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 26 and Rank(GX4) eq 26;
-assert Ncols(GX4) eq 49;
-assert RowSpace(Submatrix(GX4,1,1,26,47)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[73] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 18 and Rank(GX4) eq 18;
+assert RowSpace(Submatrix(GX4,1,1,18,48)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,49,18,1) eq VerticalJoin(ZeroMatrix(F,17,1),IdentityMatrix(F,1));
+Table1Generators[43]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 49 and Dimension(Q) eq 18;
+assert Dimension(HermitianHull(Q)) eq 5;
+Table1Parameters[43]:=[49,13,18,26];
+Table1DistanceTypes[43]:="lower_bound";
 
-// Table 1, No. 074 | source DV09 | HullDecreasing.m
-// Gsrc: [48,28]_4, hull 3; X4: [[49,26,11;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,28,48,[
+// Table 1, No. 44 | DV09
+// [[49,26,11;19]]_2, distance exact.
+Gsrc:=Matrix(F,28,48,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,
@@ -3829,281 +2107,49 @@ Gsrc := Matrix(F,28,48,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,27,48,[
-            1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,
-            0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,1,0,1,w^2,1,w,1,0,w^2,w,1,w,w^2,0,
-            0,0,0,0,w,w^2,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,w^2,w,1,w,0,1,0,w,w,1,1,w^2,w^2,1,w^2,w^2,
-            0,0,0,0,w,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w^2,w^2,w^2,w^2,0,0,0,w^2,w,0,w^2,w,w^2,w^2,w,w,
-            0,0,0,0,0,0,w,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w^2,0,w,0,1,w,w^2,w,0,w,1,w,w^2,w,w,0,
-            0,0,0,0,w,0,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,w,0,w^2,1,0,w,1,w^2,w^2,w^2,w,w,1,w^2,w,
-            0,0,0,0,0,w^2,1,w,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,0,w^2,0,w^2,w^2,1,w,w,1,w,w,w^2,1,w,
-            0,0,0,0,w^2,w^2,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w^2,0,0,w^2,w,w,w,w,0,w^2,w,w,0,1,0,
-            0,0,0,0,w,0,1,0,1,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w,0,w^2,w^2,w,w^2,w,w^2,w^2,0,0,w,0,w^2,w^2,w,
-            0,0,0,0,w^2,w,w^2,1,1,0,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,w^2,w^2,w^2,w,w^2,1,w^2,1,w,w^2,w,w^2,w,1,1,
-            0,0,0,0,1,w^2,w,w^2,1,0,w,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,0,1,1,0,1,1,0,1,w^2,w,0,0,w^2,1,w^2,
-            0,0,w^2,w,w^2,1,w,w,1,w,w,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,0,0,w,w^2,w,w,w,w,1,w,0,1,w,0,0,0,
-            0,0,w,w,w,w^2,w^2,w,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,1,w^2,w,w^2,w^2,w^2,1,w,0,w,0,0,w^2,w,w^2,w^2,0,0,w,
-            0,0,w,0,w^2,0,1,0,w,1,w^2,w,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,0,1,0,1,1,w,0,w^2,w^2,1,w^2,1,w^2,w^2,w^2,0,0,
-            0,0,w,0,w,0,w,w^2,0,w^2,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,w,w^2,0,0,w^2,w,1,w^2,1,1,w^2,w^2,1,1,1,w,
-            0,0,w,1,1,1,1,1,w^2,w^2,0,w^2,w,w,1,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,0,w,w^2,w^2,1,1,w,0,w,0,w^2,w,1,0,1,w,
-            0,0,1,0,w,1,w,1,w,0,0,w,0,w,1,0,w,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,w^2,w^2,0,1,w^2,w,w,1,0,1,w^2,0,w^2,1,
-            0,0,w,w,1,0,w,1,0,0,0,0,w,w,0,0,0,1,1,0,0,0,0,0,0,w^2,0,0,w^2,0,w^2,0,w^2,w,0,1,1,0,0,1,w,w^2,w,0,1,1,0,w^2,
-            0,0,w^2,w^2,w,0,0,w^2,0,1,w,w,0,w^2,w^2,0,1,w,w,1,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,1,0,1,1,1,w^2,w^2,0,w,1,w,w,1,0,w^2,
-            0,0,0,1,0,1,w^2,1,0,1,1,1,1,w,1,w,w,w,1,0,0,0,0,1,0,w^2,0,0,w^2,w^2,0,1,1,1,w^2,w,w,w^2,w^2,1,1,0,1,0,1,w,w^2,1,
-            0,0,w,w^2,w^2,w,w,w,w^2,w^2,w,w,w^2,1,w^2,0,1,w^2,w,0,0,0,0,1,0,w^2,0,w^2,w^2,0,1,w^2,w^2,0,1,1,0,w,w,0,w,w,w^2,1,1,w^2,w,w,
-            0,0,w,w,w,1,w,1,1,w^2,w^2,0,1,0,w^2,0,w^2,0,w,0,0,1,0,0,0,w,0,0,w^2,1,1,1,0,w^2,0,w,0,1,1,w^2,w,w^2,0,w,w,w^2,1,w^2,
-            0,0,w,0,w^2,w^2,w,1,1,1,0,w,w,0,w,w,0,0,w,0,w,w,0,w^2,w,0,1,1,1,w^2,0,1,w,w,1,w,0,w^2,1,1,w,w^2,w,0,w^2,0,1,0,
-            0,0,w^2,w^2,1,w^2,0,w^2,1,w^2,w^2,1,w,w,w^2,0,1,w,w^2,w^2,w,0,0,w^2,w^2,w,w,w^2,1,w^2,w,0,0,w^2,w,w,0,w^2,0,w^2,w,1,0,w^2,0,0,1,w^2,
-            0,0,1,1,w^2,w^2,1,1,w^2,w,1,0,1,0,0,w,1,1,1,1,1,w^2,1,0,1,w^2,w^2,w^2,0,0,w,w,w^2,w,0,w,1,w,0,0,w,1,0,w^2,w^2,w^2,w,0
-        ]),
-        ZeroMatrix(F,27,1)),
-    HorizontalJoin(
-        Matrix(F,1,48,[
-            0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,28,49,[
+    1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,0,
+    0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,0,
+    0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,1,0,1,w^2,1,w,1,0,w^2,w,1,w,w^2,0,0,
+    0,0,0,0,w,w^2,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,w^2,w,1,w,0,1,0,w,w,1,1,w^2,w^2,1,w^2,w^2,0,
+    0,0,0,0,w,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w^2,w^2,w^2,w^2,0,0,0,w^2,w,0,w^2,w,w^2,w^2,w,w,0,
+    0,0,0,0,0,0,w,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w^2,0,w,0,1,w,w^2,w,0,w,1,w,w^2,w,w,0,0,
+    0,0,0,0,w,0,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,w,0,w^2,1,0,w,1,w^2,w^2,w^2,w,w,1,w^2,w,0,
+    0,0,0,0,0,w^2,1,w,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,0,w^2,0,w^2,w^2,1,w,w,1,w,w,w^2,1,w,0,
+    0,0,0,0,w^2,w^2,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w^2,0,0,w^2,w,w,w,w,0,w^2,w,w,0,1,0,0,
+    0,0,0,0,w,0,1,0,1,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w,0,w^2,w^2,w,w^2,w,w^2,w^2,0,0,w,0,w^2,w^2,w,0,
+    0,0,0,0,w^2,w,w^2,1,1,0,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,w^2,w^2,w^2,w,w^2,1,w^2,1,w,w^2,w,w^2,w,1,1,0,
+    0,0,0,0,1,w^2,w,w^2,1,0,w,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,0,1,1,0,1,1,0,1,w^2,w,0,0,w^2,1,w^2,0,
+    0,0,w^2,w,w^2,1,w,w,1,w,w,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,0,0,0,w,w^2,w,w,w,w,1,w,0,1,w,0,0,0,0,
+    0,0,w,w,w,w^2,w^2,w,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,1,w^2,w,w^2,w^2,w^2,1,w,0,w,0,0,w^2,w,w^2,w^2,0,0,w,0,
+    0,0,w,0,w^2,0,1,0,w,1,w^2,w,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,0,1,0,1,1,w,0,w^2,w^2,1,w^2,1,w^2,w^2,w^2,0,0,0,
+    0,0,w,0,w,0,w,w^2,0,w^2,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,w,w^2,0,0,w^2,w,1,w^2,1,1,w^2,w^2,1,1,1,w,0,
+    0,0,w,1,1,1,1,1,w^2,w^2,0,w^2,w,w,1,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,0,w,w^2,w^2,1,1,w,0,w,0,w^2,w,1,0,1,w,0,
+    0,0,1,0,w,1,w,1,w,0,0,w,0,w,1,0,w,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,w^2,w^2,0,1,w^2,w,w,1,0,1,w^2,0,w^2,1,0,
+    0,0,w,w,1,0,w,1,0,0,0,0,w,w,0,0,0,1,1,0,0,0,0,0,0,w^2,0,0,w^2,0,w^2,0,w^2,w,0,1,1,0,0,1,w,w^2,w,0,1,1,0,w^2,0,
+    0,0,w^2,w^2,w,0,0,w^2,0,1,w,w,0,w^2,w^2,0,1,w,w,1,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,1,0,1,1,1,w^2,w^2,0,w,1,w,w,1,0,w^2,0,
+    0,0,0,1,0,1,w^2,1,0,1,1,1,1,w,1,w,w,w,1,0,0,0,0,1,0,w^2,0,0,w^2,w^2,0,1,1,1,w^2,w,w,w^2,w^2,1,1,0,1,0,1,w,w^2,1,0,
+    0,0,w,w^2,w^2,w,w,w,w^2,w^2,w,w,w^2,1,w^2,0,1,w^2,w,0,0,0,0,1,0,w^2,0,w^2,w^2,0,1,w^2,w^2,0,1,1,0,w,w,0,w,w,w^2,1,1,w^2,w,w,0,
+    0,0,w,w,w,1,w,1,1,w^2,w^2,0,1,0,w^2,0,w^2,0,w,0,0,1,0,0,0,w,0,0,w^2,1,1,1,0,w^2,0,w,0,1,1,w^2,w,w^2,0,w,w,w^2,1,w^2,0,
+    0,0,w,0,w^2,w^2,w,1,1,1,0,w,w,0,w,w,0,0,w,0,w,w,0,w^2,w,0,1,1,1,w^2,0,1,w,w,1,w,0,w^2,1,1,w,w^2,w,0,w^2,0,1,0,0,
+    0,0,w^2,w^2,1,w^2,0,w^2,1,w^2,w^2,1,w,w,w^2,0,1,w,w^2,w^2,w,0,0,w^2,w^2,w,w,w^2,1,w^2,w,0,0,w^2,w,w,0,w^2,0,w^2,w,1,0,w^2,0,0,1,w^2,0,
+    0,0,1,1,w^2,w^2,1,1,w^2,w,1,0,1,0,0,w,1,1,1,1,1,w^2,1,0,1,w^2,w^2,w^2,0,0,w,w,w^2,w,0,w,1,w,0,0,w,1,0,w^2,w^2,w^2,w,0,0,
+    0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,1
+]);
 assert Rank(Gsrc) eq 28 and Rank(GX4) eq 28;
-assert Ncols(GX4) eq 49;
 assert RowSpace(Submatrix(GX4,1,1,28,48)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[74] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,49,28,1) eq VerticalJoin(ZeroMatrix(F,27,1),IdentityMatrix(F,1));
+Table1Generators[44]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 49 and Dimension(Q) eq 28;
+assert Dimension(HermitianHull(Q)) eq 2;
+Table1Parameters[44]:=[49,26,11,19];
+Table1DistanceTypes[44]:="exact";
 
-// Table 1, No. 075 | source DV08 | HullIncreasing.m
-// Gsrc: [47,26]_4, hull 2; X4: [[50,21,12;19]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,26,47,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,1,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,1,1,w^2,0,w^2,w,w^2,w^2,w,w,0,0,1,1,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w^2,0,w^2,w,1,0,1,w,1,w^2,0,1,w,0,w,w^2,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,1,0,w,w,w^2,1,0,1,w,1,0,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,w^2,0,0,0,w^2,0,1,0,0,0,w^2,1,0,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,w,0,w^2,w,w^2,1,1,w^2,0,w,w^2,w,w^2,w^2,w^2,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,w^2,w,w,w,1,1,1,w,0,w,w^2,w^2,w^2,1,1,w^2,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w^2,w,w,w,0,w^2,1,w^2,1,w^2,0,w^2,1,1,1,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,23,47,[
-            1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w,w^2,0,w,w^2,w^2,0,w^2,1,1,w^2,1,1,w^2,0,w,w,w^2,0,w,
-            0,0,0,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w^2,0,w^2,w^2,w^2,w^2,1,w^2,1,0,w^2,w^2,1,w,0,w^2,1,w,w^2,w^2,
-            0,0,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,w,w,1,w,w,w^2,0,1,0,w^2,w^2,1,w^2,w,w,w,w^2,w^2,
-            0,0,1,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,w,0,1,w^2,w,1,w,0,0,0,w,1,1,0,w^2,w,w,
-            0,0,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,w^2,1,w,w^2,w^2,0,1,0,0,0,w^2,w^2,1,0,1,0,w^2,1,0,
-            0,0,1,w^2,0,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,1,0,1,1,1,w,w,1,w,0,w^2,0,1,w,w^2,w^2,1,w^2,w^2,w^2,
-            0,0,w,w,w,1,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w,0,0,0,1,w,w,0,0,w^2,w,0,w^2,1,0,1,w^2,1,w^2,w,w^2,
-            0,0,w,1,w^2,0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,0,w,1,1,w^2,w,w^2,1,w,1,w^2,w^2,w^2,1,w,0,0,1,w,
-            0,0,0,0,w,w^2,0,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,1,w,w^2,w,1,1,w,w^2,w^2,w,1,0,w^2,1,1,w,w,1,w,w,w^2,w,
-            0,0,0,0,1,1,w^2,0,1,w,1,w^2,w,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,0,w,0,w^2,1,w,0,1,0,w^2,w,w,1,1,1,0,w^2,1,w^2,0,
-            0,0,w^2,0,w,w^2,w^2,1,1,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w^2,w^2,w^2,1,0,1,0,w^2,0,1,w^2,w,0,w^2,w^2,w^2,0,w,w^2,0,
-            0,0,0,w^2,0,w^2,1,w^2,1,w^2,1,w^2,0,0,0,w^2,1,0,0,0,0,0,w^2,0,0,w,w^2,1,w,1,w,1,w^2,1,1,1,1,0,w^2,0,0,1,0,1,w^2,w^2,w^2,
-            0,0,w^2,w,w,w^2,w^2,0,0,1,w,1,w^2,0,0,0,1,0,0,0,0,0,w,0,1,0,w,w,w^2,1,w,w,1,w,w,w^2,w^2,w,w,0,w,1,w^2,w,w^2,0,w,
-            0,0,w,0,1,1,w,1,w^2,w,w,1,1,0,0,1,w,1,0,0,0,0,w^2,0,w^2,w^2,0,1,0,w,0,w,1,w,w^2,1,w^2,1,0,w^2,w,1,1,0,1,1,0,
-            0,0,0,0,1,w,1,w^2,w^2,0,w,1,w^2,w^2,1,0,1,1,0,0,0,w,1,0,w,1,w^2,w,1,w,w,0,0,w,1,w,1,0,0,w^2,1,1,w^2,w^2,w^2,w^2,w^2,
-            0,0,w,0,w^2,0,w,w^2,w,1,w,w^2,0,0,w,w^2,0,w,0,0,0,w^2,w^2,0,1,0,w,w^2,w^2,1,w,1,1,w,1,w^2,1,w^2,w,0,w^2,0,w,1,w,1,w,
-            0,0,0,w,0,1,1,w,0,0,w,1,w,w^2,w^2,w^2,w,0,0,0,0,0,0,1,w,1,w^2,0,w^2,1,1,w,w^2,0,1,0,w^2,w,w^2,1,w^2,0,0,w,0,1,1,
-            0,0,w,w^2,0,1,0,w,1,0,w,0,0,0,0,w^2,w,0,0,0,0,0,1,1,1,w,0,w^2,w,0,0,w^2,w,w^2,0,w,1,0,1,0,0,0,0,0,w^2,w,w^2,
-            0,0,0,w,0,1,0,w,w^2,w,w^2,1,0,1,w^2,1,0,0,1,1,0,1,1,w,w^2,1,1,w,0,1,1,w^2,0,w^2,w,w,0,w^2,1,0,0,0,w,1,0,1,w,
-            0,0,w^2,w^2,w,0,w^2,w^2,1,w,w,w^2,1,0,w,0,w^2,0,0,1,0,w,w,0,1,1,w^2,w^2,w,w,0,0,1,w^2,1,w,1,w,w^2,w^2,0,w,0,w^2,w^2,1,0,
-            0,0,w,w,w,1,1,w^2,w^2,w^2,1,0,1,1,1,1,0,0,w,w,1,w,w,0,1,1,w^2,1,w,w,w,0,w^2,0,0,w^2,w,1,1,1,w^2,0,w^2,1,w,w,w^2
-        ]),
-        ZeroMatrix(F,23,3)),
-    HorizontalJoin(
-        Matrix(F,3,47,[
-            1,0,0,1,w^2,1,1,1,1,w,0,0,0,1,w^2,1,w^2,0,w^2,0,0,0,1,w^2,0,0,w,w^2,1,w^2,1,1,w^2,1,1,w,1,1,w^2,0,w,w^2,1,w^2,w^2,w^2,w,
-            1,0,w,w^2,1,w^2,1,0,0,0,0,0,w^2,0,0,w,w,w^2,w^2,1,w,1,1,0,0,0,0,1,0,w^2,w^2,0,1,w^2,w,0,1,w^2,1,0,0,0,1,w^2,w^2,1,1,
-            0,1,w,1,0,w,w,w,w,1,0,w,1,w,0,0,1,0,0,w,w^2,w^2,1,0,0,0,w^2,0,w^2,w,w,w,w,1,w^2,w^2,1,w,1,1,w,1,w^2,w,0,0,0
-        ]),
-        IdentityMatrix(F,3)));
-assert Rank(Gsrc) eq 26 and Rank(GX4) eq 26;
-assert Ncols(GX4) eq 50;
-assert RowSpace(Submatrix(GX4,1,1,26,47)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[75] := <Gsrc,GX4>;
-
-// Table 1, No. 076 | source DV10 | HullIncreasing.m
-// Gsrc: [49,27]_4, hull 3; X4: [[50,23,12;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,27,49,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,1,w^2,0,w,1,w,w^2,w,1,w^2,1,w^2,1,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,0,w^2,w^2,w^2,w,0,w,w,w^2,1,w,0,1,1,w,0,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,1,w,1,w^2,w^2,w,0,w,w,1,w^2,1,w,0,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,w,0,1,w^2,0,0,w^2,1,1,w^2,w,0,w^2,w,w,0,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,w^2,w^2,0,0,w,w,w,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w^2,0,w,w^2,1,1,w^2,0,0,w^2,1,0,w,0,1,0,0,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,0,w,1,w^2,w,w,0,w,w^2,w^2,w^2,0,w,w^2,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w^2,w,w,0,1,w^2,w,w,0,w,1,1,0,w,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w,w,1,w,w^2,w,0,1,w^2,w,w,1,w^2,w^2,0,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w^2,0,w^2,0,w,w^2,w,0,1,w^2,w^2,w^2,w^2,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w^2,w^2,w^2,0,0,0,0,1,w,w^2,w^2,w,w^2,1,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,0,1,0,w,w,w,w,1,1,1,w^2,0,w^2,0,w,1,w^2,w,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,w,w,1,w,1,w,w^2,1,1,w^2,0,0,1,1,1,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,0,w,w,w^2,1,w^2,0,1,w^2,w,0,w,0,1,1,w,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,1,1,w,w,w^2,1,w,w,1,w,w^2,1,1,0,w^2,1,w,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w,1,w^2,w,w^2,1,0,1,w,w,1,w,w^2,w,w,1,0,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,w,0,w^2,0,w^2,w^2,w,0,w,w^2,w^2,0,w^2,0,w,0,0,w^2,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,26,49,[
-            1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,
-            0,0,1,1,w^2,w,0,w^2,1,1,1,w^2,w,0,w^2,0,w,w,1,1,w^2,1,w^2,0,w,0,w^2,w^2,0,1,w,w,0,w,w,1,w^2,w,0,w^2,0,w^2,w,w^2,w,0,w^2,0,w^2,
-            0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,1,w^2,0,0,w,w,w,1,0,w,1,w,0,w^2,w,1,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,w,0,1,w^2,0,0,w^2,1,1,w^2,w,0,w^2,w,w,0,w^2,
-            0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,1,w,w^2,w,w,w^2,w^2,w^2,1,1,0,1,w,1,w,w^2,w^2,1,
-            0,0,0,1,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w^2,w^2,w,w^2,w^2,w,w,w,0,w^2,w,w,w,w,w^2,0,0,w^2,1,
-            0,0,0,w^2,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,0,w^2,1,1,w,w,1,w,w,0,1,0,w^2,w,0,w^2,
-            0,0,0,w,0,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w,0,w,1,w^2,w,0,0,w,0,0,w,w,1,w,0,0,w,
-            0,0,0,w,w,w^2,w^2,w^2,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w,1,0,w^2,1,1,0,w,0,w^2,1,w^2,w,w,1,w,w,w^2,
-            0,0,0,w,w^2,w,w^2,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,1,0,0,w,w^2,w^2,w^2,w^2,w,0,1,w^2,0,w^2,1,w,0,
-            0,0,0,0,0,1,w^2,w^2,w,1,w,1,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,0,w^2,w,0,1,w,1,0,0,1,0,w^2,w^2,w,0,
-            0,0,0,w,w,w,w^2,w^2,0,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,1,w^2,w^2,w,w^2,0,1,w^2,w^2,0,w,0,1,0,1,
-            0,0,0,w^2,0,0,1,1,1,1,1,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w^2,w^2,0,w^2,0,0,0,0,w^2,1,w^2,0,0,w,w^2,w,1,
-            0,0,0,0,w^2,w^2,0,1,w^2,0,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,0,w^2,w,w,0,1,1,0,w,w,0,1,1,w^2,1,w,0,0,
-            0,0,0,0,1,1,w^2,w^2,w,1,1,w,w,0,1,0,1,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,1,w^2,w^2,w,0,0,w,1,w,w,1,1,0,0,w^2,w,1,0,
-            0,0,0,w^2,1,0,1,w,w,1,w,w^2,w^2,w^2,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,1,w^2,w^2,1,1,0,0,w^2,0,w^2,w,w^2,1,1,1,w^2,1,
-            0,0,0,w,1,w,w^2,0,w^2,1,w^2,w,0,1,w^2,w,w,w^2,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w,0,1,w^2,w^2,w^2,1,w^2,w^2,w,w^2,w^2,w,w^2,w^2,0,w,
-            0,0,0,1,w,w^2,0,0,w,w^2,w^2,w^2,0,w,w^2,1,w^2,w,w,1,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,1,w^2,1,0,0,w^2,w^2,w^2,1,w,w,w^2,1,1,1,w^2,1,
-            0,0,0,w,w^2,w,w,w^2,1,w^2,w,1,1,w^2,0,w,1,w^2,0,1,0,0,0,0,0,0,0,w^2,0,0,w,w^2,w,w^2,w,w,w,w,w,1,w,0,0,w,0,1,w,0,w^2,
-            0,0,0,w^2,w^2,w,0,1,w,w^2,1,w,0,w,w^2,0,1,w^2,w,0,1,0,0,0,0,0,0,1,0,0,0,w^2,w,1,1,w^2,w,w^2,0,w^2,w^2,1,w,w,1,w,w^2,0,w,
-            0,0,0,w,w^2,0,0,w,1,1,0,0,w^2,w^2,0,w,w^2,0,0,0,1,1,0,w,0,0,0,0,0,0,w^2,w,w^2,w,1,w^2,1,w^2,1,w,1,w^2,w,w,w,w,1,1,1,
-            0,0,0,1,0,w,0,w^2,0,0,w,w^2,0,1,w,0,w,0,w^2,w^2,w^2,1,0,w^2,0,0,0,w^2,0,0,0,w^2,1,w,0,1,w^2,w^2,1,1,0,w,w,w^2,w^2,1,w^2,0,1,
-            0,0,0,0,0,w,0,0,1,0,w,w^2,0,0,w,1,1,0,w,1,0,0,1,w^2,w,0,w,0,0,1,0,1,w^2,0,w,0,w^2,1,w^2,w,0,w,w^2,1,w,w,0,w^2,0,
-            0,0,0,w^2,w^2,w,0,1,1,0,1,1,1,1,1,w,w^2,w,0,0,1,0,1,1,w^2,0,w^2,w,0,1,1,0,1,w,0,w^2,0,0,w,0,w^2,w,w^2,0,w,w,w^2,0,0,
-            0,0,0,1,w^2,w^2,0,w^2,0,w,w^2,w^2,w,w^2,w^2,0,w^2,w^2,0,w,w,1,w,w^2,0,1,w,w^2,0,w^2,w,0,1,w,w^2,w,w,1,0,0,w,0,w^2,w^2,0,1,1,0,0
-        ]),
-        ZeroMatrix(F,26,1)),
-    HorizontalJoin(
-        Matrix(F,1,49,[
-            1,w^2,w,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w,0,w,1,w,1,1,1,w,w,0,0,0,w^2,0,w,w,w^2,1,w,1,0,1,w^2,w,w,w,w^2,w,w,0,0,0,1,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 27 and Rank(GX4) eq 27;
-assert Ncols(GX4) eq 50;
-assert RowSpace(Submatrix(GX4,1,1,27,49)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[76] := <Gsrc,GX4>;
-
-// Table 1, No. 077 | source BS041 | HullIncreasing.m
-// Gsrc: [49,29]_4, hull 4; X4: [[50,24,11;16]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,29,49,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,w^2,0,0,0,1,0,w^2,0,0,0,w^2,w^2,w,0,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,1,1,w^2,0,w^2,w,w^2,w^2,w,w,0,0,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w^2,0,w^2,w,1,0,1,w,1,w^2,0,1,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,1,0,w,w,w^2,1,0,1,w,1,0,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,w^2,0,0,0,w^2,0,1,0,0,0,w^2,1,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,w,0,w^2,w,w^2,1,1,w^2,0,w,w^2,w,w^2,w^2,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,w^2,w,w,w,1,1,1,w,0,w,w^2,w^2,w^2,1,1,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w^2,w,w,w,0,w^2,1,w^2,1,w^2,0,w^2,1,1,1,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,28,49,[
-            1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,
-            0,0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,w,w,1,1,1,0,1,w,0,0,1,1,1,w,
-            0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,w^2,w,w,w,0,w,0,w^2,0,0,0,0,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w,0,1,0,w,w,1,w,w^2,w^2,w^2,w,w^2,0,w,1,
-            0,0,0,0,0,w,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,0,w,w^2,0,w,1,0,w,1,0,w,0,w,0,0,w^2,w,
-            0,0,0,0,0,0,w^2,1,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,0,w^2,1,w,0,1,1,w,0,0,0,w,0,1,0,w^2,
-            0,0,0,0,0,0,w^2,1,w,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,0,w^2,0,w^2,w^2,1,w,w,1,w,w,w^2,1,w,
-            0,0,0,0,0,w^2,w,1,w,0,1,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,w^2,w^2,w^2,w^2,w,w^2,w^2,w^2,w^2,w,0,w,w,w,0,w,
-            0,0,0,0,0,w^2,w^2,1,w^2,0,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,w^2,w^2,w^2,1,1,0,w,w,0,0,w^2,0,w^2,1,0,w,w^2,
-            0,0,0,0,0,0,1,0,1,w^2,w,1,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w,0,w^2,w,w,w^2,1,1,w,0,w,0,w^2,w,w,w,w,
-            0,0,0,0,0,1,w^2,w,0,1,w,w,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,1,0,w,w,w,1,1,w,w,1,w^2,1,w,w^2,w^2,1,w,
-            0,0,0,0,w^2,w^2,1,0,w^2,1,w,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,w,0,w^2,0,1,w,0,w,w^2,w^2,w,w,0,w,1,w^2,1,0,
-            0,0,0,0,0,0,w,0,w^2,1,w^2,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,w,w^2,w,0,w^2,0,w^2,w,w^2,w,w,1,w^2,w^2,w^2,w^2,1,
-            0,0,0,0,w^2,w,w^2,1,w,w,w^2,w,1,w^2,w,w,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,1,w,w^2,1,1,w,1,w^2,w,w^2,0,0,w^2,w,0,w,1,
-            0,0,0,0,1,w^2,w^2,0,w,1,0,w^2,w^2,w,1,1,0,0,0,1,0,0,0,0,0,0,0,0,w,w,w^2,1,w,w^2,w,w^2,0,0,w,w,1,w,w,w^2,w,0,w,w^2,1,
-            0,0,0,0,1,1,w^2,0,1,w^2,w^2,1,0,0,w^2,0,0,1,w^2,w^2,0,w,0,0,0,0,1,0,w^2,1,w,0,w^2,0,1,0,w^2,w^2,0,w,1,w^2,w,0,0,w,1,0,w^2,
-            0,0,0,0,1,w^2,0,w^2,0,0,1,w^2,1,0,1,w,0,w,w^2,0,0,w^2,0,0,0,0,w^2,0,w^2,0,0,w^2,w^2,0,w,1,0,w,1,0,0,1,w^2,0,w^2,0,1,w^2,w,
-            0,0,0,0,w,w^2,w,0,w^2,1,w^2,1,w,0,0,w^2,0,w,0,1,1,1,0,0,0,0,w^2,0,w^2,1,w^2,w^2,0,w,w,0,0,w,w^2,w,w,w,1,w^2,w,w,0,w,1,
-            0,0,0,0,w^2,0,w,1,1,w,w,0,w,1,w,0,1,w,w^2,w,0,1,0,0,w,0,w,0,w,w^2,0,w,0,w,w^2,w^2,1,1,1,w,1,w^2,w,1,w^2,w^2,w^2,w^2,w^2,
-            0,0,0,0,1,w^2,0,w^2,w^2,1,0,0,w,1,1,w^2,1,0,w^2,w^2,w^2,0,0,0,w^2,0,w^2,0,1,w^2,w^2,0,w,1,1,w^2,w^2,0,1,w,w,w^2,0,1,1,w^2,1,w^2,w,
-            0,0,0,0,w,w^2,0,1,0,0,w,1,w,0,1,1,w,0,w,w,1,1,w^2,w^2,1,1,w^2,0,w^2,w,1,w,1,1,0,w,w,w,0,0,w^2,w^2,0,1,1,0,1,1,0,
-            0,0,0,0,0,w,1,w^2,1,0,1,w,w,1,1,w,1,w,w^2,w^2,w,1,0,0,0,1,w,0,w,w^2,w,w^2,0,w,1,1,1,1,0,w,w,0,w^2,w,0,w,1,1,w^2,
-            0,0,0,0,1,w,1,w^2,w^2,w,1,w^2,w,w,0,w,0,0,1,0,1,w,1,0,1,0,1,1,w^2,0,0,w^2,w,w^2,1,w,0,w^2,1,w^2,w,w^2,1,1,w,w,w^2,w,0,
-            0,0,0,0,w,0,1,w,0,1,w,1,1,w,1,w,0,w^2,0,0,w,w,0,0,0,0,1,1,1,1,0,w^2,1,w,0,w,1,w,1,0,0,w^2,0,0,0,1,w^2,0,0
-        ]),
-        ZeroMatrix(F,28,1)),
-    HorizontalJoin(
-        Matrix(F,1,49,[
-            w^2,w^2,1,0,1,0,1,w,w^2,w,w^2,w^2,w,w^2,w,0,w,0,0,0,1,w,1,w^2,0,0,0,0,1,w,1,0,1,0,w,w^2,w^2,0,w,w,0,1,w^2,1,w,1,1,1,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 29 and Rank(GX4) eq 29;
-assert Ncols(GX4) eq 50;
-assert RowSpace(Submatrix(GX4,1,1,29,49)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[77] := <Gsrc,GX4>;
-
-// Table 1, No. 078 | source DV13 | HullDecreasing.m
-// Gsrc: [49,28]_4, hull 4; X4: [[50,25,12;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,28,49,[
+// Table 1, No. 45 | DV13
+// [[50,25,12;19]]_2, distance exact.
+Gsrc:=Matrix(F,28,49,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
@@ -4133,360 +2179,49 @@ Gsrc := Matrix(F,28,49,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,27,49,[
-            1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,1,1,w,1,0,w^2,0,0,0,0,w^2,0,w,0,0,1,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,
-            0,0,0,w^2,0,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w,w^2,w^2,1,0,0,0,0,w,0,w,w^2,1,w,w,
-            0,0,0,0,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,1,w^2,1,w^2,w^2,w,w,1,w^2,0,w,w^2,w^2,0,w^2,w,
-            0,0,0,w,1,0,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,1,w,0,w^2,w,w^2,1,w,w,0,0,w^2,w^2,w^2,w,0,
-            0,0,0,1,1,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,1,w^2,0,0,0,0,w^2,w^2,w,w^2,0,1,w^2,1,1,w,w^2,
-            0,0,0,1,w,0,1,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,0,w,0,w,0,w^2,0,w,w^2,0,w,w,w,w^2,
-            0,0,0,1,w,0,w^2,0,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w,1,0,w,0,1,w,0,1,0,1,0,1,0,w,1,0,w^2,
-            0,0,0,0,w^2,1,w,w,1,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,1,w,1,w^2,0,w^2,w,1,w,w^2,w,w^2,1,0,w^2,0,
-            0,0,0,w,w,w^2,w,0,0,w,1,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,w,w,w^2,w,w,0,w,0,1,w^2,w,0,1,w^2,1,1,
-            0,0,0,0,1,0,0,w^2,1,1,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,w^2,w^2,0,1,w,1,w,1,w^2,0,1,w,0,w^2,w,w^2,
-            0,0,0,w^2,w,0,w,1,1,0,w,w^2,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,w^2,w,w,w^2,0,w,1,1,w^2,1,0,0,w^2,w^2,1,0,
-            0,0,0,0,1,0,1,w^2,w,1,w,w,0,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w^2,w,1,1,0,0,w^2,1,w^2,0,0,1,1,0,0,w,0,
-            0,0,0,1,0,0,w,1,1,1,1,1,w,1,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,w^2,1,0,0,1,1,w,w,1,1,0,w^2,w^2,0,1,0,0,
-            0,0,0,0,w,w,w^2,w,1,1,w,w^2,w,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,w,0,1,0,0,w^2,1,1,w,1,w^2,0,w,0,1,w^2,w,1,0,0,w^2,
-            0,0,0,w^2,0,1,0,w^2,w,0,0,w^2,w,w,0,0,w,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,1,0,w^2,w^2,w^2,0,w,0,w,w^2,w,w,0,
-            0,0,0,w,w,w^2,w,w^2,0,w,w,1,w,1,w^2,0,w^2,w,1,0,1,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,w,0,0,0,w,0,w^2,w^2,1,w^2,0,w,w^2,w,1,w,
-            0,0,0,1,w^2,1,w,1,1,w^2,w^2,w^2,1,0,0,w,1,w^2,w,1,w,0,0,0,1,0,0,w,0,w^2,0,w,1,w^2,0,0,w,1,w,1,1,0,w^2,0,1,w,0,w^2,0,
-            0,0,0,w^2,1,w,1,0,w,0,1,0,w,w,w^2,0,w^2,0,w^2,w,w,0,0,0,1,0,0,w,w^2,w^2,w^2,w^2,w^2,1,1,w,1,w^2,w^2,0,0,w^2,1,w,0,w,1,w,w^2,
-            0,0,0,0,w,0,w^2,w^2,0,0,w,w,0,1,w,0,0,w^2,w,1,0,0,0,1,w,0,0,w^2,1,w,1,w^2,1,0,w^2,0,0,w,0,1,w,0,0,w^2,w^2,0,1,w^2,1,
-            0,0,0,1,0,w,w^2,w,1,1,w^2,0,1,w^2,w,w^2,w^2,0,w^2,1,1,0,w^2,1,w,1,0,w,0,0,w^2,w^2,w,0,1,w^2,1,1,w^2,w^2,1,0,1,w^2,w^2,w,0,0,w^2,
-            0,0,0,w^2,w^2,w^2,w,w,0,0,0,w^2,0,1,1,1,0,w,0,w^2,w,1,w,w,1,1,0,w^2,w^2,1,w^2,w^2,w,w,w,w,w,w,w^2,0,1,0,w,w^2,w^2,w,w^2,1,w,
-            0,0,0,w,0,1,w,1,w^2,1,1,w^2,1,w^2,0,0,w^2,w^2,w^2,w,1,w,w^2,1,1,0,w,w^2,0,w^2,0,w^2,w^2,w^2,0,w,1,0,w,w,1,w,1,0,w^2,w,w,1,1,
-            0,0,0,w,0,w^2,w,1,w,0,0,w,w^2,0,1,1,0,1,w,0,w,w,w^2,w,0,0,w^2,w,0,w^2,w,w^2,w^2,1,w^2,w^2,0,1,w^2,w^2,w^2,w^2,1,0,w,1,w^2,w^2,1
-        ]),
-        ZeroMatrix(F,27,1)),
-    HorizontalJoin(
-        Matrix(F,1,49,[
-            0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,28,50,[
+    1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,
+    0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,0,
+    0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,
+    0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,1,1,w,1,0,w^2,0,0,0,0,w^2,0,w,0,0,1,w,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,0,
+    0,0,0,w^2,0,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w,w^2,w^2,1,0,0,0,0,w,0,w,w^2,1,w,w,0,
+    0,0,0,0,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,1,w^2,1,w^2,w^2,w,w,1,w^2,0,w,w^2,w^2,0,w^2,w,0,
+    0,0,0,w,1,0,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,1,w,0,w^2,w,w^2,1,w,w,0,0,w^2,w^2,w^2,w,0,0,
+    0,0,0,1,1,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,1,w^2,0,0,0,0,w^2,w^2,w,w^2,0,1,w^2,1,1,w,w^2,0,
+    0,0,0,1,w,0,1,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,0,w,0,w,0,w^2,0,w,w^2,0,w,w,w,w^2,0,
+    0,0,0,1,w,0,w^2,0,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w,1,0,w,0,1,w,0,1,0,1,0,1,0,w,1,0,w^2,0,
+    0,0,0,0,w^2,1,w,w,1,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,1,w,1,w^2,0,w^2,w,1,w,w^2,w,w^2,1,0,w^2,0,0,
+    0,0,0,w,w,w^2,w,0,0,w,1,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,w,w,w^2,w,w,0,w,0,1,w^2,w,0,1,w^2,1,1,0,
+    0,0,0,0,1,0,0,w^2,1,1,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,w^2,w^2,0,1,w,1,w,1,w^2,0,1,w,0,w^2,w,w^2,0,
+    0,0,0,w^2,w,0,w,1,1,0,w,w^2,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,w^2,w,w,w^2,0,w,1,1,w^2,1,0,0,w^2,w^2,1,0,0,
+    0,0,0,0,1,0,1,w^2,w,1,w,w,0,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w^2,w,1,1,0,0,w^2,1,w^2,0,0,1,1,0,0,w,0,0,
+    0,0,0,1,0,0,w,1,1,1,1,1,w,1,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,w^2,1,0,0,1,1,w,w,1,1,0,w^2,w^2,0,1,0,0,0,
+    0,0,0,0,w,w,w^2,w,1,1,w,w^2,w,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,w,0,1,0,0,w^2,1,1,w,1,w^2,0,w,0,1,w^2,w,1,0,0,w^2,0,
+    0,0,0,w^2,0,1,0,w^2,w,0,0,w^2,w,w,0,0,w,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,1,0,w^2,w^2,w^2,0,w,0,w,w^2,w,w,0,0,
+    0,0,0,w,w,w^2,w,w^2,0,w,w,1,w,1,w^2,0,w^2,w,1,0,1,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,w,0,0,0,w,0,w^2,w^2,1,w^2,0,w,w^2,w,1,w,0,
+    0,0,0,1,w^2,1,w,1,1,w^2,w^2,w^2,1,0,0,w,1,w^2,w,1,w,0,0,0,1,0,0,w,0,w^2,0,w,1,w^2,0,0,w,1,w,1,1,0,w^2,0,1,w,0,w^2,0,0,
+    0,0,0,w^2,1,w,1,0,w,0,1,0,w,w,w^2,0,w^2,0,w^2,w,w,0,0,0,1,0,0,w,w^2,w^2,w^2,w^2,w^2,1,1,w,1,w^2,w^2,0,0,w^2,1,w,0,w,1,w,w^2,0,
+    0,0,0,0,w,0,w^2,w^2,0,0,w,w,0,1,w,0,0,w^2,w,1,0,0,0,1,w,0,0,w^2,1,w,1,w^2,1,0,w^2,0,0,w,0,1,w,0,0,w^2,w^2,0,1,w^2,1,0,
+    0,0,0,1,0,w,w^2,w,1,1,w^2,0,1,w^2,w,w^2,w^2,0,w^2,1,1,0,w^2,1,w,1,0,w,0,0,w^2,w^2,w,0,1,w^2,1,1,w^2,w^2,1,0,1,w^2,w^2,w,0,0,w^2,0,
+    0,0,0,w^2,w^2,w^2,w,w,0,0,0,w^2,0,1,1,1,0,w,0,w^2,w,1,w,w,1,1,0,w^2,w^2,1,w^2,w^2,w,w,w,w,w,w,w^2,0,1,0,w,w^2,w^2,w,w^2,1,w,0,
+    0,0,0,w,0,1,w,1,w^2,1,1,w^2,1,w^2,0,0,w^2,w^2,w^2,w,1,w,w^2,1,1,0,w,w^2,0,w^2,0,w^2,w^2,w^2,0,w,1,0,w,w,1,w,1,0,w^2,w,w,1,1,0,
+    0,0,0,w,0,w^2,w,1,w,0,0,w,w^2,0,1,1,0,1,w,0,w,w,w^2,w,0,0,w^2,w,0,w^2,w,w^2,w^2,1,w^2,w^2,0,1,w^2,w^2,w^2,w^2,1,0,w,1,w^2,w^2,1,0,
+    0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,1
+]);
 assert Rank(Gsrc) eq 28 and Rank(GX4) eq 28;
-assert Ncols(GX4) eq 50;
 assert RowSpace(Submatrix(GX4,1,1,28,49)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[78] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,50,28,1) eq VerticalJoin(ZeroMatrix(F,27,1),IdentityMatrix(F,1));
+Table1Generators[45]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 50 and Dimension(Q) eq 28;
+assert Dimension(HermitianHull(Q)) eq 3;
+Table1Parameters[45]:=[50,25,12,19];
+Table1DistanceTypes[45]:="exact";
 
-// Table 1, No. 079 | source DV11 | HullIncreasing.m
-// Gsrc: [49,27]_4, hull 3; X4: [[51,22,12;19]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,27,49,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,1,w^2,0,w,1,w,w^2,w,1,w^2,1,w^2,1,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,0,w^2,w^2,w^2,w,0,w,w,w^2,1,w,0,1,1,w,0,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,1,w,1,w^2,w^2,w,0,w,w,1,w^2,1,w,0,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,w,0,1,w^2,0,0,w^2,1,1,w^2,w,0,w^2,w,w,0,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,w^2,w^2,0,0,w,w,w,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w^2,0,w,w^2,1,1,w^2,0,0,w^2,1,0,w,0,1,0,0,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,0,w,1,w^2,w,w,0,w,w^2,w^2,w^2,0,w,w^2,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w^2,w,w,0,1,w^2,w,w,0,w,1,1,0,w,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w,w,1,w,w^2,w,0,1,w^2,w,w,1,w^2,w^2,0,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w^2,0,w^2,0,w,w^2,w,0,1,w^2,w^2,w^2,w^2,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w^2,w^2,w^2,0,0,0,0,1,w,w^2,w^2,w,w^2,1,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,0,1,0,w,w,w,w,1,1,1,w^2,0,w^2,0,w,1,w^2,w,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,w,w,1,w,1,w,w^2,1,1,w^2,0,0,1,1,1,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,0,w,w,w^2,1,w^2,0,1,w^2,w,0,w,0,1,1,w,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,1,1,w,w,w^2,1,w,w,1,w,w^2,1,1,0,w^2,1,w,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w,1,w^2,w,w^2,1,0,1,w,w,1,w,w^2,w,w,1,0,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,w,0,w^2,0,w^2,w^2,w,0,w,w^2,w^2,0,w^2,0,w,0,0,w^2,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,25,49,[
-            1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,
-            0,0,1,1,w^2,w,0,w^2,1,1,1,w^2,w,0,w^2,0,w,w,1,1,w^2,1,w^2,0,w,0,w^2,w^2,0,1,w,w,0,w,w,1,w^2,w,0,w^2,0,w^2,w,w^2,w,0,w^2,0,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w,0,w^2,0,0,w,w^2,0,0,0,0,w^2,w^2,0,0,w,w,1,1,0,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,w,0,1,w^2,0,0,w^2,1,1,w^2,w,0,w^2,w,w,0,w^2,
-            0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,w,w^2,w^2,1,1,1,w^2,w,w,w,w,0,0,w,w^2,w,w^2,0,w,0,
-            0,0,0,1,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,1,0,0,w^2,0,w,0,0,0,w,w,0,w,w^2,0,w,w,1,1,w^2,
-            0,0,0,0,w,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,1,w,1,0,0,w,w^2,0,0,1,1,1,1,0,1,0,1,w^2,
-            0,0,0,w^2,w^2,w^2,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,0,1,0,w^2,w,w,0,1,w^2,0,1,1,0,w^2,w,0,w^2,w,0,1,
-            0,0,0,0,w,w,w^2,w^2,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,1,1,1,w,0,w,w^2,w^2,w^2,1,w,0,w,w,w^2,w^2,w,
-            0,0,0,1,w^2,0,w^2,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w,1,w,w^2,w^2,1,0,1,w,w,0,w^2,0,0,w,w^2,0,w,
-            0,0,0,w,w^2,1,w,w^2,w^2,w,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w^2,w^2,1,0,w,w,0,0,w,1,1,1,1,w^2,0,0,1,w,w,w^2,
-            0,0,0,1,1,w,0,1,w,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w^2,0,1,w,0,0,1,w,w^2,0,w^2,1,w^2,w,0,w^2,
-            0,0,0,w^2,0,w,0,1,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,w,1,1,1,0,0,1,0,w^2,w,1,w^2,w,0,w,1,0,0,w^2,w,
-            0,0,0,w,w^2,w^2,0,1,w,w^2,0,1,0,w^2,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,0,0,0,1,w^2,1,w,1,w,w,w,w^2,w^2,w^2,w^2,w,w^2,w^2,1,w,w^2,
-            0,0,0,1,1,w^2,w,0,1,w^2,1,w,w,1,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,1,w,1,1,w,1,1,1,0,w,w^2,w,w,1,0,0,
-            0,0,0,w^2,w^2,0,w^2,0,1,w,1,w,1,0,0,0,w^2,1,0,0,0,0,0,0,0,w^2,1,w^2,0,1,w^2,w,0,w^2,1,0,w,1,1,w,0,0,1,1,0,w,w,w^2,0,
-            0,0,0,0,0,w^2,w,w^2,w^2,w^2,w^2,1,0,w,0,0,1,w,w,w,0,0,0,0,0,0,0,w,0,w,1,w,0,1,w,w,w^2,0,w,0,w^2,w^2,1,1,w^2,1,1,0,1,
-            0,0,0,w,0,0,w,0,1,0,w,w,w,1,w,0,0,w,w,w^2,0,0,0,0,0,w^2,1,0,0,1,0,0,w,0,w,w,1,w,1,1,w^2,1,1,w,w^2,w^2,w^2,w^2,0,
-            0,0,0,w,0,w^2,0,w^2,0,0,0,0,w^2,w,0,w,0,0,w^2,w^2,0,0,0,0,1,w^2,0,w^2,0,1,w^2,0,1,w^2,w^2,1,w,1,w,w,w^2,w^2,w^2,0,0,w,0,w,w,
-            0,0,0,w,w^2,1,0,0,w,1,0,1,w,w^2,0,0,w^2,w,w^2,w^2,0,0,0,0,1,0,1,0,0,0,w,w^2,1,1,0,1,w^2,0,w^2,w,w^2,w,1,w^2,1,w^2,w^2,w^2,1,
-            0,0,0,1,w,w^2,0,w^2,1,1,w^2,0,1,0,w^2,1,0,w,w^2,1,0,1,0,0,w,w^2,w^2,w^2,0,w^2,1,0,w,w,0,w^2,w^2,w^2,1,0,1,1,w,w,w^2,w^2,w,w^2,w,
-            0,0,0,w,w^2,0,0,1,w,0,1,1,w^2,0,w^2,0,w^2,w,1,0,w^2,1,0,w,w^2,w,0,1,0,0,w^2,w,w,1,w,1,0,1,0,0,1,w^2,w,0,w^2,1,1,0,1,
-            0,0,0,1,w^2,0,0,w,w^2,w^2,w,w^2,1,0,1,w,0,w^2,w^2,0,w^2,w,0,w^2,1,1,w^2,0,0,0,1,w,w^2,1,1,w^2,w^2,0,w,w^2,w,1,1,w,0,0,1,w,0,
-            0,0,0,0,1,w,0,w^2,0,1,1,0,0,w^2,1,w^2,0,0,w,0,0,w^2,1,0,1,w^2,0,0,0,w,0,1,1,w^2,0,w,w,w,1,w,w,0,w,w^2,0,w^2,0,w^2,0
-        ]),
-        ZeroMatrix(F,25,2)),
-    HorizontalJoin(
-        Matrix(F,2,49,[
-            1,w,0,0,0,w,0,0,0,1,1,1,1,1,0,w^2,w,0,1,1,w^2,w,1,1,0,0,0,w^2,0,w,w,w,w^2,w^2,w^2,w^2,w,1,0,0,1,w^2,w,w^2,w,w,w^2,1,w^2,
-            1,w^2,w,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w,0,w,1,w,1,1,1,w,w,0,0,0,w^2,0,w,w,w^2,1,w,1,0,1,w^2,w,w,w,w^2,w,w,0,0,0,1,1
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 27 and Rank(GX4) eq 27;
-assert Ncols(GX4) eq 51;
-assert RowSpace(Submatrix(GX4,1,1,27,49)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[79] := <Gsrc,GX4>;
-
-// Table 1, No. 080 | source BS042 | HullIncreasing.m
-// Gsrc: [50,29]_4, hull 5; X4: [[51,23,12;16]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,29,50,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,w^2,0,0,0,1,0,w^2,0,0,0,w^2,w^2,w,0,1,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,1,0,w^2,1,w,1,0,1,w,w^2,0,w^2,1,1,w^2,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,1,1,w^2,0,w^2,w,w^2,w^2,w,w,0,0,1,1,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w^2,0,w^2,w,1,0,1,w,1,w^2,0,1,w,0,w,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,1,0,w,w,w^2,1,0,1,w,1,0,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,w^2,0,0,0,w^2,0,1,0,0,0,w^2,1,0,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,w,0,w^2,w,w^2,1,1,w^2,0,w,w^2,w,w^2,w^2,w^2,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,w^2,w,w,w,1,1,1,w,0,w,w^2,w^2,w^2,1,1,w^2,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w^2,w^2,w,w,w,0,w^2,1,w^2,1,w^2,0,w^2,1,1,1,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,28,50,[
-            1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,
-            0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w^2,0,w,w^2,1,1,w^2,0,0,w^2,1,0,w,0,1,0,0,w,
-            0,0,0,0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,1,0,w^2,w,w^2,0,w,w^2,w^2,w^2,0,0,1,w,w,1,1,0,w,
-            0,0,0,0,0,0,w,w,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,0,w^2,1,1,w,1,w,0,1,0,1,0,1,w,0,w^2,1,
-            0,0,0,0,0,0,w,1,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,1,w^2,w^2,1,1,0,0,0,1,1,w^2,0,w,0,0,w^2,w^2,w,
-            0,0,0,0,0,0,0,w^2,w,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w,w,1,w^2,w,0,1,w^2,w^2,1,w,0,1,1,0,w,w,1,0,
-            0,0,0,0,0,0,w^2,1,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w^2,0,w,0,1,w^2,0,w,w^2,1,0,w^2,0,1,0,1,0,w,
-            0,0,0,0,0,0,w^2,0,w,0,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,0,1,w,1,1,w^2,w^2,w,w^2,0,0,1,1,1,w^2,0,w^2,
-            0,0,0,0,0,0,w^2,w,w,1,0,1,w^2,1,0,w,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,1,w^2,w,0,0,w^2,0,w^2,1,w,w,w^2,w,w,1,w^2,1,w^2,
-            0,0,0,0,0,0,w,w^2,w^2,0,0,w,w,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,w,w^2,w,w^2,w,w,0,0,w^2,1,w^2,0,1,0,w^2,0,
-            0,0,0,0,0,0,w,w^2,0,0,w^2,w^2,w^2,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,w,0,w,w^2,0,w^2,1,1,0,0,w,1,1,w,w^2,1,
-            0,0,0,0,0,0,w,0,w,1,w,w^2,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,0,1,0,w^2,0,0,w^2,w^2,0,0,w^2,w^2,w,0,0,w^2,w,
-            0,0,0,0,0,w,w,w^2,w,0,0,1,w^2,w,w,w^2,1,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,w,w^2,w^2,0,w^2,w^2,0,w,w^2,1,0,0,w^2,1,1,1,1,1,
-            0,0,0,0,0,0,w^2,1,1,1,w,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w,w^2,w,1,1,1,0,w^2,w^2,1,w,0,w,w,w,0,1,1,w^2,w,
-            0,0,0,0,0,0,w^2,w,w^2,w,w^2,w,w,1,1,w^2,w^2,1,0,0,0,0,0,0,0,0,1,0,w,1,w,0,w,1,1,1,0,1,1,w^2,w,w,1,w,w,w,w^2,1,1,w,
-            0,0,0,0,0,w,1,w^2,w,0,w^2,w^2,w^2,w^2,w,0,1,w,1,0,0,1,0,0,0,0,w,0,1,w,w,w,w,0,w,1,w^2,0,w^2,w,w,w,w^2,w^2,w^2,w^2,0,w,1,w,
-            0,0,0,0,0,1,w^2,0,0,w,1,w^2,w,w^2,w^2,0,0,w,0,0,0,1,0,0,0,0,w,0,w^2,w^2,w,1,0,w^2,w,0,0,1,0,w,1,1,w,w,1,w,1,w^2,w^2,w,
-            0,0,0,0,0,1,w^2,0,0,0,w^2,w^2,1,w^2,1,1,0,0,w,0,1,1,0,0,0,0,1,0,w^2,w^2,1,w^2,0,1,1,w^2,w^2,1,w,1,0,w^2,w,w^2,w,w,0,w,1,w,
-            0,0,0,0,0,w^2,w^2,w^2,0,w^2,w^2,0,w^2,w,1,w^2,w^2,w,1,w,0,w,0,0,0,0,w^2,w,w^2,1,w^2,w^2,w,w,0,1,w,0,w,w,0,w^2,0,w,w,1,w,1,1,0,
-            0,0,0,0,0,0,w^2,1,1,1,0,w,w,w,w^2,w,w^2,w^2,w,w,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,0,w^2,w^2,w^2,0,0,0,1,w^2,w,w,1,1,1,w^2,w,
-            0,0,0,0,0,w^2,0,1,1,1,1,w,1,w^2,0,w,1,w^2,0,w^2,w,w^2,1,0,0,0,1,w^2,w,0,w,1,w,0,w,1,1,0,1,0,w,w,w,1,0,0,w^2,w,w,w,
-            0,0,0,0,0,w,1,w^2,1,0,1,w^2,w^2,w^2,0,1,1,w,0,w^2,1,1,w,1,0,0,w^2,w^2,1,1,w^2,0,0,w^2,w,0,1,1,1,0,w^2,0,1,w,1,0,0,0,0,w^2,
-            0,0,0,0,0,0,0,0,w,1,w,0,1,1,w,0,0,w,0,w^2,w^2,w,0,w,1,0,w,1,1,w^2,w^2,w,1,0,0,0,w^2,0,1,w,w^2,0,w^2,0,1,w,w,1,1,0,
-            0,0,0,0,0,w,0,0,1,w^2,w,0,w^2,1,w,w^2,1,0,1,1,0,1,1,1,w,1,0,w^2,0,0,0,0,0,w,1,w,w^2,w,w^2,1,1,1,w^2,1,1,w^2,1,0,w^2,1
-        ]),
-        ZeroMatrix(F,28,1)),
-    HorizontalJoin(
-        Matrix(F,1,50,[
-            1,w^2,1,1,0,0,w,0,w^2,1,0,0,w,0,w,w^2,0,1,1,0,w^2,w,1,w,0,0,0,0,0,w,w^2,w,w^2,0,0,1,1,w^2,1,w,0,w^2,w^2,w^2,0,1,w^2,w,w,w
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 29 and Rank(GX4) eq 29;
-assert Ncols(GX4) eq 51;
-assert RowSpace(Submatrix(GX4,1,1,29,50)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 5;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 6;
-Table1Generators[80] := <Gsrc,GX4>;
-
-// Table 1, No. 081 | source DV12 | HullIncreasing.m
-// Gsrc: [49,27]_4, hull 3; X4: [[52,21,12;19]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,27,49,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,1,w^2,0,w,1,w,w^2,w,1,w^2,1,w^2,1,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,0,w^2,w^2,w^2,w,0,w,w,w^2,1,w,0,1,1,w,0,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,1,w,1,w^2,w^2,w,0,w,w,1,w^2,1,w,0,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,w,0,1,w^2,0,0,w^2,1,1,w^2,w,0,w^2,w,w,0,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,w^2,w^2,0,0,w,w,w,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w^2,0,w,w^2,1,1,w^2,0,0,w^2,1,0,w,0,1,0,0,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,1,w^2,w,1,w,w^2,w^2,w,0,1,1,w,1,w,1,w^2,w,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,0,w,1,w^2,w,w,0,w,w^2,w^2,w^2,0,w,w^2,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,1,w,w^2,1,w^2,1,1,w^2,0,0,0,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w^2,w,w,0,1,w^2,w,w,0,w,1,1,0,w,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w,w,1,w,w^2,w,0,1,w^2,w,w,1,w^2,w^2,0,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w^2,0,w^2,0,w^2,w,1,w,0,w^2,w^2,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w^2,0,w^2,0,w,w^2,w,0,1,w^2,w^2,w^2,w^2,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,w,1,0,0,0,1,w,1,1,1,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w^2,w^2,w^2,0,0,0,0,1,w,w^2,w^2,w,w^2,1,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w,1,0,1,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,0,1,0,w,w,w,w,1,1,1,w^2,0,w^2,0,w,1,w^2,w,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,1,w,w,1,w,1,w,w^2,1,1,w^2,0,0,1,1,1,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,0,w,w,w^2,1,w^2,0,1,w^2,w,0,w,0,1,1,w,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,1,1,w,w,w^2,1,w,w,1,w,w^2,1,1,0,w^2,1,w,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w,1,w^2,w,w^2,1,0,1,w,w,1,w,w^2,w,w,1,0,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,w,0,w^2,0,w^2,w^2,w,0,w,w^2,w^2,0,w^2,0,w,0,0,w^2,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,24,49,[
-            1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,
-            0,0,1,1,w^2,w,0,w^2,1,1,1,w^2,w,0,w^2,0,w,w,1,1,w^2,1,w^2,0,w,0,w^2,w^2,0,1,w,w,0,w,w,1,w^2,w,0,w^2,0,w^2,w,w^2,w,0,w^2,0,w^2,
-            0,0,0,0,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,0,w^2,w,0,0,w,w^2,w^2,w,0,1,w^2,w,1,0,0,w^2,w,w,w,1,
-            0,0,0,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,1,0,w^2,w,0,w^2,w^2,0,w^2,1,1,0,w^2,w,w^2,w^2,0,1,w^2,1,0,w,
-            0,0,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,0,0,w,1,0,1,0,1,0,0,0,0,1,1,0,w^2,w,0,0,1,w^2,w,
-            0,0,0,0,0,w,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,0,1,0,0,1,0,w^2,0,0,1,w^2,1,0,w,w^2,0,w,0,1,w^2,0,
-            0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w^2,1,w,1,0,0,1,0,w^2,w^2,1,w,0,w,w,w,w,0,1,w^2,
-            0,0,0,0,0,1,w^2,1,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,w,w,1,w,w^2,1,0,w^2,w,w,0,w^2,0,1,1,1,w,0,w^2,1,
-            0,0,0,0,0,w^2,0,w^2,0,w,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,w,w^2,0,0,0,0,w,0,w^2,0,w,1,1,1,w^2,0,w,w^2,w^2,
-            0,0,0,0,0,w,1,0,w^2,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,0,w^2,w,1,0,w,1,1,1,w^2,w,1,w,0,0,0,0,w^2,w,w^2,
-            0,0,0,0,0,w^2,0,w^2,w,w^2,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,w^2,w,1,w,1,1,1,0,w^2,0,w^2,w^2,0,w^2,1,0,w^2,1,w^2,0,
-            0,0,0,1,1,w,w^2,w^2,w^2,0,1,1,w,1,0,0,0,0,0,0,0,1,0,0,w,w^2,w^2,1,0,0,w,1,1,w^2,0,0,0,0,1,w^2,w^2,w,1,1,w^2,0,w^2,1,w^2,
-            0,0,0,0,0,1,w,w,w^2,1,1,0,w^2,1,0,0,0,0,0,0,0,1,0,0,w,1,0,0,0,w,1,0,0,w^2,1,w,1,0,w^2,1,w,w,w,0,w^2,w,w^2,w^2,1,
-            0,0,0,w^2,1,1,0,w,w,1,w^2,0,w,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,0,0,0,w^2,1,1,1,w^2,1,w^2,1,0,w,1,w^2,w^2,0,0,w,w^2,w,0,
-            0,0,0,w^2,1,w^2,1,w^2,1,w,1,0,w^2,w,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,0,1,w^2,w^2,w^2,1,w,0,1,1,1,w^2,w,w,w^2,0,w,w,w^2,0,1,
-            0,0,0,w^2,w,1,w^2,w,1,0,w,1,w^2,1,w^2,0,1,0,0,0,0,w^2,0,w^2,0,1,w,w,0,0,0,w,1,0,w,w,w,w,w,0,w^2,1,0,w^2,w^2,w^2,w^2,0,1,
-            0,0,0,w,1,w^2,w,1,w^2,w^2,0,w^2,w^2,0,0,0,1,0,0,0,0,w,0,0,0,w,w^2,1,0,w^2,w^2,w,0,w,1,w^2,1,w^2,w^2,0,0,0,w^2,w^2,0,w^2,w^2,w,1,
-            0,0,0,w,w,1,1,0,w,w,0,1,w^2,w,0,0,1,1,0,0,0,w^2,0,w,0,w^2,1,w^2,0,w^2,1,w^2,0,0,w^2,1,0,1,1,1,0,0,w^2,w^2,w,0,w,0,w,
-            0,0,0,w,1,w^2,w^2,0,0,w^2,w,w^2,1,1,w^2,1,w^2,w^2,0,0,w,w,0,0,w^2,w^2,w,w^2,0,w^2,w,w,1,1,w,0,w^2,0,0,0,0,0,w^2,1,w^2,1,w^2,w,1,
-            0,0,0,w,w,0,1,0,0,0,w,w^2,1,1,1,1,w^2,1,0,0,w^2,w^2,0,w^2,0,1,w,1,0,w^2,1,1,1,0,w,1,w^2,w^2,w^2,w,0,w^2,0,0,w,1,w^2,w,w,
-            0,0,0,w,w,w,1,w,0,0,0,1,w^2,1,w,w^2,1,w^2,1,0,1,1,0,w^2,w,1,0,1,0,w^2,1,w,1,0,0,w,w,w,0,w^2,w^2,1,1,0,1,1,w,w^2,w^2,
-            0,0,0,0,w,1,0,0,1,w,1,0,w,0,0,1,w^2,1,1,1,w,0,w,0,1,w,w,w,0,1,w,0,0,w,w,w^2,w,w^2,1,w^2,w,w,0,w,0,1,w^2,w,w,
-            0,0,0,w^2,w,w^2,w^2,1,0,1,w,w^2,1,w^2,w,1,1,w,w,1,1,w^2,w^2,0,w,1,0,0,0,w^2,1,w,0,w^2,0,w^2,0,w,1,w,1,0,w^2,1,w^2,w^2,0,0,1
-        ]),
-        ZeroMatrix(F,24,3)),
-    HorizontalJoin(
-        Matrix(F,3,49,[
-            1,0,0,w,w^2,1,w,w,w,w^2,w,0,0,w,1,w,w^2,0,0,w^2,w,0,w^2,1,0,0,0,0,0,0,w,w,w^2,w,0,w,w^2,0,1,w,w,1,w^2,w,w^2,w^2,0,1,w^2,
-            1,w,0,0,0,w,0,0,0,1,1,1,1,1,0,w^2,w,0,1,1,w^2,w,1,1,0,0,0,w^2,0,w,w,w,w^2,w^2,w^2,w^2,w,1,0,0,1,w^2,w,w^2,w,w,w^2,1,w^2,
-            1,w^2,w,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w,0,w,1,w,1,1,1,w,w,0,0,0,w^2,0,w,w,w^2,1,w,1,0,1,w^2,w,w,w,w^2,w,w,0,0,0,1,1
-        ]),
-        IdentityMatrix(F,3)));
-assert Rank(Gsrc) eq 27 and Rank(GX4) eq 27;
-assert Ncols(GX4) eq 52;
-assert RowSpace(Submatrix(GX4,1,1,27,49)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 6;
-Table1Generators[81] := <Gsrc,GX4>;
-
-// Table 1, No. 082 | source DV14 | HullIncreasing.m
-// Gsrc: [51,28]_4, hull 4; X4: [[52,23,12;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,28,51,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,1,0,0,w^2,w^2,w^2,0,1,w^2,w^2,0,0,w^2,0,0,1,1,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,w,0,0,0,w,1,0,0,w,1,1,w^2,w,w^2,0,0,w,w,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,0,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,0,0,0,w^2,1,1,w^2,1,w^2,w,1,0,1,w^2,0,w,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w,0,1,0,0,w,w,w,1,0,1,w^2,w^2,0,1,1,1,w^2,w,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w^2,w,0,0,w,0,1,1,w^2,0,w^2,w^2,1,w^2,w,1,w^2,0,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,w^2,w^2,0,0,w,w,w,w,0,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,w^2,w^2,0,0,w,w,w,w,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,0,0,1,1,w^2,0,w^2,w,w^2,w^2,w,w,0,0,1,1,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,w^2,1,0,0,0,1,w^2,0,w^2,1,w,w^2,w^2,1,0,0,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,w^2,0,0,0,0,0,w,w,1,0,1,w,w^2,w,w,0,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,0,0,w^2,w^2,0,1,w^2,0,w^2,1,1,0,w,w,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,w^2,w^2,0,0,0,w^2,0,1,0,0,0,w^2,1,0,w^2,w,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w^2,0,0,w^2,w^2,1,0,w^2,w^2,w^2,0,0,1,w,w^2,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,0,w,0,0,0,w^2,1,w,w^2,1,w^2,w^2,0,w^2,w^2,w,1,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,w,0,0,1,1,w,w,w,0,0,w^2,w,w^2,w,w^2,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,0,w^2,0,0,w^2,w,0,w^2,1,w,w^2,0,0,w^2,w,w,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,w,0,0,0,w^2,0,w^2,0,w^2,w,w^2,0,w^2,1,w,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,w^2,0,0,w^2,w^2,w,1,0,0,0,w,0,1,w,1,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,w,0,w^2,w^2,0,0,0,w^2,1,1,w,w,0,0,w,w^2,w^2,w,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,w,1,1,0,0,0,w,w,1,0,1,w^2,0,0,w,w^2,1,w^2,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,w,w,0,0,1,w^2,w,0,w,w^2,w,0,1,w^2,w^2,1,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,0,0,w,0,0,w,w^2,w,w,1,0,1,w,w,1,w,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,1,w^2,w^2,w^2,w,0,0,1,w^2,w,1,w,w,1,1,w^2,1,0,w,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,w,w,w^2,w,0,0,0,1,w,0,w^2,w^2,w,1,1,1,0,0,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,1,w,w,w,0,0,w,w,1,0,1,0,0,w^2,0,1,w,0,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w^2,0,0,0,w,w^2,w^2,w,0,0,0,w^2,w,0,w,1,w^2,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,27,51,[
-            1,0,0,0,1,w^2,0,w^2,0,0,1,1,w^2,1,1,w,w^2,w,w^2,1,1,w,w^2,1,w^2,1,0,w,w,1,w,1,w^2,w,0,0,w,w^2,1,0,w^2,w^2,0,1,0,1,0,1,w,w,w^2,
-            0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,
-            0,0,1,0,0,w^2,w^2,0,w,1,w,0,w^2,w^2,0,w^2,w^2,0,0,w^2,0,0,w^2,1,w^2,w,0,0,w,0,w^2,w,1,1,0,0,1,w^2,w^2,0,w^2,w,1,0,w,w^2,0,w^2,w,w^2,1,
-            0,0,0,1,w^2,0,1,1,0,w,1,w^2,0,1,1,0,w^2,0,0,w^2,w,w^2,0,w,w,w^2,0,w^2,w,w,0,w^2,w,w^2,0,0,w^2,0,1,1,0,w^2,1,w,0,1,1,0,w^2,1,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,1,1,1,0,0,w,0,w,0,1,w^2,w^2,1,0,w^2,w^2,w,w,0,w,
-            0,0,0,0,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,w^2,0,0,1,0,w^2,1,0,0,w^2,w^2,1,w^2,w^2,0,1,w,0,
-            0,0,0,0,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,0,w^2,0,0,0,1,0,0,w^2,w^2,1,1,w,w^2,0,1,0,w^2,w,
-            0,0,0,0,0,0,0,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w^2,1,1,w^2,0,0,0,0,1,w,w^2,0,0,w^2,0,0,1,w^2,0,0,w,
-            0,0,0,0,0,0,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w,w,w,0,0,0,0,w,w,0,w^2,0,w^2,0,w^2,w,w,w^2,1,1,0,
-            0,0,0,0,w,w^2,1,w^2,w,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,0,0,0,w,w^2,1,0,w^2,w^2,w^2,0,0,0,w^2,1,w,w^2,w,
-            0,0,0,0,w,0,0,0,w^2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,0,0,0,0,w^2,w^2,w,0,1,w^2,w^2,w^2,w^2,1,w,1,w,w,0,
-            0,0,0,0,1,1,1,1,w,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,w,w^2,w,w^2,0,0,1,1,0,1,1,w^2,w,w,1,w^2,w^2,0,1,0,0,
-            0,0,0,0,w,0,1,w^2,w^2,w^2,0,0,1,0,0,w,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,w,w^2,w,w,0,0,0,0,1,w^2,w,w,w^2,0,w^2,w,1,w,1,w^2,0,
-            0,0,0,0,w,w^2,0,w,1,1,w,w,1,0,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,0,1,1,w^2,1,1,w,0,0,0,1,w,0,0,w^2,w^2,w^2,0,w,w^2,w^2,1,1,0,
-            0,0,0,0,1,w,1,w,1,w,0,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,0,w,w^2,0,1,w^2,0,w,w^2,w,w^2,0,w^2,w^2,w^2,1,
-            0,0,0,0,w,w,0,1,w^2,w,w,w,w,1,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,0,1,w^2,w^2,0,0,w^2,w^2,w,1,w^2,1,1,w^2,1,0,1,1,1,0,1,
-            0,0,0,0,1,0,w^2,0,0,w^2,w^2,w^2,1,w^2,1,w,0,1,0,0,0,0,0,0,0,0,w,0,w,w,w^2,1,0,0,0,0,1,0,1,0,w,0,w,w,1,w^2,0,0,1,0,0,
-            0,0,0,0,0,w^2,1,0,1,1,w^2,1,1,0,1,w,1,w^2,w,0,0,0,0,0,0,0,w^2,0,w^2,1,0,w^2,0,w,0,0,1,0,1,0,w,1,1,w^2,w^2,w,0,w^2,1,1,1,
-            0,0,0,0,w^2,1,0,0,w^2,w,w^2,w^2,w^2,w,w,0,1,1,w^2,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,1,0,0,w,w^2,w^2,w^2,0,w,0,1,w^2,w,w^2,w^2,w^2,0,w^2,
-            0,0,0,0,1,1,w,0,w^2,w,w^2,w^2,0,w,1,0,0,w^2,0,0,1,0,0,0,0,0,w^2,0,0,1,1,1,w,w^2,0,0,w,0,w,w,w,w,w,w^2,w,w^2,w^2,w^2,w^2,w^2,w^2,
-            0,0,0,0,w^2,w^2,0,w^2,0,w,1,w,1,w,w,w^2,w,1,1,w^2,0,1,0,0,0,0,w,0,w,0,0,w,1,1,0,0,w^2,1,w,0,1,1,0,w^2,1,0,1,0,1,w,w,
-            0,0,0,0,1,0,0,w,0,w^2,w,0,w,w^2,w,1,1,1,0,0,w^2,1,0,0,0,0,0,0,w^2,1,1,w,w^2,w^2,0,0,w,0,w^2,w^2,1,1,1,w^2,w,1,w,0,w,0,0,
-            0,0,0,0,w^2,1,1,w,1,w,1,0,w,0,w,0,1,w,w^2,0,1,w^2,0,1,0,0,0,0,w^2,1,0,w^2,w^2,w^2,0,0,0,0,w,w^2,0,1,w^2,w,0,w,w^2,w^2,w,w^2,w^2,
-            0,0,0,0,0,0,w^2,w^2,w,0,w,1,w^2,0,0,0,w,w,w,w^2,w,1,0,w,1,0,0,0,1,1,1,0,0,0,0,0,w^2,w^2,w^2,1,w,1,0,0,1,1,w^2,w^2,1,w,0,
-            0,0,0,0,1,0,0,w^2,1,w,w^2,0,w,0,w^2,0,0,0,1,0,w^2,w^2,w^2,w^2,w^2,0,w,w,w,w,w,w^2,w,1,0,0,w^2,w^2,w^2,w,0,0,0,w^2,w,1,w,w,1,1,w,
-            0,0,0,0,w^2,0,w,w,0,w^2,w,w^2,1,0,w,w,w,w^2,0,w,0,w^2,w^2,w,w,0,w^2,w^2,0,0,1,0,0,w,0,0,0,0,w,0,0,w,1,w,w^2,w,0,0,w,1,1,
-            0,0,0,0,w,0,w^2,0,w^2,0,0,1,1,w^2,w,0,w,0,w^2,0,w,w,w^2,1,1,1,0,1,w^2,0,w^2,1,w^2,w^2,0,0,1,1,1,0,w,1,0,0,1,1,w,w^2,w^2,w,w
-        ]),
-        ZeroMatrix(F,27,1)),
-    HorizontalJoin(
-        Matrix(F,1,51,[
-            1,w,w^2,1,0,0,0,0,1,0,w,w,1,0,w^2,w^2,w^2,w^2,w,w^2,1,w,0,0,0,0,0,0,0,0,w,1,w,w,0,0,w,0,1,w,1,w^2,1,0,w,w,0,w^2,w^2,0,w
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 28 and Rank(GX4) eq 28;
-assert Ncols(GX4) eq 52;
-assert RowSpace(Submatrix(GX4,1,1,28,51)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 4;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[82] := <Gsrc,GX4>;
-
-// Table 1, No. 083 | source DV15 | HullDecreasing.m
-// Gsrc: [51,30]_4, hull 6; X4: [[53,26,12;19]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,30,51,[
+// Table 1, No. 46 | DV15
+// [[53,26,12;19]]_2, distance exact.
+Gsrc:=Matrix(F,30,51,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,w^2,w^2,0,w,1,w,w^2,0,w^2,0,w^2,w,w,w^2,0,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,w^2,0,0,0,1,0,w^2,0,0,0,w^2,w^2,w,0,1,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,w,
@@ -4518,155 +2253,51 @@ Gsrc := Matrix(F,30,51,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,28,51,[
-            1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,
-            0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,
-            0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,1,1,w,1,0,w^2,0,0,0,0,w^2,0,w,0,0,1,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,
-            0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,w^2,1,1,0,1,w,0,1,w,0,w^2,w^2,1,w,w^2,1,
-            0,0,0,0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,0,w^2,0,w^2,0,w,0,1,w,1,w,1,w^2,w,1,
-            0,0,0,0,0,w^2,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,1,1,w,w^2,0,w^2,w,w,1,0,w^2,1,w^2,w,0,1,1,
-            0,0,0,0,1,0,1,1,w^2,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,0,w,w,w,w,w,1,w,1,w,w,w,w,w,1,w,
-            0,0,0,0,0,w,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,w^2,w,w^2,0,w,w,1,w,w^2,0,1,w^2,w^2,w,0,1,w^2,
-            0,0,0,0,w,0,0,0,w,w^2,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w,0,w,1,1,w,1,0,w,w^2,w,w^2,w^2,1,1,w,1,
-            0,0,0,0,0,1,w,0,1,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,0,w,0,w,0,w^2,0,w,w^2,0,w,w,w,w^2,
-            0,0,0,0,0,1,1,w^2,w,w,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,1,0,0,w^2,w,0,w^2,w,w,w^2,w,1,0,1,w,0,0,
-            0,0,0,0,0,1,0,w^2,w^2,w^2,w^2,1,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,w,1,w,w^2,0,w,1,0,w^2,0,1,1,0,w,w^2,w^2,w,
-            0,0,0,0,w,0,0,0,w,w,w^2,w,w^2,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,w,1,1,w,w,1,1,1,w^2,w^2,w,w^2,0,0,w^2,1,w,
-            0,0,0,0,1,1,w^2,1,1,w^2,1,0,w^2,1,w,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,0,w,w,1,0,w,1,0,0,0,w^2,1,0,w,w^2,0,
-            0,0,0,0,w^2,1,w,w^2,w,0,w^2,w,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,w^2,1,1,1,w,w^2,w^2,w,1,0,1,0,w,w,w,w,
-            0,0,0,0,w,w^2,w^2,w,w,1,0,w^2,w^2,0,1,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w,w,1,1,w^2,1,0,w,0,1,0,0,w^2,0,w,w,0,
-            0,0,0,0,w^2,0,1,0,w^2,w,0,0,w^2,w,w,0,0,w,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,1,0,w^2,w^2,w^2,0,w,0,w,w^2,w,w,0,0,
-            0,0,0,0,w^2,0,w^2,1,w,w,w,1,1,1,w^2,w^2,0,1,w^2,w,0,1,0,0,0,0,0,0,0,0,w,0,1,w,1,0,0,1,1,w^2,w,0,0,0,w,w,0,w^2,1,w^2,w^2,
-            0,0,0,0,w,1,0,0,w,w^2,w^2,1,1,0,w,1,w^2,w,1,1,w,w^2,0,0,0,0,1,0,w^2,w,1,w^2,w,w^2,1,1,w,0,w^2,w,1,1,w,1,w,1,0,w^2,1,1,1,
-            0,0,0,0,w,w^2,w,w^2,1,w,0,w,w^2,w^2,1,w^2,0,0,w^2,w,w^2,0,0,0,0,0,1,0,w^2,w,w,w^2,1,w,w^2,w^2,w^2,w,0,0,0,0,w^2,w,0,w^2,1,w^2,0,0,w,
-            0,0,0,0,w^2,0,1,w^2,w,w^2,w^2,0,w^2,w^2,1,1,1,w,0,w,w,1,1,0,0,0,0,0,0,0,1,w,w^2,0,w^2,1,w,w^2,w,w,w,w,1,1,1,1,w,0,w,1,w,
-            0,0,0,0,1,0,w,1,w^2,0,1,1,w,w,1,1,0,1,1,0,0,w,0,1,0,0,w,0,1,w^2,w,w,w,1,1,1,0,1,w^2,0,1,w^2,w,1,1,0,w^2,1,w^2,1,w^2,
-            0,0,0,0,1,w^2,w,1,w,w^2,w,w^2,w,1,1,0,1,0,0,1,0,1,w^2,w^2,1,0,1,0,w^2,w^2,w,w,1,w^2,w^2,0,0,w^2,0,w^2,1,w,w^2,w,w^2,1,w,w,w,0,1,
-            0,0,0,0,1,w,w^2,1,w^2,w^2,0,1,w,w^2,0,w^2,w^2,1,0,0,w^2,1,0,0,w,1,w,w,w^2,w,0,1,w,1,1,1,w^2,w,w^2,w,1,1,w,w,w,w^2,0,1,0,w,0,
-            0,0,0,0,1,0,w^2,w,1,1,w,w,w^2,w^2,0,w^2,w^2,1,w,1,1,w,0,w^2,1,1,w^2,w^2,w^2,1,w^2,1,1,w^2,0,w^2,w^2,w,w^2,w,1,0,1,0,0,1,w^2,1,w,w,0
-        ]),
-        ZeroMatrix(F,28,2)),
-    HorizontalJoin(
-        Matrix(F,2,51,[
-            0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 30 and Rank(GX4) eq 30;
-assert Ncols(GX4) eq 53;
-assert RowSpace(Submatrix(GX4,1,1,30,51)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 4;
-Table1Generators[83] := <Gsrc,GX4>;
-
-// Table 1, No. 084 | source DV16 | HullIncreasing.m
-// Gsrc: [52,39]_4, hull 1; X4: [[53,37,7;12]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,39,52,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,0,1,w^2,w^2,w,w^2,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,w,w,0,0,1,1,w^2,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,w,0,w^2,1,1,0,w,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,w,0,w^2,1,1,0,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,1,w,0,1,1,1,0,1,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,w,1,w,w,1,w^2,w,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,w^2,w^2,1,w^2,1,w,w^2,1,0,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,w^2,w^2,1,w^2,1,w,w^2,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,1,w,0,0,w^2,w,1,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,1,w,0,0,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w,w,w,w^2,0,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,0,1,w^2,1,w^2,w^2,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,w^2,w,1,w,w^2,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,0,0,1,w^2,w^2,w,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,0,0,1,w^2,w^2,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,0,0,1,w^2,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,1,1,w,1,w,1,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,1,w,w,0,w,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,1,w,w,0,w,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,1,w,w,0,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w^2,w^2,0,w^2,1,w,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w^2,w^2,0,w^2,1,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w^2,w^2,0,w^2,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w^2,w,1,0,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,w^2,0,0,1,1,1,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w,1,w,1,w^2,1,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,w^2,w^2,0,1,0,w^2,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,w^2,w^2,0,1,0,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,0,1,0,1,w^2,1,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,0,1,0,1,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,1,1,w,1,1,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,1,1,w^2,1,1,0,w,w^2,1,w,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w^2,1,0,0,0,w^2,w^2,w^2,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w^2,1,0,0,0,w^2,w^2,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,0,1,0,0,1,w^2,1,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,1,0,w,1,1,w,w,1,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1,w,1,w,w^2,1,w,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w,0,w,w^2,0,1,w,1,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w,w^2,w^2,w,w^2,0,w,w,w,w^2
+GX4:=Matrix(F,30,53,[
+    1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,
+    0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,0,
+    0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,
+    0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,0,0,
+    0,0,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,1,1,w,1,0,w^2,0,0,0,0,w^2,0,w,0,0,1,w,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,0,0,
+    0,0,0,0,0,w^2,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,w^2,1,1,0,1,w,0,1,w,0,w^2,w^2,1,w,w^2,1,0,0,
+    0,0,0,0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,0,w^2,0,w^2,0,w,0,1,w,1,w,1,w^2,w,1,0,0,
+    0,0,0,0,0,w^2,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,1,1,w,w^2,0,w^2,w,w,1,0,w^2,1,w^2,w,0,1,1,0,0,
+    0,0,0,0,1,0,1,1,w^2,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,0,w,w,w,w,w,1,w,1,w,w,w,w,w,1,w,0,0,
+    0,0,0,0,0,w,0,1,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,w^2,w,w^2,0,w,w,1,w,w^2,0,1,w^2,w^2,w,0,1,w^2,0,0,
+    0,0,0,0,w,0,0,0,w,w^2,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w,0,w,1,1,w,1,0,w,w^2,w,w^2,w^2,1,1,w,1,0,0,
+    0,0,0,0,0,1,w,0,1,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,0,w,0,w,0,w^2,0,w,w^2,0,w,w,w,w^2,0,0,
+    0,0,0,0,0,1,1,w^2,w,w,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,1,0,0,w^2,w,0,w^2,w,w,w^2,w,1,0,1,w,0,0,0,0,
+    0,0,0,0,0,1,0,w^2,w^2,w^2,w^2,1,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,w,1,w,w^2,0,w,1,0,w^2,0,1,1,0,w,w^2,w^2,w,0,0,
+    0,0,0,0,w,0,0,0,w,w,w^2,w,w^2,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,w,1,1,w,w,1,1,1,w^2,w^2,w,w^2,0,0,w^2,1,w,0,0,
+    0,0,0,0,1,1,w^2,1,1,w^2,1,0,w^2,1,w,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,0,w,w,1,0,w,1,0,0,0,w^2,1,0,w,w^2,0,0,0,
+    0,0,0,0,w^2,1,w,w^2,w,0,w^2,w,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,w^2,1,1,1,w,w^2,w^2,w,1,0,1,0,w,w,w,w,0,0,
+    0,0,0,0,w,w^2,w^2,w,w,1,0,w^2,w^2,0,1,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w,w,1,1,w^2,1,0,w,0,1,0,0,w^2,0,w,w,0,0,0,
+    0,0,0,0,w^2,0,1,0,w^2,w,0,0,w^2,w,w,0,0,w,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,1,0,w^2,w^2,w^2,0,w,0,w,w^2,w,w,0,0,0,0,
+    0,0,0,0,w^2,0,w^2,1,w,w,w,1,1,1,w^2,w^2,0,1,w^2,w,0,1,0,0,0,0,0,0,0,0,w,0,1,w,1,0,0,1,1,w^2,w,0,0,0,w,w,0,w^2,1,w^2,w^2,0,0,
+    0,0,0,0,w,1,0,0,w,w^2,w^2,1,1,0,w,1,w^2,w,1,1,w,w^2,0,0,0,0,1,0,w^2,w,1,w^2,w,w^2,1,1,w,0,w^2,w,1,1,w,1,w,1,0,w^2,1,1,1,0,0,
+    0,0,0,0,w,w^2,w,w^2,1,w,0,w,w^2,w^2,1,w^2,0,0,w^2,w,w^2,0,0,0,0,0,1,0,w^2,w,w,w^2,1,w,w^2,w^2,w^2,w,0,0,0,0,w^2,w,0,w^2,1,w^2,0,0,w,0,0,
+    0,0,0,0,w^2,0,1,w^2,w,w^2,w^2,0,w^2,w^2,1,1,1,w,0,w,w,1,1,0,0,0,0,0,0,0,1,w,w^2,0,w^2,1,w,w^2,w,w,w,w,1,1,1,1,w,0,w,1,w,0,0,
+    0,0,0,0,1,0,w,1,w^2,0,1,1,w,w,1,1,0,1,1,0,0,w,0,1,0,0,w,0,1,w^2,w,w,w,1,1,1,0,1,w^2,0,1,w^2,w,1,1,0,w^2,1,w^2,1,w^2,0,0,
+    0,0,0,0,1,w^2,w,1,w,w^2,w,w^2,w,1,1,0,1,0,0,1,0,1,w^2,w^2,1,0,1,0,w^2,w^2,w,w,1,w^2,w^2,0,0,w^2,0,w^2,1,w,w^2,w,w^2,1,w,w,w,0,1,0,0,
+    0,0,0,0,1,w,w^2,1,w^2,w^2,0,1,w,w^2,0,w^2,w^2,1,0,0,w^2,1,0,0,w,1,w,w,w^2,w,0,1,w,1,1,1,w^2,w,w^2,w,1,1,w,w,w,w^2,0,1,0,w,0,0,0,
+    0,0,0,0,1,0,w^2,w,1,1,w,w,w^2,w^2,0,w^2,w^2,1,w,1,1,w,0,w^2,1,1,w^2,w^2,w^2,1,w^2,1,1,w^2,0,w^2,w^2,w,w^2,w,1,0,1,0,0,1,w^2,1,w,w,0,0,0,
+    0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,1,0,
+    0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,38,52,[
-            1,w,w^2,w,1,0,w^2,w^2,1,1,1,w^2,0,w^2,w,0,1,w^2,w^2,0,w,0,w,w,w^2,1,0,0,1,w^2,0,0,w^2,0,0,1,w^2,1,w,0,w^2,0,w,w,w,0,w,w,w^2,w,w,w^2,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,0,w,w,w^2,1,1,w^2,w^2,w,
-            0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,0,0,1,1,w^2,0,w^2,0,1,0,
-            0,0,1,0,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,w,w^2,1,w,w,w,w^2,w,w^2,w,
-            0,0,1,0,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w,1,w^2,w,w,w,w,1,0,w,w^2,
-            0,0,0,0,w,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w^2,w,1,1,w,w,0,w,1,w^2,
-            0,0,0,0,w,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,0,0,w,0,0,w,w,1,w,1,
-            0,0,1,0,w^2,w^2,0,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,w,1,w,w^2,1,0,0,w^2,w^2,1,
-            0,0,0,0,w^2,w,1,w^2,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w,0,w,w,w,1,1,w,w^2,w,
-            0,1,w,0,1,w,w,w,1,w,w,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,0,1,0,0,1,1,w,
-            0,0,w,0,0,w,w,w,w,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w,1,0,0,w^2,0,1,1,w,0,
-            0,1,0,0,w,0,w,0,w,1,w,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w^2,1,1,0,0,0,1,w^2,w,w,
-            0,1,w^2,0,1,w,0,w^2,1,0,w^2,w,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,w,w^2,0,w^2,1,w^2,w,
-            0,w^2,1,0,1,w,1,w,1,1,w^2,1,w^2,w,w,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w,w^2,0,w^2,0,0,0,w,w,
-            0,w,w,0,1,0,w,1,w,0,0,w^2,w,w,w^2,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,w^2,w,1,w^2,w^2,w,0,0,0,
-            0,w,w^2,0,1,0,1,1,1,0,w^2,w^2,w^2,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,w^2,w^2,w^2,w,w^2,0,0,1,
-            0,0,0,0,w,1,w,1,w,w,w^2,1,0,0,0,1,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,0,0,0,w^2,0,0,1,w,w,
-            0,w^2,w,0,1,1,w,w^2,w,0,0,0,w,0,w^2,0,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,1,0,w^2,w^2,0,1,0,w^2,w,0,
-            0,0,w,0,w^2,w^2,w^2,w^2,w^2,1,0,w,w,w^2,w,w^2,1,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,1,w^2,w,1,w^2,w,0,
-            0,0,1,w,0,1,0,0,w^2,1,w,w,w,w,w^2,1,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,1,w,w,1,0,1,w,w^2,1,0,
-            0,0,1,0,1,0,w,0,0,w^2,w^2,w^2,0,1,w^2,w,w,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,w,1,w^2,w^2,w^2,0,0,w,0,w^2,
-            0,0,0,w^2,w,w,w,0,1,0,w^2,1,1,0,0,1,w^2,w,0,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w,w^2,w,w,0,1,w,1,1,1,1,
-            0,1,1,0,w,1,0,w,w^2,w,w,0,w,1,w^2,w,1,0,0,w^2,w,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w^2,w^2,w,0,0,1,w^2,w,1,0,w^2,
-            0,1,1,w,w,1,w,w,w,0,0,w^2,1,w,w,1,1,w,0,w^2,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,0,1,w^2,0,w^2,0,w,1,0,1,w,
-            0,1,w,1,w,w^2,w,1,1,1,0,0,w^2,w,w,1,w,w^2,0,1,w^2,0,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,1,1,1,0,0,w,0,w,w,
-            0,0,1,w^2,1,0,1,1,1,0,1,0,0,w,w,w^2,0,1,0,1,1,0,w,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,0,w^2,w^2,1,1,0,w,w,w,
-            0,w,1,1,w,0,w^2,0,w,1,w,0,w,1,w,w,w,w,w^2,w,w,0,w^2,w,w,1,w,0,1,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w^2,1,0,w,w^2,1,w^2,w,w,w^2,1,
-            0,0,w,1,0,0,0,0,1,0,w,w^2,w^2,w^2,0,1,1,w,1,0,1,0,w^2,w,0,0,w^2,0,1,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,0,w,1,0,1,0,1,1,w,0,
-            0,w,w,1,w^2,1,0,w,0,w,0,w^2,w^2,w^2,0,w^2,w^2,0,w^2,w^2,w^2,0,0,w,w,w^2,w,1,1,0,0,0,0,0,0,0,0,1,0,w,1,1,0,w^2,1,0,w,0,w^2,1,w^2,0,
-            0,w,w,1,1,w,w^2,1,0,0,0,0,w,w^2,0,1,1,0,0,0,w,w,w,1,0,1,w,0,w,0,0,0,0,0,0,0,1,1,w,w^2,0,0,0,w^2,1,w,1,0,0,w^2,1,1,
-            0,w,1,w^2,0,1,w,1,w,0,w^2,w,0,w^2,0,w,0,w^2,1,0,w,0,w,0,w^2,w^2,w,1,1,0,0,0,0,0,0,0,1,1,w,w,w,0,w,w^2,w^2,1,w,1,w^2,w^2,1,w^2,
-            0,w,w,w^2,1,0,w,w^2,w^2,w,w^2,w^2,1,w^2,w^2,w^2,w^2,w^2,w^2,0,1,0,w,w,w^2,1,1,w,1,0,0,1,0,0,0,0,w^2,w^2,0,0,1,w,1,1,w^2,0,0,w,1,0,w^2,w^2,
-            0,1,0,1,0,0,0,0,1,0,0,w,1,w^2,1,w^2,w,0,0,1,w,1,w^2,w^2,0,w,w^2,w^2,w,0,w,1,1,0,0,0,0,w^2,0,w,w^2,w^2,0,1,w^2,w,w^2,w^2,w,w^2,1,0,
-            0,w,w^2,0,0,w^2,w,0,w^2,w,1,w^2,w,0,w,0,1,0,1,w,1,1,w,w^2,0,w^2,w^2,w^2,0,0,0,w,1,0,0,0,w^2,w,0,0,1,1,0,0,w^2,0,w,0,0,w,1,w^2,
-            0,1,w,w^2,0,w^2,w,1,0,w^2,w^2,w,0,1,0,1,w,w,w,0,w^2,0,w,1,1,1,w,w,0,w^2,1,w^2,1,0,0,w,0,0,w,1,0,w,0,w,1,w,0,w,w,0,0,w,
-            0,1,1,0,w,w^2,0,w,w^2,w^2,w,0,w,1,w,w^2,1,w,w^2,w,w,w^2,w,0,w,0,w^2,w^2,w^2,w^2,w,1,w,0,0,w^2,w^2,1,w,0,0,w^2,0,1,1,w^2,w^2,w,1,w^2,w^2,w,
-            0,w,w^2,w,w^2,w,w^2,w^2,w,w,0,w^2,0,w,1,1,0,w^2,w^2,w^2,1,1,w,w^2,0,w,0,1,1,w^2,1,w,1,w^2,w,0,1,w,1,w^2,w,w^2,w,0,w,0,w,1,1,0,1,0,
-            0,w,1,0,0,w^2,1,0,w,1,1,0,1,1,w,w,1,w,w^2,w^2,0,w^2,w,w,w^2,w^2,w,w^2,1,1,1,w^2,w^2,w^2,w^2,1,0,1,w,w,1,0,1,1,w^2,w,w,0,w,w^2,w,w
-        ]),
-        ZeroMatrix(F,38,1)),
-    HorizontalJoin(
-        Matrix(F,1,52,[
-            1,w^2,w^2,0,w,0,w^2,1,0,1,0,0,1,w^2,1,w^2,w,w^2,1,0,1,1,w^2,1,0,w,0,w,1,1,w,w,w,w,w,w,0,w,0,0,w,w^2,0,1,w,0,w,w^2,0,0,w,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 39 and Rank(GX4) eq 39;
-assert Ncols(GX4) eq 53;
-assert RowSpace(Submatrix(GX4,1,1,39,52)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 1;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[84] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 30 and Rank(GX4) eq 30;
+assert RowSpace(Submatrix(GX4,1,1,30,51)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,52,30,2) eq VerticalJoin(ZeroMatrix(F,28,2),IdentityMatrix(F,2));
+Table1Generators[46]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 53 and Dimension(Q) eq 30;
+assert Dimension(HermitianHull(Q)) eq 4;
+Table1Parameters[46]:=[53,26,12,19];
+Table1DistanceTypes[46]:="exact";
 
-// Table 1, No. 085 | source DV17 | HullDecreasing.m
-// Gsrc: [53,30]_4, hull 6; X4: [[54,25,12;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,30,53,[
+// Table 1, No. 47 | DV17
+// [[54,25,12;19]]_2, distance exact.
+Gsrc:=Matrix(F,30,53,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,0,0,1,0,0,1,0,0,w^2,1,w,w^2,w^2,0,w,w,0,1,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,0,0,0,1,0,1,w,0,0,1,1,1,w^2,1,0,w^2,w^2,w^2,w,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,w,0,0,0,w,1,0,0,w,1,1,w^2,w,w^2,0,0,w,w,1,0,
@@ -4698,155 +2329,51 @@ Gsrc := Matrix(F,30,53,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,1,w^2,0,0,w^2,w,w^2,0,w^2,1,1,1,w^2,1,w^2,0,0,0,w,w^2,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1,0
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,29,53,[
-            1,0,0,0,0,0,0,w^2,w^2,w,0,w,w,1,1,1,1,w,1,w^2,w^2,1,1,w^2,1,0,0,w^2,w,w^2,0,w,1,w^2,0,0,0,1,0,0,0,1,0,w,0,0,1,w,0,w,0,w,1,
-            0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,0,
-            0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,
-            0,0,0,1,0,0,w^2,1,w^2,1,0,1,w^2,w^2,1,w^2,0,w,w^2,w^2,1,w,w,0,1,w,w^2,w,1,w,0,w,0,0,0,0,w^2,w^2,1,1,w^2,0,w^2,w,w^2,0,w^2,w^2,0,w^2,0,w,w,
-            0,0,0,0,1,0,w^2,0,1,1,w,w^2,1,w^2,0,1,1,w^2,1,0,1,w,w^2,w^2,1,w,1,w,1,0,0,w,w^2,1,0,0,0,1,0,0,1,1,w^2,0,1,w,w^2,1,1,w^2,0,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,w^2,w^2,0,0,w,w,w,w,0,0,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,0,
-            0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,w,0,0,1,1,0,0,0,0,w^2,w^2,1,0,0,1,w,w^2,w,0,1,
-            0,0,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,0,0,w^2,w,w^2,0,w,w^2,1,w,0,1,w^2,w^2,w,0,0,0,w,
-            0,0,0,0,0,1,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,w,w,w^2,w^2,w^2,w^2,0,1,w,0,1,w,w,1,0,0,
-            0,0,0,0,0,1,1,1,w,1,w^2,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,w,0,0,w^2,w^2,w,0,0,1,w^2,w,0,0,w,w,w,w,1,1,1,
-            0,0,0,0,0,w,1,0,1,w,w,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,w,0,0,0,w^2,0,0,0,w,0,w^2,1,w,1,1,w^2,1,w^2,1,w^2,
-            0,0,0,0,0,w^2,1,0,w,w^2,0,w,w,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,1,0,0,w,w,w^2,w^2,w,0,w,0,1,0,0,w,w,1,1,1,0,
-            0,0,0,0,0,1,w,w^2,w,w^2,w^2,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,1,1,0,w,w,w^2,w,0,0,w,1,w^2,0,0,w,0,w,
-            0,0,0,0,0,0,0,0,1,0,w,1,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,0,w^2,w,w^2,w^2,w^2,0,w,0,0,w^2,w,w,w^2,w,w^2,w^2,0,
-            0,0,0,0,0,w,w^2,1,w,1,0,0,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,0,0,0,w,0,0,1,1,w,0,w^2,w^2,1,w,w^2,1,w^2,w,w^2,w,
-            0,0,0,0,0,0,0,1,w^2,w^2,w,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,0,0,0,w^2,1,1,w^2,w,0,0,w,1,w,w,1,1,0,1,w^2,
-            0,0,0,0,0,w^2,w^2,0,w,0,w^2,w,w^2,w^2,w^2,0,w^2,0,1,0,w,0,0,0,0,0,0,0,0,0,0,w,0,w,0,0,0,w^2,0,1,1,0,1,0,0,w^2,w,w,w,1,w,0,0,
-            0,0,0,0,0,w,w^2,w,0,1,w,w,0,0,0,w,1,0,1,0,w^2,0,0,0,0,0,0,0,0,w^2,0,w,1,1,0,0,w,0,w,w,1,w,w^2,w,0,1,1,w^2,0,1,w,0,w,
-            0,0,0,0,0,0,0,0,0,w^2,1,w,w,0,0,0,0,0,0,w,1,0,1,0,0,0,0,0,0,w,0,0,w,w,0,0,0,0,0,w,0,1,w,w^2,w^2,0,w^2,w^2,w,w^2,0,1,w^2,
-            0,0,0,0,0,1,w,w,0,0,w^2,1,w,0,0,w^2,w^2,0,0,0,0,0,1,0,0,0,0,0,0,1,0,w^2,0,0,0,0,1,0,w,w^2,w^2,0,1,0,0,w,0,0,w,1,w,0,w^2,
-            0,0,0,0,0,1,0,w^2,1,w,w,0,w,1,w,1,1,0,1,1,1,1,1,0,0,0,0,0,0,w^2,0,w,0,w,0,0,w^2,w^2,w,w,w,1,w^2,0,1,1,0,0,w,w,1,0,1,
-            0,0,0,0,0,1,w^2,1,w^2,0,w,1,w^2,1,1,1,w^2,w,w^2,w^2,w,w^2,w^2,0,0,0,0,0,1,w^2,1,1,0,w^2,0,0,w,0,w^2,1,1,w^2,1,0,w^2,1,1,w^2,1,w^2,0,0,w,
-            0,0,0,0,0,w,w^2,0,w^2,0,1,w^2,w^2,w^2,w^2,0,0,0,1,w,0,w,w,0,0,0,0,0,1,w^2,1,0,0,1,0,0,1,0,w^2,w,0,w,w^2,w,w^2,0,w^2,1,0,1,w^2,w^2,1,
-            0,0,0,0,0,0,w,w^2,0,w^2,1,w^2,0,0,0,1,1,1,0,0,1,1,1,1,0,0,0,0,w,w,w,1,1,w,0,0,w^2,0,1,0,1,w^2,w^2,1,w,w^2,0,w^2,w,0,0,0,w^2,
-            0,0,0,0,0,1,w,w,w,w,0,0,1,w,w^2,w,1,w,0,1,1,0,0,w^2,1,0,0,0,1,1,w^2,1,w,w^2,0,0,0,w,1,1,w^2,1,0,w,w^2,0,w^2,w^2,w,w^2,1,w^2,w^2,
-            0,0,0,0,0,w^2,0,0,1,w,w^2,w^2,w,0,0,w,1,0,0,w^2,1,0,w,w^2,w^2,1,0,0,1,w,w,w^2,1,1,0,0,w,1,w^2,w,w,0,w^2,1,w^2,1,0,0,1,w,0,w,w^2,
-            0,0,0,0,0,w,w^2,w,0,0,w^2,1,0,0,0,0,1,w^2,w,1,w,1,w,w,w,w^2,1,0,0,w,w,w^2,0,w,0,0,1,1,w^2,w,0,w,0,0,w^2,0,1,w^2,1,w,w^2,w^2,w^2,
-            0,0,0,0,0,w,1,1,w,0,w,0,1,w,1,1,1,w,1,1,0,w^2,w^2,0,1,0,1,1,w^2,w^2,1,0,1,0,0,0,w^2,w^2,w,0,w^2,0,1,0,w^2,1,w^2,1,1,0,0,w,0
-        ]),
-        ZeroMatrix(F,29,1)),
-    HorizontalJoin(
-        Matrix(F,1,53,[
-            0,0,0,0,0,1,1,0,w^2,1,1,0,0,1,0,w^2,1,1,1,w^2,1,w,w,w,1,1,w,1,w,w^2,w^2,w,w,0,0,0,w^2,1,w,0,w^2,1,1,1,w,1,w^2,w^2,1,1,1,w,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 30 and Rank(GX4) eq 30;
-assert Ncols(GX4) eq 54;
-assert RowSpace(Submatrix(GX4,1,1,30,53)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[85] := <Gsrc,GX4>;
-
-// Table 1, No. 086 | source DV18 | HullIncreasing.m
-// Gsrc: [53,39]_4, hull 2; X4: [[54,36,8;12]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,39,53,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,w,0,w,w^2,1,0,0,w,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,0,w,w,w^2,w^2,0,w,w^2,1,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w,w^2,w,1,w,0,w^2,1,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w,w^2,w,1,w,0,w^2,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w^2,w,1,1,w^2,0,w,0,w,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,1,0,w^2,0,w,w^2,1,w,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w^2,w,0,0,1,1,0,w,w^2,0,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w^2,w,0,0,1,1,0,w,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,w^2,1,1,w^2,w,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,0,0,w,0,0,w,0,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,0,0,w,0,0,w,0,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,1,w,0,0,w^2,w^2,w^2,w^2,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,1,w,0,0,w^2,w^2,w^2,w^2,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,0,w,1,w,w,w,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,0,0,1,0,1,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,0,0,1,0,1,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,0,w,w^2,1,w,w^2,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,0,w,w^2,1,w,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,0,w,w^2,1,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,1,w^2,1,w^2,0,1,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,1,w^2,1,w^2,0,1,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,0,w,w,0,1,0,w,1,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,1,w,w^2,w,0,1,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,0,1,w^2,1,w^2,1,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w^2,w^2,0,0,1,0,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,w,0,w^2,w^2,1,w,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,1,0,0,w,w,1,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,1,0,0,w,w,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,1,0,0,w,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,1,0,0,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,0,w^2,0,w^2,w^2,0,0,1,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,0,w^2,0,w^2,w^2,0,0,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,0,w^2,0,w^2,w^2,0,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,w^2,0,1,w^2,1,0,w,w,w,w,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w^2,w^2,0,1,0,1,w^2,w^2,1,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,w^2,w^2,0,w,0,w,w,0,w,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,w^2,w^2,1,w,1,0,w^2,1,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,1,w^2,1,1,0,w,w,1,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,0,1,0,1,w,1,1,1,w,w,1
+GX4:=Matrix(F,30,54,[
+    1,0,0,0,0,0,0,w^2,w^2,w,0,w,w,1,1,1,1,w,1,w^2,w^2,1,1,w^2,1,0,0,w^2,w,w^2,0,w,1,w^2,0,0,0,1,0,0,0,1,0,w,0,0,1,w,0,w,0,w,1,0,
+    0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,0,0,
+    0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,
+    0,0,0,1,0,0,w^2,1,w^2,1,0,1,w^2,w^2,1,w^2,0,w,w^2,w^2,1,w,w,0,1,w,w^2,w,1,w,0,w,0,0,0,0,w^2,w^2,1,1,w^2,0,w^2,w,w^2,0,w^2,w^2,0,w^2,0,w,w,0,
+    0,0,0,0,1,0,w^2,0,1,1,w,w^2,1,w^2,0,1,1,w^2,1,0,1,w,w^2,w^2,1,w,1,w,1,0,0,w,w^2,1,0,0,0,1,0,0,1,1,w^2,0,1,w,w^2,1,1,w^2,0,w^2,w^2,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,w^2,1,1,0,w,w^2,w^2,w^2,0,0,w,w,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w,w,w^2,w^2,w,w^2,0,w^2,1,1,0,0,w^2,w^2,w^2,1,0,0,
+    0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,w,0,0,1,1,0,0,0,0,w^2,w^2,1,0,0,1,w,w^2,w,0,1,0,
+    0,0,0,0,0,0,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,0,0,w^2,w,w^2,0,w,w^2,1,w,0,1,w^2,w^2,w,0,0,0,w,0,
+    0,0,0,0,0,1,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,w,w,w^2,w^2,w^2,w^2,0,1,w,0,1,w,w,1,0,0,0,
+    0,0,0,0,0,1,1,1,w,1,w^2,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,w,0,0,w^2,w^2,w,0,0,1,w^2,w,0,0,w,w,w,w,1,1,1,0,
+    0,0,0,0,0,w,1,0,1,w,w,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,w,0,0,0,w^2,0,0,0,w,0,w^2,1,w,1,1,w^2,1,w^2,1,w^2,0,
+    0,0,0,0,0,w^2,1,0,w,w^2,0,w,w,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,1,0,0,w,w,w^2,w^2,w,0,w,0,1,0,0,w,w,1,1,1,0,0,
+    0,0,0,0,0,1,w,w^2,w,w^2,w^2,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,0,0,1,1,0,w,w,w^2,w,0,0,w,1,w^2,0,0,w,0,w,0,
+    0,0,0,0,0,0,0,0,1,0,w,1,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,0,w^2,w,w^2,w^2,w^2,0,w,0,0,w^2,w,w,w^2,w,w^2,w^2,0,0,
+    0,0,0,0,0,w,w^2,1,w,1,0,0,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,0,0,0,w,0,0,1,1,w,0,w^2,w^2,1,w,w^2,1,w^2,w,w^2,w,0,
+    0,0,0,0,0,0,0,1,w^2,w^2,w,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,0,0,0,w^2,1,1,w^2,w,0,0,w,1,w,w,1,1,0,1,w^2,0,
+    0,0,0,0,0,w^2,w^2,0,w,0,w^2,w,w^2,w^2,w^2,0,w^2,0,1,0,w,0,0,0,0,0,0,0,0,0,0,w,0,w,0,0,0,w^2,0,1,1,0,1,0,0,w^2,w,w,w,1,w,0,0,0,
+    0,0,0,0,0,w,w^2,w,0,1,w,w,0,0,0,w,1,0,1,0,w^2,0,0,0,0,0,0,0,0,w^2,0,w,1,1,0,0,w,0,w,w,1,w,w^2,w,0,1,1,w^2,0,1,w,0,w,0,
+    0,0,0,0,0,0,0,0,0,w^2,1,w,w,0,0,0,0,0,0,w,1,0,1,0,0,0,0,0,0,w,0,0,w,w,0,0,0,0,0,w,0,1,w,w^2,w^2,0,w^2,w^2,w,w^2,0,1,w^2,0,
+    0,0,0,0,0,1,w,w,0,0,w^2,1,w,0,0,w^2,w^2,0,0,0,0,0,1,0,0,0,0,0,0,1,0,w^2,0,0,0,0,1,0,w,w^2,w^2,0,1,0,0,w,0,0,w,1,w,0,w^2,0,
+    0,0,0,0,0,1,0,w^2,1,w,w,0,w,1,w,1,1,0,1,1,1,1,1,0,0,0,0,0,0,w^2,0,w,0,w,0,0,w^2,w^2,w,w,w,1,w^2,0,1,1,0,0,w,w,1,0,1,0,
+    0,0,0,0,0,1,w^2,1,w^2,0,w,1,w^2,1,1,1,w^2,w,w^2,w^2,w,w^2,w^2,0,0,0,0,0,1,w^2,1,1,0,w^2,0,0,w,0,w^2,1,1,w^2,1,0,w^2,1,1,w^2,1,w^2,0,0,w,0,
+    0,0,0,0,0,w,w^2,0,w^2,0,1,w^2,w^2,w^2,w^2,0,0,0,1,w,0,w,w,0,0,0,0,0,1,w^2,1,0,0,1,0,0,1,0,w^2,w,0,w,w^2,w,w^2,0,w^2,1,0,1,w^2,w^2,1,0,
+    0,0,0,0,0,0,w,w^2,0,w^2,1,w^2,0,0,0,1,1,1,0,0,1,1,1,1,0,0,0,0,w,w,w,1,1,w,0,0,w^2,0,1,0,1,w^2,w^2,1,w,w^2,0,w^2,w,0,0,0,w^2,0,
+    0,0,0,0,0,1,w,w,w,w,0,0,1,w,w^2,w,1,w,0,1,1,0,0,w^2,1,0,0,0,1,1,w^2,1,w,w^2,0,0,0,w,1,1,w^2,1,0,w,w^2,0,w^2,w^2,w,w^2,1,w^2,w^2,0,
+    0,0,0,0,0,w^2,0,0,1,w,w^2,w^2,w,0,0,w,1,0,0,w^2,1,0,w,w^2,w^2,1,0,0,1,w,w,w^2,1,1,0,0,w,1,w^2,w,w,0,w^2,1,w^2,1,0,0,1,w,0,w,w^2,0,
+    0,0,0,0,0,w,w^2,w,0,0,w^2,1,0,0,0,0,1,w^2,w,1,w,1,w,w,w,w^2,1,0,0,w,w,w^2,0,w,0,0,1,1,w^2,w,0,w,0,0,w^2,0,1,w^2,1,w,w^2,w^2,w^2,0,
+    0,0,0,0,0,w,1,1,w,0,w,0,1,w,1,1,1,w,1,1,0,w^2,w^2,0,1,0,1,1,w^2,w^2,1,0,1,0,0,0,w^2,w^2,w,0,w^2,0,1,0,w^2,1,w^2,1,1,0,0,w,0,0,
+    0,0,0,0,0,1,1,0,w^2,1,1,0,0,1,0,w^2,1,1,1,w^2,1,w,w,w,1,1,w,1,w,w^2,w^2,w,w,0,0,0,w^2,1,w,0,w^2,1,1,1,w,1,w^2,w^2,1,1,1,w,w^2,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,38,53,[
-            1,0,1,w,w^2,w^2,0,w^2,w^2,1,1,0,w^2,w,0,1,1,0,1,w^2,w,1,1,w,1,w^2,1,1,w^2,w^2,w,0,w,0,0,w^2,1,w,w^2,0,1,w^2,w,1,1,1,w^2,w^2,w,1,0,w,0,
-            0,1,0,1,w,w^2,w^2,0,w^2,w^2,1,1,0,w^2,w,0,1,1,0,1,w^2,w,1,1,w,1,w^2,1,1,w^2,w^2,w,0,w,0,0,w^2,1,w,w^2,0,1,w^2,w,1,1,1,w^2,w^2,w,1,0,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,1,1,0,w,1,0,1,0,w^2,w^2,1,w,
-            0,0,0,0,w^2,w^2,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,1,w^2,w,1,w^2,0,0,0,w^2,0,1,
-            0,0,0,0,w^2,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,w,w,0,w^2,w^2,w^2,w,0,0,w^2,1,1,
-            0,0,0,0,1,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w^2,1,1,w,1,1,w,1,w^2,0,w^2,0,
-            0,0,0,w^2,w,w^2,1,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,1,0,w,0,0,1,0,1,w,w^2,w^2,
-            0,0,0,0,1,1,w^2,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,w^2,0,1,w,w,w,0,0,w^2,1,w^2,w,
-            0,0,0,w,1,1,w^2,w,1,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,0,w,w^2,1,w^2,w,w^2,1,w^2,w,1,w,
-            0,0,0,1,1,0,w^2,w^2,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,1,0,w^2,w^2,1,w^2,0,w^2,0,0,0,w,
-            0,0,0,0,w,w^2,1,w^2,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,1,1,0,w^2,1,w,1,1,1,0,
-            0,0,0,w^2,0,w,1,w,w,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,0,w^2,1,w,w,1,0,w,1,0,w^2,w,
-            0,0,0,1,1,0,w,w,1,w,w^2,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,0,1,w,w^2,w,1,1,1,1,0,
-            0,0,0,1,1,0,0,w,w^2,0,1,w,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,1,w,w,w,1,0,1,1,w^2,w^2,1,0,
-            0,0,0,w,0,w^2,w^2,0,1,w,w,1,w^2,0,1,w,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,w,1,w,0,1,0,1,0,1,0,0,
-            0,0,0,0,w,1,1,0,w,0,w,w^2,w^2,w,1,w,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,0,0,w,w^2,w,w^2,
-            0,0,0,w,1,w,w^2,1,w,0,w^2,0,w^2,1,w,w^2,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,w,w^2,1,w,1,w^2,0,1,w,1,w^2,0,
-            0,0,0,0,w^2,0,w,w^2,1,w,1,0,0,w,1,0,1,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,0,0,w^2,w,w,0,0,w,w,w,
-            0,0,0,w^2,w,1,w^2,1,1,1,w,w,1,w^2,1,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,0,0,1,w,0,0,0,1,1,1,w,w,
-            0,0,w^2,1,w^2,1,w,w,w,0,w^2,0,1,1,0,w,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,1,w^2,w,w,1,0,w,0,w^2,w,w^2,
-            0,0,0,w,w,0,w,w^2,1,w^2,w,w,w,0,0,1,w,w^2,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w,w,0,w,w,w,0,0,0,w^2,0,
-            0,0,w^2,1,w^2,w^2,w^2,w^2,w,1,w^2,w^2,w^2,0,0,1,w,w,w^2,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,0,w,w^2,w^2,0,w^2,0,1,w^2,w,1,
-            0,0,w,w^2,0,w,w^2,1,w,1,w^2,0,w,w,w,0,0,w,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,0,1,1,1,w^2,w,1,w,w^2,0,w,
-            0,0,1,w,w,w^2,w^2,w^2,w^2,w^2,w,0,1,0,0,w,w^2,w^2,w,w,w,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,w,0,w,0,w^2,1,w,w^2,1,0,w^2,0,
-            0,0,w^2,w^2,w^2,w,w^2,0,0,0,w,0,w^2,w^2,0,w,w,0,w,1,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,1,1,0,1,w^2,w^2,w^2,1,0,w,w,
-            0,0,w^2,w,1,1,w,w^2,w^2,w,w,0,w,w,1,w^2,1,1,0,w^2,w^2,w^2,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,0,w,w^2,0,0,0,w,w,0,1,w,w^2,
-            0,0,0,w,1,0,0,w^2,w,0,0,w^2,w^2,w^2,w^2,1,w,w^2,w^2,w^2,w^2,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w,w,w,0,0,w^2,0,w,0,w^2,w,w,
-            0,0,w,1,0,w,w^2,w^2,0,1,0,1,0,w^2,w^2,0,w,w,0,0,w,1,w,0,0,w,0,0,w,0,0,0,0,0,0,0,0,0,w,w^2,1,w,w,w^2,1,w^2,1,w^2,1,w^2,w^2,w^2,1,
-            0,0,0,w^2,w^2,1,w^2,w^2,w^2,0,w,0,0,w,0,1,w,0,1,0,0,w,0,w,w,w,1,0,w^2,0,0,0,0,0,0,0,0,1,0,w,0,w^2,w^2,w^2,w^2,0,w,0,w^2,0,0,1,1,
-            0,0,w^2,1,w,1,w^2,1,w,w^2,0,0,w^2,1,w^2,0,w^2,0,w^2,1,0,1,0,1,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,0,w,1,w,w,0,w,w,w,0,
-            0,0,1,1,w,w^2,w,0,w^2,w^2,w^2,w^2,w^2,0,1,w,0,w,0,w^2,0,w,w,0,0,w^2,w,w,1,0,1,0,0,0,0,0,0,1,0,0,1,1,0,w^2,1,1,1,w^2,0,w^2,w,0,0,
-            0,0,w^2,w,0,0,w,w^2,0,0,0,w,0,w^2,0,0,w,w^2,w^2,1,w,w^2,w^2,w,w,w^2,0,1,0,0,w^2,1,0,0,0,0,0,1,w,0,w^2,1,1,w^2,1,0,1,w^2,w^2,0,w,1,0,
-            0,0,0,w^2,w^2,0,0,0,0,1,0,w^2,1,w^2,w^2,1,0,1,w,0,w^2,0,0,w^2,0,0,1,w^2,w^2,0,0,w,1,0,0,0,0,w,w,w^2,w^2,w^2,1,1,w,0,w^2,0,w^2,0,0,w^2,1,
-            0,0,1,1,1,0,w,w^2,1,1,w,w^2,1,w,w^2,w^2,0,w,w,w^2,w,w,w,1,1,w,w,0,1,w,0,0,w^2,0,0,w,0,1,1,w^2,w,w,w^2,w^2,w^2,w,w,w,0,1,w^2,0,1,
-            0,0,1,0,0,w^2,w^2,w,w,w,0,w,1,w^2,w,w^2,w,w,1,w,1,w^2,w^2,w^2,w,1,1,0,w^2,w,w^2,w^2,1,0,0,w^2,0,0,1,w,1,0,0,w,0,w,0,0,1,0,0,1,0,
-            0,0,1,w,0,w,w,0,w,0,w^2,1,w,0,w^2,0,1,w,w,w,w,w^2,0,w,0,0,w,0,1,0,w,w^2,0,0,1,0,0,w^2,1,w,1,1,1,0,w,0,0,w,w^2,0,w,w,w^2,
-            0,0,w^2,w,1,1,w^2,w,w,w^2,w^2,1,w^2,w^2,0,w^2,0,w,w^2,0,1,w,w^2,0,0,w,0,w,w,0,w^2,0,1,1,0,w,w,1,w^2,w,w^2,1,w^2,0,1,w,w^2,1,0,w^2,w,1,0,
-            0,0,w,w,w^2,0,w,1,1,0,w^2,1,w^2,1,w^2,1,0,w,w^2,w^2,1,0,w^2,w,w,w,1,w^2,w^2,0,1,w,1,1,w,w,w^2,w,1,1,w^2,w,0,w^2,w,1,w,1,0,1,w^2,0,w
-        ]),
-        ZeroMatrix(F,38,1)),
-    HorizontalJoin(
-        Matrix(F,1,53,[
-            1,w,0,1,0,w,w,1,0,w^2,w,1,w^2,0,1,w,1,1,w^2,w,w^2,w,1,w,w,0,0,w,0,w,w^2,0,1,w^2,1,0,w^2,0,1,1,0,w,1,w,w,w,1,w,1,0,w,1,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 39 and Rank(GX4) eq 39;
-assert Ncols(GX4) eq 54;
-assert RowSpace(Submatrix(GX4,1,1,39,53)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 2;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 3;
-Table1Generators[86] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 30 and Rank(GX4) eq 30;
+assert RowSpace(Submatrix(GX4,1,1,30,53)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,54,30,1) eq VerticalJoin(ZeroMatrix(F,29,1),IdentityMatrix(F,1));
+Table1Generators[47]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 54 and Dimension(Q) eq 30;
+assert Dimension(HermitianHull(Q)) eq 5;
+Table1Parameters[47]:=[54,25,12,19];
+Table1DistanceTypes[47]:="exact";
 
-// Table 1, No. 087 | source DV20 | HullDecreasing.m
-// Gsrc: [54,37]_4, hull 6; X4: [[55,32,9;13]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,37,54,[
+// Table 1, No. 48 | DV20
+// [[55,32,9;13]]_2, distance exact.
+Gsrc:=Matrix(F,37,54,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w,0,w,w,1,w^2,1,0,w,w,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w,0,w,w,1,w^2,1,0,w,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,0,w^2,w,w^2,w,0,1,w,1,0,0,w^2,
@@ -4885,63 +2412,58 @@ Gsrc := Matrix(F,37,54,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,w,0,1,w^2,1,1,w,w,1,w^2,0,w^2,1,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,w,0,1,w^2,1,1,w,w,1,w^2,0,w^2,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,36,54,[
-            1,0,0,0,0,0,w,0,1,w^2,w,0,w,w,w^2,w^2,1,w,w,w^2,0,0,0,w^2,0,w^2,0,w^2,1,0,w,0,0,0,1,w,1,w,w,w,1,w^2,w,w,w^2,w,w,w,w,w^2,w^2,w^2,1,w,
-            0,1,0,0,0,0,1,w^2,0,w^2,w^2,0,0,w,0,0,w,w,w,1,w^2,w,w,1,0,w,1,1,w^2,w^2,1,1,w,w^2,1,0,w^2,w^2,0,1,w^2,w^2,w^2,0,1,w^2,w^2,0,w,w,0,1,w,w,
-            0,0,1,0,0,0,1,0,w^2,w,w^2,1,0,0,0,w^2,1,1,w,1,1,1,0,w^2,w,w,0,0,1,1,w,w,w^2,1,w,0,1,1,1,w^2,0,1,w^2,1,w^2,1,w,1,0,w,1,w,0,1,
-            0,0,0,1,0,0,w^2,w,0,w,w,w,1,0,1,w,0,w^2,1,0,1,0,0,w^2,1,w^2,w^2,w^2,0,0,w,0,w^2,1,w,1,w^2,0,0,w^2,0,1,1,w,w^2,w^2,w,w^2,1,0,0,0,1,w,
-            0,0,0,0,1,0,1,w,w,w,w,0,w,1,w,w,w^2,w^2,w^2,w,0,w^2,w,1,0,w^2,1,w,w^2,w,1,1,w,0,0,w^2,0,1,w,w^2,w,w,1,w^2,1,w^2,w,0,w^2,1,w^2,w,1,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,w^2,w,1,0,w^2,0,0,w^2,1,0,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,w^2,w,1,0,w^2,0,0,w^2,1,0,
-            0,0,0,0,0,w,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,0,w^2,w,0,0,w,1,0,0,w^2,w,w^2,w^2,
-            0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w,1,w,1,w^2,0,0,w,1,1,1,0,
-            0,0,0,0,0,1,1,0,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,0,w^2,1,0,w,w,1,w^2,1,0,0,w^2,1,
-            0,0,0,0,0,w,1,w,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,0,1,w,w,w^2,w,w^2,1,w^2,1,1,0,0,
-            0,0,0,0,0,0,1,1,w^2,1,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,w,w^2,w,0,w^2,1,1,0,w,w,0,w,w,
-            0,0,0,0,0,1,0,1,0,w^2,w^2,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,1,w^2,w^2,w,1,w^2,w,w,w,w,
-            0,0,0,0,0,1,w,0,0,1,w,w,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,w^2,0,w^2,0,w^2,w,1,w,w^2,w^2,w^2,w^2,
-            0,0,0,0,0,w,w,w^2,0,1,1,w,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,0,w,1,w,w,0,1,1,0,1,0,0,1,
-            0,0,0,0,0,w,w,w^2,w,w,1,0,1,w^2,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,0,w^2,0,0,w^2,0,1,0,0,w^2,w^2,0,0,
-            0,0,0,0,0,1,w^2,w^2,1,0,w^2,w,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,w,1,w,0,0,w^2,w^2,w^2,1,0,1,w^2,
-            0,0,0,0,0,w^2,w^2,0,0,w,w,w,1,0,0,w^2,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,0,1,1,w^2,w,1,1,0,w^2,0,0,0,
-            0,0,0,0,0,w,1,w^2,w,1,1,w,1,1,w^2,w^2,w^2,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,0,0,w^2,1,w^2,0,0,0,w^2,w^2,1,
-            0,0,0,0,0,0,1,1,w^2,w,w^2,w,1,w^2,1,0,0,w^2,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,1,1,w^2,1,w,1,1,w,w^2,1,w,w,0,
-            0,0,0,0,0,0,1,1,0,w,1,1,w^2,w^2,w^2,1,1,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,0,0,w^2,w,w,w,w^2,1,0,w,w,1,
-            0,0,0,0,0,w^2,1,1,1,w,w^2,1,w^2,1,w^2,w,w^2,w,1,w,1,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w,w^2,w,1,0,1,0,1,1,0,1,w,1,
-            0,0,0,0,0,w,w,w,1,1,w^2,w^2,1,1,0,w,0,w^2,w^2,0,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,0,1,0,w,w,w^2,0,1,1,w,w,
-            0,0,0,0,0,0,w^2,w^2,w,1,1,1,w^2,0,1,0,1,w,w^2,w,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,0,1,1,w^2,w,1,w,0,1,0,0,w^2,
-            0,0,0,0,0,w^2,w,1,0,0,w,1,w,w^2,w,1,0,0,1,w,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w^2,w,w,0,1,1,w^2,w^2,w^2,1,w,w,w^2,
-            0,0,0,0,0,w,1,1,0,1,w^2,w^2,0,0,0,w,1,1,1,0,1,1,1,1,w^2,w^2,w,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,0,0,w^2,0,w^2,w,w,w,1,1,0,1,w^2,w,
-            0,0,0,0,0,0,0,0,w^2,1,1,w,1,w^2,w^2,w^2,0,1,w^2,0,w,w^2,1,1,w,w^2,w^2,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,1,0,0,1,1,w,1,0,0,w,0,1,w^2,
-            0,0,0,0,0,0,1,w,1,w,0,w^2,1,1,0,w^2,w^2,1,w^2,w^2,1,1,0,0,1,w^2,w,1,0,0,0,0,0,0,0,0,1,w,1,1,1,w^2,w^2,0,w,0,w,1,1,w,1,1,w^2,0,
-            0,0,0,0,0,0,w,w,1,w^2,w,0,0,1,w,1,w^2,1,1,0,0,0,1,w^2,0,0,w^2,1,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w,0,w^2,w^2,0,1,0,1,1,1,0,1,0,
-            0,0,0,0,0,0,w^2,1,1,w^2,1,1,w^2,w^2,w^2,w,1,w,1,0,w,1,0,w^2,w^2,0,1,0,w^2,1,0,0,0,0,0,0,w,1,1,w^2,w^2,1,0,0,1,w^2,w,w^2,0,1,w^2,1,w^2,w^2,
-            0,0,0,0,0,1,w,w,w^2,w,w,1,0,1,1,w,w,0,w^2,0,w^2,w,w^2,w,1,0,w,w^2,w,w,1,0,0,0,0,0,w,w^2,w^2,w,w,1,1,w^2,1,1,w^2,0,0,w^2,1,w^2,w,0,
-            0,0,0,0,0,1,w,w^2,1,w,1,0,w,w,0,w^2,1,0,1,w^2,0,w,1,w,w,1,0,w,w^2,w,w^2,1,0,0,0,0,w^2,w^2,1,w,0,0,0,w^2,w^2,0,w^2,w,0,0,1,0,w^2,1,
-            0,0,0,0,0,0,1,0,w^2,w^2,1,1,w^2,w^2,0,1,w^2,w,1,1,0,w,0,w^2,w,1,0,0,w^2,0,0,w^2,1,0,0,0,0,w^2,0,1,w,1,w,w,0,1,w,w^2,w^2,0,0,0,0,0,
-            0,0,0,0,0,0,w^2,0,w,1,1,1,w^2,w^2,w^2,w,w,w^2,w,w^2,w^2,w^2,w^2,w^2,w,0,w^2,0,w^2,w^2,w^2,w,1,0,1,0,w,1,w^2,w^2,w,w^2,1,w,w^2,w^2,w,0,1,1,w,w^2,w^2,0,
-            0,0,0,0,0,1,w^2,w,w^2,0,1,w^2,w,w,0,0,1,w,1,0,0,1,1,w,w^2,w,1,w^2,0,w^2,w,1,0,1,1,w,w^2,w^2,w^2,w^2,1,1,1,w,w,w^2,1,1,0,w^2,0,w,0,w^2,
-            0,0,0,0,0,w^2,w^2,0,0,w,w^2,w,0,w^2,w^2,w,1,w^2,0,1,w^2,1,0,w^2,w,0,0,0,0,0,w,w,0,1,w^2,w^2,w^2,w,w^2,w^2,0,1,w^2,1,1,w^2,1,w,0,w,1,1,0,1
-        ]),
-        ZeroMatrix(F,36,1)),
-    HorizontalJoin(
-        Matrix(F,1,54,[
-            0,0,0,0,0,1,1,0,w,0,w,0,0,w,w^2,1,w^2,0,w^2,0,w,w,1,w^2,w,w,1,0,w,1,w^2,w,w^2,1,1,1,w,w,w^2,1,w,0,w,w^2,0,1,w,0,0,w^2,w,1,w^2,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,37,55,[
+    1,0,0,0,0,0,w,0,1,w^2,w,0,w,w,w^2,w^2,1,w,w,w^2,0,0,0,w^2,0,w^2,0,w^2,1,0,w,0,0,0,1,w,1,w,w,w,1,w^2,w,w,w^2,w,w,w,w,w^2,w^2,w^2,1,w,0,
+    0,1,0,0,0,0,1,w^2,0,w^2,w^2,0,0,w,0,0,w,w,w,1,w^2,w,w,1,0,w,1,1,w^2,w^2,1,1,w,w^2,1,0,w^2,w^2,0,1,w^2,w^2,w^2,0,1,w^2,w^2,0,w,w,0,1,w,w,0,
+    0,0,1,0,0,0,1,0,w^2,w,w^2,1,0,0,0,w^2,1,1,w,1,1,1,0,w^2,w,w,0,0,1,1,w,w,w^2,1,w,0,1,1,1,w^2,0,1,w^2,1,w^2,1,w,1,0,w,1,w,0,1,0,
+    0,0,0,1,0,0,w^2,w,0,w,w,w,1,0,1,w,0,w^2,1,0,1,0,0,w^2,1,w^2,w^2,w^2,0,0,w,0,w^2,1,w,1,w^2,0,0,w^2,0,1,1,w,w^2,w^2,w,w^2,1,0,0,0,1,w,0,
+    0,0,0,0,1,0,1,w,w,w,w,0,w,1,w,w,w^2,w^2,w^2,w,0,w^2,w,1,0,w^2,1,w,w^2,w,1,1,w,0,0,w^2,0,1,w,w^2,w,w,1,w^2,1,w^2,w,0,w^2,1,w^2,w,1,w,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,w^2,w,1,0,w^2,0,0,w^2,1,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,w^2,w,1,0,w^2,0,0,w^2,1,0,0,
+    0,0,0,0,0,w,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,0,w^2,w,0,0,w,1,0,0,w^2,w,w^2,w^2,0,
+    0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w,1,w,1,w^2,0,0,w,1,1,1,0,0,
+    0,0,0,0,0,1,1,0,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,0,w^2,1,0,w,w,1,w^2,1,0,0,w^2,1,0,
+    0,0,0,0,0,w,1,w,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,0,1,w,w,w^2,w,w^2,1,w^2,1,1,0,0,0,
+    0,0,0,0,0,0,1,1,w^2,1,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,w,w^2,w,0,w^2,1,1,0,w,w,0,w,w,0,
+    0,0,0,0,0,1,0,1,0,w^2,w^2,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,1,w^2,w^2,w,1,w^2,w,w,w,w,0,
+    0,0,0,0,0,1,w,0,0,1,w,w,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,w^2,0,w^2,0,w^2,w,1,w,w^2,w^2,w^2,w^2,0,
+    0,0,0,0,0,w,w,w^2,0,1,1,w,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,0,w,1,w,w,0,1,1,0,1,0,0,1,0,
+    0,0,0,0,0,w,w,w^2,w,w,1,0,1,w^2,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,0,w^2,0,0,w^2,0,1,0,0,w^2,w^2,0,0,0,
+    0,0,0,0,0,1,w^2,w^2,1,0,w^2,w,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,w,1,w,0,0,w^2,w^2,w^2,1,0,1,w^2,0,
+    0,0,0,0,0,w^2,w^2,0,0,w,w,w,1,0,0,w^2,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,0,1,1,w^2,w,1,1,0,w^2,0,0,0,0,
+    0,0,0,0,0,w,1,w^2,w,1,1,w,1,1,w^2,w^2,w^2,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,0,0,w^2,1,w^2,0,0,0,w^2,w^2,1,0,
+    0,0,0,0,0,0,1,1,w^2,w,w^2,w,1,w^2,1,0,0,w^2,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,1,1,w^2,1,w,1,1,w,w^2,1,w,w,0,0,
+    0,0,0,0,0,0,1,1,0,w,1,1,w^2,w^2,w^2,1,1,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,0,0,w^2,w,w,w,w^2,1,0,w,w,1,0,
+    0,0,0,0,0,w^2,1,1,1,w,w^2,1,w^2,1,w^2,w,w^2,w,1,w,1,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w,w^2,w,1,0,1,0,1,1,0,1,w,1,0,
+    0,0,0,0,0,w,w,w,1,1,w^2,w^2,1,1,0,w,0,w^2,w^2,0,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,0,1,0,w,w,w^2,0,1,1,w,w,0,
+    0,0,0,0,0,0,w^2,w^2,w,1,1,1,w^2,0,1,0,1,w,w^2,w,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,0,1,1,w^2,w,1,w,0,1,0,0,w^2,0,
+    0,0,0,0,0,w^2,w,1,0,0,w,1,w,w^2,w,1,0,0,1,w,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w^2,w,w,0,1,1,w^2,w^2,w^2,1,w,w,w^2,0,
+    0,0,0,0,0,w,1,1,0,1,w^2,w^2,0,0,0,w,1,1,1,0,1,1,1,1,w^2,w^2,w,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,0,0,w^2,0,w^2,w,w,w,1,1,0,1,w^2,w,0,
+    0,0,0,0,0,0,0,0,w^2,1,1,w,1,w^2,w^2,w^2,0,1,w^2,0,w,w^2,1,1,w,w^2,w^2,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,1,0,0,1,1,w,1,0,0,w,0,1,w^2,0,
+    0,0,0,0,0,0,1,w,1,w,0,w^2,1,1,0,w^2,w^2,1,w^2,w^2,1,1,0,0,1,w^2,w,1,0,0,0,0,0,0,0,0,1,w,1,1,1,w^2,w^2,0,w,0,w,1,1,w,1,1,w^2,0,0,
+    0,0,0,0,0,0,w,w,1,w^2,w,0,0,1,w,1,w^2,1,1,0,0,0,1,w^2,0,0,w^2,1,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w,0,w^2,w^2,0,1,0,1,1,1,0,1,0,0,
+    0,0,0,0,0,0,w^2,1,1,w^2,1,1,w^2,w^2,w^2,w,1,w,1,0,w,1,0,w^2,w^2,0,1,0,w^2,1,0,0,0,0,0,0,w,1,1,w^2,w^2,1,0,0,1,w^2,w,w^2,0,1,w^2,1,w^2,w^2,0,
+    0,0,0,0,0,1,w,w,w^2,w,w,1,0,1,1,w,w,0,w^2,0,w^2,w,w^2,w,1,0,w,w^2,w,w,1,0,0,0,0,0,w,w^2,w^2,w,w,1,1,w^2,1,1,w^2,0,0,w^2,1,w^2,w,0,0,
+    0,0,0,0,0,1,w,w^2,1,w,1,0,w,w,0,w^2,1,0,1,w^2,0,w,1,w,w,1,0,w,w^2,w,w^2,1,0,0,0,0,w^2,w^2,1,w,0,0,0,w^2,w^2,0,w^2,w,0,0,1,0,w^2,1,0,
+    0,0,0,0,0,0,1,0,w^2,w^2,1,1,w^2,w^2,0,1,w^2,w,1,1,0,w,0,w^2,w,1,0,0,w^2,0,0,w^2,1,0,0,0,0,w^2,0,1,w,1,w,w,0,1,w,w^2,w^2,0,0,0,0,0,0,
+    0,0,0,0,0,0,w^2,0,w,1,1,1,w^2,w^2,w^2,w,w,w^2,w,w^2,w^2,w^2,w^2,w^2,w,0,w^2,0,w^2,w^2,w^2,w,1,0,1,0,w,1,w^2,w^2,w,w^2,1,w,w^2,w^2,w,0,1,1,w,w^2,w^2,0,0,
+    0,0,0,0,0,1,w^2,w,w^2,0,1,w^2,w,w,0,0,1,w,1,0,0,1,1,w,w^2,w,1,w^2,0,w^2,w,1,0,1,1,w,w^2,w^2,w^2,w^2,1,1,1,w,w,w^2,1,1,0,w^2,0,w,0,w^2,0,
+    0,0,0,0,0,w^2,w^2,0,0,w,w^2,w,0,w^2,w^2,w,1,w^2,0,1,w^2,1,0,w^2,w,0,0,0,0,0,w,w,0,1,w^2,w^2,w^2,w,w^2,w^2,0,1,w^2,1,1,w^2,1,w,0,w,1,1,0,1,0,
+    0,0,0,0,0,1,1,0,w,0,w,0,0,w,w^2,1,w^2,0,w^2,0,w,w,1,w^2,w,w,1,0,w,1,w^2,w,w^2,1,1,1,w,w,w^2,1,w,0,w,w^2,0,1,w,0,0,w^2,w,1,w^2,w,1
+]);
 assert Rank(Gsrc) eq 37 and Rank(GX4) eq 37;
-assert Ncols(GX4) eq 55;
 assert RowSpace(Submatrix(GX4,1,1,37,54)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 6;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 5;
-Table1Generators[87] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,55,37,1) eq VerticalJoin(ZeroMatrix(F,36,1),IdentityMatrix(F,1));
+Table1Generators[48]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 55 and Dimension(Q) eq 37;
+assert Dimension(HermitianHull(Q)) eq 5;
+Table1Parameters[48]:=[55,32,9,13];
+Table1DistanceTypes[48]:="exact";
 
-// Table 1, No. 088 | source DV21 | HullDecreasing.m
-// Gsrc: [54,40]_4, hull 3; X4: [[55,38,8;13]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,40,54,[
+// Table 1, No. 49 | DV21
+// [[55,38,8;13]]_2, distance exact.
+Gsrc:=Matrix(F,40,54,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,w,0,w,w^2,1,0,0,w,w^2,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,w,0,w,w^2,1,0,0,w,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,0,w,w,w^2,w^2,0,w,w^2,1,w^2,
@@ -4983,66 +2505,61 @@ Gsrc := Matrix(F,40,54,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,1,w^2,1,1,0,w,w,1,w^2,0,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,0,1,0,1,w,1,1,1,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,39,54,[
-            1,0,0,w,w,1,w^2,0,w^2,w,w,1,w,w,w^2,w^2,1,1,0,w^2,w^2,w,w^2,w^2,0,1,0,w,w,w,1,w^2,0,0,w,w^2,1,1,w,w,w,w^2,w^2,w,w^2,0,w,w,1,w,w,w^2,0,w,
-            0,1,0,1,w,w^2,w^2,0,w^2,w^2,1,1,0,w^2,w,0,1,1,0,1,w^2,w,1,1,w,1,w^2,1,1,w^2,w^2,w,0,w,0,0,w^2,1,w,w^2,0,1,w^2,w,1,1,1,w^2,w^2,w,1,0,w,0,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w^2,w,1,1,w^2,0,w,0,w,
-            0,0,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w^2,w,1,w,0,0,0,0,1,
-            0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,w,1,0,w,0,0,w^2,w,
-            0,0,0,0,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w,w,w^2,w,w,1,1,1,1,
-            0,0,0,w,w^2,w^2,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,0,w^2,0,0,1,w^2,w^2,
-            0,0,0,0,1,w^2,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w^2,1,1,0,1,w^2,0,0,
-            0,0,0,1,w^2,1,w,0,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,0,w,w^2,1,0,1,w,w,1,
-            0,0,0,0,0,1,w,w^2,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,1,w^2,w,w,w^2,0,w^2,w^2,w^2,
-            0,0,0,0,w,0,w,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w,1,w,w^2,w,w,1,1,0,0,w^2,
-            0,0,w,w^2,w^2,w^2,0,1,0,w^2,0,w,0,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w,0,w^2,w^2,w^2,w,0,w^2,1,w,
-            0,0,w,0,0,0,w,1,0,w^2,w^2,w^2,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w,1,w,w,0,0,0,0,0,
-            0,0,1,0,0,w,w^2,w^2,w^2,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w^2,0,0,w,w,w,0,w^2,1,
-            0,0,0,w,w^2,w,0,w^2,0,w,w,w^2,1,1,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,w^2,w^2,0,0,1,w,w,w^2,w^2,0,
-            0,0,0,w^2,w,w^2,w,w^2,w,w,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,w,0,1,0,w,1,w,w,w,
-            0,0,w^2,w^2,0,1,0,1,0,w^2,0,w^2,1,1,w,1,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,0,w^2,1,w,0,w,1,w^2,0,
-            0,0,w^2,1,0,w^2,1,1,w^2,1,w,w^2,1,w,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w,0,1,w^2,w,1,w,w,w,w^2,
-            0,0,1,w,w^2,w,w^2,w,1,1,0,w^2,1,w,w^2,0,w,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,0,0,w^2,0,w^2,w^2,0,1,w^2,w,
-            0,0,w^2,1,w,w,0,0,0,0,1,w^2,w^2,w,w,w,w^2,w,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,0,0,w,w,0,1,1,w,0,1,
-            0,0,0,0,w^2,1,w^2,w,w,w^2,1,0,w,0,w,1,w^2,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w,0,w^2,1,0,1,0,w^2,w^2,1,
-            0,0,w^2,w,w,w^2,w^2,w^2,1,w,0,1,0,w,w,w,w,w^2,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,1,w^2,0,1,0,w^2,w,0,0,
-            0,0,w^2,0,0,w^2,w^2,w,w,w^2,w,w^2,w^2,1,1,1,w,w^2,1,w^2,0,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w,0,w,w,w^2,w^2,w,0,w^2,1,
-            0,0,w^2,0,0,w^2,1,0,0,w,1,1,1,1,0,w,w,w,w,w,w^2,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,w^2,1,1,1,w,w,1,1,w^2,
-            0,0,w^2,w,0,1,w,w,w^2,0,w,0,w,w^2,w,0,w^2,w,1,w^2,w^2,w^2,w,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,0,w,w,1,w,0,w^2,1,0,0,
-            0,0,w,w^2,0,0,w,w^2,w^2,w,1,0,w,1,0,1,1,w,1,1,0,w,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w,1,w,w^2,w,w^2,0,0,w^2,1,
-            0,0,w,w^2,w^2,0,w,w,w,w^2,w^2,1,0,w,1,w,1,1,0,0,w^2,w^2,1,w^2,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w,w^2,0,0,w,1,w^2,w^2,1,
-            0,0,0,w^2,1,w^2,w,w,0,1,w,w,0,1,0,w,1,1,0,1,w^2,w,1,0,1,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,1,1,1,1,0,w,w,0,1,
-            0,0,1,0,w^2,w^2,w^2,w,1,0,1,0,0,w,w^2,1,w^2,1,w^2,w,0,0,0,0,1,w,w,1,w^2,w,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w,w^2,w,1,1,0,w,w,0,w,w,
-            0,0,0,1,w^2,0,w^2,w,0,w,w,w^2,w,1,w^2,w,0,1,0,0,w^2,1,0,1,1,w,1,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w,w^2,w,0,w,0,1,w^2,1,0,
-            0,0,w,0,w^2,0,1,0,w^2,w,1,0,w,1,1,w^2,1,0,0,1,w,w^2,w^2,w^2,w,0,w,0,0,w,0,1,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w,0,w,1,w,0,w^2,0,w^2,
-            0,0,1,0,0,w^2,0,1,w,w^2,0,0,w,1,w^2,w,w^2,1,w,w,1,0,0,1,w,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,w,1,w^2,0,w,0,w,w^2,1,0,1,0,w^2,0,
-            0,0,0,w,1,w,1,1,w,1,1,w^2,w,0,w,1,w^2,0,0,w^2,1,w^2,1,1,0,1,w,w,w^2,w^2,0,w^2,0,w,1,0,0,0,0,0,w,0,1,1,0,w^2,w^2,w,w,w^2,0,w^2,0,0,
-            0,0,0,1,1,w^2,w,w,1,w^2,0,0,0,0,w^2,w^2,w^2,1,w,1,0,w,w,w^2,w^2,w,0,1,1,w^2,0,0,w,0,1,0,0,0,0,0,w,1,1,0,1,1,w,w,w^2,0,1,w^2,w,w^2,
-            0,0,w^2,w^2,w,0,1,1,0,w^2,1,0,w^2,0,0,w,1,0,w,w,0,1,w^2,1,0,w,w^2,0,w^2,w^2,w,w^2,w,w,w,0,0,0,1,w^2,0,w,w^2,w,w,1,w^2,1,1,w,0,0,w^2,1,
-            0,0,w,0,1,0,0,1,0,w,0,w^2,1,w,w,w,1,w^2,0,w^2,0,w^2,w,w^2,w^2,w^2,0,w^2,1,1,0,0,w^2,w,w,0,0,0,1,w^2,0,w^2,w^2,w,w^2,w,w^2,w,1,w,w,0,w^2,1,
-            0,0,w^2,w^2,w,w,w,w^2,w,0,w^2,1,1,w^2,0,w^2,w,w^2,0,w,w,w,w,1,1,w,w^2,1,w^2,w,0,1,1,1,w^2,0,1,0,w^2,1,w,0,1,w^2,w,w,w,w,w,w^2,w,w,w,w,
-            0,0,1,w,w,1,0,w^2,w,w,w,1,w^2,0,w^2,w^2,0,0,1,w^2,0,1,w^2,1,w^2,0,1,1,0,w,w^2,1,0,0,w^2,w,w^2,1,w,w^2,1,w^2,0,w,1,w,w,w^2,1,1,0,1,w,w,
-            0,0,w^2,0,w,1,1,1,1,w^2,w,w,w,w,0,1,1,1,w^2,w^2,w,w,1,w,w,0,w,w,0,0,w,w,w^2,0,1,0,1,1,w^2,1,w,0,1,w,0,1,1,w^2,0,1,0,w^2,1,w^2
-        ]),
-        ZeroMatrix(F,39,1)),
-    HorizontalJoin(
-        Matrix(F,1,54,[
-            0,0,1,0,1,w,w^2,w^2,0,w^2,w^2,1,1,0,w^2,w,0,1,1,0,1,w^2,w,1,1,w,1,w^2,1,1,w^2,w^2,w,0,w,0,0,w^2,1,w,w^2,0,1,w^2,w,1,1,1,w^2,w^2,w,1,0,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,40,55,[
+    1,0,0,w,w,1,w^2,0,w^2,w,w,1,w,w,w^2,w^2,1,1,0,w^2,w^2,w,w^2,w^2,0,1,0,w,w,w,1,w^2,0,0,w,w^2,1,1,w,w,w,w^2,w^2,w,w^2,0,w,w,1,w,w,w^2,0,w,0,
+    0,1,0,1,w,w^2,w^2,0,w^2,w^2,1,1,0,w^2,w,0,1,1,0,1,w^2,w,1,1,w,1,w^2,1,1,w^2,w^2,w,0,w,0,0,w^2,1,w,w^2,0,1,w^2,w,1,1,1,w^2,w^2,w,1,0,w,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w^2,w,1,1,w^2,0,w,0,w,0,
+    0,0,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w^2,w,1,w,0,0,0,0,1,0,
+    0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,w,1,0,w,0,0,w^2,w,0,
+    0,0,0,0,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w,w,w^2,w,w,1,1,1,1,0,
+    0,0,0,w,w^2,w^2,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,1,1,0,w^2,0,0,1,w^2,w^2,0,
+    0,0,0,0,1,w^2,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w^2,1,1,0,1,w^2,0,0,0,
+    0,0,0,1,w^2,1,w,0,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,0,w,w^2,1,0,1,w,w,1,0,
+    0,0,0,0,0,1,w,w^2,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,1,w^2,w,w,w^2,0,w^2,w^2,w^2,0,
+    0,0,0,0,w,0,w,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w,1,w,w^2,w,w,1,1,0,0,w^2,0,
+    0,0,w,w^2,w^2,w^2,0,1,0,w^2,0,w,0,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w,0,w^2,w^2,w^2,w,0,w^2,1,w,0,
+    0,0,w,0,0,0,w,1,0,w^2,w^2,w^2,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w,1,w,w,0,0,0,0,0,0,
+    0,0,1,0,0,w,w^2,w^2,w^2,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w^2,0,0,w,w,w,0,w^2,1,0,
+    0,0,0,w,w^2,w,0,w^2,0,w,w,w^2,1,1,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,w^2,w^2,0,0,1,w,w,w^2,w^2,0,0,
+    0,0,0,w^2,w,w^2,w,w^2,w,w,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,w,0,1,0,w,1,w,w,w,0,
+    0,0,w^2,w^2,0,1,0,1,0,w^2,0,w^2,1,1,w,1,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,0,w^2,1,w,0,w,1,w^2,0,0,
+    0,0,w^2,1,0,w^2,1,1,w^2,1,w,w^2,1,w,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w,0,1,w^2,w,1,w,w,w,w^2,0,
+    0,0,1,w,w^2,w,w^2,w,1,1,0,w^2,1,w,w^2,0,w,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,0,0,w^2,0,w^2,w^2,0,1,w^2,w,0,
+    0,0,w^2,1,w,w,0,0,0,0,1,w^2,w^2,w,w,w,w^2,w,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,0,0,w,w,0,1,1,w,0,1,0,
+    0,0,0,0,w^2,1,w^2,w,w,w^2,1,0,w,0,w,1,w^2,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w,0,w^2,1,0,1,0,w^2,w^2,1,0,
+    0,0,w^2,w,w,w^2,w^2,w^2,1,w,0,1,0,w,w,w,w,w^2,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,1,w^2,0,1,0,w^2,w,0,0,0,
+    0,0,w^2,0,0,w^2,w^2,w,w,w^2,w,w^2,w^2,1,1,1,w,w^2,1,w^2,0,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w,0,w,w,w^2,w^2,w,0,w^2,1,0,
+    0,0,w^2,0,0,w^2,1,0,0,w,1,1,1,1,0,w,w,w,w,w,w^2,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,w^2,1,1,1,w,w,1,1,w^2,0,
+    0,0,w^2,w,0,1,w,w,w^2,0,w,0,w,w^2,w,0,w^2,w,1,w^2,w^2,w^2,w,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,0,w,w,1,w,0,w^2,1,0,0,0,
+    0,0,w,w^2,0,0,w,w^2,w^2,w,1,0,w,1,0,1,1,w,1,1,0,w,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w,1,w,w^2,w,w^2,0,0,w^2,1,0,
+    0,0,w,w^2,w^2,0,w,w,w,w^2,w^2,1,0,w,1,w,1,1,0,0,w^2,w^2,1,w^2,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w,w^2,0,0,w,1,w^2,w^2,1,0,
+    0,0,0,w^2,1,w^2,w,w,0,1,w,w,0,1,0,w,1,1,0,1,w^2,w,1,0,1,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,1,1,1,1,0,w,w,0,1,0,
+    0,0,1,0,w^2,w^2,w^2,w,1,0,1,0,0,w,w^2,1,w^2,1,w^2,w,0,0,0,0,1,w,w,1,w^2,w,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w,w^2,w,1,1,0,w,w,0,w,w,0,
+    0,0,0,1,w^2,0,w^2,w,0,w,w,w^2,w,1,w^2,w,0,1,0,0,w^2,1,0,1,1,w,1,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w,w^2,w,0,w,0,1,w^2,1,0,0,
+    0,0,w,0,w^2,0,1,0,w^2,w,1,0,w,1,1,w^2,1,0,0,1,w,w^2,w^2,w^2,w,0,w,0,0,w,0,1,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w,0,w,1,w,0,w^2,0,w^2,0,
+    0,0,1,0,0,w^2,0,1,w,w^2,0,0,w,1,w^2,w,w^2,1,w,w,1,0,0,1,w,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,w,1,w^2,0,w,0,w,w^2,1,0,1,0,w^2,0,0,
+    0,0,0,w,1,w,1,1,w,1,1,w^2,w,0,w,1,w^2,0,0,w^2,1,w^2,1,1,0,1,w,w,w^2,w^2,0,w^2,0,w,1,0,0,0,0,0,w,0,1,1,0,w^2,w^2,w,w,w^2,0,w^2,0,0,0,
+    0,0,0,1,1,w^2,w,w,1,w^2,0,0,0,0,w^2,w^2,w^2,1,w,1,0,w,w,w^2,w^2,w,0,1,1,w^2,0,0,w,0,1,0,0,0,0,0,w,1,1,0,1,1,w,w,w^2,0,1,w^2,w,w^2,0,
+    0,0,w^2,w^2,w,0,1,1,0,w^2,1,0,w^2,0,0,w,1,0,w,w,0,1,w^2,1,0,w,w^2,0,w^2,w^2,w,w^2,w,w,w,0,0,0,1,w^2,0,w,w^2,w,w,1,w^2,1,1,w,0,0,w^2,1,0,
+    0,0,w,0,1,0,0,1,0,w,0,w^2,1,w,w,w,1,w^2,0,w^2,0,w^2,w,w^2,w^2,w^2,0,w^2,1,1,0,0,w^2,w,w,0,0,0,1,w^2,0,w^2,w^2,w,w^2,w,w^2,w,1,w,w,0,w^2,1,0,
+    0,0,w^2,w^2,w,w,w,w^2,w,0,w^2,1,1,w^2,0,w^2,w,w^2,0,w,w,w,w,1,1,w,w^2,1,w^2,w,0,1,1,1,w^2,0,1,0,w^2,1,w,0,1,w^2,w,w,w,w,w,w^2,w,w,w,w,0,
+    0,0,1,w,w,1,0,w^2,w,w,w,1,w^2,0,w^2,w^2,0,0,1,w^2,0,1,w^2,1,w^2,0,1,1,0,w,w^2,1,0,0,w^2,w,w^2,1,w,w^2,1,w^2,0,w,1,w,w,w^2,1,1,0,1,w,w,0,
+    0,0,w^2,0,w,1,1,1,1,w^2,w,w,w,w,0,1,1,1,w^2,w^2,w,w,1,w,w,0,w,w,0,0,w,w,w^2,0,1,0,1,1,w^2,1,w,0,1,w,0,1,1,w^2,0,1,0,w^2,1,w^2,0,
+    0,0,1,0,1,w,w^2,w^2,0,w^2,w^2,1,1,0,w^2,w,0,1,1,0,1,w^2,w,1,1,w,1,w^2,1,1,w^2,w^2,w,0,w,0,0,w^2,1,w,w^2,0,1,w^2,w,1,1,1,w^2,w^2,w,1,0,w,1
+]);
 assert Rank(Gsrc) eq 40 and Rank(GX4) eq 40;
-assert Ncols(GX4) eq 55;
 assert RowSpace(Submatrix(GX4,1,1,40,54)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 3;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 2;
-Table1Generators[88] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,55,40,1) eq VerticalJoin(ZeroMatrix(F,39,1),IdentityMatrix(F,1));
+Table1Generators[49]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 55 and Dimension(Q) eq 40;
+assert Dimension(HermitianHull(Q)) eq 2;
+Table1Parameters[49]:=[55,38,8,13];
+Table1DistanceTypes[49]:="exact";
 
-// Table 1, No. 089 | source DV23 | HullDecreasing.m
-// Gsrc: [55,31]_4, hull 7; X4: [[56,25,12;19]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,31,55,[
+// Table 1, No. 50 | DV23
+// [[56,25,12;19]]_2, distance exact.
+Gsrc:=Matrix(F,31,55,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,w^2,0,w^2,0,w,w,w,1,1,w^2,w^2,w^2,w^2,0,w,w^2,w^2,w,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,w^2,1,1,w,1,0,0,w,w^2,1,1,w^2,0,w,1,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,w^2,w,0,w,w^2,1,w^2,1,w,w,w^2,1,w,1,1,w,w,w^2,0,
@@ -5075,57 +2592,52 @@ Gsrc := Matrix(F,31,55,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,0,0,w,0,w^2,1,w,w,1,0,w^2,0,0,w^2,1,w,w,w,1,w,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,0,0,0,w^2,1,w^2,0,0,0,0,0,w,1,0,w^2,w,1,1,0,1,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,30,55,[
-            1,0,0,0,0,0,w^2,0,w^2,0,w^2,1,w,1,w,1,w^2,1,w,0,1,w,0,w,0,w^2,w^2,w,1,w,w,0,0,w,0,0,0,w^2,w^2,1,0,w^2,w^2,1,w^2,1,w,0,w,1,w^2,1,0,w,0,
-            0,1,0,0,0,0,w,0,1,w,1,0,0,w,w^2,w^2,0,w,w,1,0,0,0,1,w^2,0,0,1,w,w^2,1,0,0,1,0,0,0,1,w,1,w^2,1,w,0,w,1,1,w,w,w^2,w,0,w^2,w^2,1,
-            0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,
-            0,0,0,1,0,0,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,0,w,w^2,w,0,w,1,w^2,1,1,1,1,0,0,0,0,0,1,1,0,1,w^2,0,w,w^2,1,w,w^2,1,0,0,w,w^2,1,w,
-            0,0,0,0,1,0,1,0,1,1,1,1,1,w^2,1,1,1,0,w^2,w,w,0,w,w^2,0,0,0,w^2,w^2,w,w^2,w,0,w,0,0,1,w^2,w,1,w,1,0,w,w^2,w^2,w^2,0,w,0,w,1,w,w^2,w^2,
-            0,0,0,0,0,1,0,0,w^2,1,w^2,1,0,1,w^2,w^2,1,w^2,0,w,w^2,w^2,1,w,w,0,1,w,w^2,w,1,w,0,w,0,0,0,0,w^2,w^2,1,1,w^2,0,w^2,w,w^2,0,w^2,w^2,0,w^2,0,w,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,0,0,1,w^2,w^2,w,1,w^2,0,w^2,1,0,0,0,1,w^2,w^2,1,w^2,1,0,
-            0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,1,1,w^2,1,0,w^2,w,0,w,w,w^2,0,1,0,w,0,w^2,w,1,
-            0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,1,w,w^2,w^2,w^2,w,1,w^2,0,w,1,0,1,w^2,w,0,1,w^2,w^2,
-            0,0,0,0,0,0,0,w^2,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,w,0,0,1,w,1,0,1,0,w^2,0,w,0,w^2,w,1,1,w^2,1,
-            0,0,0,0,0,0,0,0,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,0,1,w^2,w,0,1,w^2,0,1,w^2,w,w^2,1,0,w,w,w,0,0,0,
-            0,0,0,0,0,0,0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,w^2,0,w^2,w^2,1,1,w^2,1,0,w,w,1,w^2,w,w,0,0,
-            0,0,0,0,0,0,0,1,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,0,w^2,w^2,w,1,w,w^2,1,0,1,0,w,0,1,0,
-            0,0,0,0,0,0,0,0,1,0,w,w^2,w,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,1,w^2,w,w,w,1,1,w,0,1,w^2,w^2,w,1,w,w^2,w,1,1,
-            0,0,0,0,0,0,0,w,w^2,w,1,w^2,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,w^2,w^2,0,w^2,0,1,0,1,w,1,w,w,1,0,w,0,w,w,0,
-            0,0,0,0,0,0,0,w^2,w^2,w,w,w,1,w^2,1,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,w^2,1,0,1,w^2,w,0,1,w^2,1,w,0,w^2,w,1,w,w,0,
-            0,0,0,0,0,0,0,w,1,w,w,w,w,0,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,0,w,w^2,w^2,w,w^2,w,0,1,w,1,w^2,1,
-            0,0,0,0,0,0,w^2,w^2,w^2,w^2,1,0,w^2,w,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,w,0,0,1,w,w^2,1,0,w,1,w,1,w,0,w^2,0,w^2,1,0,0,w^2,w,
-            0,0,0,0,0,0,w^2,w^2,w,w,w,0,w^2,w,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,0,0,0,w,w^2,w^2,0,w,w^2,0,0,1,1,w^2,0,w^2,0,w^2,1,w^2,w^2,w,
-            0,0,0,0,0,0,w,1,w,w^2,w,w^2,w^2,w^2,w^2,1,w^2,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,1,0,w,w^2,w^2,w,w^2,0,0,0,1,1,1,1,0,w,w,1,w,
-            0,0,0,0,0,0,w^2,w^2,w^2,1,w^2,w^2,w,w^2,1,1,1,w,0,0,w,1,0,0,0,0,0,0,0,w^2,w,1,0,0,0,0,w,w^2,w,w,1,w,1,0,w,1,w,1,w,w^2,1,w^2,w^2,w,w,
-            0,0,0,0,0,0,w,1,w,0,w^2,0,w,w,w,w,0,0,0,1,w^2,1,0,1,0,0,0,0,0,0,0,w^2,0,0,0,0,0,w,w^2,1,w,w,w,1,1,w^2,1,w^2,0,w,0,w^2,w^2,1,w^2,
-            0,0,0,0,0,0,w,w^2,w^2,1,0,1,w^2,w,w^2,w^2,0,w^2,0,0,w^2,w,0,1,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,w^2,1,1,w^2,w^2,w^2,w,w,w^2,0,0,w^2,0,w,w,w,w^2,
-            0,0,0,0,0,0,w,w,1,w^2,0,0,w^2,w,w^2,w^2,1,1,0,w^2,0,w,1,0,0,0,0,0,0,0,0,w^2,0,1,0,0,w,w^2,w,w^2,1,0,1,0,0,w,1,0,w^2,1,w,0,w,1,1,
-            0,0,0,0,0,0,1,w^2,0,0,0,w,w^2,w^2,w,w,0,w^2,1,w^2,w,1,w,0,0,0,0,0,w,0,w,w^2,0,w^2,0,0,0,w^2,w,0,1,w,1,w,1,1,w,w,1,w^2,0,w,1,1,1,
-            0,0,0,0,0,0,1,0,w,1,w,w^2,w^2,w^2,0,w,w^2,w^2,1,w,1,0,1,w,0,0,0,0,w^2,w^2,1,w^2,0,w,0,0,1,w^2,0,w^2,0,w,w,0,w,1,0,w,0,1,w^2,1,0,w,1,
-            0,0,0,0,0,0,1,0,w,1,w^2,w,w^2,w,1,w^2,w^2,w^2,0,1,w,0,0,1,0,w,1,0,w,w,1,w,0,w,0,0,0,1,w^2,w^2,1,0,0,0,w,w^2,1,0,w,w,w^2,1,w^2,w,w^2,
-            0,0,0,0,0,0,0,1,w,w,w^2,w,1,w,0,w,0,w^2,w^2,w^2,0,w,w,1,w^2,0,1,0,w,0,w^2,1,0,0,0,0,1,0,1,0,1,w,1,w,w,w,1,1,w^2,0,1,w^2,w,w^2,1,
-            0,0,0,0,0,0,1,w,1,1,1,w^2,w,0,0,w^2,w^2,w,w,w^2,1,w^2,w,0,w^2,0,0,1,w,0,w^2,0,0,w,0,0,w^2,0,w,0,w^2,w,1,w,0,1,w^2,0,1,0,1,w^2,1,w,0,
-            0,0,0,0,0,0,w^2,0,w^2,0,w,w,1,0,0,w^2,w^2,w^2,1,w,w,1,1,w^2,0,0,0,1,w,1,w^2,w,0,w^2,0,0,0,w^2,w,0,1,w^2,w^2,w,0,0,w^2,w^2,w,w,w,w,0,w,0
-        ]),
-        ZeroMatrix(F,30,1)),
-    HorizontalJoin(
-        Matrix(F,1,55,[
-            0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,31,56,[
+    1,0,0,0,0,0,w^2,0,w^2,0,w^2,1,w,1,w,1,w^2,1,w,0,1,w,0,w,0,w^2,w^2,w,1,w,w,0,0,w,0,0,0,w^2,w^2,1,0,w^2,w^2,1,w^2,1,w,0,w,1,w^2,1,0,w,0,0,
+    0,1,0,0,0,0,w,0,1,w,1,0,0,w,w^2,w^2,0,w,w,1,0,0,0,1,w^2,0,0,1,w,w^2,1,0,0,1,0,0,0,1,w,1,w^2,1,w,0,w,1,1,w,w,w^2,w,0,w^2,w^2,1,0,
+    0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,
+    0,0,0,1,0,0,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,0,w,w^2,w,0,w,1,w^2,1,1,1,1,0,0,0,0,0,1,1,0,1,w^2,0,w,w^2,1,w,w^2,1,0,0,w,w^2,1,w,0,
+    0,0,0,0,1,0,1,0,1,1,1,1,1,w^2,1,1,1,0,w^2,w,w,0,w,w^2,0,0,0,w^2,w^2,w,w^2,w,0,w,0,0,1,w^2,w,1,w,1,0,w,w^2,w^2,w^2,0,w,0,w,1,w,w^2,w^2,0,
+    0,0,0,0,0,1,0,0,w^2,1,w^2,1,0,1,w^2,w^2,1,w^2,0,w,w^2,w^2,1,w,w,0,1,w,w^2,w,1,w,0,w,0,0,0,0,w^2,w^2,1,1,w^2,0,w^2,w,w^2,0,w^2,w^2,0,w^2,0,w,w,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,0,0,1,w^2,w^2,w,1,w^2,0,w^2,1,0,0,0,1,w^2,w^2,1,w^2,1,0,0,
+    0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,1,1,w^2,1,0,w^2,w,0,w,w,w^2,0,1,0,w,0,w^2,w,1,0,
+    0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,1,w,w^2,w^2,w^2,w,1,w^2,0,w,1,0,1,w^2,w,0,1,w^2,w^2,0,
+    0,0,0,0,0,0,0,w^2,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,w,0,0,1,w,1,0,1,0,w^2,0,w,0,w^2,w,1,1,w^2,1,0,
+    0,0,0,0,0,0,0,0,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,0,1,w^2,w,0,1,w^2,0,1,w^2,w,w^2,1,0,w,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,w^2,0,w^2,w^2,1,1,w^2,1,0,w,w,1,w^2,w,w,0,0,0,
+    0,0,0,0,0,0,0,1,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,0,w^2,w^2,w,1,w,w^2,1,0,1,0,w,0,1,0,0,
+    0,0,0,0,0,0,0,0,1,0,w,w^2,w,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,1,w^2,w,w,w,1,1,w,0,1,w^2,w^2,w,1,w,w^2,w,1,1,0,
+    0,0,0,0,0,0,0,w,w^2,w,1,w^2,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,w^2,w^2,0,w^2,0,1,0,1,w,1,w,w,1,0,w,0,w,w,0,0,
+    0,0,0,0,0,0,0,w^2,w^2,w,w,w,1,w^2,1,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,w^2,1,0,1,w^2,w,0,1,w^2,1,w,0,w^2,w,1,w,w,0,0,
+    0,0,0,0,0,0,0,w,1,w,w,w,w,0,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,0,w,w^2,w^2,w,w^2,w,0,1,w,1,w^2,1,0,
+    0,0,0,0,0,0,w^2,w^2,w^2,w^2,1,0,w^2,w,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,w,1,1,0,w,0,0,1,w,w^2,1,0,w,1,w,1,w,0,w^2,0,w^2,1,0,0,w^2,w,0,
+    0,0,0,0,0,0,w^2,w^2,w,w,w,0,w^2,w,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,0,0,0,w,w^2,w^2,0,w,w^2,0,0,1,1,w^2,0,w^2,0,w^2,1,w^2,w^2,w,0,
+    0,0,0,0,0,0,w,1,w,w^2,w,w^2,w^2,w^2,w^2,1,w^2,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,1,0,w,w^2,w^2,w,w^2,0,0,0,1,1,1,1,0,w,w,1,w,0,
+    0,0,0,0,0,0,w^2,w^2,w^2,1,w^2,w^2,w,w^2,1,1,1,w,0,0,w,1,0,0,0,0,0,0,0,w^2,w,1,0,0,0,0,w,w^2,w,w,1,w,1,0,w,1,w,1,w,w^2,1,w^2,w^2,w,w,0,
+    0,0,0,0,0,0,w,1,w,0,w^2,0,w,w,w,w,0,0,0,1,w^2,1,0,1,0,0,0,0,0,0,0,w^2,0,0,0,0,0,w,w^2,1,w,w,w,1,1,w^2,1,w^2,0,w,0,w^2,w^2,1,w^2,0,
+    0,0,0,0,0,0,w,w^2,w^2,1,0,1,w^2,w,w^2,w^2,0,w^2,0,0,w^2,w,0,1,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,w^2,1,1,w^2,w^2,w^2,w,w,w^2,0,0,w^2,0,w,w,w,w^2,0,
+    0,0,0,0,0,0,w,w,1,w^2,0,0,w^2,w,w^2,w^2,1,1,0,w^2,0,w,1,0,0,0,0,0,0,0,0,w^2,0,1,0,0,w,w^2,w,w^2,1,0,1,0,0,w,1,0,w^2,1,w,0,w,1,1,0,
+    0,0,0,0,0,0,1,w^2,0,0,0,w,w^2,w^2,w,w,0,w^2,1,w^2,w,1,w,0,0,0,0,0,w,0,w,w^2,0,w^2,0,0,0,w^2,w,0,1,w,1,w,1,1,w,w,1,w^2,0,w,1,1,1,0,
+    0,0,0,0,0,0,1,0,w,1,w,w^2,w^2,w^2,0,w,w^2,w^2,1,w,1,0,1,w,0,0,0,0,w^2,w^2,1,w^2,0,w,0,0,1,w^2,0,w^2,0,w,w,0,w,1,0,w,0,1,w^2,1,0,w,1,0,
+    0,0,0,0,0,0,1,0,w,1,w^2,w,w^2,w,1,w^2,w^2,w^2,0,1,w,0,0,1,0,w,1,0,w,w,1,w,0,w,0,0,0,1,w^2,w^2,1,0,0,0,w,w^2,1,0,w,w,w^2,1,w^2,w,w^2,0,
+    0,0,0,0,0,0,0,1,w,w,w^2,w,1,w,0,w,0,w^2,w^2,w^2,0,w,w,1,w^2,0,1,0,w,0,w^2,1,0,0,0,0,1,0,1,0,1,w,1,w,w,w,1,1,w^2,0,1,w^2,w,w^2,1,0,
+    0,0,0,0,0,0,1,w,1,1,1,w^2,w,0,0,w^2,w^2,w,w,w^2,1,w^2,w,0,w^2,0,0,1,w,0,w^2,0,0,w,0,0,w^2,0,w,0,w^2,w,1,w,0,1,w^2,0,1,0,1,w^2,1,w,0,0,
+    0,0,0,0,0,0,w^2,0,w^2,0,w,w,1,0,0,w^2,w^2,w^2,1,w,w,1,1,w^2,0,0,0,1,w,1,w^2,w,0,w^2,0,0,0,w^2,w,0,1,w^2,w^2,w,0,0,w^2,w^2,w,w,w,w,0,w,0,0,
+    0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,1
+]);
 assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
-assert Ncols(GX4) eq 56;
 assert RowSpace(Submatrix(GX4,1,1,31,55)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 7;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 6;
-Table1Generators[89] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,56,31,1) eq VerticalJoin(ZeroMatrix(F,30,1),IdentityMatrix(F,1));
+Table1Generators[50]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 56 and Dimension(Q) eq 31;
+assert Dimension(HermitianHull(Q)) eq 6;
+Table1Parameters[50]:=[56,25,12,19];
+Table1DistanceTypes[50]:="exact";
 
-// Table 1, No. 090 | source DV19 | HullDecreasing.m
-// Gsrc: [54,34]_4, hull 9; X4: [[57,28,11;17]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,34,54,[
+// Table 1, No. 51 | DV19
+// [[57,28,11;17]]_2, distance exact.
+Gsrc:=Matrix(F,34,54,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w^2,1,1,1,w,1,0,0,0,1,w,w^2,w,w^2,w,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w^2,1,1,1,w,1,0,0,0,1,w,w^2,w,w^2,w,
@@ -5161,60 +2673,55 @@ Gsrc := Matrix(F,34,54,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,31,54,[
-            1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,
-            0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,
-            0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,
-            0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,
-            0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,
-            0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,
-            0,0,0,0,0,0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,1,1,0,0,w^2,w,w^2,1,1,0,w,0,0,0,1,w^2,
-            0,0,0,0,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,1,1,0,w,0,1,1,w,w^2,1,1,0,w^2,w,1,w,
-            0,0,0,0,0,0,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,1,0,w^2,1,w,1,w^2,w^2,1,1,1,1,w,w,1,
-            0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,1,w,1,w^2,0,1,0,w,1,w,0,w,
-            0,0,0,0,0,0,1,1,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,w^2,w,0,w,1,w^2,1,1,0,w^2,w^2,w,1,1,1,1,
-            0,0,0,0,0,0,w,w,0,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w,w,w^2,w^2,w^2,1,w,0,w^2,w,w,w,0,0,
-            0,0,0,0,0,0,w,w^2,w^2,w,1,1,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,1,w^2,0,w^2,w,0,0,w,1,w^2,0,w^2,0,1,0,1,
-            0,0,0,0,0,0,w,w^2,0,w,w,w^2,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,0,0,w,w,w,w,0,w^2,w,1,1,w^2,w^2,w,w,w,
-            0,0,0,0,0,0,w,w^2,1,0,1,w,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w,w,0,1,0,1,w^2,w^2,0,w,w,1,0,1,0,w^2,
-            0,0,0,0,0,0,w^2,w^2,w^2,w,1,w,w^2,0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,w,1,0,w^2,
-            0,0,0,0,0,0,w,0,1,w^2,1,1,w,w^2,w,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w^2,0,1,0,0,w,w^2,w^2,1,0,w,1,0,w,1,w,
-            0,0,0,0,0,0,0,1,w,w,w,0,w^2,w,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,1,w,1,1,w^2,w,1,w,1,w^2,w,1,w^2,1,w^2,w^2,
-            0,0,0,0,0,0,0,1,1,1,w^2,w,w^2,w^2,0,1,w,1,1,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,0,w,1,w^2,1,0,w,1,0,w^2,w^2,w^2,1,w^2,w,w,
-            0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,1,w^2,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w^2,1,0,1,w^2,0,1,w^2,0,0,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,1,w,0,w,1,1,1,0,w^2,1,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w^2,1,1,w,1,1,0,0,0,w^2,w^2,1,0,0,1,
-            0,0,0,0,0,0,0,w,w,w^2,0,w^2,w,1,w,w,1,1,w^2,0,1,w,w,1,w,0,0,0,0,0,0,0,0,0,w,0,w^2,1,w^2,w^2,w^2,1,w^2,1,1,w^2,w,1,0,0,w,0,1,0,
-            0,0,0,0,0,0,1,w,1,1,1,w^2,1,1,0,w^2,w^2,w^2,0,0,0,w^2,w,1,w^2,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w^2,1,1,1,w,w^2,1,1,0,w^2,w,0,1,1,w^2,
-            0,0,0,0,0,0,w,w,0,w^2,w^2,w^2,w,1,0,w^2,w^2,w,1,1,0,w^2,w,w^2,0,0,0,0,0,0,0,w,w,0,0,1,1,1,w^2,1,1,w^2,w,w^2,w,w^2,1,0,w^2,1,w,0,0,w^2,
-            0,0,0,0,0,0,w,w,w,0,1,w^2,w^2,0,0,0,w,w^2,w^2,1,1,w^2,w^2,1,w,0,0,0,0,0,0,w^2,w^2,0,w^2,1,w^2,w,1,w,0,w,0,1,1,w^2,w^2,w,1,w,1,0,w,0,
-            0,0,0,0,0,0,w,w,w,w^2,w^2,w,w^2,w^2,w,w,0,w^2,1,w,w^2,w,w,0,w,1,1,0,0,1,0,1,1,w^2,w^2,0,0,1,0,0,0,0,1,0,w^2,1,w,0,1,1,w^2,1,w^2,w,
-            0,0,0,0,0,0,1,0,0,w,w^2,1,0,w,w,w^2,0,w^2,w^2,0,0,0,w^2,1,w,0,1,0,0,w^2,0,w,1,w,w^2,w,w^2,w,0,0,1,w^2,w,0,w^2,w,w,0,w^2,1,w,w^2,w^2,w,
-            0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,0,w^2,1,0,0,w^2,w,1,1,1,w,1,w^2,w^2,0,1,0,w^2,0,0,w,w,0,w^2,w,w^2,w,w^2,w^2,0,0,1,1,0,w^2,w^2,0,w,w,0,0,w^2,
-            0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,w^2,w^2,w,1,0,w^2,w,w,w,0,w^2,1,w,1,0,1,1,w^2,0,0,w^2,w^2,w,1,w,w,w,w^2,0,1,0,w,w,1,w,1,0,w,1,1,0,w,
-            0,0,0,0,0,0,1,w^2,0,1,1,1,1,1,w^2,0,1,w,w^2,0,1,w^2,w^2,w,1,1,0,1,0,0,1,0,0,w^2,0,1,w^2,1,w,w,w^2,0,w^2,w^2,w,1,1,0,0,w^2,w^2,w^2,w,0
-        ]),
-        ZeroMatrix(F,31,3)),
-    HorizontalJoin(
-        Matrix(F,3,54,[
-            0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,3)));
+GX4:=Matrix(F,34,57,[
+    1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,0,0,
+    0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,0,0,0,
+    0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,
+    0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,0,0,
+    0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,0,0,0,
+    0,0,0,0,0,0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,1,1,0,0,w^2,w,w^2,1,1,0,w,0,0,0,1,w^2,0,0,0,
+    0,0,0,0,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,1,1,0,w,0,1,1,w,w^2,1,1,0,w^2,w,1,w,0,0,0,
+    0,0,0,0,0,0,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,1,0,w^2,1,w,1,w^2,w^2,1,1,1,1,w,w,1,0,0,0,
+    0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,1,w,1,w^2,0,1,0,w,1,w,0,w,0,0,0,
+    0,0,0,0,0,0,1,1,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,w^2,w,0,w,1,w^2,1,1,0,w^2,w^2,w,1,1,1,1,0,0,0,
+    0,0,0,0,0,0,w,w,0,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w,w,w^2,w^2,w^2,1,w,0,w^2,w,w,w,0,0,0,0,0,
+    0,0,0,0,0,0,w,w^2,w^2,w,1,1,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,1,w^2,0,w^2,w,0,0,w,1,w^2,0,w^2,0,1,0,1,0,0,0,
+    0,0,0,0,0,0,w,w^2,0,w,w,w^2,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,0,0,w,w,w,w,0,w^2,w,1,1,w^2,w^2,w,w,w,0,0,0,
+    0,0,0,0,0,0,w,w^2,1,0,1,w,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w,w,0,1,0,1,w^2,w^2,0,w,w,1,0,1,0,w^2,0,0,0,
+    0,0,0,0,0,0,w^2,w^2,w^2,w,1,w,w^2,0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,w,1,0,w^2,0,0,0,
+    0,0,0,0,0,0,w,0,1,w^2,1,1,w,w^2,w,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w^2,0,1,0,0,w,w^2,w^2,1,0,w,1,0,w,1,w,0,0,0,
+    0,0,0,0,0,0,0,1,w,w,w,0,w^2,w,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,1,w,1,1,w^2,w,1,w,1,w^2,w,1,w^2,1,w^2,w^2,0,0,0,
+    0,0,0,0,0,0,0,1,1,1,w^2,w,w^2,w^2,0,1,w,1,1,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,0,w,1,w^2,1,0,w,1,0,w^2,w^2,w^2,1,w^2,w,w,0,0,0,
+    0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,1,w^2,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w^2,1,0,1,w^2,0,1,w^2,0,0,1,w^2,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,0,1,w,0,w,1,1,1,0,w^2,1,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w^2,1,1,w,1,1,0,0,0,w^2,w^2,1,0,0,1,0,0,0,
+    0,0,0,0,0,0,0,w,w,w^2,0,w^2,w,1,w,w,1,1,w^2,0,1,w,w,1,w,0,0,0,0,0,0,0,0,0,w,0,w^2,1,w^2,w^2,w^2,1,w^2,1,1,w^2,w,1,0,0,w,0,1,0,0,0,0,
+    0,0,0,0,0,0,1,w,1,1,1,w^2,1,1,0,w^2,w^2,w^2,0,0,0,w^2,w,1,w^2,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w^2,1,1,1,w,w^2,1,1,0,w^2,w,0,1,1,w^2,0,0,0,
+    0,0,0,0,0,0,w,w,0,w^2,w^2,w^2,w,1,0,w^2,w^2,w,1,1,0,w^2,w,w^2,0,0,0,0,0,0,0,w,w,0,0,1,1,1,w^2,1,1,w^2,w,w^2,w,w^2,1,0,w^2,1,w,0,0,w^2,0,0,0,
+    0,0,0,0,0,0,w,w,w,0,1,w^2,w^2,0,0,0,w,w^2,w^2,1,1,w^2,w^2,1,w,0,0,0,0,0,0,w^2,w^2,0,w^2,1,w^2,w,1,w,0,w,0,1,1,w^2,w^2,w,1,w,1,0,w,0,0,0,0,
+    0,0,0,0,0,0,w,w,w,w^2,w^2,w,w^2,w^2,w,w,0,w^2,1,w,w^2,w,w,0,w,1,1,0,0,1,0,1,1,w^2,w^2,0,0,1,0,0,0,0,1,0,w^2,1,w,0,1,1,w^2,1,w^2,w,0,0,0,
+    0,0,0,0,0,0,1,0,0,w,w^2,1,0,w,w,w^2,0,w^2,w^2,0,0,0,w^2,1,w,0,1,0,0,w^2,0,w,1,w,w^2,w,w^2,w,0,0,1,w^2,w,0,w^2,w,w,0,w^2,1,w,w^2,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,w^2,w,w^2,w^2,w^2,0,w^2,1,0,0,w^2,w,1,1,1,w,1,w^2,w^2,0,1,0,w^2,0,0,w,w,0,w^2,w,w^2,w,w^2,w^2,0,0,1,1,0,w^2,w^2,0,w,w,0,0,w^2,0,0,0,
+    0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,w^2,w^2,w,1,0,w^2,w,w,w,0,w^2,1,w,1,0,1,1,w^2,0,0,w^2,w^2,w,1,w,w,w,w^2,0,1,0,w,w,1,w,1,0,w,1,1,0,w,0,0,0,
+    0,0,0,0,0,0,1,w^2,0,1,1,1,1,1,w^2,0,1,w,w^2,0,1,w^2,w^2,w,1,1,0,1,0,0,1,0,0,w^2,0,1,w^2,1,w,w,w^2,0,w^2,w^2,w,1,1,0,0,w^2,w^2,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,1,0,0,
+    0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,1,0,
+    0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,0,0,1
+]);
 assert Rank(Gsrc) eq 34 and Rank(GX4) eq 34;
-assert Ncols(GX4) eq 57;
 assert RowSpace(Submatrix(GX4,1,1,34,54)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 9;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 6;
-Table1Generators[90] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,55,34,3) eq VerticalJoin(ZeroMatrix(F,31,3),IdentityMatrix(F,3));
+Table1Generators[51]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 57 and Dimension(Q) eq 34;
+assert Dimension(HermitianHull(Q)) eq 6;
+Table1Parameters[51]:=[57,28,11,17];
+Table1DistanceTypes[51]:="exact";
 
-// Table 1, No. 091 | source BS052 | HullIncreasing.m
-// Gsrc: [57,31]_4, hull 15; X4: [[58,15,14;11]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,31,57,[
+// Table 1, No. 52 | BS076
+// [[58,17,14;13]]_2, distance exact.
+Gsrc:=Matrix(F,31,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,0,w,1,w^2,w,0,w,w,0,1,w,0,w,1,1,0,w^2,1,0,0,w^2,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,0,
@@ -5247,140 +2754,52 @@ Gsrc := Matrix(F,31,57,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,30,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w^2,1,w,w^2,w,1,1,1,w,w,1,1,w^2,0,w^2,1,1,w,0,1,w,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,w,0,0,0,1,0,w^2,0,1,w,w^2,0,1,0,1,1,1,w^2,1,w^2,1,1,w,w,1,0,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,w,0,0,w^2,0,w,w^2,1,w,w,w^2,w^2,0,w,w^2,w^2,1,w,1,w^2,w^2,w^2,w,1,w,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,0,1,0,0,0,0,0,0,0,0,0,w^2,1,1,w,1,w,w,w,w,w,w^2,w^2,w^2,w^2,w^2,w^2,0,1,0,0,w,1,1,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,1,0,0,0,0,0,0,0,w,0,0,1,0,1,w^2,w^2,w,0,w,w,w,w,w^2,1,w^2,w,1,0,0,w,w^2,1,w,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,w,w,w,0,0,0,0,0,0,w^2,0,w^2,1,1,w,w^2,w^2,0,w^2,w^2,1,w,0,w,1,w,w,1,w,w,w^2,1,w^2,0,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w,w,w^2,0,0,0,0,0,0,1,0,w^2,w^2,w^2,1,w^2,w,0,w,1,w,w^2,1,w^2,w,w,0,1,w^2,w^2,1,0,0,w^2,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,w,0,w,0,0,0,0,0,w,0,0,w^2,1,w,w^2,0,w,w^2,w,1,w,1,w,1,w^2,w^2,0,1,w,w,0,1,w^2,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,w,1,0,0,0,0,0,0,0,w^2,w,0,w^2,1,w^2,w,1,0,0,w^2,1,0,1,1,w,w,w^2,0,0,w,w^2,w,0,1,1,0,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,w,w,0,0,w^2,w,0,0,1,1,0,w^2,w^2,w,1,w,0,w,1,w,1,1,0,0,0,0,0,1,w,w^2,w,w^2,w^2,0,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,w,1,w^2,0,w^2,w^2,0,0,w^2,0,0,w^2,1,w,w,w,1,w,0,0,w,w,w^2,w^2,0,0,w,w^2,1,1,w^2,w,1,1,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,1,1,w,1,w^2,0,0,1,0,w,1,1,0,w^2,0,0,w^2,0,1,1,0,w,w,w^2,w,1,w,0,w,0,0,w,1,0,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,1,w^2,0,w,w,w,w,0,0,1,w^2,w^2,w,1,w,w,w,1,w^2,1,w^2,1,0,1,w^2,0,w^2,w,w,w^2,w,w^2,w^2,w,1,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,0,0,w,0,w,w,1,0,w^2,1,w^2,1,0,1,1,1,0,w^2,w^2,1,w^2,w^2,w^2,w^2,w,w^2,w,0,w^2,1,w^2,w,w,0,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w,w,1,1,w^2,w^2,1,1,0,w^2,1,1,0,0,w,w,w,w^2,w^2,w,0,0,0,0,w^2,0,0,w^2,w,1,w,1,0,w,w,w,w
-        ]),
-        ZeroMatrix(F,30,1)),
-    HorizontalJoin(
-        Matrix(F,1,57,[
-            1,1,w,w^2,1,0,1,w,w,1,w^2,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,w,w^2,0,0,1,0,1,0,w,w,w,w,1,1,0,1,w,0,1,w,w
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
-assert Ncols(GX4) eq 58;
-assert RowSpace(Submatrix(GX4,1,1,31,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 16;
-Table1Generators[91] := <Gsrc,GX4>;
-
-// Table 1, No. 092 | source BS076 | HullDecreasing.m
-// Gsrc: [57,31]_4, hull 15; X4: [[58,17,14;13]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,31,57,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,0,w,1,w^2,w,0,w,w,0,1,w,0,w,1,1,0,w^2,1,0,0,w^2,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,1,w^2,w^2,0,w^2,w,w^2,w^2,1,0,0,w^2,0,0,w^2,w,0,1,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,1,w^2,w^2,0,w^2,w,w^2,w^2,1,0,0,w^2,0,0,w^2,w,0,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,w^2,w,w^2,w,w,1,w^2,w^2,w,w,w^2,0,w,w^2,1,1,0,0,1,1,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w,1,w^2,0,w^2,0,w,w^2,w^2,w^2,w,w,w,1,1,0,1,w^2,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,0,w^2,0,0,0,1,1,w^2,w,w^2,w,w^2,w^2,0,1,w^2,0,0,w,0,w,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w^2,0,w,w^2,w,w^2,0,w^2,w^2,w,0,w,0,w,w,0,0,0,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,w^2,w^2,w,w^2,0,w^2,1,w^2,w^2,w^2,w^2,0,w^2,w,1,0,1,0,w^2,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,w^2,0,0,w,w,0,0,w^2,w^2,1,w^2,w,0,w^2,w,w,1,1,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,w,w^2,w,1,w^2,w,0,w^2,0,1,0,w^2,w,w,1,w,w^2,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w,0,w^2,1,1,w,0,1,0,w^2,w,w,w^2,1,1,w^2,1,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,0,1,0,0,w^2,1,0,1,1,w^2,w^2,0,0,w^2,0,w^2,w,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,w^2,w,0,w,0,w,w^2,w,1,0,w^2,1,1,0,1,w^2,1,0,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,w^2,w^2,w^2,0,w^2,w^2,1,w,1,w^2,w^2,w,0,w,0,0,1,w,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,0,1,w,0,1,w^2,w,1,1,w,w,w^2,0,w^2,w,w^2,w^2,0,w^2,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,0,w,0,1,w^2,0,w^2,1,1,0,w,1,w^2,w,1,1,w^2,1,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,0,w,0,1,w^2,0,w^2,1,1,0,w,1,w^2,w,1,1,w^2,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,w,1,w^2,w^2,w,w^2,0,w^2,0,1,0,w^2,w,1,w^2,w^2,w^2,w,1,1,w^2,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2
+GX4:=Matrix(F,31,58,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,0,1,0,0,w^2,1,0,1,1,w^2,w^2,0,0,w^2,0,w^2,w,1,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w^2,0,0,w,0,0,0,w,0,1,w^2,w,w,w,0,1,0,1,w,w,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,1,1,0,1,w,0,w^2,0,1,w,0,w^2,1,w,w^2,0,1,w^2,w,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,0,w,0,0,0,0,0,0,0,0,0,0,w,w,w,0,0,w,0,1,w,w^2,0,1,w,w^2,1,w,w^2,0,w,w^2,1,w,w^2,1,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,0,1,w,0,0,0,0,0,w,0,1,0,w,w,w,0,0,w^2,w,1,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,1,1,0,1,0,0,0,w^2,w^2,w,0,0,w^2,w,w,w^2,w^2,1,0,w,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,0,0,1,w,0,w,0,w^2,w^2,w,w,0,w^2,0,0,0,1,0,w,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,0,0,w,1,0,0,0,0,0,0,0,0,w^2,w,1,w,1,w,w,1,0,0,w,1,1,1,0,w,0,0,w,w^2,0,w,w^2,1,1,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,w^2,w,w,0,1,0,0,0,0,0,0,0,1,0,w^2,1,w^2,w^2,w,0,1,w,w,0,0,w,w,w^2,0,w,0,0,1,w,0,1,w^2,1,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,0,w,1,0,0,0,0,0,0,w,1,w,w,w,0,1,0,1,w,w^2,0,w,w^2,w,1,w^2,w^2,0,0,w^2,0,0,w,w^2,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,1,w^2,w,0,w,0,1,1,0,0,0,0,w^2,0,0,0,1,w,0,1,0,1,w,w^2,w^2,1,1,w,0,1,w,0,0,1,0,w^2,w,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,1,0,w^2,w,w^2,1,0,1,0,0,0,0,1,w^2,w,w^2,1,1,0,1,1,w^2,w,0,1,w^2,0,w,w,1,0,w,1,0,w,1,0,w,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,1,1,w^2,0,0,w^2,w^2,0,1,0,0,0,w,0,0,w,w,w,1,0,w^2,w,1,w^2,w^2,w,w,w,w,w,1,w,w^2,1,w^2,w^2,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,w^2,w^2,1,w,w,1,w^2,w,w,1,0,0,w^2,1,w,w,w^2,w,w^2,w^2,w^2,w^2,1,w^2,1,w,0,1,w,w^2,w^2,w^2,w^2,w,0,w,w^2,1,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w^2,w,w,0,0,w^2,w^2,w^2,w,w,w,1,1,w^2,w^2,0,w^2,w,w,w,w^2,0,w^2,1,w,w^2,0,1,0,w,w^2,w^2,1,w^2,w,w^2,0,1,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,w^2,1,0,w^2,1,1,1,0,w,0,1,1,w^2,w,w,1,w,w,w^2,w,w^2,w,w,1,0,1,w,0,1,0,1,w^2,0,0,0,0,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,30,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,0,1,0,0,w^2,1,0,1,1,w^2,w^2,0,0,w^2,0,w^2,w,1,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w^2,0,0,w,0,0,0,w,0,1,w^2,w,w,w,0,1,0,1,w,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,1,1,0,1,w,0,w^2,0,1,w,0,w^2,1,w,w^2,0,1,w^2,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,0,w,0,0,0,0,0,0,0,0,0,0,w,w,w,0,0,w,0,1,w,w^2,0,1,w,w^2,1,w,w^2,0,w,w^2,1,w,w^2,1,w,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,0,1,w,0,0,0,0,0,w,0,1,0,w,w,w,0,0,w^2,w,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,1,1,1,0,1,0,0,0,w^2,w^2,w,0,0,w^2,w,w,w^2,w^2,1,0,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,0,0,1,w,0,w,0,w^2,w^2,w,w,0,w^2,0,0,0,1,0,w,w,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,0,0,w,1,0,0,0,0,0,0,0,0,w^2,w,1,w,1,w,w,1,0,0,w,1,1,1,0,w,0,0,w,w^2,0,w,w^2,1,1,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,w^2,w,w,0,1,0,0,0,0,0,0,0,1,0,w^2,1,w^2,w^2,w,0,1,w,w,0,0,w,w,w^2,0,w,0,0,1,w,0,1,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,0,w,1,0,0,0,0,0,0,w,1,w,w,w,0,1,0,1,w,w^2,0,w,w^2,w,1,w^2,w^2,0,0,w^2,0,0,w,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,1,w^2,w,0,w,0,1,1,0,0,0,0,w^2,0,0,0,1,w,0,1,0,1,w,w^2,w^2,1,1,w,0,1,w,0,0,1,0,w^2,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,1,0,w^2,w,w^2,1,0,1,0,0,0,0,1,w^2,w,w^2,1,1,0,1,1,w^2,w,0,1,w^2,0,w,w,1,0,w,1,0,w,1,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,1,1,w^2,0,0,w^2,w^2,0,1,0,0,0,w,0,0,w,w,w,1,0,w^2,w,1,w^2,w^2,w,w,w,w,w,1,w,w^2,1,w^2,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,w^2,w^2,1,w,w,1,w^2,w,w,1,0,0,w^2,1,w,w,w^2,w,w^2,w^2,w^2,w^2,1,w^2,1,w,0,1,w,w^2,w^2,w^2,w^2,w,0,w,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w^2,w,w,0,0,w^2,w^2,w^2,w,w,w,1,1,w^2,w^2,0,w^2,w,w,w,w^2,0,w^2,1,w,w^2,0,1,0,w,w^2,w^2,1,w^2,w,w^2,0,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,w^2,1,0,w^2,1,1,1,0,w,0,1,1,w^2,w,w,1,w,w,w^2,w,w^2,w,w,1,0,1,w,0,1,0,1,w^2,0,0,0,0,0,w^2
-        ]),
-        ZeroMatrix(F,30,1)),
-    HorizontalJoin(
-        Matrix(F,1,57,[
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2
-        ]),
-        IdentityMatrix(F,1)));
 assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
-assert Ncols(GX4) eq 58;
 assert RowSpace(Submatrix(GX4,1,1,31,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 14;
-Table1Generators[92] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,58,31,1) eq VerticalJoin(ZeroMatrix(F,30,1),IdentityMatrix(F,1));
+Table1Generators[52]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 58 and Dimension(Q) eq 31;
+assert Dimension(HermitianHull(Q)) eq 14;
+Table1Parameters[52]:=[58,17,14,13];
+Table1DistanceTypes[52]:="exact";
 
-// Table 1, No. 093 | source DV24 | HullDecreasing.m
-// Gsrc: [55,34]_4, hull 10; X4: [[58,27,12;17]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,34,55,[
+// Table 1, No. 53 | DV24
+// [[58,27,12;17]]_2, distance exact.
+Gsrc:=Matrix(F,34,55,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w^2,1,1,1,w,1,0,0,0,1,w,w^2,w,w^2,w,1,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w^2,1,1,1,w,1,0,0,0,1,w,w^2,w,w^2,w,1,
@@ -5416,224 +2835,55 @@ Gsrc := Matrix(F,34,55,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,31,55,[
-            1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,
-            0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,
-            0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,
-            0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,
-            0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,
-            0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,
-            0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,0,0,0,0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,0,0,w,w,1,0,w,0,0,0,w,w^2,0,1,1,w^2,
-            0,0,0,0,0,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,1,0,0,w,1,0,1,1,1,w^2,w,w^2,w^2,1,w,1,1,
-            0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w,1,w^2,0,0,0,w^2,1,w^2,w^2,w,w,w^2,1,1,1,
-            0,0,0,0,0,0,0,w,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0,w,w,w,0,0,w^2,w,0,0,w^2,w^2,0,w,
-            0,0,0,0,0,0,0,1,1,0,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,w^2,w^2,w,w^2,w,w^2,1,w^2,0,w,w,0,w,1,w^2,1,
-            0,0,0,0,0,0,0,w^2,w,w^2,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w^2,w^2,0,w^2,w,w^2,w,1,1,w,1,1,1,w,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,w^2,1,w^2,1,0,1,0,0,0,w^2,1,w^2,w,w,1,0,1,
-            0,0,0,0,0,0,0,w^2,w,w,w^2,w,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,w,0,1,w,w^2,1,w,1,1,0,w,w,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,1,1,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,w^2,0,w,w,0,1,1,0,0,w,w^2,w^2,1,1,0,w,
-            0,0,0,0,0,0,0,w,w,0,0,w^2,w,w,1,w,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,1,w,w^2,w,w,1,w^2,0,w^2,0,0,w^2,0,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,1,w,w,w^2,0,w,w^2,w^2,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,w^2,1,1,0,w^2,0,0,0,1,1,w^2,w,w,0,w,
-            0,0,0,0,0,0,0,w,0,0,0,w^2,1,1,w^2,w,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,1,w,0,w,w^2,0,w,w^2,0,w,w,1,w^2,0,w^2,1,1,
-            0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,1,w^2,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w^2,1,0,1,w^2,0,1,w^2,0,0,1,w^2,w^2,w,0,
-            0,0,0,0,0,0,0,1,1,1,1,w^2,1,1,w^2,1,w,1,w,0,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,w,1,w,1,w,1,1,0,1,w^2,w,w,w,w,1,
-            0,0,0,0,0,0,0,1,w^2,w,w,w,0,0,0,1,w^2,w^2,w,0,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w^2,0,1,0,0,1,0,1,w^2,1,w^2,w,1,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,w,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,w,1,0,0,0,0,0,0,0,0,w,w^2,w^2,0,0,0,0,1,1,w,w,w,w,w^2,1,0,0,w^2,w,w^2,0,w^2,
-            0,0,0,0,0,0,0,w,w^2,1,1,1,0,0,w,0,w,0,w,0,w,w,w^2,0,1,0,0,0,0,0,0,0,0,w,0,1,w,0,w^2,1,w^2,w^2,0,w,0,1,w,0,w^2,w,1,0,1,w^2,0,
-            0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,1,w,w,w,w^2,0,1,1,1,w^2,0,w,w,1,0,0,0,0,0,0,w,w,0,0,1,w^2,w^2,0,w^2,w,0,0,0,0,1,w^2,0,w,w^2,w^2,0,w^2,w^2,w^2,
-            0,0,0,0,0,0,0,0,w^2,w,w,0,w^2,w,w,w,w^2,0,1,1,1,w^2,0,0,w^2,0,0,0,0,0,0,w^2,w^2,w,w^2,w^2,w,0,0,w,0,w^2,1,w^2,w^2,0,1,w,1,0,w,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,1,w^2,1,1,1,1,w^2,1,w,w^2,w^2,w,0,1,0,w^2,w,1,0,0,0,0,0,w,0,w^2,0,0,0,1,1,1,0,w^2,w^2,0,0,w,1,1,1,1,1,w,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w^2,w,w,0,1,w,0,0,w^2,w^2,w,w^2,w,1,0,0,0,w,0,1,1,0,w,1,w,w^2,w,1,w,1,0,1,w^2,0,0,1,w^2,0,1,0,w^2,
-            0,0,0,0,0,0,0,w,w,0,0,1,w,w^2,w^2,1,w^2,0,1,w^2,0,0,w,w^2,1,w^2,0,1,0,0,w^2,1,w^2,w,0,w,0,1,w,0,w^2,0,1,w,w^2,w^2,w,1,w^2,w^2,1,1,w^2,w^2,0,
-            0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,1,w^2,w^2,0,1,0,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,1,0,w,1,w^2,0,1,w^2,w^2,0,0,w^2,w,w,w,w^2,w^2,1,0,1,w^2,w^2,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,1,0,w^2,1,0,1,w,1,w^2,w^2,w,0,1,1,1,w,w^2,1,0,0,0,0,1,w^2,0,1,1,0,0,w^2,1,w,0,w,w,0,w^2,0,0,0,1,0,w,1,0,0,1,0
-        ]),
-        ZeroMatrix(F,31,3)),
-    HorizontalJoin(
-        Matrix(F,3,55,[
-            0,0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,3)));
+GX4:=Matrix(F,34,58,[
+    1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,0,
+    0,0,0,0,0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,0,0,w,w,1,0,w,0,0,0,w,w^2,0,1,1,w^2,0,0,0,
+    0,0,0,0,0,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,1,0,0,w,1,0,1,1,1,w^2,w,w^2,w^2,1,w,1,1,0,0,0,
+    0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w,1,w^2,0,0,0,w^2,1,w^2,w^2,w,w,w^2,1,1,1,0,0,0,
+    0,0,0,0,0,0,0,w,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0,w,w,w,0,0,w^2,w,0,0,w^2,w^2,0,w,0,0,0,
+    0,0,0,0,0,0,0,1,1,0,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,w^2,w^2,w,w^2,w,w^2,1,w^2,0,w,w,0,w,1,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,w^2,w,w^2,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w^2,w^2,0,w^2,w,w^2,w,1,1,w,1,1,1,w,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,w^2,1,w^2,1,0,1,0,0,0,w^2,1,w^2,w,w,1,0,1,0,0,0,
+    0,0,0,0,0,0,0,w^2,w,w,w^2,w,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,w,0,1,w,w^2,1,w,1,1,0,w,w,w^2,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,1,1,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,w^2,0,w,w,0,1,1,0,0,w,w^2,w^2,1,1,0,w,0,0,0,
+    0,0,0,0,0,0,0,w,w,0,0,w^2,w,w,1,w,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,1,w,w^2,w,w,1,w^2,0,w^2,0,0,w^2,0,1,w^2,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,1,w,w,w^2,0,w,w^2,w^2,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,w^2,1,1,0,w^2,0,0,0,1,1,w^2,w,w,0,w,0,0,0,
+    0,0,0,0,0,0,0,w,0,0,0,w^2,1,1,w^2,w,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,1,w,0,w,w^2,0,w,w^2,0,w,w,1,w^2,0,w^2,1,1,0,0,0,
+    0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,1,1,w^2,0,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w^2,1,0,1,w^2,0,1,w^2,0,0,1,w^2,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,1,1,1,1,w^2,1,1,w^2,1,w,1,w,0,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,w,1,w,1,w,1,1,0,1,w^2,w,w,w,w,1,0,0,0,
+    0,0,0,0,0,0,0,1,w^2,w,w,w,0,0,0,1,w^2,w^2,w,0,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w^2,0,1,0,0,1,0,1,w^2,1,w^2,w,1,0,w,0,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,w,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,w,1,0,0,0,0,0,0,0,0,w,w^2,w^2,0,0,0,0,1,1,w,w,w,w,w^2,1,0,0,w^2,w,w^2,0,w^2,0,0,0,
+    0,0,0,0,0,0,0,w,w^2,1,1,1,0,0,w,0,w,0,w,0,w,w,w^2,0,1,0,0,0,0,0,0,0,0,w,0,1,w,0,w^2,1,w^2,w^2,0,w,0,1,w,0,w^2,w,1,0,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,1,w,w,w,w^2,0,1,1,1,w^2,0,w,w,1,0,0,0,0,0,0,w,w,0,0,1,w^2,w^2,0,w^2,w,0,0,0,0,1,w^2,0,w,w^2,w^2,0,w^2,w^2,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,w^2,w,w,0,w^2,w,w,w,w^2,0,1,1,1,w^2,0,0,w^2,0,0,0,0,0,0,w^2,w^2,w,w^2,w^2,w,0,0,w,0,w^2,1,w^2,w^2,0,1,w,1,0,w,0,1,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,1,w^2,1,1,1,1,w^2,1,w,w^2,w^2,w,0,1,0,w^2,w,1,0,0,0,0,0,w,0,w^2,0,0,0,1,1,1,0,w^2,w^2,0,0,w,1,1,1,1,1,w,w^2,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w^2,w,w,0,1,w,0,0,w^2,w^2,w,w^2,w,1,0,0,0,w,0,1,1,0,w,1,w,w^2,w,1,w,1,0,1,w^2,0,0,1,w^2,0,1,0,w^2,0,0,0,
+    0,0,0,0,0,0,0,w,w,0,0,1,w,w^2,w^2,1,w^2,0,1,w^2,0,0,w,w^2,1,w^2,0,1,0,0,w^2,1,w^2,w,0,w,0,1,w,0,w^2,0,1,w,w^2,w^2,w,1,w^2,w^2,1,1,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,1,w^2,w^2,0,1,0,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,1,0,w,1,w^2,0,1,w^2,w^2,0,0,w^2,w,w,w,w^2,w^2,1,0,1,w^2,w^2,1,w,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,w^2,1,0,1,w,1,w^2,w^2,w,0,1,1,1,w,w^2,1,0,0,0,0,1,w^2,0,1,1,0,0,w^2,1,w,0,w,w,0,w^2,0,0,0,1,0,w,1,0,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,1,0,0,
+    0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,1,0,
+    0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,0,0,1
+]);
 assert Rank(Gsrc) eq 34 and Rank(GX4) eq 34;
-assert Ncols(GX4) eq 58;
 assert RowSpace(Submatrix(GX4,1,1,34,55)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 10;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 7;
-Table1Generators[93] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,56,34,3) eq VerticalJoin(ZeroMatrix(F,31,3),IdentityMatrix(F,3));
+Table1Generators[53]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 58 and Dimension(Q) eq 34;
+assert Dimension(HermitianHull(Q)) eq 7;
+Table1Parameters[53]:=[58,27,12,17];
+Table1DistanceTypes[53]:="exact";
 
-// Table 1, No. 094 | source BS077 | HullIncreasing.m
-// Gsrc: [57,31]_4, hull 15; X4: [[59,14,14;11]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,31,57,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,0,w,1,w^2,w,0,w,w,0,1,w,0,w,1,1,0,w^2,1,0,0,w^2,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,1,w^2,w^2,0,w^2,w,w^2,w^2,1,0,0,w^2,0,0,w^2,w,0,1,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,1,w^2,w^2,0,w^2,w,w^2,w^2,1,0,0,w^2,0,0,w^2,w,0,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,w^2,w,w^2,w,w,1,w^2,w^2,w,w,w^2,0,w,w^2,1,1,0,0,1,1,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w,1,w^2,0,w^2,0,w,w^2,w^2,w^2,w,w,w,1,1,0,1,w^2,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,0,w^2,0,0,0,1,1,w^2,w,w^2,w,w^2,w^2,0,1,w^2,0,0,w,0,w,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w^2,0,w,w^2,w,w^2,0,w^2,w^2,w,0,w,0,w,w,0,0,0,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,w^2,w^2,w,w^2,0,w^2,1,w^2,w^2,w^2,w^2,0,w^2,w,1,0,1,0,w^2,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,w^2,0,0,w,w,0,0,w^2,w^2,1,w^2,w,0,w^2,w,w,1,1,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,w,w^2,w,1,w^2,w,0,w^2,0,1,0,w^2,w,w,1,w,w^2,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w,0,w^2,1,1,w,0,1,0,w^2,w,w,w^2,1,1,w^2,1,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,0,1,0,0,w^2,1,0,1,1,w^2,w^2,0,0,w^2,0,w^2,w,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,w^2,w,0,w,0,w,w^2,w,1,0,w^2,1,1,0,1,w^2,1,0,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,w^2,w^2,w^2,0,w^2,w^2,1,w,1,w^2,w^2,w,0,w,0,0,1,w,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,0,1,w,0,1,w^2,w,1,1,w,w,w^2,0,w^2,w,w^2,w^2,0,w^2,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,0,w,0,1,w^2,0,w^2,1,1,0,w,1,w^2,w,1,1,w^2,1,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,0,w,0,1,w^2,0,w^2,1,1,0,w,1,w^2,w,1,1,w^2,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,w,1,w^2,w^2,w,w^2,0,w^2,0,1,0,w^2,w,1,w^2,w^2,w^2,w,1,1,w^2,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,29,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w,0,w^2,1,1,w,0,1,0,w^2,w,w,w^2,1,1,w^2,1,w,0,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,1,0,0,0,0,0,0,0,0,0,0,w,0,1,0,w^2,w^2,w,w,w^2,1,0,w^2,w,0,1,w,w^2,1,w^2,w,w,w^2,w^2,w,1,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w,0,w,1,w^2,w,1,0,0,0,0,0,1,1,1,w^2,0,w^2,0,w^2,0,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,0,1,w^2,1,w,w^2,w^2,0,w,w^2,0,w,0,1,w^2,1,1,1,w^2,1,0,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,0,w^2,1,0,w^2,0,w,w^2,w,1,1,1,0,w,1,1,0,w^2,0,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,0,0,1,0,0,0,0,0,0,0,0,w^2,w,1,w,w,w^2,1,1,0,0,w^2,0,0,1,w,0,0,1,0,w^2,1,w,w^2,w^2,0,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w,1,1,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w,1,w^2,1,w^2,1,0,0,w,1,w^2,w^2,1,w^2,w,0,w^2,0,1,w^2,1,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w,0,w^2,w,0,0,0,0,0,1,w^2,w^2,1,w^2,w^2,w,0,w^2,w^2,w^2,w,w,w,1,w^2,w,1,w,1,w,1,w,1,w,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,w,w^2,w^2,w^2,0,0,0,0,0,w,w,w,w,1,1,1,0,w,w^2,w^2,0,0,w^2,0,w,w^2,w^2,0,w,w,0,w,w^2,w^2,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w,w^2,1,0,1,0,0,0,0,w,0,w,w^2,w,w,0,0,w,w,w^2,1,0,1,w^2,w,w,0,w^2,1,w^2,0,w,0,1,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,0,0,0,0,0,0,1,0,0,0,w^2,w,0,0,w^2,w,w^2,w^2,1,w,0,w,1,1,1,w^2,1,w,0,w^2,w^2,0,w,1,0,1,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,1,w^2,1,w^2,1,0,0,1,0,0,1,0,1,1,1,w^2,0,0,w,w,0,w,w^2,w,w^2,w^2,0,w^2,w^2,1,w^2,w,1,1,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w^2,0,0,0,w,0,w,w^2,0,1,0,0,1,1,0,w^2,w,0,1,0,w^2,w,0,w^2,w^2,1,0,w^2,w^2,1,w^2,w^2,0,w^2,w^2,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,1,w^2,w^2,0,w^2,1,0,1,1,1,w,w^2,w^2,0,1,1,0,1,1,w,0,1,1,0,w^2,0,w^2,w,w,1,1,0,w,0,1,w^2,0
-        ]),
-        ZeroMatrix(F,29,2)),
-    HorizontalJoin(
-        Matrix(F,2,57,[
-            0,1,w^2,w^2,0,1,w,w^2,0,w,w^2,w^2,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,w,w^2,0,w^2,w^2,1,w^2,w^2,1,w,w,0,0,w,0,1,1,0,1,w^2,w,
-            1,1,w,w^2,1,0,1,w,w,1,w^2,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,w,w^2,0,0,1,0,1,0,w,w,w,w,1,1,0,1,w,0,1,w,w
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
-assert Ncols(GX4) eq 59;
-assert RowSpace(Submatrix(GX4,1,1,31,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 17;
-Table1Generators[94] := <Gsrc,GX4>;
-
-// Table 1, No. 095 | source DV22 | HullDecreasing.m
-// Gsrc: [55,30]_4, hull 13; X4: [[59,21,13;20]]_2.
-// lambda=4; the final 4 rows carry the matched block [W1 | I_4].
-Gsrc := Matrix(F,30,55,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w^2,w^2,w,w,0,0,0,w^2,1,w,0,w,1,w^2,w^2,w,w,w,w,w,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,w^2,w,w^2,0,w^2,w^2,w,w^2,0,w^2,w,0,1,1,1,w^2,1,w,0,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,0,0,1,0,0,1,w,0,w,1,w,0,1,0,w,w,w^2,w,1,1,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,0,0,1,0,0,1,w,0,w,1,w,0,1,0,w,w,w^2,w,1,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,1,1,1,w^2,w^2,w^2,w^2,w,1,w^2,w^2,0,0,w^2,w,w^2,1,w^2,0,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,w,w,0,0,w^2,0,0,1,w^2,w^2,0,1,1,0,w,1,w^2,0,1,1,0,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,w,w,0,0,w^2,0,0,1,w^2,w^2,0,1,1,0,w,1,w^2,0,1,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,1,w^2,w^2,w,w^2,0,w,0,0,w,1,w,1,w^2,w,w^2,w,w^2,w,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,1,0,w,1,1,0,w,w,1,1,0,w^2,w,w^2,1,w^2,0,w,1,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,0,w^2,w^2,w,1,0,0,w^2,w,0,w^2,w,w^2,w^2,1,0,w^2,w,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,0,w,w,0,w,w^2,w,w^2,w^2,1,1,0,w^2,1,w^2,1,0,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,0,w^2,1,w^2,0,w^2,1,1,w,w,w,w^2,w^2,0,1,w^2,w,w,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,w^2,0,1,w^2,0,1,w,w,1,0,0,1,0,w^2,w^2,w,1,w^2,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,w^2,0,1,w^2,0,1,w,w,1,0,0,1,0,w^2,w^2,w,1,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,0,0,w^2,0,1,w,0,w,1,w,1,1,1,1,w,0,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,w^2,w,w,0,1,0,1,0,0,w^2,1,w,1,w,w,0,1,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w^2,w^2,1,0,1,1,0,w^2,1,w,w,0,w,w,w,1,0,1,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,w,w^2,1,w^2,w^2,0,0,w^2,w^2,w^2,0,1,w^2,w,1,1,w^2,1,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,w,w,0,w,w,1,w,1,w^2,0,0,1,0,w^2,w^2,0,w,1,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w,0,w,1,w^2,0,1,1,1,w,w^2,w,0,0,0,w,w^2,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w,0,w,1,w^2,0,1,1,1,w,w^2,w,0,0,0,w,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,1,w,w,w,1,0,w^2,w^2,0,0,0,w^2,w^2,w,1,w^2,1,w^2,w,1,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w^2,w,w^2,0,w,0,0,w,0,1,w,1,0,1,1,w^2,w,1,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w^2,w,w^2,0,w,0,0,w,0,1,w,1,0,1,1,w^2,w,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w^2,w,w^2,0,w,0,0,w,0,1,w,1,0,1,1,w^2,w,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,w,0,1,1,1,w,0,0,w^2,0,0,1,w^2,w,w^2,w,w^2,w,0,w,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,w^2,0,w^2,1,1,0,0,0,w^2,w^2,1,0,1,0,1,0,w^2,0,1,w^2,w^2,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,w^2,0,w^2,1,1,0,0,0,w^2,w^2,1,0,1,0,1,0,w^2,0,1,w^2,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,w,1,w^2,0,0,w,w^2,w^2,1,w^2,0,1,w^2,w,1,w,1,1,w,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,1,0,1,1,w,w^2,w^2,w,0,1,1,w,w,0,w,w,1,w^2,0,w,0,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,26,55,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,1,1,w,0,w^2,w^2,w,0,1,w^2,w^2,w,0,0,w,1,w^2,1,1,1,0,w^2,0,w^2,w^2,0,1,w^2,w^2,0,w^2,1,w^2,w^2,w^2,w^2,1,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,1,w,0,w,w^2,w,w^2,1,w^2,w,1,1,w^2,w,0,0,1,1,w,0,w,w^2,w,0,w,0,w^2,0,w,w,w,w^2,1,0,w^2,1,1,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,1,1,w^2,w^2,w^2,1,w,1,0,1,w,w^2,1,w^2,w,0,w^2,1,0,w^2,w^2,0,1,1,w,1,0,w^2,w^2,w^2,w^2,1,1,0,0,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,1,w,1,0,w,1,w^2,w,1,1,w^2,w^2,1,w^2,w,w,w^2,w,w^2,1,w,1,w^2,0,0,1,0,1,0,0,1,0,w,0,1,0,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,w,0,w^2,w^2,w^2,w^2,w^2,w^2,w,w,1,1,1,w,w^2,w^2,1,w^2,w^2,w,1,0,w,w,1,0,0,1,0,1,1,w^2,w,1,w,w,w,w^2,w,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,0,w^2,w^2,0,1,0,w,w^2,w^2,1,0,1,0,w,w^2,w^2,1,1,w^2,1,w,w,w^2,w^2,w^2,1,w,1,0,w^2,w,0,0,0,1,w,w^2,w,w^2,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,w,0,w,0,w^2,w^2,0,w,w,1,w,w,0,0,0,0,0,w,w^2,w^2,w^2,1,0,w,0,w^2,w,1,w,w^2,w,1,w,0,1,w,1,w^2,1,w^2,w,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,w,0,1,0,w^2,w^2,0,w,1,w^2,1,w^2,1,1,0,1,0,0,w,w^2,1,w^2,w,w^2,0,1,w,0,0,0,w^2,w,w^2,1,w^2,w^2,w^2,w,w^2,0,w,w^2,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,1,w^2,w^2,w^2,0,w,1,0,w^2,0,0,0,1,1,1,0,0,w,1,1,0,1,1,1,0,0,1,w,0,w^2,0,0,w,1,w,0,w,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,0,w^2,1,w^2,0,w^2,1,1,w,w,w,w^2,w^2,0,1,w^2,w,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w,w,1,0,w^2,1,1,0,1,1,w^2,w,w^2,0,0,0,w,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w^2,1,w,0,w^2,w^2,0,w^2,w,0,1,w^2,w^2,w^2,w^2,w^2,w,w^2,1,1,w,
-            0,0,0,0,0,0,0,0,0,w,1,w,0,1,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,w,w,w^2,1,w^2,1,0,w,w^2,w,0,w^2,w,1,1,w^2,1,w^2,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,1,0,0,0,1,w^2,0,0,w,1,1,1,w^2,w^2,0,1,w,w^2,1,0,w,
-            0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,w,0,0,0,0,0,0,0,0,1,1,1,0,w^2,1,1,w^2,w^2,1,0,0,w^2,1,1,1,w,1,w^2,w,1,w,w^2,w,1,w,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,w,w,w,0,0,1,w^2,1,1,0,1,1,1,w,w,1,w^2,1,w^2,1,0,w^2,w^2,w,w^2,0,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,1,0,w,w^2,0,0,0,0,0,0,0,0,w,w,w,0,w^2,w^2,w,w^2,0,1,1,w^2,w^2,0,1,w^2,0,1,0,1,w^2,w^2,1,0,0,0,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,1,w^2,w,w,w,w,w^2,1,w,0,0,0,0,1,w,w^2,w^2,1,w^2,w,
-            0,0,0,0,0,0,0,0,0,w^2,0,w,1,1,w^2,w^2,1,w^2,0,1,0,0,0,0,0,0,1,0,w,0,0,1,1,w,1,1,w,1,1,0,w,0,w^2,1,0,1,1,w^2,1,1,w^2,w,w,1,0,
-            0,0,0,0,0,0,0,0,0,0,1,w,w,1,w^2,w^2,w^2,w,w^2,w^2,0,w,0,0,0,0,1,0,0,1,w,0,0,w,w,0,1,w^2,1,w,w,0,w^2,0,w,1,1,w,w,w,0,1,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,w,w^2,w,0,0,w^2,1,0,0,w^2,0,0,w^2,0,0,0,0,1,w^2,1,w,w,0,w^2,1,1,0,w,1,w,w,1,w,w^2,w^2,0,0,w^2,0,0,0,1,w,0,1,0,
-            0,0,0,0,0,0,0,0,0,1,w,w,1,w,w^2,0,1,w^2,w,w^2,1,w^2,0,0,0,0,0,1,w,1,0,w,0,w,1,w^2,0,1,w^2,0,w,w,w,w,w,0,0,0,1,1,1,w^2,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w,w,0,w^2,w^2,0,1,1,0,1,0,0,1,w^2,1,1,1,w^2,1,1,w^2,1,w,w,1,w^2,w^2,w,1,1,0,w^2,1,w^2,1,1,1,w,w,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,w,1,w,w^2,1,w^2,w^2,0,w,w^2,1,w^2,w,w^2,0,0,1,w^2,1,w,1,w^2,w,1,0,w^2,0,1,w,1,w,w,1,w^2,0,w^2,1,1,w,w,w^2,0,w,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,w^2,0,0,w,0,w,w,0,0,0,1,w,w^2,1,1,1,0,1,w,w^2,w^2,w^2,1,0,0,w,1,0,0,w^2,1,0,1,0,0,0,w^2,w^2,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,w,1,w,1,0,w,w^2,1,w^2,1,w^2,w,w^2,w,1,w^2,w^2,1,0,w^2,1,w^2,w,1,1,0,1,0,w^2,w,1,w^2,w,1,1,0,w,w^2,w^2,w,w^2,w,0,0,0
-        ]),
-        ZeroMatrix(F,26,4)),
-    HorizontalJoin(
-        Matrix(F,4,55,[
-            0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,1,w^2,0,w^2,0,w,1,0,0,w,w^2,1,0,0,1,1,0,0,0,1,w,w^2,w^2,0,0,w,1,w^2,w,0,1,w^2,w^2,0,0,1,0,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,1,w^2,0,w^2,0,w,1,0,0,w,w^2,1,0,0,1,1,0,0,0,1,w,w^2,w^2,0,0,w,1,w^2,w,0,1,w^2,w^2,0,0,1,0,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w,w,w^2,w^2,1,w^2,w^2,1,1,w^2,w^2,w^2,0,0,0,1,1,w,0,w^2,w,0,w,w,w,1,0,1,w^2,0,w^2,w,1,w,w^2,0,0,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w,0,w,1,w,w^2,0,w^2,w,w^2,0,w^2,0,0,0,0,1,0,w,w,1,w^2,w^2,1,w^2,1,0,0,1,w,w,1,w^2,w,0,w^2,w^2,w^2,w
-        ]),
-        IdentityMatrix(F,4)));
-assert Rank(Gsrc) eq 30 and Rank(GX4) eq 30;
-assert Ncols(GX4) eq 59;
-assert RowSpace(Submatrix(GX4,1,1,30,55)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 13;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 9;
-Table1Generators[95] := <Gsrc,GX4>;
-
-// Table 1, No. 096 | source DV27 | HullDecreasing.m
-// Gsrc: [57,34]_4, hull 10; X4: [[59,26,12;17]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,34,57,[
+// Table 1, No. 54 | DV27
+// [[59,26,12;17]]_2, distance exact.
+Gsrc:=Matrix(F,34,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w,w^2,w,0,w^2,1,1,w^2,w,w^2,0,w,0,w^2,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,
@@ -5669,228 +2919,55 @@ Gsrc := Matrix(F,34,57,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,32,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,
-            0,1,0,0,0,0,0,0,0,0,1,0,1,w,w,1,w^2,w,w,w,w^2,w^2,w^2,0,w,0,w^2,w,w,w^2,1,0,w,w^2,0,0,1,0,w^2,w^2,1,1,1,0,1,0,0,0,w^2,1,1,w^2,w,1,1,0,w^2,
-            0,0,1,0,0,0,0,0,0,0,1,1,w,0,0,1,w^2,w^2,w,0,w^2,1,0,0,w,w,w^2,w^2,0,0,1,w,w,0,0,0,w^2,0,w^2,w^2,1,w^2,1,w,w,0,w,w^2,w^2,0,0,0,w,0,w,w,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w,0,w,w^2,1,1,w,w^2,1,1,1,1,0,w,0,w,w^2,1,0,0,0,w,0,w,1,w^2,0,0,w,1,w^2,1,0,w,w,w^2,0,1,w^2,w,w^2,w^2,
-            0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,1,0,0,0,0,1,0,w^2,1,w^2,w,w^2,1,1,1,w^2,0,0,1,w,1,0,w^2,w,w^2,w^2,w,w^2,1,0,0,0,w,1,1,w,1,w^2,1,0,w,0,w,w,0,w^2,0,0,1,0,0,w,
-            0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,
-            0,0,0,0,0,0,0,1,0,0,w^2,w,w,0,w,0,w,w^2,w,w,1,0,w,w,w,1,1,1,1,0,1,1,w^2,w,0,0,w^2,w,w,0,w,0,w,w,w,1,1,w^2,w,w^2,w^2,w,1,1,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,
-            0,0,0,0,0,0,0,0,0,w,w,1,1,0,1,w^2,w^2,0,w,w,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,0,w,0,0,w,w^2,w,0,0,w^2,1,w^2,1,1,1,w^2,0,w,w^2,1,1,1,
-            0,0,0,0,0,0,0,0,w^2,w^2,w,w,w^2,w,w^2,w,1,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,0,w,w,w^2,w^2,w,w,0,1,w^2,w^2,0,1,0,w^2,w^2,w^2,1,0,w,0,w,
-            0,0,0,0,0,0,0,0,w,w,1,w,1,1,w,0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,w,0,1,w^2,w^2,w,w,w^2,w,w^2,w,w^2,w,w^2,w,w,0,w^2,0,0,w,
-            0,0,0,0,0,0,0,0,w,w,w^2,w^2,w,1,0,1,w,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,0,0,0,w^2,1,1,0,w^2,0,w,0,w,w^2,0,1,w^2,1,w^2,w,1,1,1,
-            0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w^2,w^2,w^2,0,w,1,1,0,1,w,0,0,0,0,0,0,0,1,w,0,1,0,0,w^2,0,w,w^2,1,0,w^2,1,0,0,w^2,1,w,w^2,w^2,w,w,1,0,w,1,
-            0,0,0,0,0,0,0,0,w,1,w,w^2,1,w,w,w^2,w^2,w^2,w^2,w,0,1,w^2,0,0,0,0,0,0,0,1,w^2,1,w,0,0,1,1,1,w^2,0,w,w,w,w,0,0,w,w^2,0,w^2,1,1,w,w,1,w^2,
-            0,0,0,0,0,0,0,0,1,1,1,1,w^2,w^2,w,1,w,w^2,w^2,w^2,w,1,w,0,1,0,0,0,0,0,w^2,w^2,1,1,0,0,0,w,w,0,0,w,0,w^2,w,w^2,w,0,w^2,0,0,1,1,0,w,w^2,w,
-            0,0,0,0,0,0,0,0,1,w,0,1,1,w,1,w,w^2,w,1,1,0,w,1,0,1,0,0,0,0,0,w^2,0,w,w^2,0,0,0,1,1,1,w^2,w^2,0,w^2,w,w,w,w,w,w^2,w,1,0,w,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w,0,w^2,1,w^2,w,1,w,1,0,0,0,0,0,0,w^2,w,w^2,1,0,0,w^2,w^2,w,0,0,w^2,0,w,w,w^2,0,1,1,1,w^2,0,w,0,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,w,w^2,0,1,0,0,0,0,1,w^2,w^2,w,1,0,w^2,1,0,0,1,0,0,0,w,0,w,0,0,0,w^2,0,w,1,0,1,w,w^2,0,0,1,w^2,0,1,0,0,w^2,w^2,0,w,
-            0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,0,0,0,0,w,1,1,w^2,w^2,w^2,0,1,1,w,w,0,w,0,w^2,1,0,0,0,w,w^2,w^2,w^2,0,w^2,w,w,0,0,0,w^2,1,w^2,w,w^2,0,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,1,w,0,0,1,1,w^2,0,w,0,1,w,w,w,0,w,w,0,1,w^2,0,w^2,w,w,w^2,0,0,0,1,0,0,0,w^2,w,w^2,w,w^2,1,0,0,w^2,0,1,0,w^2,1,w,w,
-            0,0,0,0,0,0,0,0,w^2,0,1,1,w^2,0,0,0,0,0,0,1,1,0,0,w^2,1,1,w,w,0,1,1,1,0,1,0,0,w^2,w^2,1,1,0,0,0,w,w,0,w^2,0,1,0,w,w,0,1,1,w,w^2,
-            0,0,0,0,0,0,0,0,w,1,0,1,w,w,1,w,1,0,w,w^2,0,1,w,w,1,0,0,w^2,0,1,w^2,0,w^2,w,0,0,w,w^2,0,w^2,1,w,w,w^2,0,w^2,1,w^2,w,0,0,w,w,w,w^2,0,w^2
-        ]),
-        ZeroMatrix(F,32,2)),
-    HorizontalJoin(
-        Matrix(F,2,57,[
-            0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,
-            0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w
-        ]),
-        IdentityMatrix(F,2)));
+GX4:=Matrix(F,34,59,[
+    1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,1,0,1,w,w,1,w^2,w,w,w,w^2,w^2,w^2,0,w,0,w^2,w,w,w^2,1,0,w,w^2,0,0,1,0,w^2,w^2,1,1,1,0,1,0,0,0,w^2,1,1,w^2,w,1,1,0,w^2,0,0,
+    0,0,1,0,0,0,0,0,0,0,1,1,w,0,0,1,w^2,w^2,w,0,w^2,1,0,0,w,w,w^2,w^2,0,0,1,w,w,0,0,0,w^2,0,w^2,w^2,1,w^2,1,w,w,0,w,w^2,w^2,0,0,0,w,0,w,w,w^2,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w,0,w,w^2,1,1,w,w^2,1,1,1,1,0,w,0,w,w^2,1,0,0,0,w,0,w,1,w^2,0,0,w,1,w^2,1,0,w,w,w^2,0,1,w^2,w,w^2,w^2,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,0,0,
+    0,0,0,0,0,1,0,0,0,0,1,0,w^2,1,w^2,w,w^2,1,1,1,w^2,0,0,1,w,1,0,w^2,w,w^2,w^2,w,w^2,1,0,0,0,w,1,1,w,1,w^2,1,0,w,0,w,w,0,w^2,0,0,1,0,0,w,0,0,
+    0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,w^2,w,w,0,w,0,w,w^2,w,w,1,0,w,w,w,1,1,1,1,0,1,1,w^2,w,0,0,w^2,w,w,0,w,0,w,w,w,1,1,w^2,w,w^2,w^2,w,1,1,1,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,1,1,0,1,w^2,w^2,0,w,w,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,0,w,0,0,w,w^2,w,0,0,w^2,1,w^2,1,1,1,w^2,0,w,w^2,1,1,1,0,0,
+    0,0,0,0,0,0,0,0,w^2,w^2,w,w,w^2,w,w^2,w,1,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,0,w,w,w^2,w^2,w,w,0,1,w^2,w^2,0,1,0,w^2,w^2,w^2,1,0,w,0,w,0,0,
+    0,0,0,0,0,0,0,0,w,w,1,w,1,1,w,0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,w,0,1,w^2,w^2,w,w,w^2,w,w^2,w,w^2,w,w^2,w,w,0,w^2,0,0,w,0,0,
+    0,0,0,0,0,0,0,0,w,w,w^2,w^2,w,1,0,1,w,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,0,0,0,w^2,1,1,0,w^2,0,w,0,w,w^2,0,1,w^2,1,w^2,w,1,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w^2,w^2,w^2,0,w,1,1,0,1,w,0,0,0,0,0,0,0,1,w,0,1,0,0,w^2,0,w,w^2,1,0,w^2,1,0,0,w^2,1,w,w^2,w^2,w,w,1,0,w,1,0,0,
+    0,0,0,0,0,0,0,0,w,1,w,w^2,1,w,w,w^2,w^2,w^2,w^2,w,0,1,w^2,0,0,0,0,0,0,0,1,w^2,1,w,0,0,1,1,1,w^2,0,w,w,w,w,0,0,w,w^2,0,w^2,1,1,w,w,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,1,1,1,1,w^2,w^2,w,1,w,w^2,w^2,w^2,w,1,w,0,1,0,0,0,0,0,w^2,w^2,1,1,0,0,0,w,w,0,0,w,0,w^2,w,w^2,w,0,w^2,0,0,1,1,0,w,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,1,w,0,1,1,w,1,w,w^2,w,1,1,0,w,1,0,1,0,0,0,0,0,w^2,0,w,w^2,0,0,0,1,1,1,w^2,w^2,0,w^2,w,w,w,w,w,w^2,w,1,0,w,w,w,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w,0,w^2,1,w^2,w,1,w,1,0,0,0,0,0,0,w^2,w,w^2,1,0,0,w^2,w^2,w,0,0,w^2,0,w,w,w^2,0,1,1,1,w^2,0,w,0,w^2,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,w,w^2,0,1,0,0,0,0,1,w^2,w^2,w,1,0,w^2,1,0,0,1,0,0,0,w,0,w,0,0,0,w^2,0,w,1,0,1,w,w^2,0,0,1,w^2,0,1,0,0,w^2,w^2,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,0,0,0,0,w,1,1,w^2,w^2,w^2,0,1,1,w,w,0,w,0,w^2,1,0,0,0,w,w^2,w^2,w^2,0,w^2,w,w,0,0,0,w^2,1,w^2,w,w^2,0,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,w,0,0,1,1,w^2,0,w,0,1,w,w,w,0,w,w,0,1,w^2,0,w^2,w,w,w^2,0,0,0,1,0,0,0,w^2,w,w^2,w,w^2,1,0,0,w^2,0,1,0,w^2,1,w,w,0,0,
+    0,0,0,0,0,0,0,0,w^2,0,1,1,w^2,0,0,0,0,0,0,1,1,0,0,w^2,1,1,w,w,0,1,1,1,0,1,0,0,w^2,w^2,1,1,0,0,0,w,w,0,w^2,0,1,0,w,w,0,1,1,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,w,1,0,1,w,w,1,w,1,0,w,w^2,0,1,w,w,1,0,0,w^2,0,1,w^2,0,w^2,w,0,0,w,w^2,0,w^2,1,w,w,w^2,0,w^2,1,w^2,w,0,0,w,w,w,w^2,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,1,0,
+    0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,1
+]);
 assert Rank(Gsrc) eq 34 and Rank(GX4) eq 34;
-assert Ncols(GX4) eq 59;
 assert RowSpace(Submatrix(GX4,1,1,34,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 10;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 8;
-Table1Generators[96] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,58,34,2) eq VerticalJoin(ZeroMatrix(F,32,2),IdentityMatrix(F,2));
+Table1Generators[54]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 59 and Dimension(Q) eq 34;
+assert Dimension(HermitianHull(Q)) eq 8;
+Table1Parameters[54]:=[59,26,12,17];
+Table1DistanceTypes[54]:="exact";
 
-// Table 1, No. 097 | source BS078 | HullIncreasing.m
-// Gsrc: [57,31]_4, hull 15; X4: [[60,13,14;11]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,31,57,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,0,w,1,w^2,w,0,w,w,0,1,w,0,w,1,1,0,w^2,1,0,0,w^2,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,1,w^2,w^2,0,w^2,w,w^2,w^2,1,0,0,w^2,0,0,w^2,w,0,1,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w,1,w^2,w^2,0,w^2,w,w^2,w^2,1,0,0,w^2,0,0,w^2,w,0,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,w^2,w,w^2,w,w,1,w^2,w^2,w,w,w^2,0,w,w^2,1,1,0,0,1,1,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w,1,w^2,0,w^2,0,w,w^2,w^2,w^2,w,w,w,1,1,0,1,w^2,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,0,w^2,0,0,0,1,1,w^2,w,w^2,w,w^2,w^2,0,1,w^2,0,0,w,0,w,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w^2,0,w,w^2,w,w^2,0,w^2,w^2,w,0,w,0,w,w,0,0,0,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,w^2,w^2,w,w^2,0,w^2,1,w^2,w^2,w^2,w^2,0,w^2,w,1,0,1,0,w^2,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,w^2,0,0,w,w,0,0,w^2,w^2,1,w^2,w,0,w^2,w,w,1,1,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,w,w^2,w,1,w^2,w,0,w^2,0,1,0,w^2,w,w,1,w,w^2,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w^2,w,0,w^2,1,1,w,0,1,0,w^2,w,w,w^2,1,1,w^2,1,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,0,1,0,0,w^2,1,0,1,1,w^2,w^2,0,0,w^2,0,w^2,w,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,w^2,w,0,w,0,w,w^2,w,1,0,w^2,1,1,0,1,w^2,1,0,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,w^2,w^2,w^2,0,w^2,w^2,1,w,1,w^2,w^2,w,0,w,0,0,1,w,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,0,1,w,0,1,w^2,w,1,1,w,w,w^2,0,w^2,w,w^2,w^2,0,w^2,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,0,w,0,1,w^2,0,w^2,1,1,0,w,1,w^2,w,1,1,w^2,1,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w^2,0,w,0,1,w^2,0,w^2,1,1,0,w,1,w^2,w,1,1,w^2,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,w,1,w^2,w^2,w,w^2,0,w^2,0,1,0,w^2,w,1,w^2,w^2,w^2,w,1,1,w^2,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,0,1,1,w^2,1,w^2,0,1,1,w^2,1,0,w,w,0,1,0,1,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,28,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w,0,w^2,1,w^2,1,1,w,w^2,w,w^2,w,w^2,1,1,1,1,w,w^2,w^2,0,0,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w^2,w,1,w^2,w,w^2,w^2,w,0,w,0,w^2,0,0,0,0,w,0,w,w^2,0,w,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,1,0,1,w,1,1,0,w^2,0,0,w,0,w,w^2,w^2,w^2,0,0,0,w,w^2,1,w^2,w^2,0,0,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,0,0,1,0,0,0,0,0,0,1,w^2,w^2,1,w,0,w^2,1,0,w^2,1,1,1,0,0,1,w^2,0,w,1,0,1,w,1,0,0,0,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,0,1,0,0,0,0,0,0,w,w^2,w^2,w^2,w,0,w,0,w^2,1,1,1,w,1,0,w,0,0,w^2,w^2,0,0,w,w^2,w,w^2,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w,w,0,0,0,0,0,0,0,1,w,0,0,w,w,w,w^2,w^2,w^2,w,1,0,1,w^2,w^2,w,w^2,w,w,w^2,0,1,w,w^2,w,w,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,1,0,0,0,0,0,0,w,1,w^2,1,1,0,1,w^2,w^2,0,0,w,0,w^2,1,1,0,w,w,0,w^2,1,0,0,0,w^2,w,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,1,1,w,w^2,0,w,1,0,0,0,1,0,w,1,w^2,1,1,w^2,w^2,w,1,w^2,1,w,1,1,1,w,0,w^2,w,w,w,w,w^2,w^2,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,1,0,0,1,0,0,0,0,w,w,0,w^2,w,w,1,0,0,w^2,w,w^2,w,1,w,0,w,w^2,1,1,0,1,1,w^2,1,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w^2,w,0,w,w^2,1,0,0,1,1,w,w^2,w,1,0,w,w^2,w^2,0,1,w^2,w^2,w,w^2,w^2,0,0,1,w^2,0,w,w,1,0,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,0,0,w,w,0,0,1,w^2,w^2,1,1,0,1,0,0,w,0,1,w^2,w^2,0,1,w,1,1,1,w^2,1,1,1,1,0,0,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,0,0,0,0,0,w^2,w,w,0,1,0,w^2,w^2,1,0,w^2,w,w^2,0,w,w,1,w^2,w,0,0,1,0,1,w^2,0,1,1,0,1,0,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,1,w^2,w^2,w,w^2,w,w^2,1,0,w,0,w,w,w^2,0,0,w^2,1,w^2,1,0,0,w^2,w,1,1,w,1,0,1,w,w,0,w^2,w^2,0,0
-        ]),
-        ZeroMatrix(F,28,3)),
-    HorizontalJoin(
-        Matrix(F,3,57,[
-            1,0,0,w^2,w^2,1,w,1,w,0,0,w,w,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,1,w^2,w,1,1,0,w,w^2,w,0,0,1,0,1,1,w^2,1,0,0,0,w,w^2,
-            0,1,w^2,w^2,0,1,w,w^2,0,w,w^2,w^2,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,w,w^2,0,w^2,w^2,1,w^2,w^2,1,w,w,0,0,w,0,1,1,0,1,w^2,w,
-            1,1,w,w^2,1,0,1,w,w,1,w^2,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,w,w^2,0,0,1,0,1,0,w,w,w,w,1,1,0,1,w,0,1,w,w
-        ]),
-        IdentityMatrix(F,3)));
-assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
-assert Ncols(GX4) eq 60;
-assert RowSpace(Submatrix(GX4,1,1,31,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 18;
-Table1Generators[97] := <Gsrc,GX4>;
-
-// Table 1, No. 098 | source BS089 | HullIncreasing.m
-// Gsrc: [59,32]_4, hull 14; X4: [[60,17,14;13]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,32,59,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w,1,w^2,w^2,w,1,w^2,0,0,1,1,0,w,w,1,0,w^2,1,w^2,0,w^2,w,w^2,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,1,0,1,w,w,w^2,w^2,w^2,w^2,0,w^2,w,1,w,0,0,w^2,w,1,0,1,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,1,0,w^2,1,w^2,w,w,w,0,1,1,w^2,w^2,0,w,1,w^2,1,0,0,1,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w^2,0,w^2,1,w^2,w^2,w^2,0,0,w^2,w^2,w^2,1,1,1,0,0,0,0,w,w,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,1,w^2,1,0,1,w,w^2,w,1,w^2,1,w,w^2,0,0,1,1,w^2,w,w,w^2,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,1,w^2,1,0,1,w,w^2,w,1,w^2,1,w,w^2,0,0,1,1,w^2,w,w,w^2,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,1,0,w^2,w,1,w,1,0,1,w^2,w,1,1,0,1,0,w,0,w,0,0,0,0,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,1,0,w^2,w,1,w,1,0,1,w^2,w,1,1,0,1,0,w,0,w,0,0,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,1,0,w^2,w,1,w,1,0,1,w^2,w,1,1,0,1,0,w,0,w,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,1,0,w^2,w,1,w,1,0,1,w^2,w,1,1,0,1,0,w,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,1,0,w^2,w,1,w,1,0,1,w^2,w,1,1,0,1,0,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,1,1,0,w,w^2,0,0,w,w^2,w,0,0,0,0,w,w,0,w,w,w^2,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w,1,0,w^2,w,w,0,1,w^2,0,0,1,0,1,1,w,w^2,w^2,0,0,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,w,w,w,w^2,1,w,w^2,w,1,1,w^2,1,w^2,w,1,1,1,w,1,w^2,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,1,1,0,w,0,1,1,0,0,0,w,w^2,w,0,w,w,w^2,0,w^2,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,1,1,0,w,0,1,1,0,0,0,w,w^2,w,0,w,w,w^2,0,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,1,1,0,w,0,1,1,0,0,0,w,w^2,w,0,w,w,w^2,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,1,w,0,0,1,0,0,w^2,1,w,w^2,1,0,1,w^2,w^2,w^2,w^2,0,0,w,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,1,1,w,0,w,0,w^2,0,w^2,w^2,0,1,w^2,w,w^2,0,1,w,1,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,1,1,w,0,w,0,w^2,0,w^2,w^2,0,1,w^2,w,w^2,0,1,w,1,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,w^2,1,w^2,1,1,0,1,w^2,1,1,0,w^2,w^2,w,w^2,1,1,1,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,w^2,w,w,w^2,0,1,1,0,0,w^2,0,0,w,w,w,w,w,w^2,w^2,1,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,w^2,w,w,w^2,0,1,1,0,0,w^2,0,0,w,w,w,w,w,w^2,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,w^2,w,w,w^2,0,1,1,0,0,w^2,0,0,w,w,w,w,w,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,w,w^2,1,w,w^2,1,0,w^2,1,w,0,w^2,w^2,0,w^2,0,0,w^2,0,1,0,w^2,w^2,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,1,w^2,0,0,w,w,w,0,w,1,w^2,1,0,1,1,w^2,1,1,w^2,1,w,w,1,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,0,0,0,1,0,w^2,1,w,1,w,0,w,w,w,0,1,w,0,1,w,w,0,0,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,0,1,w^2,1,1,1,0,1,w^2,1,w^2,1,1,0,w^2,0,0,w^2,0,0,1,0,w,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w^2,w^2,0,1,w,w^2,0,w,w^2,w,0,w^2,0,w^2,w^2,w^2,w^2,w^2,w^2,w,0,1,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w^2,w^2,0,1,w,w^2,0,w,w^2,w,0,w^2,0,w^2,w^2,w^2,w^2,w^2,w^2,w,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w^2,w,w,w^2,1,w,w,w,0,w^2,w,1,w,w,0,w,w,w^2,w,0,1,0,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w,0,w,1,0,w,0,w,w,1,w^2,w,0,w,w,0,w,1,w^2,w^2,w,w,w^2,w^2
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,31,59,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w,w^2,0,w^2,w^2,w,1,w^2,0,w^2,0,0,w^2,w,w,1,0,1,1,0,0,1,w,w,w,w,1,w^2,w,0,w,0,0,w,1,1,w^2,1,0,w^2,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,0,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,w,1,1,0,0,0,0,1,w^2,0,1,1,w^2,1,0,1,1,1,1,w,0,1,w^2,w^2,0,0,w,0,w^2,w,0,w^2,w^2,w,w^2,0,w^2,1,w^2,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w^2,w,1,w,1,w,w,w,w,0,1,1,w,1,w^2,w,1,1,1,w,0,w,1,w^2,1,w^2,1,w^2,1,1,0,w^2,w^2,1,w^2,w,1,0,1,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w,1,w^2,w,0,0,w,1,1,w^2,w^2,w,1,0,1,w,0,w,1,1,0,1,w^2,w,1,0,0,1,w^2,1,w,w,1,w^2,0,w^2,1,0,0,0,1,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,1,0,1,1,w,w^2,0,1,w,1,w,0,1,w^2,w,w,0,1,1,0,w^2,w^2,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w^2,0,1,1,0,w^2,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w^2,0,w,1,1,w,w^2,w,1,0,0,1,0,w,w,1,w^2,0,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,1,w,0,0,1,0,0,w^2,1,w,w^2,1,0,1,w^2,w^2,w^2,w^2,0,0,w,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,w,w^2,0,0,1,w,w^2,1,1,w,1,1,w,1,w^2,1,w,1,w,w,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,0,w^2,0,0,0,w^2,w^2,0,w,w^2,1,1,0,w,1,0,w^2,0,1,1,0,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,0,w^2,1,w,w,w^2,1,w,0,0,1,w,w^2,w^2,w,1,w,w^2,1,w,1,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w,w^2,1,w^2,0,1,w^2,1,0,0,w,w^2,w^2,0,1,w^2,1,w,1,w^2,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,w,1,w^2,w,0,1,0,0,1,0,0,1,w,0,w^2,1,0,w^2,1,w^2,1,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,w,w,0,w,1,0,0,0,0,0,0,0,0,w^2,w,0,0,w^2,w^2,w,w^2,0,1,w^2,0,0,0,0,w,0,w,1,w^2,w,w^2,1,w,1,w,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w,1,0,1,0,0,0,0,0,0,0,0,w,1,1,0,w^2,w^2,w,0,w^2,1,w,1,w,w,w,w^2,w^2,w^2,w,0,0,1,w^2,0,0,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w,1,1,0,w,0,1,0,0,0,0,0,0,1,w,w,1,1,0,0,w^2,w^2,w^2,w,w^2,w,w^2,w,0,w,1,0,0,w^2,1,w,w,1,1,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,1,w,1,w^2,0,w,0,0,0,0,1,w^2,w^2,w^2,1,1,w,w^2,w^2,w,w^2,1,w^2,w,1,1,w,0,w^2,w^2,w,w^2,0,0,0,w,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w^2,w^2,1,1,0,1,w^2,0,w^2,0,0,0,0,w^2,w^2,0,w^2,w^2,w,1,1,0,0,1,w^2,0,0,w^2,0,w,0,1,w^2,w^2,w,0,1,1,1,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,1,0,0,w^2,1,0,1,0,0,0,0,0,w,0,w,1,1,w^2,1,w,1,1,0,w,w^2,w^2,1,w^2,0,w^2,1,w^2,w,0,1,0,1,w,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w,0,0,0,w^2,w,w^2,1,0,1,0,0,0,w,w,w,w^2,w,w,w,1,1,w^2,1,w^2,w^2,1,w,w^2,0,1,w,1,0,1,1,w^2,0,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,0,w,w^2,w^2,w,w^2,1,0,1,w^2,w^2,0,1,0,w,0,w,0,0,w,1,1,1,1,w^2,w,0,0,1,w,w,w,0,1,1,w^2,1,w^2,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,0,1,0,0,w^2,1,0,w^2,0,w^2,0,1,w^2,1,w,w,1,1,w,w^2,w,w,w,w,w^2,0,1,w^2,1,0,w,w,0,w,w,w,w^2,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,0,w^2,0,w^2,1,w,w^2,w,w,w^2,1,w,w,w,0,0,w,1,w,0,1,w^2,0,w,1,w,1,1,w^2,w,w^2,w,1,w^2,w^2,0,0,1,1,0
-        ]),
-        ZeroMatrix(F,31,1)),
-    HorizontalJoin(
-        Matrix(F,1,59,[
-            0,1,w,0,0,1,w,w,w,w,w^2,0,w,1,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w,1,w^2,w^2,w^2,w,0,w,w,1,w^2,1,w^2,w^2,0,w^2,1,w^2,0,1,0,w^2,1,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
-assert Ncols(GX4) eq 60;
-assert RowSpace(Submatrix(GX4,1,1,32,59)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 14;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 15;
-Table1Generators[98] := <Gsrc,GX4>;
-
-// Table 1, No. 099 | source DV29 | HullDecreasing.m
-// Gsrc: [58,32]_4, hull 16; X4: [[60,18,14;14]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,32,58,[
+// Table 1, No. 55 | DV29
+// [[60,18,14;14]]_2, distance exact.
+Gsrc:=Matrix(F,32,58,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,0,w,1,w^2,w,0,w,w,0,1,w,0,w,1,1,0,w^2,1,0,0,w^2,1,
@@ -5924,58 +3001,53 @@ Gsrc := Matrix(F,32,58,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,30,58,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,1,w,w^2,w^2,0,0,w,0,1,w,1,w^2,w^2,w,1,0,0,w,0,w,1,0,1,w^2,0,0,0,w^2,1,1,1,0,w,1,w,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,0,1,0,w^2,0,w,1,w^2,w,w,w,w^2,0,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,1,1,w,w,0,1,0,1,w,1,w,1,w^2,1,1,w^2,w,w,w^2,1,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,w^2,0,1,w^2,1,0,1,w,0,1,w,w,1,w^2,w^2,1,1,w,1,1,w,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,1,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,w,0,w,w^2,1,0,w^2,w,1,0,1,1,w^2,w^2,w^2,1,w^2,0,0,w,0,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,w^2,0,1,0,w,w,0,1,w,0,w^2,w,1,w^2,0,0,1,w^2,w^2,w,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,w^2,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w^2,0,0,0,0,1,1,w,w,w,1,0,0,0,0,w,1,0,w,w,w,w,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,w,w^2,w^2,w^2,1,1,1,1,1,w^2,0,w,1,0,w^2,1,w,1,0,w,w,w,1,0,w^2,0,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,1,1,w,0,w^2,w,1,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,w^2,w^2,1,1,w,1,1,w,1,0,w,1,0,1,1,0,w^2,1,w^2,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,w^2,w^2,0,0,1,0,0,0,0,0,w,0,0,w^2,0,1,1,0,w^2,1,w^2,0,w^2,0,0,w^2,w^2,w,w,1,1,1,0,0,0,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,0,1,w^2,w,1,w^2,0,1,0,0,0,0,0,w^2,1,0,w,1,w^2,w^2,w,0,0,w,1,w^2,0,0,w^2,w^2,0,0,0,0,w^2,0,w^2,1,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,w^2,w,0,w^2,1,1,w,0,1,0,0,w,1,0,1,w,w,0,w,w,1,0,w^2,w,1,w^2,1,0,0,0,w,w,w^2,w,0,1,1,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,0,w^2,w^2,1,w^2,w,1,1,0,w,0,w^2,0,0,1,1,1,w^2,1,1,1,w^2,0,0,1,w^2,w^2,0,0,w^2,1,w^2,w,w,1,0,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,0,1,0,w,0,1,w^2,1,1,w^2,0,w,1,w^2,0,1,w,w^2,1,0,0,0,1,w^2,1,0,w^2,1,w^2,0,1,w,w,w,w^2,w^2,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,0,w^2,1,w^2,w^2,w,0,w,w,1,0,1,w^2,0,0,w^2,w^2,w,w^2,1,w^2,w,1,1,w^2,w,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,w^2,w,1,w,w^2
-        ]),
-        ZeroMatrix(F,30,2)),
-    HorizontalJoin(
-        Matrix(F,2,58,[
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2
-        ]),
-        IdentityMatrix(F,2)));
+GX4:=Matrix(F,32,60,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w,w^2,1,w,w^2,w^2,0,0,w,0,1,w,1,w^2,w^2,w,1,0,0,w,0,w,1,0,1,w^2,0,0,0,w^2,1,1,1,0,w,1,w,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,0,1,0,w^2,0,w,1,w^2,w,w,w,w^2,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,1,1,w,w,0,1,0,1,w,1,w,1,w^2,1,1,w^2,w,w,w^2,1,w^2,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,w^2,0,1,w^2,1,0,1,w,0,1,w,w,1,w^2,w^2,1,1,w,1,1,w,w^2,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,1,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,w,0,w,w^2,1,0,w^2,w,1,0,1,1,w^2,w^2,w^2,1,w^2,0,0,w,0,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,w,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,w^2,0,1,0,w,w,0,1,w,0,w^2,w,1,w^2,0,0,1,w^2,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,w^2,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w^2,0,0,0,0,1,1,w,w,w,1,0,0,0,0,w,1,0,w,w,w,w,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,w,w^2,w^2,w^2,1,1,1,1,1,w^2,0,w,1,0,w^2,1,w,1,0,w,w,w,1,0,w^2,0,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,1,1,w,0,w^2,w,1,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,w^2,w^2,1,1,w,1,1,w,1,0,w,1,0,1,1,0,w^2,1,w^2,w^2,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,w^2,w^2,0,0,1,0,0,0,0,0,w,0,0,w^2,0,1,1,0,w^2,1,w^2,0,w^2,0,0,w^2,w^2,w,w,1,1,1,0,0,0,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,0,1,w^2,w,1,w^2,0,1,0,0,0,0,0,w^2,1,0,w,1,w^2,w^2,w,0,0,w,1,w^2,0,0,w^2,w^2,0,0,0,0,w^2,0,w^2,1,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,w^2,w,0,w^2,1,1,w,0,1,0,0,w,1,0,1,w,w,0,w,w,1,0,w^2,w,1,w^2,1,0,0,0,w,w,w^2,w,0,1,1,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,0,w^2,w^2,1,w^2,w,1,1,0,w,0,w^2,0,0,1,1,1,w^2,1,1,1,w^2,0,0,1,w^2,w^2,0,0,w^2,1,w^2,w,w,1,0,w^2,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,0,1,0,w,0,1,w^2,1,1,w^2,0,w,1,w^2,0,1,w,w^2,1,0,0,0,1,w^2,1,0,w^2,1,w^2,0,1,w,w,w,w^2,w^2,w^2,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,0,w^2,1,w^2,w^2,w,0,w,w,1,0,1,w^2,0,0,w^2,w^2,w,w^2,1,w^2,w,1,1,w^2,w,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,w^2,w,1,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,1
+]);
 assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
-assert Ncols(GX4) eq 60;
 assert RowSpace(Submatrix(GX4,1,1,32,58)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 16;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 14;
-Table1Generators[99] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,59,32,2) eq VerticalJoin(ZeroMatrix(F,30,2),IdentityMatrix(F,2));
+Table1Generators[55]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 60 and Dimension(Q) eq 32;
+assert Dimension(HermitianHull(Q)) eq 14;
+Table1Parameters[55]:=[60,18,14,14];
+Table1DistanceTypes[55]:="exact";
 
-// Table 1, No. 100 | source BS074 | HullDecreasing.m
-// Gsrc: [57,31]_4, hull 15; X4: [[60,19,14;17]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,31,57,[
+// Table 1, No. 56 | BS074
+// [[60,19,14;17]]_2, distance exact.
+Gsrc:=Matrix(F,31,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,0,w,1,w^2,w,0,w,w,0,1,w,0,w,1,1,0,w^2,1,0,0,w^2,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w,0,0,1,w^2,w,0,w^2,w^2,w,0,w^2,w,w,1,0,w,w,w^2,0,1,w,0,
@@ -6008,57 +3080,52 @@ Gsrc := Matrix(F,31,57,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,1,w,w^2,0,0,1,0,1,w,w^2,w,1,0,w^2,w^2,1,w,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,28,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,w,1,0,w^2,w^2,1,w,0,w^2,0,w,1,0,1,w^2,1,w,1,w^2,w,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,1,w^2,1,w,w,1,w^2,w,0,w,w,w^2,w,w,0,1,w,1,w^2,w^2,w^2,1,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,1,0,w^2,0,w^2,w,w,0,1,1,0,w^2,0,w,w^2,1,w,0,0,1,w^2,w^2,w,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w,w^2,1,w^2,w^2,w^2,w^2,1,0,w,0,w^2,1,1,1,w,0,w,1,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w,1,1,0,0,0,0,0,0,0,w^2,0,0,w^2,w,0,1,1,1,w^2,w,w^2,1,0,0,w,w,w^2,0,1,w^2,w^2,1,0,1,w,w^2,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w,1,0,1,w^2,1,w^2,0,0,0,w,w^2,0,1,1,0,w,w,1,0,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,w^2,w^2,1,1,w,w,1,0,1,w,w^2,w,1,0,w^2,w^2,1,0,0,w^2,0,0,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w,1,0,w^2,0,1,0,0,0,0,0,1,w^2,w,w^2,1,w^2,0,1,1,w,0,0,0,w^2,w^2,w^2,w^2,0,w,w,0,w^2,w,w,w,w^2,1,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,1,0,1,1,w,w^2,0,w,0,0,0,1,0,w,w,w^2,w^2,w^2,1,w,w,1,w,0,0,w,w,w,w,w^2,1,w^2,w,w^2,0,w^2,w,w,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w^2,w^2,0,w^2,w,0,0,w^2,0,0,0,1,w,0,w,0,w,0,0,w,0,w,w,w,w,w^2,0,w,1,w,w,0,w^2,w^2,w,w^2,1,w,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w,w^2,w,w,w,1,1,1,0,0,0,1,1,0,w,0,1,0,1,w,w,w^2,w^2,1,0,1,w,1,w,1,w^2,w^2,w,0,w,1,w^2,w,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w,w^2,w,w^2,0,w^2,w,w,1,0,0,w^2,w^2,w,w^2,w^2,w,w,1,w,w^2,w^2,1,0,1,0,w^2,w^2,1,w,w^2,w,w^2,0,w,w,1,1,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,w,0,0,1,w^2,1,w^2,1,1,0,0,1,0,1,w,w,1,1,0,0,0,1,w,1,0,w^2,w^2,0,w^2,w^2,w^2,0,w^2,w^2,0,0,w^2,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w^2,w,w^2,0,1,1,0,1,w^2,w,1,w^2,w^2,1,0,w^2,w^2,w,w^2,w^2,w^2,w^2,0,1,1,w^2,0,w^2,0,w^2,w^2,1,w^2,w^2,0,w,w^2,1,0,w^2,w
-        ]),
-        ZeroMatrix(F,28,3)),
-    HorizontalJoin(
-        Matrix(F,3,57,[
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2
-        ]),
-        IdentityMatrix(F,3)));
+GX4:=Matrix(F,31,60,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,1,w^2,0,w^2,1,0,1,0,1,w,w^2,w^2,w,w,0,w,0,0,0,w,w,w^2,0,w,0,w,w^2,w^2,w,w^2,w,0,1,w^2,w^2,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,0,w,w,0,w^2,w^2,1,w,1,0,w,0,w^2,1,0,w,0,0,w^2,1,w^2,w,0,w,w^2,1,0,w^2,1,0,w^2,w,0,0,1,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,0,w^2,w,w^2,1,0,w,0,0,1,0,0,w^2,0,w^2,0,w,w,w^2,1,0,1,1,w^2,w^2,w^2,w^2,0,1,w,0,0,w,0,w^2,w,w,w^2,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,w^2,0,0,0,0,w,w,1,w,1,1,w^2,w^2,w^2,w^2,0,0,1,1,w^2,0,0,w^2,0,1,w,1,w^2,w,w,w,w,0,w^2,w^2,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,0,w,w,0,0,0,1,0,0,w,w^2,1,0,w^2,1,w,w^2,0,1,1,w,0,w,0,w,0,w^2,1,1,0,0,1,1,0,w,w,w,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w,1,1,w,w^2,1,w,1,0,w^2,0,w,w^2,w,w^2,0,w,w,w^2,w,w,w,1,0,w,w,1,0,w^2,w^2,w^2,0,w,w,0,w,w,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,1,1,0,0,1,w^2,1,w,w,1,1,0,w,1,0,w,1,0,0,w^2,w,w^2,w,0,w,w^2,w,0,0,w^2,0,w,w^2,1,w^2,w,0,w,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w,w,0,w^2,0,w,w,w^2,w,w,w,w^2,1,0,w^2,0,w^2,1,1,w^2,0,1,w^2,w^2,w,0,w^2,w^2,w^2,w,1,w^2,w,0,w,w^2,w,0,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,1,w^2,1,0,1,w^2,w,w^2,1,1,w,w^2,w^2,w,w^2,w^2,0,w,1,1,1,0,1,0,1,w,0,1,0,w^2,w^2,1,w,w^2,w,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w^2,1,1,1,0,1,w,0,0,0,w,1,1,w^2,1,1,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,w,1,0,w^2,w^2,1,w,0,w^2,0,w,1,0,1,w^2,1,w,1,w^2,w,1,w,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,1,w^2,1,w,w,1,w^2,w,0,w,w,w^2,w,w,0,1,w,1,w^2,w^2,w^2,1,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w^2,1,0,w^2,0,w^2,w,w,0,1,1,0,w^2,0,w,w^2,1,w,0,0,1,w^2,w^2,w,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w,w^2,1,w^2,w^2,w^2,w^2,1,0,w,0,w^2,1,1,1,w,0,w,1,w,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w,1,1,0,0,0,0,0,0,0,w^2,0,0,w^2,w,0,1,1,1,w^2,w,w^2,1,0,0,w,w,w^2,0,1,w^2,w^2,1,0,1,w,w^2,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,w,w^2,1,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w,1,0,1,w^2,1,w^2,0,0,0,w,w^2,0,1,1,0,w,w,1,0,w^2,w,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,w^2,w^2,1,1,w,w,1,0,1,w,w^2,w,1,0,w^2,w^2,1,0,0,w^2,0,0,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w,1,0,w^2,0,1,0,0,0,0,0,1,w^2,w,w^2,1,w^2,0,1,1,w,0,0,0,w^2,w^2,w^2,w^2,0,w,w,0,w^2,w,w,w,w^2,1,w,1,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,1,0,1,1,w,w^2,0,w,0,0,0,1,0,w,w,w^2,w^2,w^2,1,w,w,1,w,0,0,w,w,w,w,w^2,1,w^2,w,w^2,0,w^2,w,w,w,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w^2,w^2,0,w^2,w,0,0,w^2,0,0,0,1,w,0,w,0,w,0,0,w,0,w,w,w,w,w^2,0,w,1,w,w,0,w^2,w^2,w,w^2,1,w,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w,w^2,w,w,w,1,1,1,0,0,0,1,1,0,w,0,1,0,1,w,w,w^2,w^2,1,0,1,w,1,w,1,w^2,w^2,w,0,w,1,w^2,w,0,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w,w^2,w,w^2,0,w^2,w,w,1,0,0,w^2,w^2,w,w^2,w^2,w,w,1,w,w^2,w^2,1,0,1,0,w^2,w^2,1,w,w^2,w,w^2,0,w,w,1,1,1,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,w,0,0,1,w^2,1,w^2,1,1,0,0,1,0,1,w,w,1,1,0,0,0,1,w,1,0,w^2,w^2,0,w^2,w^2,w^2,0,w^2,w^2,0,0,w^2,w^2,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w^2,w,w^2,0,1,1,0,1,w^2,w,1,w^2,w^2,1,0,w^2,w^2,w,w^2,w^2,w^2,w^2,0,1,1,w^2,0,w^2,0,w^2,w^2,1,w^2,w^2,0,w,w^2,1,0,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,w,0,w,w^2,1,0,0,w,1,w^2,1,1,0,w^2,0,w^2,w,w,w,0,w^2,1,1,0,w^2,w,1,1,w,0,w,w,0,0,0,1,w,w^2,0,0,1
+]);
 assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
-assert Ncols(GX4) eq 60;
 assert RowSpace(Submatrix(GX4,1,1,31,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 12;
-Table1Generators[100] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,58,31,3) eq VerticalJoin(ZeroMatrix(F,28,3),IdentityMatrix(F,3));
+Table1Generators[56]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 60 and Dimension(Q) eq 31;
+assert Dimension(HermitianHull(Q)) eq 12;
+Table1Parameters[56]:=[60,19,14,17];
+Table1DistanceTypes[56]:="exact";
 
-// Table 1, No. 101 | source DV28 | HullDecreasing.m
-// Gsrc: [57,35]_4, hull 11; X4: [[60,27,12;17]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,35,57,[
+// Table 1, No. 57 | DV28
+// [[60,27,12;17]]_2, distance exact.
+Gsrc:=Matrix(F,35,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w,w^2,w,0,w^2,1,1,w^2,w,w^2,0,w,0,w^2,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,
@@ -6095,61 +3162,56 @@ Gsrc := Matrix(F,35,57,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,32,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,
-            0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,w,w,1,w^2,w,1,w,1,1,w^2,0,w^2,w,1,w^2,w^2,0,w^2,0,w,w,w,1,w^2,0,w,w,w^2,0,1,w,1,w,w,1,w,w^2,w^2,0,1,
-            0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w,0,w,w^2,1,1,w,w^2,1,1,1,1,0,w,0,w,w^2,1,0,0,0,w,0,w,1,w^2,0,0,w,1,w^2,1,0,w,w,w^2,0,1,w^2,w,w^2,w^2,
-            0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,
-            0,0,0,0,0,0,1,0,0,0,0,1,w,0,w,w,1,0,1,w^2,w,0,1,w^2,w,0,w^2,w,0,w,w,w,0,w,1,0,1,w,w^2,0,1,1,w^2,1,w^2,w^2,1,1,1,1,w,w^2,w^2,w^2,0,w^2,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,
-            0,0,0,0,0,0,0,0,w^2,1,0,w,w,1,w,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,0,w^2,0,w^2,w,1,w^2,1,0,0,0,1,0,1,0,w^2,0,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,0,w^2,1,0,1,w,w^2,w,w^2,1,0,0,w,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,1,0,0,0,w,w,0,w,1,1,0,1,w,w,w^2,w^2,0,w^2,w,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,w,w,w^2,0,0,w,0,w^2,w,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w,w,w,0,w^2,w^2,1,0,w,1,0,w,0,1,w^2,1,w,0,1,w^2,0,
-            0,0,0,0,0,0,0,0,w,w,0,0,0,0,w^2,0,1,0,1,w,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,0,w^2,w,0,1,w,w,1,w,w^2,1,1,w^2,w,1,0,0,w^2,w^2,0,w,
-            0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,1,1,w,1,w,0,w,1,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,w,1,w^2,1,1,1,w^2,0,0,w^2,w,w,w,w,1,0,0,w,1,w,w^2,
-            0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,0,w^2,1,w^2,1,0,1,w,1,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,w^2,0,w,0,w,w,w,1,w^2,1,w,0,1,1,w,w^2,0,w^2,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,1,w,1,0,w^2,w,1,0,0,w,w,0,1,0,0,0,0,0,0,0,w^2,1,1,w,w^2,0,1,w^2,w,w^2,0,w^2,w,w,w,1,w^2,w^2,0,0,1,w^2,0,0,1,1,0,
-            0,0,0,0,0,0,0,0,1,w^2,w,1,0,0,w^2,0,1,0,1,w^2,0,w^2,1,1,w,0,0,0,0,0,0,w^2,w^2,w,w^2,0,w,0,1,w,w,w,w^2,1,0,1,w,1,w,w,w,w,1,w^2,w,1,1,
-            0,0,0,0,0,0,0,0,w^2,w,w^2,1,w^2,0,0,w,1,w,w,0,1,w^2,w,1,w^2,0,0,0,0,0,w^2,1,w,1,0,0,w,w^2,w,w,w,w^2,0,0,w,0,1,w^2,0,w^2,0,w^2,w^2,0,w,w,w^2,
-            0,0,0,0,0,0,0,0,1,w,0,w,w,1,1,w,0,w,0,1,1,w,w,w^2,1,0,1,0,0,0,w,w,w^2,1,0,0,0,1,w^2,0,0,w,w^2,0,1,w^2,1,w,w^2,w,w,0,w,w,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,1,0,w^2,0,1,w,w,1,w,1,0,0,w,0,0,w^2,1,w,w,0,0,1,w,w,1,1,0,0,w^2,w^2,1,1,1,0,w,w,w,0,0,1,w,w^2,0,0,1,1,1,w,
-            0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,w,1,w,w,w^2,w^2,1,w^2,w^2,0,1,w,w^2,0,0,w^2,1,w,w,w^2,0,w,w^2,0,w,w,0,w^2,0,0,w,0,0,w^2,w^2,1,w,1,w^2,0,w,w^2,
-            0,0,0,0,0,0,0,0,1,w,w,0,1,0,1,1,1,1,0,0,w,0,w^2,w^2,1,w,w,1,w,w,w^2,w^2,w,w,w^2,0,w^2,1,0,0,1,w^2,w,w^2,w^2,1,0,1,0,w^2,1,1,w^2,1,w,w,w,
-            0,0,0,0,0,0,0,0,1,0,0,1,w^2,1,w^2,w,w,0,0,1,w^2,w,w^2,w^2,w,0,0,0,w,w^2,1,w^2,w,1,1,0,1,w^2,w,0,w,1,w,0,1,1,1,w^2,w,1,w^2,0,0,w,w^2,1,1
-        ]),
-        ZeroMatrix(F,32,3)),
-    HorizontalJoin(
-        Matrix(F,3,57,[
-            0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,0,w,1,w,0,w^2,w^2,0,w^2,w^2,0,0,w^2,0,0,w^2,1,w^2,w,0,0,w,0,w^2,w,1,1,0,0,1,w^2,w^2,0,w^2,w,1,0,w,w^2,0,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w
-        ]),
-        IdentityMatrix(F,3)));
+GX4:=Matrix(F,35,60,[
+    1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,w,w,1,w^2,w,1,w,1,1,w^2,0,w^2,w,1,w^2,w^2,0,w^2,0,w,w,w,1,w^2,0,w,w,w^2,0,1,w,1,w,w,1,w,w^2,w^2,0,1,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w,0,w,w^2,1,1,w,w^2,1,1,1,1,0,w,0,w,w^2,1,0,0,0,w,0,w,1,w^2,0,0,w,1,w^2,1,0,w,w,w^2,0,1,w^2,w,w^2,w^2,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,1,w,0,w,w,1,0,1,w^2,w,0,1,w^2,w,0,w^2,w,0,w,w,w,0,w,1,0,1,w,w^2,0,1,1,w^2,1,w^2,w^2,1,1,1,1,w,w^2,w^2,w^2,0,w^2,w^2,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,w^2,1,0,w,w,1,w,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,0,w^2,0,w^2,w,1,w^2,1,0,0,0,1,0,1,0,w^2,0,w^2,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,w^2,1,0,1,w,w^2,w,w^2,1,0,0,w,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,1,0,0,0,w,w,0,w,1,1,0,1,w,w,w^2,w^2,0,w^2,w,w^2,w,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,w,w,w^2,0,0,w,0,w^2,w,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w,w,w,0,w^2,w^2,1,0,w,1,0,w,0,1,w^2,1,w,0,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,w,w,0,0,0,0,w^2,0,1,0,1,w,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,0,w^2,w,0,1,w,w,1,w,w^2,1,1,w^2,w,1,0,0,w^2,w^2,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,1,1,w,1,w,0,w,1,0,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,w,1,w^2,1,1,1,w^2,0,0,w^2,w,w,w,w,1,0,0,w,1,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,1,w,w^2,w,w^2,0,w^2,1,w^2,1,0,1,w,1,0,0,0,0,0,0,0,0,w,0,w,1,w^2,0,w^2,0,w,0,w,w,w,1,w^2,1,w,0,1,1,w,w^2,0,w^2,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,w,1,0,w^2,w,1,0,0,w,w,0,1,0,0,0,0,0,0,0,w^2,1,1,w,w^2,0,1,w^2,w,w^2,0,w^2,w,w,w,1,w^2,w^2,0,0,1,w^2,0,0,1,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,w^2,w,1,0,0,w^2,0,1,0,1,w^2,0,w^2,1,1,w,0,0,0,0,0,0,w^2,w^2,w,w^2,0,w,0,1,w,w,w,w^2,1,0,1,w,1,w,w,w,w,1,w^2,w,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,w^2,w,w^2,1,w^2,0,0,w,1,w,w,0,1,w^2,w,1,w^2,0,0,0,0,0,w^2,1,w,1,0,0,w,w^2,w,w,w,w^2,0,0,w,0,1,w^2,0,w^2,0,w^2,w^2,0,w,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,1,w,0,w,w,1,1,w,0,w,0,1,1,w,w,w^2,1,0,1,0,0,0,w,w,w^2,1,0,0,0,1,w^2,0,0,w,w^2,0,1,w^2,1,w,w^2,w,w,0,w,w,w^2,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,w^2,0,1,w,w,1,w,1,0,0,w,0,0,w^2,1,w,w,0,0,1,w,w,1,1,0,0,w^2,w^2,1,1,1,0,w,w,w,0,0,1,w,w^2,0,0,1,1,1,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,w,1,w,w,w^2,w^2,1,w^2,w^2,0,1,w,w^2,0,0,w^2,1,w,w,w^2,0,w,w^2,0,w,w,0,w^2,0,0,w,0,0,w^2,w^2,1,w,1,w^2,0,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,1,w,w,0,1,0,1,1,1,1,0,0,w,0,w^2,w^2,1,w,w,1,w,w,w^2,w^2,w,w,w^2,0,w^2,1,0,0,1,w^2,w,w^2,w^2,1,0,1,0,w^2,1,1,w^2,1,w,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,1,w^2,1,w^2,w,w,0,0,1,w^2,w,w^2,w^2,w,0,0,0,w,w^2,1,w^2,w,1,1,0,1,w^2,w,0,w,1,w,0,1,1,1,w^2,w,1,w^2,0,0,w,w^2,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,0,w,1,w,0,w^2,w^2,0,w^2,w^2,0,0,w^2,0,0,w^2,1,w^2,w,0,0,w,0,w^2,w,1,1,0,0,1,w^2,w^2,0,w^2,w,1,0,w,w^2,0,w^2,w,w^2,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,0,1
+]);
 assert Rank(Gsrc) eq 35 and Rank(GX4) eq 35;
-assert Ncols(GX4) eq 60;
 assert RowSpace(Submatrix(GX4,1,1,35,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 11;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 8;
-Table1Generators[101] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,58,35,3) eq VerticalJoin(ZeroMatrix(F,32,3),IdentityMatrix(F,3));
+Table1Generators[57]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 60 and Dimension(Q) eq 35;
+assert Dimension(HermitianHull(Q)) eq 8;
+Table1Parameters[57]:=[60,27,12,17];
+Table1DistanceTypes[57]:="exact";
 
-// Table 1, No. 102 | source BS064 | HullDecreasing.m
-// Gsrc: [59,36]_4, hull 8; X4: [[60,29,12;17]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,36,59,[
+// Table 1, No. 58 | BS064
+// [[60,29,12;17]]_2, distance exact.
+Gsrc:=Matrix(F,36,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,0,w,1,0,w^2,0,1,w,w^2,w,w,0,w^2,w^2,w,w,0,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,0,w,1,0,w^2,0,1,w,w^2,w,w,0,w^2,w^2,w,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,w^2,w,0,0,w,w,1,w,1,w,w^2,w,0,w,w,w,w,w,
@@ -6187,62 +3249,57 @@ Gsrc := Matrix(F,36,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w,w,0,w,0,w^2,0,w^2,w^2,1,0,w^2,0,w^2,w,w,w^2,w,w,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,w^2,w^2,w^2,1,0,0,w^2,1,1,1,w^2,1,1,w,0,w,1,1,0,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,35,59,[
-            1,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w,w,w^2,1,w,1,w,1,w,w^2,0,1,w,w,w^2,0,w^2,w^2,w,1,0,w^2,0,1,w,w^2,w,0,w,w^2,1,0,w,w^2,w^2,w,w^2,1,0,1,0,w^2,0,1,
-            0,1,0,0,0,0,0,0,w,1,1,1,1,1,w,w,1,w,0,w^2,w^2,0,w,0,1,w,w,1,1,0,w,w^2,w,w^2,1,w,0,0,w^2,0,1,1,0,0,0,w,w^2,w^2,w,w,1,0,w,0,w,1,w,1,w^2,
-            0,0,1,0,0,0,0,0,1,w,1,w,w^2,0,w,0,0,1,0,1,0,0,0,1,w,w,w^2,w,w^2,0,w^2,0,0,w,1,w^2,w,w,w,0,w,0,0,0,1,w^2,w^2,1,w^2,1,w^2,0,w^2,1,1,w,0,w^2,w^2,
-            0,0,0,1,0,0,0,0,1,1,w,w,0,w,w^2,0,w,0,w^2,1,w,w^2,0,w^2,w^2,1,w^2,w^2,0,w,w^2,1,w^2,0,0,w^2,w^2,0,0,1,w,w^2,1,0,1,w,w,1,1,0,0,w,w^2,0,0,1,w^2,1,1,
-            0,0,0,0,1,0,0,0,w,1,1,w^2,1,w,w^2,0,w^2,w,w^2,1,0,w^2,w^2,1,0,w,w^2,w^2,0,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w^2,1,w,0,1,1,w,0,0,1,1,0,w,w,w^2,w,w,0,w^2,1,w,
-            0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,0,
-            0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,0,0,0,w,1,1,w^2,0,0,w,1,1,0,0,w,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,w,w^2,1,w^2,1,w^2,0,w^2,1,w,w,w^2,w,w,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w,0,0,0,w,w^2,0,0,0,0,0,1,w,w^2,w,0,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,w^2,w^2,1,w^2,w^2,0,w^2,w,1,1,1,1,w^2,w,w,w,0,0,
-            0,0,0,0,0,0,0,0,0,w^2,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,1,0,1,w^2,w,0,w^2,1,w,0,w^2,0,w^2,1,w,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,w^2,w^2,0,w^2,1,0,1,1,1,0,w,1,w^2,1,1,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,1,1,0,w,w^2,0,1,0,1,1,w,w^2,0,w^2,w^2,w,w,1,
-            0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,0,w^2,1,w,1,w,w,0,w,1,
-            0,0,0,0,0,0,0,0,0,w,0,w,w,w,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,1,0,1,1,w^2,w,0,0,w^2,1,w,w,w^2,0,w,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,w,0,1,w,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,1,0,0,w,1,1,0,w^2,w,w^2,0,1,1,w,w^2,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,1,w,1,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w^2,w,1,0,w^2,w,w^2,0,0,w^2,0,w^2,0,0,w^2,w^2,0,0,w^2,
-            0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,1,1,0,w,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,w^2,0,1,1,w,w^2,0,w,1,0,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,0,0,w^2,1,w^2,w,0,w^2,0,w^2,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,0,w,0,w,0,w,w,w,w^2,0,w,w,w,1,w^2,0,1,w,w^2,w^2,
-            0,0,0,0,0,0,0,w^2,0,1,0,1,0,w^2,0,w,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w,0,1,1,0,w,0,0,0,0,0,0,1,0,w^2,1,w^2,w,w,1,0,w^2,
-            0,0,0,0,0,0,0,w,0,1,0,0,1,w,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,1,1,w,1,0,w^2,0,w,w^2,1,w,w^2,0,0,w,0,1,1,w,w,
-            0,0,0,0,0,0,0,0,0,w,w^2,w,1,0,0,1,w,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,w,0,w,w,w^2,w^2,1,1,1,w,w^2,w^2,1,w^2,w,0,w^2,w,0,w^2,w^2,
-            0,0,0,0,0,0,0,w^2,0,0,w,w^2,1,w^2,1,1,w,w,w,w^2,w^2,1,w,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,w^2,w,w,1,w^2,0,1,1,1,1,1,w,1,w,w^2,0,0,w^2,1,0,0,
-            0,0,0,0,0,0,0,0,w,w^2,1,1,w,1,0,1,w,w^2,1,1,0,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w^2,0,0,0,0,w^2,1,w,w^2,0,w^2,w^2,w^2,w^2,0,0,1,w^2,0,1,1,1,
-            0,0,0,0,0,0,0,w^2,0,0,w,w,1,w^2,0,w,w,0,w,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,1,0,w,w,0,1,w^2,w,w,w,1,w^2,0,w,1,w^2,0,w,1,1,w,w,
-            0,0,0,0,0,0,0,w^2,0,w,1,w^2,1,1,w^2,w,w^2,1,w^2,w^2,w,w,0,w^2,w^2,w,0,0,0,0,0,0,0,w,w^2,1,w,w,w^2,1,w,w,w^2,w^2,0,0,0,1,w^2,1,0,w,1,0,1,w^2,0,w^2,1,
-            0,0,0,0,0,0,0,w,w,0,w^2,0,w^2,0,0,w,0,w^2,w^2,w,w,w,1,1,w^2,w^2,0,0,0,0,0,0,0,w,0,w,0,w^2,1,1,1,w^2,0,w^2,0,1,w,w^2,w^2,0,w,0,1,0,w,w^2,w,w,w^2,
-            0,0,0,0,0,0,0,w,1,0,w,0,0,w^2,0,w,1,0,0,w^2,1,w,1,w^2,1,1,1,0,0,0,0,0,0,w,w^2,1,w,1,1,w^2,w,0,w^2,0,1,w^2,w,w,w^2,0,0,w^2,0,0,1,w^2,w^2,0,1,
-            0,0,0,0,0,0,0,1,w^2,1,w^2,1,0,w,w^2,0,w^2,1,1,0,1,1,0,w,1,w,1,0,w^2,w,0,0,0,w^2,1,1,w^2,1,0,w,0,0,w,1,w^2,1,w^2,w^2,w,0,1,w,0,0,w^2,1,w,1,0,
-            0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,1,1,w,w^2,w,1,w,1,0,w,1,w,w,w^2,w^2,0,w^2,w^2,0,0,0,w^2,1,w^2,1,w,w,1,0,1,w^2,0,1,0,w^2,0,w^2,w^2,0,1,1,w^2,w,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,1,0,0,0,1,0,0,0,1,1,w,w,w^2,w,w^2,1,1,0,0,w,w,w,1,1,w^2,1,0,w^2,w,w^2,1,0,0,w^2,w^2,1,0,w^2,w^2,w^2,1,1,0,1,w,w^2,
-            0,0,0,0,0,0,0,w^2,0,1,0,w,0,w,w,w,w,0,0,1,w,w,w^2,w,0,1,w^2,w^2,0,0,0,0,w^2,w^2,1,w^2,1,w^2,1,w,w,w^2,w^2,w,0,w^2,w,w^2,w,1,w^2,0,w,1,w^2,w,0,w^2,1,
-            0,0,0,0,0,0,0,w,w,w^2,0,1,w^2,w^2,1,w,1,w,w^2,1,w,1,w^2,0,1,1,w^2,w^2,w,0,1,0,w,1,0,w,w^2,0,0,0,1,1,0,1,w,1,w^2,1,w^2,0,w^2,1,w^2,0,w,w^2,w,w^2,w^2,
-            0,0,0,0,0,0,0,w^2,1,0,w,0,w,1,w,0,w^2,w^2,0,w^2,1,0,1,0,1,w,w^2,w,w,1,0,1,0,0,w^2,0,w,w,0,w^2,1,0,1,w,1,1,0,1,1,0,1,1,1,w^2,0,w^2,w,1,w
-        ]),
-        ZeroMatrix(F,35,1)),
-    HorizontalJoin(
-        Matrix(F,1,59,[
-            0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,36,60,[
+    1,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w,w,w^2,1,w,1,w,1,w,w^2,0,1,w,w,w^2,0,w^2,w^2,w,1,0,w^2,0,1,w,w^2,w,0,w,w^2,1,0,w,w^2,w^2,w,w^2,1,0,1,0,w^2,0,1,0,
+    0,1,0,0,0,0,0,0,w,1,1,1,1,1,w,w,1,w,0,w^2,w^2,0,w,0,1,w,w,1,1,0,w,w^2,w,w^2,1,w,0,0,w^2,0,1,1,0,0,0,w,w^2,w^2,w,w,1,0,w,0,w,1,w,1,w^2,0,
+    0,0,1,0,0,0,0,0,1,w,1,w,w^2,0,w,0,0,1,0,1,0,0,0,1,w,w,w^2,w,w^2,0,w^2,0,0,w,1,w^2,w,w,w,0,w,0,0,0,1,w^2,w^2,1,w^2,1,w^2,0,w^2,1,1,w,0,w^2,w^2,0,
+    0,0,0,1,0,0,0,0,1,1,w,w,0,w,w^2,0,w,0,w^2,1,w,w^2,0,w^2,w^2,1,w^2,w^2,0,w,w^2,1,w^2,0,0,w^2,w^2,0,0,1,w,w^2,1,0,1,w,w,1,1,0,0,w,w^2,0,0,1,w^2,1,1,0,
+    0,0,0,0,1,0,0,0,w,1,1,w^2,1,w,w^2,0,w^2,w,w^2,1,0,w^2,w^2,1,0,w,w^2,w^2,0,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w^2,1,w,0,1,1,w,0,0,1,1,0,w,w,w^2,w,w,0,w^2,1,w,0,
+    0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,0,0,
+    0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,0,0,0,w,1,1,w^2,0,0,w,1,1,0,0,w,0,w,w^2,0,
+    0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,w,w^2,1,w^2,1,w^2,0,w^2,1,w,w,w^2,w,w,w^2,w,w,w,0,
+    0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w,0,0,0,w,w^2,0,0,0,0,0,1,w,w^2,w,0,w,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,w^2,w^2,1,w^2,w^2,0,w^2,w,1,1,1,1,w^2,w,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,1,0,1,w^2,w,0,w^2,1,w,0,w^2,0,w^2,1,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,w^2,w^2,0,w^2,1,0,1,1,1,0,w,1,w^2,1,1,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,1,1,0,w,w^2,0,1,0,1,1,w,w^2,0,w^2,w^2,w,w,1,0,
+    0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,0,w^2,1,w,1,w,w,0,w,1,0,
+    0,0,0,0,0,0,0,0,0,w,0,w,w,w,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,1,0,1,1,w^2,w,0,0,w^2,1,w,w,w^2,0,w,w,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,w,0,1,w,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,1,0,0,w,1,1,0,w^2,w,w^2,0,1,1,w,w^2,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,1,w,1,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w^2,w,1,0,w^2,w,w^2,0,0,w^2,0,w^2,0,0,w^2,w^2,0,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,1,1,0,w,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,w^2,0,1,1,w,w^2,0,w,1,0,w^2,1,0,1,w^2,w,0,
+    0,0,0,0,0,0,0,w^2,1,w^2,w,0,w^2,0,w^2,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,0,w,0,w,0,w,w,w,w^2,0,w,w,w,1,w^2,0,1,w,w^2,w^2,0,
+    0,0,0,0,0,0,0,w^2,0,1,0,1,0,w^2,0,w,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w,0,1,1,0,w,0,0,0,0,0,0,1,0,w^2,1,w^2,w,w,1,0,w^2,0,
+    0,0,0,0,0,0,0,w,0,1,0,0,1,w,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,1,1,w,1,0,w^2,0,w,w^2,1,w,w^2,0,0,w,0,1,1,w,w,0,
+    0,0,0,0,0,0,0,0,0,w,w^2,w,1,0,0,1,w,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,w,0,w,w,w^2,w^2,1,1,1,w,w^2,w^2,1,w^2,w,0,w^2,w,0,w^2,w^2,0,
+    0,0,0,0,0,0,0,w^2,0,0,w,w^2,1,w^2,1,1,w,w,w,w^2,w^2,1,w,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,w^2,w,w,1,w^2,0,1,1,1,1,1,w,1,w,w^2,0,0,w^2,1,0,0,0,
+    0,0,0,0,0,0,0,0,w,w^2,1,1,w,1,0,1,w,w^2,1,1,0,1,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w^2,0,0,0,0,w^2,1,w,w^2,0,w^2,w^2,w^2,w^2,0,0,1,w^2,0,1,1,1,0,
+    0,0,0,0,0,0,0,w^2,0,0,w,w,1,w^2,0,w,w,0,w,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,1,0,w,w,0,1,w^2,w,w,w,1,w^2,0,w,1,w^2,0,w,1,1,w,w,0,
+    0,0,0,0,0,0,0,w^2,0,w,1,w^2,1,1,w^2,w,w^2,1,w^2,w^2,w,w,0,w^2,w^2,w,0,0,0,0,0,0,0,w,w^2,1,w,w,w^2,1,w,w,w^2,w^2,0,0,0,1,w^2,1,0,w,1,0,1,w^2,0,w^2,1,0,
+    0,0,0,0,0,0,0,w,w,0,w^2,0,w^2,0,0,w,0,w^2,w^2,w,w,w,1,1,w^2,w^2,0,0,0,0,0,0,0,w,0,w,0,w^2,1,1,1,w^2,0,w^2,0,1,w,w^2,w^2,0,w,0,1,0,w,w^2,w,w,w^2,0,
+    0,0,0,0,0,0,0,w,1,0,w,0,0,w^2,0,w,1,0,0,w^2,1,w,1,w^2,1,1,1,0,0,0,0,0,0,w,w^2,1,w,1,1,w^2,w,0,w^2,0,1,w^2,w,w,w^2,0,0,w^2,0,0,1,w^2,w^2,0,1,0,
+    0,0,0,0,0,0,0,1,w^2,1,w^2,1,0,w,w^2,0,w^2,1,1,0,1,1,0,w,1,w,1,0,w^2,w,0,0,0,w^2,1,1,w^2,1,0,w,0,0,w,1,w^2,1,w^2,w^2,w,0,1,w,0,0,w^2,1,w,1,0,0,
+    0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,1,1,w,w^2,w,1,w,1,0,w,1,w,w,w^2,w^2,0,w^2,w^2,0,0,0,w^2,1,w^2,1,w,w,1,0,1,w^2,0,1,0,w^2,0,w^2,w^2,0,1,1,w^2,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,1,0,0,0,1,0,0,0,1,1,w,w,w^2,w,w^2,1,1,0,0,w,w,w,1,1,w^2,1,0,w^2,w,w^2,1,0,0,w^2,w^2,1,0,w^2,w^2,w^2,1,1,0,1,w,w^2,0,
+    0,0,0,0,0,0,0,w^2,0,1,0,w,0,w,w,w,w,0,0,1,w,w,w^2,w,0,1,w^2,w^2,0,0,0,0,w^2,w^2,1,w^2,1,w^2,1,w,w,w^2,w^2,w,0,w^2,w,w^2,w,1,w^2,0,w,1,w^2,w,0,w^2,1,0,
+    0,0,0,0,0,0,0,w,w,w^2,0,1,w^2,w^2,1,w,1,w,w^2,1,w,1,w^2,0,1,1,w^2,w^2,w,0,1,0,w,1,0,w,w^2,0,0,0,1,1,0,1,w,1,w^2,1,w^2,0,w^2,1,w^2,0,w,w^2,w,w^2,w^2,0,
+    0,0,0,0,0,0,0,w^2,1,0,w,0,w,1,w,0,w^2,w^2,0,w^2,1,0,1,0,1,w,w^2,w,w,1,0,1,0,0,w^2,0,w,w,0,w^2,1,0,1,w,1,1,0,1,1,0,1,1,1,w^2,0,w^2,w,1,w,0,
+    0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,1
+]);
 assert Rank(Gsrc) eq 36 and Rank(GX4) eq 36;
-assert Ncols(GX4) eq 60;
 assert RowSpace(Submatrix(GX4,1,1,36,59)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 8;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 7;
-Table1Generators[102] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,60,36,1) eq VerticalJoin(ZeroMatrix(F,35,1),IdentityMatrix(F,1));
+Table1Generators[58]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 60 and Dimension(Q) eq 36;
+assert Dimension(HermitianHull(Q)) eq 7;
+Table1Parameters[58]:=[60,29,12,17];
+Table1DistanceTypes[58]:="exact";
 
-// Table 1, No. 103 | source DV26 | HullDecreasing.m
-// Gsrc: [56,23]_4, hull 17; X4: [[61,11,19;26]]_2.
-// lambda=5; the final 5 rows carry the matched block [W1 | I_5].
-Gsrc := Matrix(F,23,56,[
+// Table 1, No. 59 | DV26
+// [[61,11,19;26]]_2, distance exact.
+Gsrc:=Matrix(F,23,56,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,w,0,0,w^2,0,0,w,w^2,0,w^2,0,w^2,w,w,w,0,w,w^2,w^2,w^2,w^2,1,w^2,1,1,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,0,w,0,1,w^2,0,0,w^2,1,w,0,0,0,0,w,w^2,w^2,1,1,w,w^2,w^2,w^2,1,1,1,w^2,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,0,1,1,1,0,w^2,w^2,w,1,w,w^2,1,0,w,w,w^2,0,1,1,w^2,w^2,1,1,1,
@@ -6267,134 +3324,44 @@ Gsrc := Matrix(F,23,56,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,0,w^2,1,1,w,1,1,w^2,w,1,w,1,w,w^2,w^2,w^2,1,w^2,w,w,w,w,0,w,0,0,w,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,18,56,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,0,0,0,w^2,w,w,1,w,1,w^2,w^2,w,w,w^2,0,0,1,0,w^2,0,w^2,1,1,w,0,w^2,0,1,w^2,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,0,w^2,w^2,0,1,1,w,1,w,0,0,1,1,0,w^2,w^2,w,w^2,0,w^2,0,w,w,1,w^2,0,w^2,w,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,w,1,1,w,w^2,w^2,0,w^2,0,w,w,w^2,w^2,w,1,1,0,1,w,1,w,0,0,w^2,1,w,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,1,0,1,1,1,0,1,0,w,w,w,0,w^2,w,1,w^2,1,0,w,w,w,0,w^2,1,w^2,w,1,1,1,w,w,1,0,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,1,1,1,0,0,w,w,0,w^2,0,1,0,1,w^2,1,w,0,w,w^2,w,w^2,w^2,w,w,w^2,w^2,1,w,w,w^2,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,1,0,1,1,1,0,w,1,w,w,w^2,w^2,w^2,0,1,1,w^2,0,0,w,1,1,w^2,1,w,1,1,w^2,1,0,0,1,w,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,1,0,1,1,1,0,w,w^2,1,w,1,w^2,0,w,1,1,1,w,w,w,1,w^2,0,1,0,1,w,1,1,0,w,w^2,0,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,1,w^2,w^2,w^2,w,w^2,1,w^2,w^2,w,w,w,w^2,1,0,0,w,1,0,0,1,w,0,w^2,0,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,1,1,0,1,1,0,1,1,1,0,0,w^2,w^2,w^2,w,1,w,1,0,w^2,1,0,w,w,w^2,w^2,w,0,w^2,w^2,0,w,0,w,w,1,0,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,1,1,0,0,0,0,1,1,1,0,0,w^2,1,1,w,0,0,1,w,w,1,w,0,w,w^2,w^2,0,w,w^2,w,w,w,w,w^2,w,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,w,1,w^2,1,w,w,w^2,1,0,w,w,0,0,w,1,1,w,w,w^2,0,1,w,0,w^2,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,1,1,0,0,1,0,0,1,1,0,w,w^2,1,w^2,w,w,1,w,0,0,w,w^2,w,w,1,w^2,0,0,w^2,0,w^2,1,0,1,1,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,0,1,w,0,1,w^2,w,0,1,w^2,w,w,w,w,w,1,w^2,w^2,1,w^2,0,w,w,w^2,1,1,0,1,0,w^2,w,1,w,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,0,1,w^2,0,1,w,w^2,0,1,w,w^2,w,0,w^2,w,w^2,1,w^2,w,w^2,w^2,w^2,w,1,1,0,w^2,0,w^2,w,w^2,1,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,w,0,w^2,w^2,0,0,1,0,0,w^2,1,1,0,w,w^2,w^2,w^2,w^2,w,w,0,w,1,0,w^2,0,w^2,w,w^2,w^2,1,w,w^2,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w^2,0,w,w,0,0,1,0,0,0,w,0,0,1,w^2,0,w^2,w,w^2,w^2,w^2,w^2,1,0,w^2,0,1,w,1,1,1,1,1,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,w,0,1,w^2,0,w^2,w^2,0,1,w,1,1,w^2,w^2,w,w^2,0,w,w,0,0,1,1,0,w^2,0,0,w,0,0,w^2,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,w^2,0,1,w,0,w,w,0,w,w^2,0,w^2,w,w,1,1,1,0,w^2,w,w^2,w,w,1,0,w,w,0,w,0,1,0,1,0,w
-        ]),
-        ZeroMatrix(F,18,5)),
-    HorizontalJoin(
-        Matrix(F,5,56,[
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,1,0,1,0,1,0,0,1,1,w^2,w,0,w^2,w,1,w,w,1,w^2,w,w^2,1,0,0,w^2,w,1,1,1,w^2,1,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,0,1,w,w,w,w^2,1,0,1,0,w,1,0,0,w,w,w,w^2,1,w,w^2,w,w,0,w^2,w,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,w,w^2,0,0,0,1,w^2,w,w^2,w,0,w^2,w,w,0,0,0,1,w^2,0,1,0,0,w,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,0,1,0,w^2,w,w,1,w,1,w^2,w^2,w,w,w^2,0,0,1,0,w^2,0,w^2,1,1,w,0,w^2,0,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
-        ]),
-        IdentityMatrix(F,5)));
-assert Rank(Gsrc) eq 23 and Rank(GX4) eq 23;
-assert Ncols(GX4) eq 61;
-assert RowSpace(Submatrix(GX4,1,1,23,56)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 17;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 12;
-Table1Generators[103] := <Gsrc,GX4>;
-
-// Table 1, No. 104 | source BS090 | HullIncreasing.m
-// Gsrc: [60,32]_4, hull 15; X4: [[61,16,15;13]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,32,60,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,0,w^2,1,1,1,0,0,w,0,w^2,1,0,w^2,1,1,w,w^2,0,w^2,1,w^2,1,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,0,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,0,w,w,0,w^2,1,w^2,0,0,0,1,0,1,w^2,0,1,w^2,1,0,w^2,0,w,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,0,w,w,0,w^2,1,w^2,0,0,0,1,0,1,w^2,0,1,w^2,1,0,w^2,0,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,1,0,0,0,1,w,w^2,w^2,0,0,w^2,1,0,w^2,1,w^2,w^2,1,w,w^2,w^2,0,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,w^2,1,0,1,w,0,w,w,1,0,w,0,w,w,w^2,1,1,w^2,w,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,1,w^2,1,w^2,0,1,0,1,w^2,1,1,0,w,w^2,w,w^2,0,1,1,1,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,0,0,1,w^2,w,w,w^2,1,w^2,0,w^2,0,w^2,w,w^2,w^2,w,w,0,w^2,w,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w^2,0,1,1,1,0,w^2,w^2,0,0,0,1,w,1,w^2,w^2,1,w,1,1,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w^2,w^2,w^2,0,w^2,w,w^2,0,1,0,0,w^2,1,0,1,1,w^2,0,1,w^2,w^2,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,0,w^2,w^2,w,0,0,w^2,w,w,0,w^2,w,0,w^2,1,1,0,0,0,1,0,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,w,0,w^2,0,w^2,w^2,0,0,w^2,w,1,1,0,1,w^2,1,0,0,w,w^2,0,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,1,1,w,0,0,1,0,w^2,w^2,1,w^2,w^2,w^2,w^2,1,1,w^2,0,0,w,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w,0,1,w,w^2,1,w,0,0,w,1,w,1,1,w,1,1,w,0,w,1,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,1,w^2,0,1,1,w,w,w,w^2,1,w,0,0,w^2,0,w,1,0,w,w,1,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w^2,w^2,0,0,w^2,w^2,w,w^2,1,1,0,w^2,w^2,1,0,w,w^2,0,1,w^2,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w,0,w^2,w^2,w,w^2,1,w^2,0,0,1,w,1,w,0,1,0,1,w^2,1,w^2,0,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,w^2,0,w^2,0,w^2,0,1,0,1,0,0,0,w^2,w^2,0,1,1,1,1,w,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,w,w^2,0,1,w^2,1,0,w^2,w^2,1,w^2,1,1,0,w^2,0,w,1,0,w^2,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,w,w^2,0,1,w^2,1,0,w^2,w^2,1,w^2,1,1,0,w^2,0,w,1,0,w^2,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w,1,w,w,w,0,w^2,0,w,w^2,1,w,0,w^2,1,0,1,0,1,0,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w^2,w,1,w^2,w^2,w,1,0,1,0,0,1,w^2,w,0,0,w^2,w^2,w^2,1,w^2,1,1,w^2,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w^2,w,1,w^2,w^2,w,1,0,1,0,0,1,w^2,w,0,0,w^2,w^2,w^2,1,w^2,1,1,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w^2,0,0,w,w^2,w^2,w^2,w^2,w^2,1,1,1,w,1,1,1,w^2,w,w^2,w^2,1,1,0,0,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w^2,0,0,w,w^2,w^2,w^2,w^2,w^2,1,1,1,w,1,1,1,w^2,w,w^2,w^2,1,1,0,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,0,w,w,w^2,w,1,w,w^2,0,w^2,1,0,w,w,w^2,w^2,w,1,w^2,w,0,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,0,w,w,w^2,w,1,w,w^2,0,w^2,1,0,w,w,w^2,w^2,w,1,w^2,w,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w^2,w,1,w^2,0,w,0,0,0,1,0,0,0,0,0,1,1,w,w^2,0,w,0,1,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,1,w,0,w^2,0,1,1,w^2,0,w,1,0,1,w,w,0,1,w,w,0,0,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,1,0,0,w^2,1,w^2,0,w^2,1,0,1,w,w,1,0,0,1,0,w,w^2,1,1,w,w^2
+GX4:=Matrix(F,23,61,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,0,0,0,w^2,w,w,1,w,1,w^2,w^2,w,w,w^2,0,0,1,0,w^2,0,w^2,1,1,w,0,w^2,0,1,w^2,0,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,0,w^2,w^2,0,1,1,w,1,w,0,0,1,1,0,w^2,w^2,w,w^2,0,w^2,0,w,w,1,w^2,0,w^2,w,0,0,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,w,1,1,w,w^2,w^2,0,w^2,0,w,w,w^2,w^2,w,1,1,0,1,w,1,w,0,0,w^2,1,w,1,0,0,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,1,0,1,1,1,0,1,0,w,w,w,0,w^2,w,1,w^2,1,0,w,w,w,0,w^2,1,w^2,w,1,1,1,w,w,1,0,0,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,0,1,0,1,1,1,0,0,w,w,0,w^2,0,1,0,1,w^2,1,w,0,w,w^2,w,w^2,w^2,w,w,w^2,w^2,1,w,w,w^2,w,0,0,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,1,0,1,1,1,0,w,1,w,w,w^2,w^2,w^2,0,1,1,w^2,0,0,w,1,1,w^2,1,w,1,1,w^2,1,0,0,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,1,0,1,1,1,0,w,w^2,1,w,1,w^2,0,w,1,1,1,w,w,w,1,w^2,0,1,0,1,w,1,1,0,w,w^2,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,0,1,1,1,0,0,1,1,w^2,w^2,w^2,w,w^2,1,w^2,w^2,w,w,w,w^2,1,0,0,w,1,0,0,1,w,0,w^2,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,1,1,1,0,1,1,0,1,1,1,0,0,w^2,w^2,w^2,w,1,w,1,0,w^2,1,0,w,w,w^2,w^2,w,0,w^2,w^2,0,w,0,w,w,1,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,1,1,1,0,0,0,0,1,1,1,0,0,w^2,1,1,w,0,0,1,w,w,1,w,0,w,w^2,w^2,0,w,w^2,w,w,w,w,w^2,w,w^2,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,1,1,0,0,1,1,1,1,1,0,w,1,w^2,1,w,w,w^2,1,0,w,w,0,0,w,1,1,w,w,w^2,0,1,w,0,w^2,1,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,1,1,0,0,1,0,0,1,1,0,w,w^2,1,w^2,w,w,1,w,0,0,w,w^2,w,w,1,w^2,0,0,w^2,0,w^2,1,0,1,1,w,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,0,1,w,0,1,w^2,w,0,1,w^2,w,w,w,w,w,1,w^2,w^2,1,w^2,0,w,w,w^2,1,1,0,1,0,w^2,w,1,w,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,0,1,w^2,0,1,w,w^2,0,1,w,w^2,w,0,w^2,w,w^2,1,w^2,w,w^2,w^2,w^2,w,1,1,0,w^2,0,w^2,w,w^2,1,w^2,1,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,w,0,w^2,w^2,0,0,1,0,0,w^2,1,1,0,w,w^2,w^2,w^2,w^2,w,w,0,w,1,0,w^2,0,w^2,w,w^2,w^2,1,w,w^2,w^2,w^2,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w^2,0,w,w,0,0,1,0,0,0,w,0,0,1,w^2,0,w^2,w,w^2,w^2,w^2,w^2,1,0,w^2,0,1,w,1,1,1,1,1,w,0,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,w,0,1,w^2,0,w^2,w^2,0,1,w,1,1,w^2,w^2,w,w^2,0,w,w,0,0,1,1,0,w^2,0,0,w,0,0,w^2,0,1,w,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,w^2,0,1,w,0,w,w,0,w,w^2,0,w^2,w,w,1,1,1,0,w^2,w,w^2,w,w,1,0,w,w,0,w,0,1,0,1,0,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,1,0,0,1,0,1,0,1,0,0,1,1,w^2,w,0,w^2,w,1,w,w,1,w^2,w,w^2,1,0,0,w^2,w,1,1,1,w^2,1,0,1,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,0,1,w,w,w,w^2,1,0,1,0,w,1,0,0,w,w,w,w^2,1,w,w^2,w,w,0,w^2,w,1,w,0,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,1,1,0,0,1,0,1,1,0,w,w^2,0,0,0,1,w^2,w,w^2,w,0,w^2,w,w,0,0,0,1,w^2,0,1,0,0,w,1,0,w^2,0,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,1,1,1,0,0,1,0,w^2,w,w,1,w,1,w^2,w^2,w,w,w^2,0,0,1,0,w^2,0,w^2,1,1,w,0,w^2,0,1,w^2,0,0,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,31,60,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w^2,0,w^2,w,1,w,0,w^2,1,w^2,0,w^2,w^2,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,0,1,w^2,1,0,w,w^2,w,0,w,w,w,0,w^2,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,w^2,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,1,w,0,w,0,w,1,0,w,1,w,w,1,w,w,0,w^2,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w^2,w,w,1,1,1,w,w,1,w^2,w,w,0,1,w^2,0,1,1,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,1,1,w^2,w,1,1,0,1,w,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,1,1,w,w^2,0,1,1,0,1,w^2,w,w,w,w^2,0,w,w,w,w,w,0,w^2,w^2,1,w,0,w^2,w^2,0,0,1,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,w,w^2,0,0,0,w,1,0,w,0,w^2,w^2,1,w^2,1,1,1,w^2,w,w,1,1,w,0,0,0,1,1,0,1,0,w,w,w^2,w,w,1,w,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w,w^2,1,w^2,1,w^2,w,1,w,w,w^2,w^2,w,w,w^2,0,1,w^2,0,0,1,0,w,w^2,w,w^2,w,1,w^2,1,1,w,w,w^2,1,w,0,w^2,w,0,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,0,w,w^2,1,0,w^2,w^2,1,w,1,w^2,1,w,1,0,w^2,w^2,1,1,1,0,w^2,1,w,w^2,0,w,w,w^2,1,w^2,w,w^2,1,1,0,w,w,w^2,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,1,w,0,w^2,0,w^2,0,w,0,1,w^2,0,w^2,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,0,1,0,w^2,w,0,w,w^2,0,1,0,1,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,w,w^2,1,0,0,w^2,1,1,w^2,w,w^2,1,1,w^2,1,w,w^2,1,w,0,w^2,1,w,w^2,0,0,w,w^2,w^2,w,1,w,w^2,w^2,w,1,1,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,0,1,w^2,0,1,1,1,w,w^2,w,1,w^2,0,1,0,w^2,w,0,w^2,w,0,0,w^2,w,0,w^2,w^2,w^2,1,w,1,w^2,w,0,w^2,0,w,w^2,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,1,w^2,0,1,1,w,w,w,w^2,1,w,0,0,w^2,0,w,1,0,w,w,1,0,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,1,1,w^2,w,0,w^2,w,1,0,0,w,w^2,w,w^2,w,w^2,0,0,w^2,w^2,w^2,0,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,w^2,0,w^2,w,1,1,1,1,0,w,0,1,0,w,w^2,1,w,w^2,w^2,w^2,w,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,w^2,w^2,w,w^2,w^2,w,1,0,w^2,0,1,0,w^2,1,0,0,1,1,w,w^2,w,w^2,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,1,w,w^2,1,w^2,w,1,w^2,1,1,0,w,0,w^2,w,w^2,w^2,0,1,w,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,w^2,0,1,1,w,w^2,w^2,1,0,w,1,1,w^2,1,w,w,w^2,1,1,1,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,1,w,w,1,0,0,0,0,0,0,0,0,0,0,w,1,0,0,1,w^2,w^2,1,w^2,0,1,0,w^2,w,1,0,w,1,w^2,0,1,w^2,w^2,0,0,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,w^2,w,1,1,w^2,1,w,0,w,w^2,w^2,w^2,1,1,0,1,w^2,w^2,w^2,0,w^2,0,1,0,w,w^2,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,1,1,w^2,1,0,0,0,0,0,0,0,1,w^2,1,w^2,w^2,w,w^2,w^2,0,w^2,w,1,w,0,1,w^2,w,w^2,1,w^2,1,1,w,1,w,w,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,0,0,1,w^2,1,1,0,0,0,0,0,0,w^2,w,0,1,w,0,1,w^2,1,w^2,w^2,0,0,w^2,0,w,w,1,0,1,w,1,0,0,w,0,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,w,1,w,w,w^2,1,0,0,0,0,0,w^2,0,0,0,w,0,0,1,0,w^2,w^2,0,1,1,0,1,0,0,1,w^2,1,w^2,w^2,w,1,1,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w^2,w,0,w,w,w^2,0,1,0,0,0,0,0,1,w^2,1,w,w,1,w^2,w^2,1,w^2,0,1,0,0,1,0,0,w^2,1,0,w,1,w^2,w,0,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,w,0,w,w^2,1,w,1,w,w,0,0,0,1,1,w,w,0,w^2,1,w^2,w^2,w^2,0,w^2,0,1,0,0,w^2,w,w^2,0,1,w^2,0,w,1,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,1,w^2,0,1,w^2,w^2,w,1,w,w^2,0,0,1,w^2,1,w^2,w,w^2,w,1,w^2,w^2,0,w,w^2,w^2,w^2,w,w^2,w,1,w,w,0,w,w^2,w,w,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w^2,1,1,w^2,1,0,w,1,w,1,1,0,1,w,w,w,0,w^2,w,1,w^2,w^2,w^2,w^2,0,1,0,w^2,w,1,w^2,w,w,w^2,w,1,1,1,1,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,1,w,0,0,w^2,w^2,w^2,w,w,1,w,1,w,w,w,w^2,w^2,0,w,0,0,w^2,w^2,0,w^2,1,w,w,0,w,0,w^2,w^2,w^2,w^2,1,1,1,w^2,0,w^2
-        ]),
-        ZeroMatrix(F,31,1)),
-    HorizontalJoin(
-        Matrix(F,1,60,[
-            w,w,0,0,1,0,w,1,0,0,0,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,1,w^2,w,0,1,w^2,w,0,w,1,w^2,w,w,w,w,0,0,1,0,0,w^2,1,w^2,w^2,1
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
-assert Ncols(GX4) eq 61;
-assert RowSpace(Submatrix(GX4,1,1,32,60)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 16;
-Table1Generators[104] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 23 and Rank(GX4) eq 23;
+assert RowSpace(Submatrix(GX4,1,1,23,56)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,57,23,5) eq VerticalJoin(ZeroMatrix(F,18,5),IdentityMatrix(F,5));
+Table1Generators[59]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 61 and Dimension(Q) eq 23;
+assert Dimension(HermitianHull(Q)) eq 12;
+Table1Parameters[59]:=[61,11,19,26];
+Table1DistanceTypes[59]:="exact";
 
-// Table 1, No. 105 | source DV34 | HullDecreasing.m
-// Gsrc: [60,33]_4, hull 15; X4: [[61,19,14;14]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,33,60,[
+// Table 1, No. 60 | DV34
+// [[61,19,14;14]]_2, distance exact.
+Gsrc:=Matrix(F,33,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w^2,0,0,1,0,0,w^2,w,w^2,1,1,w,w,w^2,w^2,w,1,1,w,1,0,0,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w,1,w^2,w^2,w,1,w^2,0,0,1,1,0,w,w,1,0,w^2,1,w^2,0,w^2,w,w^2,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,1,0,1,w,w,w^2,w^2,w^2,w^2,0,w^2,w,1,w,0,0,w^2,w,1,0,1,w,
@@ -6429,59 +3396,54 @@ Gsrc := Matrix(F,33,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w^2,w,w,w^2,1,w,w,w,0,w^2,w,1,w,w,0,w,w,w^2,w,0,1,0,1,0,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w,0,w,1,0,w,0,w,w,1,w^2,w,0,w,w,0,w,1,w^2,w^2,w,w,w^2,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,32,60,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,w^2,w^2,0,w,1,1,w,0,1,w,w,0,w,1,1,w,0,1,1,1,w^2,w,w,w,1,w^2,w^2,1,0,w^2,1,1,0,1,w^2,w^2,1,0,0,w^2,w^2,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w,w^2,0,w^2,w^2,w,1,w^2,0,w^2,0,0,w^2,w,w,1,0,1,1,0,0,1,w,w,w,w,1,w^2,w,0,w,0,0,w,1,1,w^2,1,0,w^2,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,0,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,w,1,1,0,0,0,0,1,w^2,0,1,1,w^2,1,0,1,1,1,1,w,0,1,w^2,w^2,0,0,w,0,w^2,w,0,w^2,w^2,w,w^2,0,w^2,1,w^2,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w^2,w,1,w,1,w,w,w,w,0,1,1,w,1,w^2,w,1,1,1,w,0,w,1,w^2,1,w^2,1,w^2,1,1,0,w^2,w^2,1,w^2,w,1,0,1,w^2,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w,1,w^2,w,0,0,w,1,1,w^2,w^2,w,1,0,1,w,0,w,1,1,0,1,w^2,w,1,0,0,1,w^2,1,w,w,1,w^2,0,w^2,1,0,0,0,1,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,1,0,1,1,w,w^2,0,1,w,1,w,0,1,w^2,w,w,0,1,1,0,w^2,w^2,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w^2,0,1,1,0,w^2,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,w,w,w,w^2,1,w,w^2,w,1,1,w^2,1,w^2,w,1,1,1,w,1,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,0,0,0,1,0,w^2,0,w^2,1,w^2,w^2,0,0,0,1,1,1,0,1,0,0,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,1,w^2,w^2,w^2,w^2,w,w,w^2,1,1,w^2,w^2,0,0,1,w^2,w^2,1,1,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,0,0,1,w,w,w^2,0,w^2,w^2,1,1,1,w^2,1,w^2,w,1,0,1,0,w,1,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w,0,1,w^2,w^2,0,w^2,w,0,0,w^2,w,1,0,w,w,w,w^2,1,w^2,w,1,1,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w,w,w,w,w^2,0,0,w^2,0,0,w^2,w^2,w,1,1,w,1,0,w^2,0,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,w,1,w,w^2,0,w,0,w,w,1,0,0,0,w^2,w^2,w,0,w,w,1,1,1,0,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,0,w,0,1,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,0,w^2,1,w,w,1,w,w,w^2,0,0,0,w,0,w^2,1,w,w^2,w^2,1,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w^2,1,w^2,1,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,1,w,w^2,1,0,1,w,1,w,w^2,w,0,w,0,w^2,0,w,0,0,1,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,1,1,1,w^2,w,0,w^2,1,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w,1,1,0,w,w^2,1,1,1,w^2,w^2,w^2,0,w,1,0,w^2,0,0,w,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w,w,0,w,0,0,1,0,0,0,0,0,0,w^2,1,0,0,w^2,1,0,1,w,w,1,w,0,0,0,w^2,w,w,w^2,w^2,1,1,w,w^2,1,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,w^2,w^2,0,w,0,w^2,0,w^2,1,0,0,0,0,0,0,1,0,w^2,w^2,1,w^2,0,0,w,0,0,w^2,1,0,0,w,w,0,0,w,1,w^2,w,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,1,1,w^2,0,0,1,w^2,1,0,0,0,0,0,w,1,0,w^2,0,w,1,1,1,w,w^2,0,w,0,0,1,w,w,1,w^2,0,1,w,w,w^2,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,1,1,1,1,0,0,w^2,w^2,0,1,0,0,0,0,1,0,w^2,1,1,1,0,1,w,1,w,w^2,0,w,0,0,w,0,1,0,1,1,w^2,w,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,0,w^2,w,1,w,w,0,0,w^2,0,1,0,0,0,1,1,1,w,1,w^2,w,0,w^2,1,w,w^2,w^2,1,0,0,1,1,0,0,1,w^2,1,1,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,1,w^2,w^2,w^2,0,0,w,w,w^2,1,0,1,0,1,w^2,w,w,w^2,w^2,w,0,1,0,w,w,w^2,1,w,1,w^2,0,1,0,1,w,w,0,0,w,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,1,w,0,1,1,1,0,0,0,w^2,1,0,0,0,1,1,w,0,0,w,0,w,1,0,w,1,0,w,w,1,w^2,w^2,w^2,w,w^2,w,w^2,1,1,w,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,1,w^2,0,w^2,1,1,w,1,0,w^2,w^2,1,1,w^2,1,1,w^2,0,w,1,w^2,w^2,w,w^2,0,1,0,0,w^2,w^2,0,1,w,w,w,1,1,w,1,1,1,w^2
-        ]),
-        ZeroMatrix(F,32,1)),
-    HorizontalJoin(
-        Matrix(F,1,60,[
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,33,61,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,w^2,w^2,0,w,1,1,w,0,1,w,w,0,w,1,1,w,0,1,1,1,w^2,w,w,w,1,w^2,w^2,1,0,w^2,1,1,0,1,w^2,w^2,1,0,0,w^2,w^2,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w,w^2,0,w^2,w^2,w,1,w^2,0,w^2,0,0,w^2,w,w,1,0,1,1,0,0,1,w,w,w,w,1,w^2,w,0,w,0,0,w,1,1,w^2,1,0,w^2,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,w,1,1,0,0,0,0,1,w^2,0,1,1,w^2,1,0,1,1,1,1,w,0,1,w^2,w^2,0,0,w,0,w^2,w,0,w^2,w^2,w,w^2,0,w^2,1,w^2,w,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w^2,w,1,w,1,w,w,w,w,0,1,1,w,1,w^2,w,1,1,1,w,0,w,1,w^2,1,w^2,1,w^2,1,1,0,w^2,w^2,1,w^2,w,1,0,1,w^2,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w,1,w^2,w,0,0,w,1,1,w^2,w^2,w,1,0,1,w,0,w,1,1,0,1,w^2,w,1,0,0,1,w^2,1,w,w,1,w^2,0,w^2,1,0,0,0,1,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,1,0,1,1,w,w^2,0,1,w,1,w,0,1,w^2,w,w,0,1,1,0,w^2,w^2,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w^2,0,1,1,0,w^2,0,0,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,w,w,w,w^2,1,w,w^2,w,1,1,w^2,1,w^2,w,1,1,1,w,1,w^2,1,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,0,0,0,1,0,w^2,0,w^2,1,w^2,w^2,0,0,0,1,1,1,0,1,0,0,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,1,w^2,w^2,w^2,w^2,w,w,w^2,1,1,w^2,w^2,0,0,1,w^2,w^2,1,1,0,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,0,0,1,w,w,w^2,0,w^2,w^2,1,1,1,w^2,1,w^2,w,1,0,1,0,w,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w,0,1,w^2,w^2,0,w^2,w,0,0,w^2,w,1,0,w,w,w,w^2,1,w^2,w,1,1,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w,w,w,w,w^2,0,0,w^2,0,0,w^2,w^2,w,1,1,w,1,0,w^2,0,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,1,1,0,1,0,0,0,0,0,0,0,0,0,1,1,w,1,w,w^2,0,w,0,w,w,1,0,0,0,w^2,w^2,w,0,w,w,1,1,1,0,w^2,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,0,w,0,1,0,0,0,0,0,0,0,0,0,0,w,1,1,w,w,0,w^2,1,w,w,1,w,w,w^2,0,0,0,w,0,w^2,1,w,w^2,w^2,1,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w^2,1,w^2,1,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,1,w,w^2,1,0,1,w,1,w,w^2,w,0,w,0,w^2,0,w,0,0,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,1,1,1,w^2,w,0,w^2,1,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w,1,1,0,w,w^2,1,1,1,w^2,w^2,w^2,0,w,1,0,w^2,0,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w,w,0,w,0,0,1,0,0,0,0,0,0,w^2,1,0,0,w^2,1,0,1,w,w,1,w,0,0,0,w^2,w,w,w^2,w^2,1,1,w,w^2,1,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,w^2,w^2,0,w,0,w^2,0,w^2,1,0,0,0,0,0,0,1,0,w^2,w^2,1,w^2,0,0,w,0,0,w^2,1,0,0,w,w,0,0,w,1,w^2,w,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,1,1,w^2,0,0,1,w^2,1,0,0,0,0,0,w,1,0,w^2,0,w,1,1,1,w,w^2,0,w,0,0,1,w,w,1,w^2,0,1,w,w,w^2,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,1,1,1,1,0,0,w^2,w^2,0,1,0,0,0,0,1,0,w^2,1,1,1,0,1,w,1,w,w^2,0,w,0,0,w,0,1,0,1,1,w^2,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,0,w^2,w,1,w,w,0,0,w^2,0,1,0,0,0,1,1,1,w,1,w^2,w,0,w^2,1,w,w^2,w^2,1,0,0,1,1,0,0,1,w^2,1,1,w^2,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,1,w^2,w^2,w^2,0,0,w,w,w^2,1,0,1,0,1,w^2,w,w,w^2,w^2,w,0,1,0,w,w,w^2,1,w,1,w^2,0,1,0,1,w,w,0,0,w,w^2,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,1,w,0,1,1,1,0,0,0,w^2,1,0,0,0,1,1,w,0,0,w,0,w,1,0,w,1,0,w,w,1,w^2,w^2,w^2,w,w^2,w,w^2,1,1,w,w^2,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,1,w^2,0,w^2,1,1,w,1,0,w^2,w^2,1,1,w^2,1,1,w^2,0,w,1,w^2,w^2,w,w^2,0,1,0,0,w^2,w^2,0,1,w,w,w,1,1,w,1,1,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,1
+]);
 assert Rank(Gsrc) eq 33 and Rank(GX4) eq 33;
-assert Ncols(GX4) eq 61;
 assert RowSpace(Submatrix(GX4,1,1,33,60)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 14;
-Table1Generators[105] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,61,33,1) eq VerticalJoin(ZeroMatrix(F,32,1),IdentityMatrix(F,1));
+Table1Generators[60]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 61 and Dimension(Q) eq 33;
+assert Dimension(HermitianHull(Q)) eq 14;
+Table1Parameters[60]:=[61,19,14,14];
+Table1DistanceTypes[60]:="exact";
 
-// Table 1, No. 106 | source DV30 | HullDecreasing.m
-// Gsrc: [59,32]_4, hull 14; X4: [[61,20,14;17]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,32,59,[
+// Table 1, No. 61 | DV30
+// [[61,20,14;17]]_2, distance exact.
+Gsrc:=Matrix(F,32,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w,1,w^2,w^2,w,1,w^2,0,0,1,1,0,w,w,1,0,w^2,1,w^2,0,w^2,w,w^2,1,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,1,0,1,w,w,w^2,w^2,w^2,w^2,0,w^2,w,1,w,0,0,w^2,w,1,0,1,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,1,0,w^2,1,w^2,w,w,w,0,1,1,w^2,w^2,0,w,1,w^2,1,0,0,1,w^2,
@@ -6515,149 +3477,53 @@ Gsrc := Matrix(F,32,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w^2,w,w,w^2,1,w,w,w,0,w^2,w,1,w,w,0,w,w,w^2,w,0,1,0,1,0,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w,0,w,1,0,w,0,w,w,1,w^2,w,0,w,w,0,w,1,w^2,w^2,w,w,w^2,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,30,59,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w,w^2,0,w^2,w^2,w,1,w^2,0,w^2,0,0,w^2,w,w,1,0,1,1,0,0,1,w,w,w,w,1,w^2,w,0,w,0,0,w,1,1,w^2,1,0,w^2,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,0,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,w,1,1,0,0,0,0,1,w^2,0,1,1,w^2,1,0,1,1,1,1,w,0,1,w^2,w^2,0,0,w,0,w^2,w,0,w^2,w^2,w,w^2,0,w^2,1,w^2,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w^2,w,1,w,1,w,w,w,w,0,1,1,w,1,w^2,w,1,1,1,w,0,w,1,w^2,1,w^2,1,w^2,1,1,0,w^2,w^2,1,w^2,w,1,0,1,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w,1,w^2,w,0,0,w,1,1,w^2,w^2,w,1,0,1,w,0,w,1,1,0,1,w^2,w,1,0,0,1,w^2,1,w,w,1,w^2,0,w^2,1,0,0,0,1,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,1,0,1,1,w,w^2,0,1,w,1,w,0,1,w^2,w,w,0,1,1,0,w^2,w^2,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w^2,0,1,1,0,w^2,0,0,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,w,w,w,w^2,1,w,w^2,w,1,1,w^2,1,w^2,w,1,1,1,w,1,w^2,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,1,w^2,w^2,w^2,w^2,w,w,w^2,1,1,w^2,w^2,0,0,1,w^2,w^2,1,1,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w,w^2,w,0,0,1,1,w^2,0,w^2,w,1,1,w,w^2,0,1,w^2,0,1,0,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,w,w,w,0,w,w,w,1,0,w,w^2,w,w^2,w^2,w,0,w,w^2,w^2,w^2,1,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w,0,0,1,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w^2,w^2,w,1,w^2,w,1,w,1,w^2,w^2,w^2,w^2,1,w,w,w^2,w^2,w,1,1,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w,0,0,0,w,0,0,0,0,0,0,0,0,1,0,w,0,0,0,0,0,w,w^2,w,w,1,0,w,0,1,w,0,w,1,0,0,0,w,1,w^2,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,0,0,0,w^2,0,0,0,0,0,0,0,0,w,0,w^2,1,w,1,1,0,1,1,0,w^2,w^2,0,1,w^2,1,w,w^2,w,w^2,w,w^2,1,0,w,w,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w^2,1,1,w^2,1,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w^2,w,w,w^2,w^2,w^2,0,w,w^2,w,0,w^2,1,w,1,1,0,1,w^2,0,1,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w^2,0,1,0,w^2,0,0,0,0,0,0,0,0,w,0,0,0,0,w^2,1,w,w,w^2,w^2,w,w^2,w^2,0,1,0,w,1,1,0,w,w^2,w^2,w^2,w,0,1,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,w,1,w^2,w,0,1,0,0,0,0,0,0,w^2,0,w,w,1,1,0,1,0,1,w,w^2,0,w,0,w,1,0,1,w,0,w,w,0,0,0,1,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,1,w,1,0,0,w^2,1,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w,w^2,w,0,w^2,w,0,w,w^2,1,0,1,w,0,0,w^2,1,w,0,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,0,w^2,1,w^2,w^2,0,0,0,w,w,0,0,0,w,0,w^2,1,w,0,1,w,w,w,0,w,w^2,0,w^2,w^2,w,w,w,1,0,0,1,w,1,w,w^2,1,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,w,1,w,w,0,w,w^2,w,w^2,0,0,0,1,0,w^2,w,w^2,w,w^2,w^2,w^2,0,w,0,w,w,w,1,0,w^2,w^2,1,1,w^2,w,1,1,0,w^2,0,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,1,1,1,1,1,1,0,0,1,w,0,0,w,w,0,w,0,w,w^2,w^2,0,0,1,1,1,w,w,w,w^2,w,1,w^2,w,1,1,w^2,w^2,0,0,w,0,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,w,0,w,0,1,0,w,w,w,0,0,w^2,w,0,w,w,w^2,w^2,1,w,1,0,1,1,0,1,w^2,1,w,w,w^2,0,0,0,w^2,1,0,1,w^2,0,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,1,1,1,0,1,w,w,0,0,w,1,w,0,0,1,w^2,0,w,0,w,1,w,1,1,w^2,0,0,0,0,1,1,0,0,0,w,0,0,w,w^2,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,w^2,w^2,w,w,w^2,1,w,w^2,1,0,0,1,1,0,0,w,w,w,1,w,w,0,1,0,w,w,w,1,w,0,w,1,1,1,w,0,1,0,0,w^2,w,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w,0,0,1,0,w,w^2,w,w,0,w^2,1,1,0,0,1,1,0,w,1,0,1,w^2,w^2,w,w^2,1,1,1,w,1,1,w^2,1,w,w,0,w,1,1,0
-        ]),
-        ZeroMatrix(F,30,2)),
-    HorizontalJoin(
-        Matrix(F,2,59,[
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
-assert Ncols(GX4) eq 61;
-assert RowSpace(Submatrix(GX4,1,1,32,59)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 14;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 12;
-Table1Generators[106] := <Gsrc,GX4>;
-
-// Table 1, No. 107 | source BS085 | HullIncreasing.m
-// Gsrc: [58,35]_4, hull 7; X4: [[61,25,12;16]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,35,58,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,0,w,1,0,w^2,0,1,w,w^2,w,w,0,w^2,w^2,w,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,w^2,w,0,0,w,w,1,w,1,w,w^2,w,0,w,w,w,w,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,w,w,0,w^2,0,0,1,w^2,0,w^2,w,w^2,w,0,0,0,w^2,w^2,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,w^2,1,1,1,w^2,0,w^2,0,w,1,0,w^2,w,0,0,w,1,w,w^2,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,1,1,w,0,w^2,1,w^2,1,1,w,0,0,w,1,1,0,w^2,0,w^2,w,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,1,1,w^2,1,0,0,0,w^2,w^2,1,w^2,w^2,1,w,w,1,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,1,w^2,w^2,w^2,1,w^2,0,w,w,w,w,1,w^2,0,w^2,w,0,0,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,w^2,1,0,w^2,1,1,w^2,1,1,0,1,w,w,0,w,1,w^2,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,w^2,1,0,w^2,1,1,w^2,1,1,0,1,w,w,0,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,w,w,w^2,1,1,0,w,w^2,w^2,1,0,w^2,w,w,w,1,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,0,0,0,1,1,w,1,0,0,w^2,w^2,0,w^2,w,w^2,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,0,0,0,1,1,w,1,0,0,w^2,w^2,0,w^2,w,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,0,w,w^2,w^2,0,0,w^2,w,1,w,w,w^2,0,w,0,w,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,0,w^2,1,w,w^2,0,w^2,w,w^2,0,1,w^2,w,w,w,w,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,0,w^2,1,w,w^2,0,w^2,w,w^2,0,1,w^2,w,w,w,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,0,w^2,1,w,w^2,0,w^2,w,w^2,0,1,w^2,w,w,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,0,w,w^2,w,w^2,1,w^2,1,w,1,w^2,1,w,w,w^2,1,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,w^2,1,w,w,w^2,w,w,0,w^2,w,w,0,0,w,1,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,w^2,1,w,w,w^2,w,w,0,w^2,w,w,0,0,w,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w^2,1,0,0,1,w,0,0,1,1,w,0,1,w^2,0,1,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w^2,1,0,0,1,w,0,0,1,1,w,0,1,w^2,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,w^2,w^2,0,0,0,0,w,w^2,1,1,w,0,w^2,w,1,1,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w^2,1,1,w^2,0,0,w,1,0,w,w^2,1,w^2,w,w,0,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w^2,1,1,w^2,0,0,w,1,0,w,w^2,1,w^2,w,w,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,w,0,0,1,w^2,w^2,1,w^2,0,w^2,w^2,w,w^2,w^2,0,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w^2,0,1,w^2,w^2,1,1,0,1,0,w,0,w,w^2,w,w,0,w^2,1,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,1,1,w,1,0,w^2,w^2,1,w^2,0,0,1,w^2,0,w,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,w,w,w^2,0,w,0,w,1,w^2,w,w,0,0,1,1,w^2,w^2,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,w^2,w,1,0,w^2,w^2,0,w,w,w,w^2,w^2,w^2,1,0,w^2,w^2,1,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w,w,0,w^2,w^2,0,1,1,w^2,0,w^2,0,0,1,w,1,w^2,w^2,w^2,0,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,w^2,0,1,w^2,w^2,w,1,1,w,w^2,0,1,w^2,1,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,0,1,0,w,w,w,0,0,1,1,0,1,w,w^2,1,0,1,1,w,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,w,1,w^2,1,1,w^2,0,0,w,0,1,0,1,w,0,w,1,w^2,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w,w,0,w,0,w^2,0,w^2,w^2,1,0,w^2,0,w^2,w,w,w^2,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,w^2,w^2,w^2,1,0,0,w^2,1,1,1,w^2,1,1,w,0,w,1,1,0,w
+GX4:=Matrix(F,32,61,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w,w^2,0,w^2,w^2,w,1,w^2,0,w^2,0,0,w^2,w,w,1,0,1,1,0,0,1,w,w,w,w,1,w^2,w,0,w,0,0,w,1,1,w^2,1,0,w^2,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,0,1,1,w,w^2,1,1,0,1,w,w,1,1,0,1,0,1,1,1,0,1,0,w^2,w^2,1,w,1,w^2,0,w^2,1,1,w^2,w^2,0,w^2,0,w^2,w^2,w,1,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,w,1,1,0,0,0,0,1,w^2,0,1,1,w^2,1,0,1,1,1,1,w,0,1,w^2,w^2,0,0,w,0,w^2,w,0,w^2,w^2,w,w^2,0,w^2,1,w^2,w,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,w^2,w,1,w,1,w,w,w,w,0,1,1,w,1,w^2,w,1,1,1,w,0,w,1,w^2,1,w^2,1,w^2,1,1,0,w^2,w^2,1,w^2,w,1,0,1,w^2,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w,1,w^2,w,0,0,w,1,1,w^2,w^2,w,1,0,1,w,0,w,1,1,0,1,w^2,w,1,0,0,1,w^2,1,w,w,1,w^2,0,w^2,1,0,0,0,1,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w^2,w,1,w,0,1,w^2,0,w^2,1,w^2,0,w^2,1,0,w,w^2,1,0,w^2,0,w,1,w^2,1,0,w^2,w,0,w,w^2,w,0,0,w^2,0,1,w,w^2,0,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,1,0,1,1,w,w^2,0,1,w,1,w,0,1,w^2,w,w,0,1,1,0,w^2,w^2,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w^2,0,1,1,0,w^2,0,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,1,w,w,w,w^2,1,w,w^2,w,1,1,w^2,1,w^2,w,1,1,1,w,1,w^2,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,1,w^2,w^2,w^2,w^2,w,w,w^2,1,1,w^2,w^2,0,0,1,w^2,w^2,1,1,0,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w,w^2,w,0,0,1,1,w^2,0,w^2,w,1,1,w,w^2,0,1,w^2,0,1,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,0,1,0,w,1,w^2,0,w,w,w,0,w,w,w,1,0,w,w^2,w,w^2,w^2,w,0,w,w^2,w^2,w^2,1,w,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w,0,0,1,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w^2,w^2,w,1,w^2,w,1,w,1,w^2,w^2,w^2,w^2,1,w,w,w^2,w^2,w,1,1,1,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w,0,0,0,w,0,0,0,0,0,0,0,0,1,0,w,0,0,0,0,0,w,w^2,w,w,1,0,w,0,1,w,0,w,1,0,0,0,w,1,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,0,0,0,w^2,0,0,0,0,0,0,0,0,w,0,w^2,1,w,1,1,0,1,1,0,w^2,w^2,0,1,w^2,1,w,w^2,w,w^2,w,w^2,1,0,w,w,1,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,w^2,1,1,w^2,1,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w^2,w,w,w^2,w^2,w^2,0,w,w^2,w,0,w^2,1,w,1,1,0,1,w^2,0,1,w^2,w,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w^2,0,1,0,w^2,0,0,0,0,0,0,0,0,w,0,0,0,0,w^2,1,w,w,w^2,w^2,w,w^2,w^2,0,1,0,w,1,1,0,w,w^2,w^2,w^2,w,0,1,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,w,1,w^2,w,0,1,0,0,0,0,0,0,w^2,0,w,w,1,1,0,1,0,1,w,w^2,0,w,0,w,1,0,1,w,0,w,w,0,0,0,1,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,1,w,1,0,0,w^2,1,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w^2,w,w^2,w,0,w^2,w,0,w,w^2,1,0,1,w,0,0,w^2,1,w,0,w^2,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,0,w^2,1,w^2,w^2,0,0,0,w,w,0,0,0,w,0,w^2,1,w,0,1,w,w,w,0,w,w^2,0,w^2,w^2,w,w,w,1,0,0,1,w,1,w,w^2,1,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,w,1,w,w,0,w,w^2,w,w^2,0,0,0,1,0,w^2,w,w^2,w,w^2,w^2,w^2,0,w,0,w,w,w,1,0,w^2,w^2,1,1,w^2,w,1,1,0,w^2,0,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,1,1,1,1,1,1,0,0,1,w,0,0,w,w,0,w,0,w,w^2,w^2,0,0,1,1,1,w,w,w,w^2,w,1,w^2,w,1,1,w^2,w^2,0,0,w,0,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,w,0,w,0,1,0,w,w,w,0,0,w^2,w,0,w,w,w^2,w^2,1,w,1,0,1,1,0,1,w^2,1,w,w,w^2,0,0,0,w^2,1,0,1,w^2,0,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,1,1,1,0,1,w,w,0,0,w,1,w,0,0,1,w^2,0,w,0,w,1,w,1,1,w^2,0,0,0,0,1,1,0,0,0,w,0,0,w,w^2,w,w,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,w^2,w^2,w,w,w^2,1,w,w^2,1,0,0,1,1,0,0,w,w,w,1,w,w,0,1,0,w,w,w,1,w,0,w,1,1,1,w,0,1,0,0,w^2,w,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w,0,0,1,0,w,w^2,w,w,0,w^2,1,1,0,0,1,1,0,w,1,0,1,w^2,w^2,w,w^2,1,1,1,w,1,1,w^2,1,w,w,0,w,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w,0,0,w,w^2,1,1,1,w,w,w^2,0,w,1,1,1,0,0,0,w,1,1,0,0,1,w,w^2,w^2,w^2,1,1,w,0,1,w^2,w^2,w^2,w,0,0,1,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,32,58,[
-            1,0,0,0,0,0,0,w,1,1,1,1,1,w,w,1,w,0,w^2,w^2,0,w,0,1,w,w,1,1,0,w,w^2,w,w^2,1,w,0,0,w^2,0,1,1,0,0,0,w,w^2,w^2,w,w,1,0,w,0,w,1,w,1,w^2,
-            0,1,0,0,0,0,0,1,w,1,w,w^2,0,w,0,0,1,0,1,0,0,0,1,w,w,w^2,w,w^2,0,w^2,0,0,w,1,w^2,w,w,w,0,w,0,0,0,1,w^2,w^2,1,w^2,1,w^2,0,w^2,1,1,w,0,w^2,w^2,
-            0,0,1,0,0,0,0,1,1,w,w,0,w,w^2,0,w,0,w^2,1,w,w^2,0,w^2,w^2,1,w^2,w^2,0,w,w^2,1,w^2,0,0,w^2,w^2,0,0,1,w,w^2,1,0,1,w,w,1,1,0,0,w,w^2,0,0,1,w^2,1,1,
-            0,0,0,1,0,0,0,w,1,1,w^2,1,w,w^2,0,w^2,w,w^2,1,0,w^2,w^2,1,0,w,w^2,w^2,0,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w^2,1,w,0,1,1,w,0,0,1,1,0,w,w,w^2,w,w,0,w^2,1,w,
-            0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,0,
-            0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,
-            0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,0,0,0,w^2,w^2,1,w^2,w,0,0,0,0,0,w,1,0,w^2,1,w,w^2,w^2,0,
-            0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,w^2,1,w,w^2,1,w^2,1,w,w,w^2,0,w^2,w^2,w,w^2,w^2,w^2,w,w,0,
-            0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,0,w^2,w^2,1,0,1,w,w^2,w,0,0,w,w,0,w^2,w^2,1,1,w^2,0,0,w,
-            0,0,0,0,0,0,0,w,w,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,0,w,w,w,1,1,0,1,w,1,w,1,0,w,1,0,w,1,w^2,w,0,
-            0,0,0,0,0,0,0,w,0,w,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,0,w^2,w,1,w,1,1,w^2,1,1,w^2,w,1,1,0,0,w^2,0,0,1,1,w^2,
-            0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,w,1,0,0,w,1,w^2,1,1,1,w,0,w,w,0,1,w^2,0,w,w,
-            0,0,0,0,0,0,0,w^2,w^2,w^2,1,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w,0,1,0,w^2,1,0,w^2,w^2,0,w^2,1,0,0,0,0,0,w^2,w^2,w^2,w^2,
-            0,0,0,0,0,0,0,w,w^2,1,0,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,w,w^2,1,1,w,0,w,w,1,1,1,w,w,w^2,w^2,0,1,w,w,w,1,0,
-            0,0,0,0,0,0,0,1,w^2,w,1,w^2,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,w^2,0,0,1,1,w^2,0,w^2,1,w^2,w^2,0,w,1,1,1,w^2,w,w,w^2,0,
-            0,0,0,0,0,0,0,w^2,w,0,w^2,1,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w^2,w^2,0,0,0,0,0,w,w,0,w,w^2,w,0,w,0,0,1,w^2,w^2,0,
-            0,0,0,0,0,0,0,w,1,0,w,w,w^2,w^2,w^2,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,w,0,0,w,1,1,1,w,1,0,0,w,w^2,0,w,w^2,w^2,w^2,0,1,
-            0,0,0,0,0,0,0,w,w,0,w,w,w,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,1,1,w,1,1,w^2,w^2,0,w^2,w^2,1,1,1,1,w,1,0,w^2,0,w,0,w^2,
-            0,0,0,0,0,0,0,w^2,0,w,w,w^2,0,0,1,w^2,w^2,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,w^2,1,1,1,w^2,w,w^2,w,w^2,w^2,0,1,w^2,1,0,w^2,w,0,0,0,1,w,
-            0,0,0,0,0,0,0,w^2,w^2,1,0,w,1,w,0,1,w^2,w^2,w,w,0,1,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,w^2,w,w^2,w^2,1,0,w^2,1,w^2,w,w,w,w,w,1,1,w,w^2,w,w,1,
-            0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w^2,1,1,1,1,1,w^2,0,w,1,0,0,0,0,0,0,0,0,0,w,0,w^2,1,w^2,1,w,1,w^2,w,0,w,w^2,w^2,1,0,1,1,0,1,1,0,w^2,w,1,w^2,
-            0,0,0,0,0,0,0,1,w^2,w^2,0,w^2,1,0,0,w,1,w,1,1,0,w^2,w,1,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w,w,w^2,1,w^2,w,0,0,0,0,w^2,w,0,w,w^2,0,0,w^2,1,w,w^2,
-            0,0,0,0,0,0,0,0,1,w^2,1,0,w,0,w,w^2,1,w^2,w^2,w^2,0,1,0,0,w,1,0,0,0,0,0,0,w^2,w,w,0,w,0,w^2,w^2,w,0,0,1,0,0,1,1,w^2,w,w^2,w,w^2,1,0,w^2,w^2,0,
-            0,0,0,0,0,0,0,w,0,w^2,w^2,1,1,0,0,w^2,w,0,w^2,w^2,0,0,w^2,w,0,1,0,0,0,0,0,0,w,w^2,1,0,w,0,w^2,w^2,w^2,w,w,w,1,0,w,1,w^2,w^2,w^2,1,w^2,w^2,w^2,0,0,w^2,
-            0,0,0,0,0,0,0,0,w,0,1,w^2,w,1,w,w^2,w,1,w^2,w,w^2,1,w,1,w^2,w^2,0,0,0,0,0,w,1,1,1,w^2,1,w^2,0,0,0,0,w^2,1,w^2,w,0,w^2,w,w^2,w,w,w^2,1,w^2,w,w,w^2,
-            0,0,0,0,0,0,0,1,1,w^2,0,0,1,0,0,0,0,w^2,w,w,w^2,w^2,1,0,w^2,w^2,0,0,0,0,0,w^2,w,w^2,w,w^2,0,w^2,w,w,1,0,w^2,1,0,w,1,1,w,1,w^2,w^2,1,w,1,w^2,0,w^2,
-            0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,0,1,w^2,w,w^2,0,w,0,w^2,1,1,w^2,1,0,1,0,0,0,w,w,w^2,w^2,1,w^2,0,w,0,w^2,0,w^2,w,w,w,w^2,w,w^2,w^2,1,0,w^2,w,1,1,w,w^2,
-            0,0,0,0,0,0,0,0,w^2,w^2,w,w,0,w^2,1,1,w,w,0,1,w^2,w^2,1,w^2,w,w,0,1,1,0,0,0,w^2,w,w,w^2,w,1,0,1,w,w^2,0,0,0,0,w^2,0,0,1,w^2,w^2,0,0,w^2,w^2,w,w^2,
-            0,0,0,0,0,0,0,0,1,0,0,1,0,1,w^2,w,0,w^2,1,1,w,w^2,w^2,w^2,0,1,w,0,w,w,0,w^2,0,0,0,w^2,1,w^2,1,1,0,w^2,1,w^2,w,w^2,0,w,w,w,w^2,1,1,w,1,w^2,0,w,
-            0,0,0,0,0,0,0,w^2,1,w,0,0,w,w,w,w^2,1,w^2,1,1,w,0,0,w,0,w,w,w^2,w^2,w^2,0,1,w^2,1,1,1,w,w^2,1,1,w,w,w^2,w^2,w^2,w^2,w,w^2,1,0,1,0,w,1,w,1,1,w,
-            0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w^2,1,w,w,w,0,0,w,1,0,0,1,w,0,w^2,0,1,w^2,0,1,0,w,w,0,0,w^2,1,w^2,0,w^2,0,0,w^2,w,0,1,w^2,w,w,1,w^2,0,0,w,0,1,0
-        ]),
-        ZeroMatrix(F,32,3)),
-    HorizontalJoin(
-        Matrix(F,3,58,[
-            0,w,w^2,w^2,1,w,w^2,w^2,0,w^2,w,0,0,w^2,1,w,w,0,0,w^2,w,w^2,0,0,1,0,w^2,0,0,0,0,0,0,0,w^2,w,w,1,0,1,w,w,w,0,1,0,0,1,w^2,w,0,w^2,0,0,0,0,w,w^2,
-            0,0,w^2,w,1,w^2,0,1,w^2,1,1,w^2,w,w,w,1,w,0,w,1,0,w^2,w^2,w,w,0,w^2,0,0,0,0,0,0,0,1,w,w^2,1,w,w,1,0,1,1,w^2,w^2,w^2,w,1,w^2,0,w,w^2,1,1,1,1,1,
-            1,w^2,0,1,0,1,1,1,1,w^2,w,w,0,1,w^2,w,w,1,w^2,w^2,1,0,0,w^2,1,1,1,0,0,0,0,0,0,0,w,w^2,0,1,w,1,w^2,w,w^2,w,w,1,1,w,w^2,0,w^2,0,1,0,w,w^2,w^2,0
-        ]),
-        IdentityMatrix(F,3)));
-assert Rank(Gsrc) eq 35 and Rank(GX4) eq 35;
-assert Ncols(GX4) eq 61;
-assert RowSpace(Submatrix(GX4,1,1,35,58)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 7;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 10;
-Table1Generators[107] := <Gsrc,GX4>;
+assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
+assert RowSpace(Submatrix(GX4,1,1,32,59)) eq RowSpace(Gsrc);
+assert Submatrix(GX4,1,60,32,2) eq VerticalJoin(ZeroMatrix(F,30,2),IdentityMatrix(F,2));
+Table1Generators[61]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 61 and Dimension(Q) eq 32;
+assert Dimension(HermitianHull(Q)) eq 12;
+Table1Parameters[61]:=[61,20,14,17];
+Table1DistanceTypes[61]:="exact";
 
-// Table 1, No. 108 | source DV31 | HullDecreasing.m
-// Gsrc: [59,35]_4, hull 11; X4: [[61,26,12;17]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,35,59,[
+// Table 1, No. 62 | DV31
+// [[61,26,12;17]]_2, distance exact.
+Gsrc:=Matrix(F,35,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,0,w^2,w^2,w^2,w^2,w^2,w,0,w,w^2,w^2,w,0,w^2,1,w^2,w,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,w^2,0,1,w,0,0,w,w^2,w,0,w,w,0,w,1,1,0,1,0,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,1,w,0,0,w,w^2,w,0,w^2,1,w,0,w^2,0,w,w^2,0,w^2,0,
@@ -6694,61 +3560,56 @@ Gsrc := Matrix(F,35,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,w^2,0,1,0,0,0,w,w^2,w^2,0,w,w^2,w,w,1,0,w,0,w^2,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w,w,w,w,0,w,w^2,w^2,0,w,1,0,1,w^2,1,1,0,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,33,59,[
-            1,0,0,0,0,0,0,0,0,w,0,0,0,1,1,1,0,0,w^2,1,0,w^2,1,1,w,0,w^2,w,0,0,1,0,w^2,1,0,w^2,0,0,0,w^2,0,w^2,w^2,1,w,w^2,0,w,1,0,1,1,w,1,1,w^2,0,1,0,
-            0,1,0,0,0,0,0,0,0,w,0,0,1,w,w^2,1,1,w,0,w,w^2,w,1,0,w^2,1,w^2,0,0,w,w^2,w^2,w^2,w,0,w^2,0,0,0,0,w,w,0,w^2,0,0,1,w,1,w^2,1,0,w^2,0,w^2,w,w,0,1,
-            0,0,1,0,0,0,0,0,0,w^2,0,0,w,1,w^2,1,1,0,w,0,w,w,w^2,w,w^2,0,w,0,w,w,w,1,w,0,1,w,0,0,0,w^2,0,w^2,w^2,w,1,1,1,0,w,w^2,w,1,0,w^2,1,w^2,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,w,0,0,0,w^2,w,w,1,1,0,w^2,1,1,1,w^2,0,w^2,1,w,1,0,0,w^2,w^2,w,w^2,0,0,0,0,w^2,0,w^2,w,1,w,w^2,w,w,w,1,0,0,0,0,0,w^2,w^2,1,1,
-            0,0,0,0,1,0,0,0,0,1,0,0,w,w^2,0,0,w,1,1,0,0,w,w,1,w,w,0,w^2,w,w,1,0,0,w^2,1,w,0,0,0,w,1,w^2,w^2,w^2,w^2,0,0,1,w^2,0,1,w^2,w^2,w,w^2,1,w^2,1,w,
-            0,0,0,0,0,1,0,0,0,w^2,0,0,w,0,w^2,w^2,0,w,1,0,w,0,w,w,w,0,0,w,w,w^2,1,0,1,0,w^2,1,0,0,0,1,w^2,1,w,0,1,w^2,0,0,w,w,w^2,0,1,1,w,0,1,1,0,
-            0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,1,w^2,1,1,1,1,w,w,1,w^2,w,w,0,0,0,0,w^2,0,0,w,w,w,0,w^2,1,1,0,1,w^2,w,w,w^2,w,1,1,
-            0,0,0,0,0,0,0,1,0,0,0,0,1,0,w^2,1,w^2,w,w^2,1,1,1,w^2,0,0,1,w,1,0,w^2,w,w^2,w^2,w,w^2,1,0,0,0,w,1,1,w,1,w^2,1,0,w,0,w,w,0,w^2,0,0,1,0,0,w,
-            0,0,0,0,0,0,0,0,1,1,0,0,1,w^2,w,0,1,0,w,1,w^2,w^2,w^2,1,1,w,1,0,w,w,0,1,w^2,1,1,0,0,0,0,w^2,w^2,w^2,0,0,0,w^2,w^2,w,1,0,0,1,w,w^2,w,w^2,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,0,w,1,0,w,1,0,1,w^2,w,w^2,1,w^2,0,0,1,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,1,1,w,w,1,0,w,w^2,1,w^2,0,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,w^2,w^2,1,w^2,1,1,w^2,w,w,w^2,1,w,1,w,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w^2,w^2,1,0,w,1,1,w^2,w^2,w^2,w,0,1,w,0,w,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,w^2,0,w,0,w,w^2,w^2,1,w,w^2,0,w,w,0,w^2,0,w,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,1,w,1,w^2,0,1,0,w,1,w,0,w,0,
-            0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,0,0,1,w,1,1,1,w,w^2,w^2,0,0,w,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,w^2,0,1,0,w,0,1,w^2,1,w^2,w^2,0,0,w,w,w^2,w,1,w,
-            0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,1,0,w,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,0,w,w^2,0,w,1,w,0,w^2,1,w^2,0,0,1,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,0,w,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,0,w^2,1,w,1,0,0,0,w^2,w,1,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,w,0,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,w^2,w^2,0,w,w^2,0,1,1,1,w,0,0,1,0,w^2,w,w^2,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,1,0,w,0,w^2,w^2,w^2,0,0,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,w,w,w^2,w^2,w,0,0,w^2,w,1,w,0,w^2,w,w^2,
-            0,0,0,0,0,0,0,0,0,1,w^2,1,w,1,1,0,w,0,w,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,w,w,0,0,0,0,w^2,w,w,0,w,w^2,1,1,w^2,w^2,w,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,0,1,0,w,1,w^2,0,w,w,1,0,0,0,0,0,0,0,0,0,w,w,0,0,0,w^2,1,w^2,0,1,w^2,1,w^2,1,0,1,w^2,w,w^2,w^2,w^2,w^2,0,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,w,w,0,0,1,0,1,w,w^2,w,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,0,w,1,w,w,0,w,1,w^2,1,1,1,w^2,w^2,w,0,1,w,0,
-            0,0,0,0,0,0,0,0,0,1,1,0,1,0,w^2,1,w^2,1,0,0,w^2,0,0,w^2,w,w^2,w,0,0,0,0,0,0,w,0,1,0,0,0,w,w,0,0,w^2,w,w^2,w,w,0,w,0,0,w^2,w^2,w^2,1,1,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,1,0,w,w,0,w^2,0,0,1,w,0,0,w^2,w^2,0,w^2,w^2,0,0,0,0,0,0,w,w,w^2,0,0,0,w^2,1,w,1,0,1,w^2,1,w^2,0,w^2,w^2,w,1,w^2,w,w,w,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,w,w^2,w,w,1,w,w,w^2,w^2,1,1,1,0,0,0,0,0,w,1,0,1,0,0,0,1,w,0,0,0,w^2,w,w^2,1,1,1,1,1,w^2,1,0,w,w,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,1,1,0,1,0,w,w,w,w,w,1,0,0,0,0,0,0,w^2,0,0,1,0,0,0,w^2,w^2,w,w,0,w^2,1,w,0,1,0,0,0,1,0,w^2,1,w,0,w,
-            0,0,0,0,0,0,0,0,0,w,0,1,w,w,1,w^2,w^2,w^2,w,1,w,1,0,w,w,w,w^2,0,w^2,w,0,0,1,1,w^2,w,0,0,0,0,0,1,0,1,1,1,w^2,1,w^2,w^2,1,0,w^2,1,0,0,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,w^2,w,w,0,w^2,w^2,w,w^2,0,0,w,w,w^2,w,1,1,0,0,0,w^2,w^2,0,0,w,w^2,w,1,0,0,0,w,w^2,0,1,w^2,w,0,w^2,w,w,0,w,0,0,1,0,1,1,0,0,
-            0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,0,1,w,w,w,w^2,w,1,0,w,1,0,1,w^2,1,w^2,0,1,0,0,w,0,0,0,0,w,0,w^2,w,0,0,1,w,1,w,0,w^2,1,w,0,0,w,w,w,w^2,
-            0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w^2,0,w,1,w,w^2,0,0,w,w^2,w,1,0,0,0,0,0,1,1,w,1,0,0,0,0,0,0,w^2,1,w^2,0,w,w,1,w^2,w^2,0,0,0,w,w^2,1,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,w,w,1,0,0,w^2,w,1,1,w^2,w^2,1,0,w,0,1,w,1,1,w,w,0,0,1,0,0,0,1,0,w,w^2,0,1,w,0,0,w,0,w^2,w^2,w,w^2,w^2,1,w^2,0,1
-        ]),
-        ZeroMatrix(F,33,2)),
-    HorizontalJoin(
-        Matrix(F,2,59,[
-            0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w
-        ]),
-        IdentityMatrix(F,2)));
+GX4:=Matrix(F,35,61,[
+    1,0,0,0,0,0,0,0,0,w,0,0,0,1,1,1,0,0,w^2,1,0,w^2,1,1,w,0,w^2,w,0,0,1,0,w^2,1,0,w^2,0,0,0,w^2,0,w^2,w^2,1,w,w^2,0,w,1,0,1,1,w,1,1,w^2,0,1,0,0,0,
+    0,1,0,0,0,0,0,0,0,w,0,0,1,w,w^2,1,1,w,0,w,w^2,w,1,0,w^2,1,w^2,0,0,w,w^2,w^2,w^2,w,0,w^2,0,0,0,0,w,w,0,w^2,0,0,1,w,1,w^2,1,0,w^2,0,w^2,w,w,0,1,0,0,
+    0,0,1,0,0,0,0,0,0,w^2,0,0,w,1,w^2,1,1,0,w,0,w,w,w^2,w,w^2,0,w,0,w,w,w,1,w,0,1,w,0,0,0,w^2,0,w^2,w^2,w,1,1,1,0,w,w^2,w,1,0,w^2,1,w^2,1,w^2,w^2,0,0,
+    0,0,0,1,0,0,0,0,0,w,0,0,0,w^2,w,w,1,1,0,w^2,1,1,1,w^2,0,w^2,1,w,1,0,0,w^2,w^2,w,w^2,0,0,0,0,w^2,0,w^2,w,1,w,w^2,w,w,w,1,0,0,0,0,0,w^2,w^2,1,1,0,0,
+    0,0,0,0,1,0,0,0,0,1,0,0,w,w^2,0,0,w,1,1,0,0,w,w,1,w,w,0,w^2,w,w,1,0,0,w^2,1,w,0,0,0,w,1,w^2,w^2,w^2,w^2,0,0,1,w^2,0,1,w^2,w^2,w,w^2,1,w^2,1,w,0,0,
+    0,0,0,0,0,1,0,0,0,w^2,0,0,w,0,w^2,w^2,0,w,1,0,w,0,w,w,w,0,0,w,w,w^2,1,0,1,0,w^2,1,0,0,0,1,w^2,1,w,0,1,w^2,0,0,w,w,w^2,0,1,1,w,0,1,1,0,0,0,
+    0,0,0,0,0,0,1,0,0,w^2,0,0,w,1,w^2,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,1,w^2,1,1,1,1,w,w,1,w^2,w,w,0,0,0,0,w^2,0,0,w,w,w,0,w^2,1,1,0,1,w^2,w,w,w^2,w,1,1,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,1,0,w^2,1,w^2,w,w^2,1,1,1,w^2,0,0,1,w,1,0,w^2,w,w^2,w^2,w,w^2,1,0,0,0,w,1,1,w,1,w^2,1,0,w,0,w,w,0,w^2,0,0,1,0,0,w,0,0,
+    0,0,0,0,0,0,0,0,1,1,0,0,1,w^2,w,0,1,0,w,1,w^2,w^2,w^2,1,1,w,1,0,w,w,0,1,w^2,1,1,0,0,0,0,w^2,w^2,w^2,0,0,0,w^2,w^2,w,1,0,0,1,w,w^2,w,w^2,w^2,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,0,w,1,0,w,1,0,1,w^2,w,w^2,1,w^2,0,0,1,1,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,1,1,w,w,1,0,w,w^2,1,w^2,0,w,w,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,0,w^2,w^2,1,w^2,1,1,w^2,w,w,w^2,1,w,1,w,w^2,w,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w^2,w^2,1,0,w,1,1,w^2,w^2,w^2,w,0,1,w,0,w,w,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,w^2,0,w,0,w,w^2,w^2,1,w,w^2,0,w,w,0,w^2,0,w,w^2,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,1,w,1,w^2,0,1,0,w,1,w,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,0,0,1,w,1,1,1,w,w^2,w^2,0,0,w,1,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,w,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,w^2,0,1,0,w,0,1,w^2,1,w^2,w^2,0,0,w,w,w^2,w,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,1,1,0,w,1,0,w,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,0,w,w^2,0,w,1,w,0,w^2,1,w^2,0,0,1,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,0,w,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,0,w^2,1,w,1,0,0,0,w^2,w,1,w^2,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,w,0,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,w^2,w^2,0,w,w^2,0,1,1,1,w,0,0,1,0,w^2,w,w^2,w^2,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,w,0,w^2,w^2,w^2,0,0,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,w,w,w^2,w^2,w,0,0,w^2,w,1,w,0,w^2,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,1,w^2,1,w,1,1,0,w,0,w,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,w,w,0,0,0,0,w^2,w,w,0,w,w^2,1,1,w^2,w^2,w,w^2,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,0,1,0,w,1,w^2,0,w,w,1,0,0,0,0,0,0,0,0,0,w,w,0,0,0,w^2,1,w^2,0,1,w^2,1,w^2,1,0,1,w^2,w,w^2,w^2,w^2,w^2,0,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,0,0,1,0,1,w,w^2,w,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,0,w,1,w,w,0,w,1,w^2,1,1,1,w^2,w^2,w,0,1,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,1,0,1,0,w^2,1,w^2,1,0,0,w^2,0,0,w^2,w,w^2,w,0,0,0,0,0,0,w,0,1,0,0,0,w,w,0,0,w^2,w,w^2,w,w,0,w,0,0,w^2,w^2,w^2,1,1,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,w,w,0,w^2,0,0,1,w,0,0,w^2,w^2,0,w^2,w^2,0,0,0,0,0,0,w,w,w^2,0,0,0,w^2,1,w,1,0,1,w^2,1,w^2,0,w^2,w^2,w,1,w^2,w,w,w,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,w,w^2,w,w,1,w,w,w^2,w^2,1,1,1,0,0,0,0,0,w,1,0,1,0,0,0,1,w,0,0,0,w^2,w,w^2,1,1,1,1,1,w^2,1,0,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,1,1,0,1,0,w,w,w,w,w,1,0,0,0,0,0,0,w^2,0,0,1,0,0,0,w^2,w^2,w,w,0,w^2,1,w,0,1,0,0,0,1,0,w^2,1,w,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,w,0,1,w,w,1,w^2,w^2,w^2,w,1,w,1,0,w,w,w,w^2,0,w^2,w,0,0,1,1,w^2,w,0,0,0,0,0,1,0,1,1,1,w^2,1,w^2,w^2,1,0,w^2,1,0,0,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,w,0,w^2,w^2,w,w^2,0,0,w,w,w^2,w,1,1,0,0,0,w^2,w^2,0,0,w,w^2,w,1,0,0,0,w,w^2,0,1,w^2,w,0,w^2,w,w,0,w,0,0,1,0,1,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,0,1,w,w,w,w^2,w,1,0,w,1,0,1,w^2,1,w^2,0,1,0,0,w,0,0,0,0,w,0,w^2,w,0,0,1,w,1,w,0,w^2,1,w,0,0,w,w,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w^2,0,w,1,w,w^2,0,0,w,w^2,w,1,0,0,0,0,0,1,1,w,1,0,0,0,0,0,0,w^2,1,w^2,0,w,w,1,w^2,w^2,0,0,0,w,w^2,1,1,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,w,w,1,0,0,w^2,w,1,1,w^2,w^2,1,0,w,0,1,w,1,1,w,w,0,0,1,0,0,0,1,0,w,w^2,0,1,w,0,0,w,0,w^2,w^2,w,w^2,w^2,1,w^2,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,1
+]);
 assert Rank(Gsrc) eq 35 and Rank(GX4) eq 35;
-assert Ncols(GX4) eq 61;
 assert RowSpace(Submatrix(GX4,1,1,35,59)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 11;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 9;
-Table1Generators[108] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,60,35,2) eq VerticalJoin(ZeroMatrix(F,33,2),IdentityMatrix(F,2));
+Table1Generators[62]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 61 and Dimension(Q) eq 35;
+assert Dimension(HermitianHull(Q)) eq 9;
+Table1Parameters[62]:=[61,26,12,17];
+Table1DistanceTypes[62]:="exact";
 
-// Table 1, No. 109 | source DV25 | HullDecreasing.m
-// Gsrc: [57,36]_4, hull 12; X4: [[61,28,12;17]]_2.
-// lambda=4; the final 4 rows carry the matched block [W1 | I_4].
-Gsrc := Matrix(F,36,57,[
+// Table 1, No. 63 | DV25
+// [[61,28,12;17]]_2, distance exact.
+Gsrc:=Matrix(F,36,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w,w^2,w,0,w^2,1,1,w^2,w,w^2,0,w,0,w^2,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,
@@ -6786,62 +3647,57 @@ Gsrc := Matrix(F,36,57,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,32,57,[
-            1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,
-            0,0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,w,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,1,w,1,w,w,0,w^2,1,w,0,0,w,w,1,0,1,1,0,1,w,w,
-            0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,w^2,w^2,w,0,w^2,1,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,w,w,0,w,w,w^2,w^2,0,w^2,1,1,0,1,1,0,w^2,w,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,w^2,w,w,w^2,0,w,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,1,w,1,0,1,1,w,1,w^2,1,0,1,1,0,w^2,w^2,1,1,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,1,w,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w^2,w^2,w,w,w^2,1,w^2,w^2,w^2,w^2,1,0,1,0,1,1,0,1,1,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,w,1,1,w^2,w,w^2,w^2,1,1,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,0,0,w^2,w,w,w,w,1,w,w^2,w^2,0,0,w^2,w,w,w,w^2,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,w^2,0,w,1,1,w,1,0,1,w^2,w^2,1,1,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w^2,w,w^2,w,w^2,1,w^2,w,w^2,1,0,w^2,0,1,0,0,1,w^2,0,0,w,w,
-            0,0,0,0,0,0,0,0,w,0,0,1,w,1,0,0,w,0,0,w^2,w,w^2,1,0,0,0,0,0,0,0,w,w^2,w^2,w,w,w,w,0,w^2,w^2,1,1,1,0,0,0,w,0,0,w^2,w,1,w,1,0,1,w,
-            0,0,0,0,0,0,0,0,w,w,0,w^2,w^2,w,w,w^2,0,w,0,0,1,1,w,w,w,0,0,0,0,0,w,1,w,1,w^2,1,w,0,0,0,w,w,w^2,1,0,w,0,w,1,0,1,w^2,1,w^2,0,w^2,w^2,
-            0,0,0,0,0,0,0,0,w,w^2,0,0,w^2,w^2,w,w^2,w^2,0,w^2,w,0,w,1,w,w^2,0,0,0,0,0,0,1,1,w,1,w^2,1,0,w,0,w^2,1,w^2,w,0,w,w,w^2,w^2,w,0,0,1,1,1,0,w^2,
-            0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,w^2,1,1,w^2,0,1,0,0,0,1,w^2,w^2,1,1,0,0,0,1,0,w^2,w,0,1,1,w^2,w,0,w^2,1,0,w,0,1,1,0,w^2,1,0,0,1,1,w,0,w^2,
-            0,0,0,0,0,0,0,0,1,1,0,0,w^2,1,1,w,0,w^2,w^2,w,w,0,0,1,1,0,1,0,0,0,w,1,w,w^2,1,1,w^2,w,1,1,1,0,0,w,w^2,0,1,w^2,1,0,w^2,1,0,w^2,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,1,0,w,w,w,w,w^2,1,w^2,0,w,w^2,w^2,w^2,w,0,0,1,1,1,0,0,w^2,w^2,w^2,1,w,1,w^2,w^2,1,w^2,0,0,w^2,0,w,1,1,0,1,0,w,w,0,w^2,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,w,w,w,w^2,0,1,1,w^2,w,w^2,w^2,w,w^2,0,w^2,1,1,w^2,0,w,1,0,w^2,w^2,w^2,1,1,w,0,w^2,w^2,w^2,0,w^2,w,w^2,0,w,0,w,w,0,w,w,w^2,0,1,1,w^2,
-            0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,0,w^2,w,0,1,0,0,0,1,w^2,w,0,0,1,w,0,1,1,0,0,1,w^2,0,0,w,0,0,w^2,w^2,1,1,w,0,w^2,1,w,w,w,w^2,0,0,0,w^2,w,w
-        ]),
-        ZeroMatrix(F,32,4)),
-    HorizontalJoin(
-        Matrix(F,4,57,[
-            0,0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,4)));
+GX4:=Matrix(F,36,61,[
+    1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,0,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,0,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,w,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,1,w,1,w,w,0,w^2,1,w,0,0,w,w,1,0,1,1,0,1,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,w^2,w^2,w,0,w^2,1,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,w,w,0,w,w,w^2,w^2,0,w^2,1,1,0,1,1,0,w^2,w,w^2,0,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,w^2,w,w,w^2,0,w,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,1,w,1,0,1,1,w,1,w^2,1,0,1,1,0,w^2,w^2,1,1,w,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,1,w,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w^2,w^2,w,w,w^2,1,w^2,w^2,w^2,w^2,1,0,1,0,1,1,0,1,1,w^2,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,w,1,1,w^2,w,w^2,w^2,1,1,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,0,0,w^2,w,w,w,w,1,w,w^2,w^2,0,0,w^2,w,w,w,w^2,w,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,0,w,1,1,w,1,0,1,w^2,w^2,1,1,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w^2,w,w^2,w,w^2,1,w^2,w,w^2,1,0,w^2,0,1,0,0,1,w^2,0,0,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,w,0,0,1,w,1,0,0,w,0,0,w^2,w,w^2,1,0,0,0,0,0,0,0,w,w^2,w^2,w,w,w,w,0,w^2,w^2,1,1,1,0,0,0,w,0,0,w^2,w,1,w,1,0,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,w,w,0,w^2,w^2,w,w,w^2,0,w,0,0,1,1,w,w,w,0,0,0,0,0,w,1,w,1,w^2,1,w,0,0,0,w,w,w^2,1,0,w,0,w,1,0,1,w^2,1,w^2,0,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,w,w^2,0,0,w^2,w^2,w,w^2,w^2,0,w^2,w,0,w,1,w,w^2,0,0,0,0,0,0,1,1,w,1,w^2,1,0,w,0,w^2,1,w^2,w,0,w,w,w^2,w^2,w,0,0,1,1,1,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,w^2,1,1,w^2,0,1,0,0,0,1,w^2,w^2,1,1,0,0,0,1,0,w^2,w,0,1,1,w^2,w,0,w^2,1,0,w,0,1,1,0,w^2,1,0,0,1,1,w,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,1,0,0,w^2,1,1,w,0,w^2,w^2,w,w,0,0,1,1,0,1,0,0,0,w,1,w,w^2,1,1,w^2,w,1,1,1,0,0,w,w^2,0,1,w^2,1,0,w^2,1,0,w^2,w^2,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,w,w,w,w,w^2,1,w^2,0,w,w^2,w^2,w^2,w,0,0,1,1,1,0,0,w^2,w^2,w^2,1,w,1,w^2,w^2,1,w^2,0,0,w^2,0,w,1,1,0,1,0,w,w,0,w^2,w^2,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,w,w,w,w^2,0,1,1,w^2,w,w^2,w^2,w,w^2,0,w^2,1,1,w^2,0,w,1,0,w^2,w^2,w^2,1,1,w,0,w^2,w^2,w^2,0,w^2,w,w^2,0,w,0,w,w,0,w,w,w^2,0,1,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,0,w^2,w,0,1,0,0,0,1,w^2,w,0,0,1,w,0,1,1,0,0,1,w^2,0,0,w,0,0,w^2,w^2,1,1,w,0,w^2,1,w,w,w,w^2,0,0,0,w^2,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,0,0,0,1
+]);
 assert Rank(Gsrc) eq 36 and Rank(GX4) eq 36;
-assert Ncols(GX4) eq 61;
 assert RowSpace(Submatrix(GX4,1,1,36,57)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 12;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 8;
-Table1Generators[109] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,58,36,4) eq VerticalJoin(ZeroMatrix(F,32,4),IdentityMatrix(F,4));
+Table1Generators[63]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 61 and Dimension(Q) eq 36;
+assert Dimension(HermitianHull(Q)) eq 8;
+Table1Parameters[63]:=[61,28,12,17];
+Table1DistanceTypes[63]:="exact";
 
-// Table 1, No. 110 | source DV36 | HullDecreasing.m
-// Gsrc: [61,33]_4, hull 16; X4: [[62,18,15;14]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,33,61,[
+// Table 1, No. 64 | DV36
+// [[62,18,15;14]]_2, distance exact.
+Gsrc:=Matrix(F,33,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,1,w,0,w^2,0,1,1,w^2,0,w,1,0,1,w,w,0,1,w,w,0,0,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,0,w^2,1,1,1,0,0,w,0,w^2,1,0,w^2,1,1,w,w^2,0,w^2,1,w^2,1,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,0,0,
@@ -6876,144 +3732,54 @@ Gsrc := Matrix(F,33,61,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,1,w,0,w^2,0,1,1,w^2,0,w,1,0,1,w,w,0,1,w,w,0,0,w^2,0,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,1,0,0,w^2,1,w^2,0,w^2,1,0,1,w,w,1,0,0,1,0,w,w^2,1,1,w,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,32,61,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,0,w^2,w^2,w,0,w,w^2,1,1,0,w,1,w,0,1,w^2,w,1,0,w,1,w,w,w,1,0,1,w,w^2,w^2,0,1,w^2,1,0,w^2,w,0,0,w,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w^2,0,w^2,w,1,w,0,w^2,1,w^2,0,w^2,w^2,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,0,1,w^2,1,0,w,w^2,w,0,w,w,w,0,w^2,1,0,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,w^2,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,1,w,0,w,0,w,1,0,w,1,w,w,1,w,w,0,w^2,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w^2,w,w,1,1,1,w,w,1,w^2,w,w,0,1,w^2,0,1,1,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,1,1,w^2,w,1,1,0,1,w,w,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,1,1,w,w^2,0,1,1,0,1,w^2,w,w,w,w^2,0,w,w,w,w,w,0,w^2,w^2,1,w,0,w^2,w^2,0,0,1,w^2,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,w,w^2,0,0,0,w,1,0,w,0,w^2,w^2,1,w^2,1,1,1,w^2,w,w,1,1,w,0,0,0,1,1,0,1,0,w,w,w^2,w,w,1,w,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w,w^2,1,w^2,1,w^2,w,1,w,w,w^2,w^2,w,w,w^2,0,1,w^2,0,0,1,0,w,w^2,w,w^2,w,1,w^2,1,1,w,w,w^2,1,w,0,w^2,w,0,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,0,w,w^2,1,0,w^2,w^2,1,w,1,w^2,1,w,1,0,w^2,w^2,1,1,1,0,w^2,1,w,w^2,0,w,w,w^2,1,w^2,w,w^2,1,1,0,w,w,w^2,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,1,w,0,w^2,0,w^2,0,w,0,1,w^2,0,w^2,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,0,1,0,w^2,w,0,w,w^2,0,1,0,1,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,w,w^2,1,0,0,w^2,1,1,w^2,w,w^2,1,1,w^2,1,w,w^2,1,w,0,w^2,1,w,w^2,0,0,w,w^2,w^2,w,1,w,w^2,w^2,w,1,1,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w,1,0,1,w^2,w,w^2,w,w,w,w,w^2,w^2,w^2,w,w^2,1,0,0,w^2,1,1,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,w,w^2,0,w^2,w,0,w,0,0,1,1,1,1,0,0,w,w,0,w^2,0,w,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,w,0,0,1,w^2,1,0,w^2,w,1,w,w^2,0,w,w^2,1,0,w^2,1,w,w,1,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,0,1,0,1,0,w,w^2,0,0,w^2,w,w^2,w,w^2,0,w,w^2,w,w^2,w,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w^2,0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,1,1,0,0,1,1,0,1,w^2,w^2,1,1,1,1,1,w,0,0,w,w,0,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,0,0,0,1,0,0,0,0,0,0,0,0,1,1,w,1,1,1,0,1,w^2,w^2,1,1,0,0,0,w^2,1,1,w^2,w,0,w,1,w,1,w^2,w,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,1,0,0,w^2,0,0,0,0,0,0,0,0,w^2,w,w^2,0,0,w^2,w,0,w,1,0,1,0,w^2,1,1,0,0,0,w,1,0,0,w,w,0,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,w^2,w,1,0,1,0,0,0,0,0,0,0,0,1,1,w^2,w^2,0,1,w,0,0,w^2,1,0,w,0,w^2,w^2,0,1,0,w^2,w,0,w,1,w,0,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,1,w^2,w^2,0,1,w^2,1,w,w,w,w,0,w,1,0,0,w^2,1,w,1,w^2,w,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,1,1,w^2,1,0,0,0,0,0,0,0,1,w^2,1,w^2,w^2,w,w^2,w^2,0,w^2,w,1,w,0,1,w^2,w,w^2,1,w^2,1,1,w,1,w,w,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,1,1,1,1,1,1,0,0,0,0,0,0,w^2,w,1,w,0,w^2,1,0,0,w,0,w^2,w^2,w,0,0,0,0,0,w^2,w^2,w^2,1,0,0,w,0,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,w,w^2,w,0,w^2,0,1,w,0,0,0,0,1,1,1,0,w^2,0,w,0,0,w^2,0,0,1,w,w^2,0,w,w^2,w,w,w^2,w^2,w^2,0,w^2,1,w,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,1,w^2,w,w^2,1,w^2,1,w^2,0,0,0,0,w^2,1,0,w^2,w^2,w^2,w^2,w,w,1,0,w^2,1,w^2,w,w^2,1,w^2,0,1,w^2,1,0,w^2,0,1,w^2,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w,w^2,w,1,0,w,w,w,w^2,1,0,0,0,1,1,1,1,0,0,w^2,1,w,1,0,0,1,1,1,w,1,0,w,w,1,0,w,0,1,1,0,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,0,w^2,w,1,w,0,w,1,w,w^2,1,0,0,0,1,0,0,w,w^2,w^2,1,0,w^2,w^2,w^2,0,0,1,w,0,w^2,1,1,0,w^2,w,1,w,0,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,w,1,1,0,1,1,w^2,0,w^2,1,w^2,1,w,w,0,w^2,1,1,1,1,w^2,1,1,w^2,0,0,0,w,w^2,0,w^2,w,1,w,1,1,w,w^2,0,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,1,w^2,w,w,w,1,w^2,0,w^2,w^2,w^2,1,w^2,0,w^2,1,1,0,0,w^2,1,w,1,w^2,w^2,1,0,0,w^2,1,w^2,1,w,1,0,w,w,0,1,w^2,w,w
-        ]),
-        ZeroMatrix(F,32,1)),
-    HorizontalJoin(
-        Matrix(F,1,61,[
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,0,1,w^2,0,1,1,1,w,w^2,w,1,w^2,0,1,0,w^2,w,0,w^2,w,0,0,w^2,w,0,w^2,w^2,w^2,1,w,1,w^2,w,0,w^2,0,w,w^2,w,1,1
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,33,62,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,0,w^2,w^2,w,0,w,w^2,1,1,0,w,1,w,0,1,w^2,w,1,0,w,1,w,w,w,1,0,1,w,w^2,w^2,0,1,w^2,1,0,w^2,w,0,0,w,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w^2,0,w^2,w,1,w,0,w^2,1,w^2,0,w^2,w^2,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,0,1,w^2,1,0,w,w^2,w,0,w,w,w,0,w^2,1,0,1,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,w^2,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,1,w,0,w,0,w,1,0,w,1,w,w,1,w,w,0,w^2,1,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w^2,w,w,1,1,1,w,w,1,w^2,w,w,0,1,w^2,0,1,1,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,1,1,w^2,w,1,1,0,1,w,w,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,1,1,w,w^2,0,1,1,0,1,w^2,w,w,w,w^2,0,w,w,w,w,w,0,w^2,w^2,1,w,0,w^2,w^2,0,0,1,w^2,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,w,w^2,0,0,0,w,1,0,w,0,w^2,w^2,1,w^2,1,1,1,w^2,w,w,1,1,w,0,0,0,1,1,0,1,0,w,w,w^2,w,w,1,w,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w,w^2,1,w^2,1,w^2,w,1,w,w,w^2,w^2,w,w,w^2,0,1,w^2,0,0,1,0,w,w^2,w,w^2,w,1,w^2,1,1,w,w,w^2,1,w,0,w^2,w,0,w^2,1,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,0,w,w^2,1,0,w^2,w^2,1,w,1,w^2,1,w,1,0,w^2,w^2,1,1,1,0,w^2,1,w,w^2,0,w,w,w^2,1,w^2,w,w^2,1,1,0,w,w,w^2,w^2,w,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,1,w,0,w^2,0,w^2,0,w,0,1,w^2,0,w^2,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,0,1,0,w^2,w,0,w,w^2,0,1,0,1,1,w,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,w,w^2,1,0,0,w^2,1,1,w^2,w,w^2,1,1,w^2,1,w,w^2,1,w,0,w^2,1,w,w^2,0,0,w,w^2,w^2,w,1,w,w^2,w^2,w,1,1,w^2,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w,1,0,1,w^2,w,w^2,w,w,w,w,w^2,w^2,w^2,w,w^2,1,0,0,w^2,1,1,w,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w^2,w,w^2,0,w^2,w,0,w,0,0,1,1,1,1,0,0,w,w,0,w^2,0,w,w^2,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,w,0,0,1,w^2,1,0,w^2,w,1,w,w^2,0,w,w^2,1,0,w^2,1,w,w,1,0,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,0,1,0,1,0,w,w^2,0,0,w^2,w,w^2,w,w^2,0,w,w^2,w,w^2,w,w,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w^2,0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,1,1,0,0,1,1,0,1,w^2,w^2,1,1,1,1,1,w,0,0,w,w,0,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,0,0,0,1,0,0,0,0,0,0,0,0,1,1,w,1,1,1,0,1,w^2,w^2,1,1,0,0,0,w^2,1,1,w^2,w,0,w,1,w,1,w^2,w,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,1,0,0,w^2,0,0,0,0,0,0,0,0,w^2,w,w^2,0,0,w^2,w,0,w,1,0,1,0,w^2,1,1,0,0,0,w,1,0,0,w,w,0,1,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,w^2,w,1,0,1,0,0,0,0,0,0,0,0,1,1,w^2,w^2,0,1,w,0,0,w^2,1,0,w,0,w^2,w^2,0,1,0,w^2,w,0,w,1,w,0,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,1,w^2,w^2,0,1,w^2,1,w,w,w,w,0,w,1,0,0,w^2,1,w,1,w^2,w,0,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,1,1,w^2,1,0,0,0,0,0,0,0,1,w^2,1,w^2,w^2,w,w^2,w^2,0,w^2,w,1,w,0,1,w^2,w,w^2,1,w^2,1,1,w,1,w,w,w^2,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,1,1,1,1,1,1,0,0,0,0,0,0,w^2,w,1,w,0,w^2,1,0,0,w,0,w^2,w^2,w,0,0,0,0,0,w^2,w^2,w^2,1,0,0,w,0,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,w,w^2,w,0,w^2,0,1,w,0,0,0,0,1,1,1,0,w^2,0,w,0,0,w^2,0,0,1,w,w^2,0,w,w^2,w,w,w^2,w^2,w^2,0,w^2,1,w,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,1,w^2,w,w^2,1,w^2,1,w^2,0,0,0,0,w^2,1,0,w^2,w^2,w^2,w^2,w,w,1,0,w^2,1,w^2,w,w^2,1,w^2,0,1,w^2,1,0,w^2,0,1,w^2,0,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w,w^2,w,1,0,w,w,w,w^2,1,0,0,0,1,1,1,1,0,0,w^2,1,w,1,0,0,1,1,1,w,1,0,w,w,1,0,w,0,1,1,0,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,0,w^2,w,1,w,0,w,1,w,w^2,1,0,0,0,1,0,0,w,w^2,w^2,1,0,w^2,w^2,w^2,0,0,1,w,0,w^2,1,1,0,w^2,w,1,w,0,w^2,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,w,1,1,0,1,1,w^2,0,w^2,1,w^2,1,w,w,0,w^2,1,1,1,1,w^2,1,1,w^2,0,0,0,w,w^2,0,w^2,w,1,w,1,1,w,w^2,0,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,1,w^2,w,w,w,1,w^2,0,w^2,w^2,w^2,1,w^2,0,w^2,1,1,0,0,w^2,1,w,1,w^2,w^2,1,0,0,w^2,1,w^2,1,w,1,0,w,w,0,1,w^2,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,0,1,w^2,0,1,1,1,w,w^2,w,1,w^2,0,1,0,w^2,w,0,w^2,w,0,0,w^2,w,0,w^2,w^2,w^2,1,w,1,w^2,w,0,w^2,0,w,w^2,w,1,1,1
+]);
 assert Rank(Gsrc) eq 33 and Rank(GX4) eq 33;
-assert Ncols(GX4) eq 62;
 assert RowSpace(Submatrix(GX4,1,1,33,61)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 16;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 15;
-Table1Generators[110] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,62,33,1) eq VerticalJoin(ZeroMatrix(F,32,1),IdentityMatrix(F,1));
+Table1Generators[64]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 62 and Dimension(Q) eq 33;
+assert Dimension(HermitianHull(Q)) eq 15;
+Table1Parameters[64]:=[62,18,15,14];
+Table1DistanceTypes[64]:="exact";
 
-// Table 1, No. 111 | source BS105 | HullIncreasing.m
-// Gsrc: [61,32]_4, hull 13; X4: [[62,18,15;16]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,32,61,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w^2,1,w^2,w,1,w^2,w^2,0,0,w,0,w^2,1,1,0,w,w^2,0,w^2,0,w^2,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,1,w^2,0,1,0,0,1,1,w^2,1,0,w^2,w^2,1,w^2,w^2,w,0,1,w^2,w^2,w,0,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,1,1,w,1,1,w,w,w,1,1,w,1,w,0,0,1,w,1,w,w,1,1,0,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,1,1,w,1,1,w,w,w,1,1,w,1,w,0,0,1,w,1,w,w,1,1,0,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,0,w,w^2,0,1,w^2,0,w^2,w,w,w,1,w^2,w^2,0,0,w^2,0,w,0,w,w^2,w^2,1,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,0,w,w^2,0,1,w^2,0,w^2,w,w,w,1,w^2,w^2,0,0,w^2,0,w,0,w,w^2,w^2,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w^2,1,1,1,1,1,w,0,0,w^2,0,w,1,0,w,w^2,w,w^2,w^2,w^2,w,w^2,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,1,w,w^2,0,w,w^2,0,0,0,w,0,0,w,w^2,w,w,0,w^2,1,w^2,0,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w^2,w,w,0,w,w^2,0,1,0,0,1,w,w,w^2,1,w^2,w^2,0,0,1,1,1,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,w,1,1,0,1,1,1,w,1,0,1,1,0,1,0,1,w,1,0,w,1,w^2,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,w,1,1,0,1,1,1,w,1,0,1,1,0,1,0,1,w,1,0,w,1,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,0,w^2,1,w^2,0,w^2,w^2,w^2,1,w,0,0,w^2,w,w^2,1,1,w^2,w,w^2,0,0,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w^2,1,1,0,0,w,w,w,w^2,1,1,0,1,1,0,w^2,w,0,w^2,w^2,w^2,1,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,w^2,1,w,w^2,1,w^2,0,0,w,w^2,0,1,w,w,w,0,w,0,0,1,w^2,1,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,w^2,w,w^2,w^2,0,w^2,w,1,0,w,0,0,0,0,0,w,w^2,w^2,0,1,1,w,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,0,w,0,w,0,w,w,w^2,1,0,1,0,1,w,w,0,1,w,w^2,1,1,0,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,1,0,1,1,w,w^2,w^2,w^2,1,w^2,1,1,w^2,0,w,w^2,0,w,w,1,0,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,1,1,w,w,0,w,0,1,w^2,w^2,0,w^2,w^2,w,0,0,w^2,1,0,0,w,w^2,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,1,1,w,w,0,w,0,1,w^2,w^2,0,w^2,w^2,w,0,0,w^2,1,0,0,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,w,1,w^2,0,1,0,1,w^2,0,1,0,w^2,1,1,1,w,w^2,1,w^2,0,0,1,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,1,w^2,0,w,1,1,w,w,w^2,w^2,0,0,0,1,w,w,1,w^2,1,1,1,0,w,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w^2,1,w^2,0,0,w,0,0,w^2,w^2,1,0,w,w,1,w,0,1,1,w^2,1,w,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w^2,1,w^2,0,0,w,0,0,w^2,w^2,1,0,w,w,1,w,0,1,1,w^2,1,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,0,0,0,w,1,1,0,0,w,1,w^2,0,0,0,w^2,0,w,0,w,w,w^2,0,0,1,w,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,w,w,w^2,1,0,w,w,1,1,w,w^2,0,w,0,0,1,w^2,0,0,1,w^2,w^2,0,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,1,1,w^2,w,w^2,1,1,0,0,0,w,w^2,w^2,w,1,w,w^2,w^2,w^2,1,1,w,w^2,1,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,w,0,0,w^2,1,1,1,0,w,w,w,0,w,w,w^2,0,w,1,w^2,w,1,1,w^2,w,1,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w^2,w^2,1,w,1,w,w^2,0,w^2,0,0,w,0,w^2,w,1,w^2,1,1,w,0,1,w^2,w^2,0,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w^2,w^2,1,w,1,w,w^2,0,w^2,0,0,w,0,w^2,w,1,w^2,1,1,w,0,1,w^2,w^2,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,0,0,0,w,0,0,0,1,1,1,w,0,0,1,0,w,0,w^2,w^2,w,0,w,1,1,w,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w^2,1,w^2,w,1,w^2,w^2,0,0,w,0,w^2,1,1,0,w,w^2,0,w^2,0,w^2,1,0,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w^2,1,w^2,w,1,w^2,w^2,0,0,w,0,w^2,1,1,0,w,w^2,0,w^2,0,w^2,1,0,0,1
-]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,31,61,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,1,w^2,1,w^2,0,w^2,w^2,w,w^2,w,w,w^2,1,1,1,w^2,w^2,w,w^2,w,w,w,1,0,w,w,0,w^2,w^2,1,1,w,w,1,0,0,w^2,1,1,1,w,w,w^2,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,1,w^2,1,w^2,0,w^2,w^2,w,w^2,w,w,w^2,1,1,1,w^2,w^2,w,w^2,w,w,w,1,0,w,w,0,w^2,w^2,1,1,w,w,1,0,0,w^2,1,1,1,w,w,w^2,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,0,w,0,w,w,1,w^2,0,w^2,1,1,w^2,w^2,w^2,w^2,1,0,1,0,0,1,w,1,0,w,w^2,w,w^2,0,w^2,w^2,0,w^2,w^2,0,w^2,w,w^2,0,0,1,1,w,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w^2,0,w,0,w,1,1,1,1,w^2,w,w^2,w,w^2,w,w,w^2,w^2,1,0,w,w,1,0,w,1,1,w^2,0,1,0,w,0,w^2,0,0,w,w,w,0,w^2,0,w^2,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,w,w^2,0,w^2,w^2,1,1,w^2,1,0,w^2,1,0,w^2,0,w^2,1,w,0,1,w,w,0,w,1,w^2,w,0,w,1,w^2,1,w,1,1,w^2,0,w,1,w,1,1,w,0,w,w^2,1,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w,w,w,0,0,1,w^2,w,1,1,w^2,w,1,0,w,1,1,0,w,1,w,w^2,1,1,0,0,w^2,w,1,1,w^2,w,1,w^2,0,1,w^2,1,w^2,1,w,0,1,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w^2,1,w^2,1,w^2,w^2,w^2,w,w,1,w,0,w,0,1,w,w,w^2,w,0,w,w^2,w^2,0,w,w,w^2,w,w,0,w,w^2,1,w,1,0,w^2,1,1,w,w^2,w^2,1,1,w^2,0,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w^2,1,w^2,1,w^2,w^2,w^2,w,w,1,w,0,w,0,1,w,w,w^2,w,0,w,w^2,w^2,0,w,w,w^2,w,w,0,w,w^2,1,w,1,0,w^2,1,1,w,w^2,w^2,1,1,w^2,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,w,w^2,0,0,w,0,w,w,w,1,0,0,w^2,w^2,0,w^2,0,w,0,0,w,1,0,w^2,w^2,w^2,0,w,w,1,w^2,w,1,0,w^2,0,1,0,w^2,1,w^2,w,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,1,0,w,1,1,1,w^2,w,0,w,w^2,w^2,w^2,1,1,w^2,w^2,0,0,w^2,w^2,w^2,w^2,0,0,w,1,0,w,w,w^2,0,w^2,1,w^2,w,1,w,0,w^2,w^2,w^2,1,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,w^2,w^2,0,1,w^2,w^2,w^2,0,1,0,0,0,w,1,w,1,w,w,0,w,w,w,1,1,0,w,1,0,w^2,w,0,1,0,w,w,0,1,w,0,1,w^2,0,0,1,0,w,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,1,w^2,w^2,w^2,1,1,0,w^2,1,w,w^2,1,0,w,w,0,w^2,w,w,w^2,w^2,0,w^2,1,w,1,0,w^2,w^2,0,w,1,1,1,1,w^2,w,0,1,1,0,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,1,w^2,w^2,w^2,1,1,0,w^2,1,w,w^2,1,0,w,w,0,w^2,w,w,w^2,w^2,0,w^2,1,w,1,0,w^2,w^2,0,w,1,1,1,1,w^2,w,0,1,1,0,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,w^2,1,1,0,w,w^2,w^2,w,1,0,w,0,w,w,0,w^2,0,1,w^2,0,w^2,w^2,w^2,w^2,1,1,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w^2,1,0,w^2,1,1,0,1,0,1,w,0,0,w^2,w,1,1,0,1,1,1,1,0,w,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,0,w,0,w,0,w,w^2,w^2,w,0,w^2,w^2,0,1,1,w,w^2,1,w,w,w,1,w^2,0,w,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,0,0,0,w,0,0,0,0,0,0,0,w,0,0,w^2,1,w,1,w,0,1,w,1,1,w,w,w,w^2,1,1,w,1,w,0,1,1,w,w^2,w^2,1,w,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,0,0,0,w^2,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w,w,w,1,0,0,w^2,1,w,w,0,0,w^2,1,1,w,1,0,0,0,w^2,0,0,0,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,w^2,w,1,1,0,w^2,w,1,w^2,w,w,0,1,0,0,1,1,w^2,w^2,w,1,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,1,0,1,0,0,0,0,0,0,0,w,0,0,0,w,1,0,w^2,1,w,w,w,1,0,w,w^2,w,w^2,w,w,1,0,w,w,w^2,1,w^2,w,1,w^2,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,1,1,1,0,0,0,0,0,0,0,0,w^2,0,0,w,w^2,0,0,1,w^2,1,w,0,w^2,w,0,1,w,0,1,w^2,0,w,1,1,0,w,w,w,1,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,w,w^2,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,1,1,w,w^2,0,1,w,0,0,1,w^2,1,1,0,1,w,w^2,w^2,0,1,0,1,0,1,1,w^2,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,1,1,w,0,0,0,0,0,0,0,w^2,0,w^2,1,1,0,w,0,w^2,w,w,1,w,w^2,w,0,w,w^2,w,w^2,w^2,w,1,w,1,w,1,w,w^2,0,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,w,0,1,0,0,0,0,0,1,0,w,w,w^2,w^2,w,w,1,w,0,0,w,w^2,1,w,w^2,1,1,w,w^2,0,0,1,w,1,w,0,w^2,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,0,1,1,w,0,w^2,1,0,w,0,0,0,w,0,1,0,1,w^2,w,0,w,w,w,0,1,w^2,w,w^2,0,1,w^2,w^2,1,1,0,0,w,w^2,w^2,w,w^2,0,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,1,w,w,w^2,w^2,w,w^2,w,0,w^2,0,0,0,1,0,0,w^2,0,w,0,w,0,0,0,w,w,w^2,1,w,0,w,w^2,w^2,1,1,0,w^2,1,w^2,w^2,0,w,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w^2,1,w^2,w,w^2,w^2,w^2,1,1,0,0,0,w^2,0,0,1,w,w^2,w^2,1,w,w,w,w,w^2,0,w^2,w,w^2,w,w,1,1,w,0,w^2,w,w^2,w^2,1,0,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,w^2,0,0,1,w^2,0,w^2,w^2,w,0,1,0,0,w^2,w,w,w,1,1,0,w,1,w^2,w^2,w^2,w,1,w,1,w,w,1,w,w^2,w^2,w,0,0,0,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,1,0,1,0,w,w,1,1,w^2,w^2,w^2,0,0,0,0,1,0,w^2,0,1,1,w,1,1,w,0,0,0,1,0,w,w^2,0,w,1,w,w,w^2,0,0,0,0,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,0,0,w^2,w^2,w^2,0,w^2,w,1,0,0,1,0,0,1,1,0,w,w,1,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w,w,w,0,0,0,1,0,w,0,w^2,w,0,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w^2,w^2,1,1,1,w^2,0,0,1,w,0,w^2,0,1,w^2,w^2,w,0,1,1,w,1,w,0,0,w^2,w^2,1,w^2,1,w,0,0,1,w^2,1,w^2,0,w,0,w^2,1,1,0
-        ]),
-        ZeroMatrix(F,31,1)),
-    HorizontalJoin(
-        Matrix(F,1,61,[
-            1,1,w,1,0,1,1,w^2,0,w^2,w,w^2,w,w^2,1,w^2,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,w,1,0,0,w^2,w^2,0,w,1,0,1,1,0,w,w^2,0,0,1,0,w,0,w,w^2,w^2
-        ]),
-        IdentityMatrix(F,1)));
-assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
-assert Ncols(GX4) eq 62;
-assert RowSpace(Submatrix(GX4,1,1,32,61)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 13;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 14;
-Table1Generators[111] := <Gsrc,GX4>;
-
-// Table 1, No. 112 | source DV33 | HullDecreasing.m
-// Gsrc: [60,32]_4, hull 15; X4: [[62,19,15;17]]_2.
-// lambda=2; the final 2 rows carry the matched block [W1 | I_2].
-Gsrc := Matrix(F,32,60,[
+// Table 1, No. 65 | DV33
+// [[62,19,15;17]]_2, distance exact.
+Gsrc:=Matrix(F,32,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,0,w^2,1,1,1,0,0,w,0,w^2,1,0,w^2,1,1,w,w^2,0,w^2,1,w^2,1,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,0,0,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,0,
@@ -7047,143 +3813,53 @@ Gsrc := Matrix(F,32,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,1,w,0,w^2,0,1,1,w^2,0,w,1,0,1,w,w,0,1,w,w,0,0,w^2,0,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,1,0,0,w^2,1,w^2,0,w^2,1,0,1,w,w,1,0,0,1,0,w,w^2,1,1,w,w^2
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,30,60,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w^2,0,w^2,w,1,w,0,w^2,1,w^2,0,w^2,w^2,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,0,1,w^2,1,0,w,w^2,w,0,w,w,w,0,w^2,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,w^2,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,1,w,0,w,0,w,1,0,w,1,w,w,1,w,w,0,w^2,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w^2,w,w,1,1,1,w,w,1,w^2,w,w,0,1,w^2,0,1,1,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,1,1,w^2,w,1,1,0,1,w,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,1,1,w,w^2,0,1,1,0,1,w^2,w,w,w,w^2,0,w,w,w,w,w,0,w^2,w^2,1,w,0,w^2,w^2,0,0,1,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,w,w^2,0,0,0,w,1,0,w,0,w^2,w^2,1,w^2,1,1,1,w^2,w,w,1,1,w,0,0,0,1,1,0,1,0,w,w,w^2,w,w,1,w,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w,w^2,1,w^2,1,w^2,w,1,w,w,w^2,w^2,w,w,w^2,0,1,w^2,0,0,1,0,w,w^2,w,w^2,w,1,w^2,1,1,w,w,w^2,1,w,0,w^2,w,0,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,0,w,w^2,1,0,w^2,w^2,1,w,1,w^2,1,w,1,0,w^2,w^2,1,1,1,0,w^2,1,w,w^2,0,w,w,w^2,1,w^2,w,w^2,1,1,0,w,w,w^2,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,1,w,0,w^2,0,w^2,0,w,0,1,w^2,0,w^2,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,0,1,0,w^2,w,0,w,w^2,0,1,0,1,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w^2,w^2,0,0,w^2,w^2,w,w^2,1,1,0,w^2,w^2,1,0,w,w^2,0,1,w^2,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,1,0,0,w^2,w,0,w,1,w,w,0,w^2,1,w,0,0,1,w,1,0,0,1,w,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,0,0,0,0,0,0,0,0,1,0,w^2,1,w,0,w,w^2,1,w^2,w,1,w^2,1,0,0,w^2,0,0,w,1,0,w,w^2,0,w^2,0,0,0,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,1,0,0,0,0,0,0,0,0,w^2,0,0,w^2,w^2,w,0,0,w^2,0,w,1,0,w,0,0,0,w^2,w,1,w^2,0,1,1,1,1,1,w^2,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,0,0,w,0,0,0,0,0,0,0,0,0,w,0,w,0,0,w,w,0,w,0,0,0,w,w,w,w^2,1,w,1,1,0,1,1,1,w,1,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,1,w,w,w^2,0,w,1,w,w,w,w,w^2,1,w^2,w^2,1,0,w,w,w^2,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,0,1,0,1,w,1,1,0,1,1,1,w,0,w,1,0,1,0,0,w^2,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,1,w,w^2,w,0,0,0,0,0,0,w,0,w,0,w,w,w,1,1,w^2,w,0,1,w^2,0,w,1,w,1,w,w^2,w^2,w,1,w^2,0,w,w^2,1,w^2,0,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,0,w^2,1,0,0,0,0,0,0,0,w^2,0,w^2,0,w^2,1,w,0,w,w^2,w^2,w^2,1,0,w^2,1,1,1,w,w^2,w^2,0,1,1,w^2,1,1,0,1,1,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,w^2,w^2,0,w^2,w,0,0,0,0,0,0,0,w,1,0,w,0,0,1,0,0,1,w,w,1,w,1,0,0,1,w^2,w^2,w,1,w^2,1,1,1,w^2,w^2,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w^2,w,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w,0,1,w,0,1,w^2,1,w^2,1,0,1,w,1,0,1,0,w,w,1,0,0,0,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,1,w,0,w^2,0,0,0,1,0,0,w^2,0,0,w^2,1,1,0,w^2,w^2,w,0,w^2,w^2,1,w^2,w,0,w,w,w^2,1,1,w,w^2,w,0,w,w^2,0,1,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,1,w,1,0,0,w,0,w,w,0,w^2,0,w^2,w^2,0,0,w,0,w^2,w,w,w^2,0,w^2,0,1,0,1,0,1,w,w,1,0,w^2,w,w,w,0,w^2,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,w,1,0,w^2,1,w,1,w^2,0,0,0,w^2,0,0,1,1,w^2,w,w^2,w^2,1,w^2,w^2,0,1,w^2,0,1,w^2,1,w,w,1,w^2,w^2,w^2,0,1,0,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,w^2,w,w,1,w,1,w^2,1,0,0,w^2,1,0,1,w^2,0,0,0,w,w^2,w,0,1,w,w^2,1,0,w,0,w^2,w^2,w^2,1,1,w,1,1,w,w,w^2,0,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,1,0,0,w^2,1,0,0,1,0,0,w^2,1,1,w,1,1,w^2,1,w^2,w^2,w,w^2,w,w^2,w^2,w^2,0,w,w^2,1,w^2,w^2,w,1,w^2,w,w^2,0,1,w,1,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,1,w^2,1,w^2,w,w^2,1,0,1,0,1,1,w,w,w^2,0,w,1,0,w,w,0,w,w,w,1,1,0,1,0,w^2,w,w^2,w^2,w,0,w^2,w,0,w^2,0,w
-        ]),
-        ZeroMatrix(F,30,2)),
-    HorizontalJoin(
-        Matrix(F,2,60,[
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,w,w^2,1,0,0,w^2,1,1,w^2,w,w^2,1,1,w^2,1,w,w^2,1,w,0,w^2,1,w,w^2,0,0,w,w^2,w^2,w,1,w,w^2,w^2,w,1,1,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,0,1,w^2,0,1,1,1,w,w^2,w,1,w^2,0,1,0,w^2,w,0,w^2,w,0,0,w^2,w,0,w^2,w^2,w^2,1,w,1,w^2,w,0,w^2,0,w,w^2,w,1,1
-        ]),
-        IdentityMatrix(F,2)));
-assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
-assert Ncols(GX4) eq 62;
-assert RowSpace(Submatrix(GX4,1,1,32,60)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 13;
-Table1Generators[112] := <Gsrc,GX4>;
-
-// Table 1, No. 113 | source BS092 | HullIncreasing.m
-// Gsrc: [60,32]_4, hull 15; X4: [[63,14,15;13]]_2.
-// lambda=3; the final 3 rows carry the matched block [W1 | I_3].
-Gsrc := Matrix(F,32,60,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,0,w^2,1,1,1,0,0,w,0,w^2,1,0,w^2,1,1,w,w^2,0,w^2,1,w^2,1,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,0,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,0,w^2,w^2,w,w^2,0,w,1,0,0,0,1,0,1,1,1,w^2,1,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,0,w,w,0,w^2,1,w^2,0,0,0,1,0,1,w^2,0,1,w^2,1,0,w^2,0,w,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,0,w,w,0,w^2,1,w^2,0,0,0,1,0,1,w^2,0,1,w^2,1,0,w^2,0,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,1,0,0,0,1,w,w^2,w^2,0,0,w^2,1,0,w^2,1,w^2,w^2,1,w,w^2,w^2,0,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,w^2,1,0,1,w,0,w,w,1,0,w,0,w,w,w^2,1,1,w^2,w,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,1,w^2,1,w^2,0,1,0,1,w^2,1,1,0,w,w^2,w,w^2,0,1,1,1,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,0,0,1,w^2,w,w,w^2,1,w^2,0,w^2,0,w^2,w,w^2,w^2,w,w,0,w^2,w,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w^2,0,w^2,0,1,1,1,0,w^2,w^2,0,0,0,1,w,1,w^2,w^2,1,w,1,1,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w^2,w^2,w^2,0,w^2,w,w^2,0,1,0,0,w^2,1,0,1,1,w^2,0,1,w^2,w^2,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,0,w^2,w^2,w,0,0,w^2,w,w,0,w^2,w,0,w^2,1,1,0,0,0,1,0,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,w,0,w^2,0,w^2,w^2,0,0,w^2,w,1,1,0,1,w^2,1,0,0,w,w^2,0,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,1,1,w,0,0,1,0,w^2,w^2,1,w^2,w^2,w^2,w^2,1,1,w^2,0,0,w,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w,0,1,w,w^2,1,w,0,0,w,1,w,1,1,w,1,1,w,0,w,1,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,1,w^2,0,1,1,w,w,w,w^2,1,w,0,0,w^2,0,w,1,0,w,w,1,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w^2,w^2,0,0,w^2,w^2,w,w^2,1,1,0,w^2,w^2,1,0,w,w^2,0,1,w^2,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w,0,w^2,w^2,w,w^2,1,w^2,0,0,1,w,1,w,0,1,0,1,w^2,1,w^2,0,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,w^2,0,w^2,0,w^2,0,1,0,1,0,0,0,w^2,w^2,0,1,1,1,1,w,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,w,w^2,0,1,w^2,1,0,w^2,w^2,1,w^2,1,1,0,w^2,0,w,1,0,w^2,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,1,w,w^2,0,1,w^2,1,0,w^2,w^2,1,w^2,1,1,0,w^2,0,w,1,0,w^2,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w,1,w,w,w,0,w^2,0,w,w^2,1,w,0,w^2,1,0,1,0,1,0,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w^2,w,1,w^2,w^2,w,1,0,1,0,0,1,w^2,w,0,0,w^2,w^2,w^2,1,w^2,1,1,w^2,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w^2,w,1,w^2,w^2,w,1,0,1,0,0,1,w^2,w,0,0,w^2,w^2,w^2,1,w^2,1,1,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w^2,0,0,w,w^2,w^2,w^2,w^2,w^2,1,1,1,w,1,1,1,w^2,w,w^2,w^2,1,1,0,0,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w^2,0,0,w,w^2,w^2,w^2,w^2,w^2,1,1,1,w,1,1,1,w^2,w,w^2,w^2,1,1,0,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,0,w,w,w^2,w,1,w,w^2,0,w^2,1,0,w,w,w^2,w^2,w,1,w^2,w,0,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,0,w,w,w^2,w,1,w,w^2,0,w^2,1,0,w,w,w^2,w^2,w,1,w^2,w,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w^2,w,1,w^2,0,w,0,0,0,1,0,0,0,0,0,1,1,w,w^2,0,w,0,1,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,1,w,0,w^2,0,1,1,w^2,0,w,1,0,1,w,w,0,1,w,w,0,0,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,1,0,0,w^2,1,w^2,0,w^2,1,0,1,w,w,1,0,0,1,0,w,w^2,1,1,w,w^2
+GX4:=Matrix(F,32,62,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w^2,0,w^2,w,1,w,0,w^2,1,w^2,0,w^2,w^2,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,0,1,w^2,1,0,w,w^2,w,0,w,w,w,0,w^2,1,0,1,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,w^2,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,1,w,0,w,0,w,1,0,w,1,w,w,1,w,w,0,w^2,1,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w^2,w,w,1,1,1,w,w,1,w^2,w,w,0,1,w^2,0,1,1,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,1,1,w^2,w,1,1,0,1,w,w,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,1,1,w,w^2,0,1,1,0,1,w^2,w,w,w,w^2,0,w,w,w,w,w,0,w^2,w^2,1,w,0,w^2,w^2,0,0,1,w^2,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,w,w^2,0,0,0,w,1,0,w,0,w^2,w^2,1,w^2,1,1,1,w^2,w,w,1,1,w,0,0,0,1,1,0,1,0,w,w,w^2,w,w,1,w,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w,w^2,1,w^2,1,w^2,w,1,w,w,w^2,w^2,w,w,w^2,0,1,w^2,0,0,1,0,w,w^2,w,w^2,w,1,w^2,1,1,w,w,w^2,1,w,0,w^2,w,0,w^2,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,0,w,w^2,1,0,w^2,w^2,1,w,1,w^2,1,w,1,0,w^2,w^2,1,1,1,0,w^2,1,w,w^2,0,w,w,w^2,1,w^2,w,w^2,1,1,0,w,w,w^2,w^2,w,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,1,w,0,w^2,0,w^2,0,w,0,1,w^2,0,w^2,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,0,1,0,w^2,w,0,w,w^2,0,1,0,1,1,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w^2,w^2,0,0,w^2,w^2,w,w^2,1,1,0,w^2,w^2,1,0,w,w^2,0,1,w^2,w^2,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,1,0,0,w^2,w,0,w,1,w,w,0,w^2,1,w,0,0,1,w,1,0,0,1,w,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,0,0,0,0,0,0,0,0,1,0,w^2,1,w,0,w,w^2,1,w^2,w,1,w^2,1,0,0,w^2,0,0,w,1,0,w,w^2,0,w^2,0,0,0,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,1,0,0,0,0,0,0,0,0,w^2,0,0,w^2,w^2,w,0,0,w^2,0,w,1,0,w,0,0,0,w^2,w,1,w^2,0,1,1,1,1,1,w^2,1,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,0,0,w,0,0,0,0,0,0,0,0,0,w,0,w,0,0,w,w,0,w,0,0,0,w,w,w,w^2,1,w,1,1,0,1,1,1,w,1,w^2,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,1,w,w,w^2,0,w,1,w,w,w,w,w^2,1,w^2,w^2,1,0,w,w,w^2,0,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,0,1,0,1,w,1,1,0,1,1,1,w,0,w,1,0,1,0,0,w^2,w^2,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,1,w,w^2,w,0,0,0,0,0,0,w,0,w,0,w,w,w,1,1,w^2,w,0,1,w^2,0,w,1,w,1,w,w^2,w^2,w,1,w^2,0,w,w^2,1,w^2,0,1,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,0,w^2,1,0,0,0,0,0,0,0,w^2,0,w^2,0,w^2,1,w,0,w,w^2,w^2,w^2,1,0,w^2,1,1,1,w,w^2,w^2,0,1,1,w^2,1,1,0,1,1,w^2,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,w^2,w^2,0,w^2,w,0,0,0,0,0,0,0,w,1,0,w,0,0,1,0,0,1,w,w,1,w,1,0,0,1,w^2,w^2,w,1,w^2,1,1,1,w^2,w^2,w^2,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w^2,w,0,0,0,0,0,0,0,w^2,1,w,1,w^2,w,0,1,w,0,1,w^2,1,w^2,1,0,1,w,1,0,1,0,w,w,1,0,0,0,1,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,1,w,0,w^2,0,0,0,1,0,0,w^2,0,0,w^2,1,1,0,w^2,w^2,w,0,w^2,w^2,1,w^2,w,0,w,w,w^2,1,1,w,w^2,w,0,w,w^2,0,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,1,w,1,0,0,w,0,w,w,0,w^2,0,w^2,w^2,0,0,w,0,w^2,w,w,w^2,0,w^2,0,1,0,1,0,1,w,w,1,0,w^2,w,w,w,0,w^2,1,1,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,w,1,0,w^2,1,w,1,w^2,0,0,0,w^2,0,0,1,1,w^2,w,w^2,w^2,1,w^2,w^2,0,1,w^2,0,1,w^2,1,w,w,1,w^2,w^2,w^2,0,1,0,w^2,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w^2,w^2,w,w,1,w,1,w^2,1,0,0,w^2,1,0,1,w^2,0,0,0,w,w^2,w,0,1,w,w^2,1,0,w,0,w^2,w^2,w^2,1,1,w,1,1,w,w,w^2,0,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,1,0,0,w^2,1,0,0,1,0,0,w^2,1,1,w,1,1,w^2,1,w^2,w^2,w,w^2,w,w^2,w^2,w^2,0,w,w^2,1,w^2,w^2,w,1,w^2,w,w^2,0,1,w,1,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,1,w^2,1,w^2,w,w^2,1,0,1,0,1,1,w,w,w^2,0,w,1,0,w,w,0,w,w,w,1,1,0,1,0,w^2,w,w^2,w^2,w,0,w^2,w,0,w^2,0,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,w,w^2,1,0,0,w^2,1,1,w^2,w,w^2,1,1,w^2,1,w,w^2,1,w,0,w^2,1,w,w^2,0,0,w,w^2,w^2,w,1,w,w^2,w^2,w,1,1,w^2,0,1,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,0,1,w^2,0,1,1,1,w,w^2,w,1,w^2,0,1,0,w^2,w,0,w^2,w,0,0,w^2,w,0,w^2,w^2,w^2,1,w,1,w^2,w,0,w^2,0,w,w^2,w,1,1,0,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,29,60,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,1,w^2,0,w^2,w,1,w,0,w^2,1,w^2,0,w^2,w^2,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,0,1,w^2,1,0,w,w^2,w,0,w,w,w,0,w^2,1,0,1,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,1,w,w^2,w^2,w^2,0,w^2,w,0,w^2,w,w^2,w^2,w,w^2,w^2,w^2,w^2,w^2,1,w^2,w^2,1,w,0,w,0,w,1,0,w,1,w,w,1,w,w,0,w^2,1,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w^2,w,w,1,1,1,w,w,1,w^2,w,w,0,1,w^2,0,1,1,w^2,0,w^2,w,w^2,1,w^2,w^2,w^2,1,1,w^2,w,1,1,0,1,w,w,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,0,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,w,w,w^2,1,1,1,0,0,w,0,w,0,w^2,1,1,w,w^2,w^2,1,w,w^2,1,1,w,w^2,w^2,w^2,w,0,1,0,1,0,w,w^2,w^2,1,w,1,w,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w,1,w^2,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,1,1,w,w^2,0,1,1,0,1,w^2,w,w,w,w^2,0,w,w,w,w,w,0,w^2,w^2,1,w,0,w^2,w^2,0,0,1,w^2,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,1,w^2,1,w^2,w^2,w,w,w^2,0,0,0,w,1,0,w,0,w^2,w^2,1,w^2,1,1,1,w^2,w,w,1,1,w,0,0,0,1,1,0,1,0,w,w,w^2,w,w,1,w,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,w,w^2,1,w^2,1,w^2,w,1,w,w,w^2,w^2,w,w,w^2,0,1,w^2,0,0,1,0,w,w^2,w,w^2,w,1,w^2,1,1,w,w,w^2,1,w,0,w^2,w,0,w^2,1,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,0,w,w^2,1,0,w^2,w^2,1,w,1,w^2,1,w,1,0,w^2,w^2,1,1,1,0,w^2,1,w,w^2,0,w,w,w^2,1,w^2,w,w^2,1,1,0,w,w,w^2,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,1,w,0,w,w^2,w^2,1,w^2,1,w^2,0,w,w,w,0,0,0,1,w^2,0,w,1,1,0,1,w,w,w^2,w,w^2,w,0,1,1,1,0,w,0,w^2,w,0,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,1,w,0,w^2,0,w^2,0,w,0,1,w^2,0,w^2,1,0,1,0,w,1,0,1,w^2,1,0,w,0,w,0,1,0,w^2,w,0,w,w^2,0,1,0,1,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,w,w^2,1,0,0,w^2,1,1,w^2,w,w^2,1,1,w^2,1,w,w^2,1,w,0,w^2,1,w,w^2,0,0,w,w^2,w^2,w,1,w,w^2,w^2,w,1,1,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,0,1,w^2,0,1,1,1,w,w^2,w,1,w^2,0,1,0,w^2,w,0,w^2,w,0,0,w^2,w,0,w^2,w^2,w^2,1,w,1,w^2,w,0,w^2,0,w,w^2,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,1,w^2,0,1,1,w,w,w,w^2,1,w,0,0,w^2,0,w,1,0,w,w,1,0,1,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,w^2,w,0,0,0,w,w^2,1,0,w,1,1,1,w^2,1,1,w^2,w^2,w,w^2,w^2,0,w,0,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w,0,0,0,0,0,0,0,0,0,0,w,0,0,1,1,w,w,0,w^2,w^2,w,0,1,0,w,w,w,1,w,0,0,1,0,0,w,0,w^2,0,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,0,0,0,0,0,0,0,0,0,1,1,0,w^2,w^2,w^2,w^2,w,0,0,w,w,0,1,w^2,1,w^2,0,w^2,0,0,1,0,0,0,1,1,0,w^2,w^2,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w,0,0,0,0,0,0,0,0,w,0,0,w,w,w,w,0,w,w^2,w,w,1,0,1,w^2,w^2,w,0,w^2,w,1,1,w,w,w^2,0,0,w^2,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,w^2,w^2,0,0,0,0,0,0,0,1,w,0,0,w^2,w,w,0,0,w^2,1,w,1,0,w^2,w,0,w,w^2,w^2,w^2,w,w^2,1,0,w,w^2,1,0,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w,w^2,1,0,0,0,0,0,0,w^2,w^2,0,0,0,w^2,w,w^2,w^2,w^2,w^2,w,w^2,w^2,0,0,0,w^2,w^2,w^2,1,w,w^2,1,w,w^2,w,0,0,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,w^2,0,w^2,1,0,0,0,0,0,w,0,0,0,0,w^2,1,0,0,0,w^2,w^2,1,0,w,w^2,w,1,1,0,w^2,0,w^2,0,0,w^2,1,0,w,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,1,w^2,w,w^2,1,0,0,0,0,w,w^2,0,w,0,0,0,w^2,w^2,0,w^2,0,0,w,0,w,0,1,0,w,1,1,w^2,1,w,0,1,w,w^2,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,w^2,0,w^2,w^2,w^2,w,0,0,0,0,0,w,w^2,w,w,w,w,w,0,1,w,w,0,0,0,w^2,1,1,w^2,0,0,w^2,1,w^2,w,w^2,1,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,1,0,1,w^2,w^2,w^2,0,0,0,w^2,0,w,w^2,w,w^2,w^2,w^2,1,1,w,w,w,0,w^2,w,w^2,0,w^2,1,1,0,w,w^2,0,1,w^2,w,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,w^2,w,w^2,w,0,w,1,0,w,w^2,0,w,1,1,0,0,0,1,0,w^2,w,w,0,w,w,w,w^2,1,1,w,1,w^2,w,w,0,0,w,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w,0,w,w^2,0,w,w^2,1,w^2,w,0,w^2,0,w,0,w^2,w^2,w,w,w,w^2,w,w^2,1,w,w,0,1,w,w,w,1,1,w^2,0,0,w,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,w^2,1,1,0,1,0,w^2,w^2,0,0,1,0,w,w,0,0,w,0,w,w^2,w,w,w^2,w^2,0,0,w^2,1,1,0,1,1,w,w,0,1,w,0,0,0
-        ]),
-        ZeroMatrix(F,29,3)),
-    HorizontalJoin(
-        Matrix(F,3,60,[
-            w^2,0,0,1,0,w^2,w,w^2,0,w,1,1,w^2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w^2,1,0,w^2,0,1,w,0,1,w^2,w^2,w^2,1,1,w^2,w,w,0,w,w^2,0,0,w^2,w,
-            1,0,w^2,1,w^2,0,w,w^2,0,w,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,1,w^2,w,0,0,0,w,1,1,1,w,w^2,1,1,0,w,1,w,w,w,1,w^2,0,0,w,
-            w,w,0,0,1,0,w,1,0,0,0,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,1,w^2,w,0,1,w^2,w,0,w,1,w^2,w,w,w,w,0,0,1,0,0,w^2,1,w^2,w^2,1
-        ]),
-        IdentityMatrix(F,3)));
 assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
-assert Ncols(GX4) eq 63;
 assert RowSpace(Submatrix(GX4,1,1,32,60)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 18;
-Table1Generators[113] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,61,32,2) eq VerticalJoin(ZeroMatrix(F,30,2),IdentityMatrix(F,2));
+Table1Generators[65]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 62 and Dimension(Q) eq 32;
+assert Dimension(HermitianHull(Q)) eq 13;
+Table1Parameters[65]:=[62,19,15,17];
+Table1DistanceTypes[65]:="exact";
 
-// Table 1, No. 114 | source BS096 | HullDecreasing.m
-// Gsrc: [59,37]_4, hull 13; X4: [[63,28,12;17]]_2.
-// lambda=4; the final 4 rows carry the matched block [W1 | I_4].
-Gsrc := Matrix(F,37,59,[
+// Table 1, No. 66 | BS096
+// [[63,28,12;17]]_2, distance exact.
+Gsrc:=Matrix(F,37,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,1,1,w^2,w^2,w^2,w,0,w,1,1,1,w,w,w,w^2,w,w,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w^2,1,0,w,w^2,w,0,w,w^2,1,0,0,w,w,1,0,1,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w,w^2,w,0,w^2,1,1,w^2,w,w^2,0,w,0,w^2,w,
@@ -7222,63 +3898,58 @@ Gsrc := Matrix(F,37,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w,1,w^2,0,0,1,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,33,59,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,1,w^2,1,w^2,1,w^2,w,0,1,w^2,w^2,w,1,0,w,1,w,0,0,w^2,0,0,w,w,1,w,w,w,0,w,0,0,0,0,w,1,w^2,w^2,w,w^2,w,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,w^2,0,1,w^2,0,0,w,0,w,w,0,1,w^2,1,0,1,0,0,0,1,w^2,1,w,w^2,w^2,w^2,w^2,w,0,w^2,w,w,1,w,w^2,1,0,0,1,w^2,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,w,w,1,w^2,w,1,w,1,1,w^2,0,w^2,w,1,w^2,w^2,0,w^2,0,w,w,w,1,w^2,0,w,w,w^2,0,1,w,1,w,w,1,w,w^2,w^2,0,1,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w,0,w,w^2,1,1,w,w^2,1,1,1,1,0,w,0,w,w^2,1,0,0,0,w,0,w,1,w^2,0,0,w,1,w^2,1,0,w,w,w^2,0,1,w^2,w,w^2,w^2,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,0,w,w,1,0,1,w^2,w,0,1,w^2,w,0,w^2,w,0,w,w,w,0,w,1,0,1,w,w^2,0,1,1,w^2,1,w^2,w^2,1,1,1,1,w,w^2,w^2,w^2,0,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,w^2,0,0,0,1,0,w^2,0,0,0,w^2,w^2,w,0,1,w,
-            0,0,0,0,0,0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,1,0,w^2,1,w^2,w^2,0,w^2,w,1,1,0,0,0,0,w^2,
-            0,0,0,0,0,0,0,0,0,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,0,w^2,w,w^2,0,1,w,w^2,1,1,0,w,w^2,w^2,0,0,w,
-            0,0,0,0,0,0,0,0,0,1,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,1,1,0,w,1,w,w,w^2,w,0,0,0,w^2,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w^2,w^2,w,0,1,w^2,1,w^2,w^2,w,w^2,1,0,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,1,w,1,w^2,0,1,0,w,1,w,0,w,0,
-            0,0,0,0,0,0,0,0,0,1,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,0,w^2,w^2,w,1,w,w^2,1,0,1,0,w,0,1,0,0,0,
-            0,0,0,0,0,0,0,0,0,1,0,1,0,w,w,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,w^2,w^2,w^2,w,1,1,0,w^2,1,1,w,w^2,1,w,0,w,
-            0,0,0,0,0,0,0,0,0,1,w,0,w^2,0,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,1,1,1,1,0,w^2,0,0,w,0,w^2,w^2,w^2,w^2,1,w,1,
-            0,0,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,0,1,w^2,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,w,w,1,w,w^2,w,w,0,w,w^2,w,1,0,0,1,w,w^2,
-            0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,1,1,w,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,1,w^2,0,1,1,w,0,0,w^2,w,0,w^2,0,0,1,w,w,
-            0,0,0,0,0,0,0,0,0,w,w,w,w,1,1,w,w^2,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,w,w,1,1,w,w,0,0,0,0,w^2,1,0,0,w^2,
-            0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,1,1,0,1,1,w,0,w^2,w,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,w^2,0,w,w^2,0,w^2,1,w,w^2,w,w^2,w,w,w^2,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,w,w,1,w,0,w^2,w^2,1,w,w^2,1,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w,w,w^2,1,w^2,w^2,w^2,w,0,w,1,0,w^2,1,1,1,1,
-            0,0,0,0,0,0,0,0,0,w,w^2,0,w,0,0,w^2,w,w,1,w,1,0,w,w^2,1,0,0,0,0,0,0,0,0,1,w,0,1,0,w,1,w^2,0,0,0,w,1,0,w^2,1,0,w^2,w,w^2,w,w^2,1,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w,1,w,0,0,w,w^2,0,0,0,1,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,w,w,w^2,1,1,w,w^2,1,w^2,w^2,w^2,w,1,1,w^2,w,0,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,w,0,1,w,w^2,0,w,0,1,1,0,0,0,0,0,0,w,w^2,w,0,0,w^2,w^2,0,1,w^2,0,1,w^2,w,0,w,1,1,w^2,w^2,0,1,0,1,w,0,
-            0,0,0,0,0,0,0,0,0,w^2,1,0,w,w,0,w^2,w^2,1,0,w,0,0,w,0,0,0,1,0,0,0,0,0,0,1,0,w^2,1,0,w^2,0,0,0,w,0,1,1,1,w,w,1,w,w^2,0,w,w^2,1,1,w,w,
-            0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,0,0,w^2,w^2,w,w^2,w^2,1,0,w^2,0,1,w^2,1,0,0,0,0,0,w^2,w^2,0,0,0,w^2,w,0,w^2,0,0,1,w,0,1,w^2,w^2,w^2,1,0,1,w,w,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,1,0,w,w,w^2,w^2,0,1,1,0,0,1,w,1,0,0,0,0,1,1,w^2,w^2,0,w,w^2,w,w^2,1,0,1,0,1,w,w^2,w,0,1,w^2,w^2,w,1,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,w,w,0,1,1,w,w^2,w^2,1,1,0,w,w^2,w,0,w^2,w,w^2,w,0,1,0,0,0,1,w,0,0,0,0,0,0,1,0,w,w,1,w^2,0,w^2,w,0,w,w,w,1,w,w^2,0,w^2,
-            0,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,w^2,w^2,1,w^2,1,w^2,w,1,w,w,w,w^2,1,0,w,w^2,1,0,0,w,w,0,0,0,w^2,0,w^2,w,1,0,w^2,0,1,w^2,w,0,w,1,1,w^2,w,1,0,w,0,
-            0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w^2,w,0,0,1,w,w,0,0,1,w,0,1,0,1,0,0,w,w,w,1,w^2,1,1,0,0,w^2,w^2,w,0,w,0,1,w,w,1,w^2,1,w,0,w^2,0,1,1,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,w,0,0,1,w,1,w,1,1,w,w,1,0,w,1,1,w^2,w^2,0,1,w^2,w,w^2,w^2,w,w^2,1,0,0,1,0,1,w^2,w,1,w,1,w,w^2,1,0,1,1,0,w,0,w,w^2,1
-        ]),
-        ZeroMatrix(F,33,4)),
-    HorizontalJoin(
-        Matrix(F,4,59,[
-            0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,0,w,1,w,0,w^2,w^2,0,w^2,w^2,0,0,w^2,0,0,w^2,1,w^2,w,0,0,w,0,w^2,w,1,1,0,0,1,w^2,w^2,0,w^2,w,1,0,w,w^2,0,w^2,w,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w
-        ]),
-        IdentityMatrix(F,4)));
+GX4:=Matrix(F,37,63,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,1,w^2,1,w^2,1,w^2,w,0,1,w^2,w^2,w,1,0,w,1,w,0,0,w^2,0,0,w,w,1,w,w,w,0,w,0,0,0,0,w,1,w^2,w^2,w,w^2,w,0,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,w^2,w^2,0,1,w^2,0,0,w,0,w,w,0,1,w^2,1,0,1,0,0,0,1,w^2,1,w,w^2,w^2,w^2,w^2,w,0,w^2,w,w,1,w,w^2,1,0,0,1,w^2,0,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,w,w,1,w^2,w,1,w,1,1,w^2,0,w^2,w,1,w^2,w^2,0,w^2,0,w,w,w,1,w^2,0,w,w,w^2,0,1,w,1,w,w,1,w,w^2,w^2,0,1,0,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,1,w,w^2,1,w,0,w,w^2,1,1,w,w^2,1,1,1,1,0,w,0,w,w^2,1,0,0,0,w,0,w,1,w^2,0,0,w,1,w^2,1,0,w,w,w^2,0,1,w^2,w,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,0,w,w,1,0,1,w^2,w,0,1,w^2,w,0,w^2,w,0,w,w,w,0,w,1,0,1,w,w^2,0,1,1,w^2,1,w^2,w^2,1,1,1,1,w,w^2,w^2,w^2,0,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,1,w^2,0,0,0,1,0,w^2,0,0,0,w^2,w^2,w,0,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,1,0,w^2,1,w^2,w^2,0,w^2,w,1,1,0,0,0,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,0,w^2,w,w^2,0,1,w,w^2,1,1,0,w,w^2,w^2,0,0,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,1,1,0,w,1,w,w,w^2,w,0,0,0,w^2,w,w,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w^2,w^2,w^2,w,0,1,w^2,1,w^2,w^2,w,w^2,1,0,0,w,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,1,w,1,w^2,0,1,0,w,1,w,0,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,0,w^2,w^2,w,1,w,w^2,1,0,1,0,w,0,1,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,1,0,w,w,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,w^2,w^2,w^2,w,1,1,0,w^2,1,1,w,w^2,1,w,0,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,w,0,w^2,0,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,1,1,1,1,0,w^2,0,0,w,0,w^2,w^2,w^2,w^2,1,w,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,0,1,w^2,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,w,w,1,w,w^2,w,w,0,w,w^2,w,1,0,0,1,w,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,1,1,w,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,1,w^2,0,1,1,w,0,0,w^2,w,0,w^2,0,0,1,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,w,w,1,1,w,w^2,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,w,w,1,1,w,w,0,0,0,0,w^2,1,0,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,1,1,0,1,1,w,0,w^2,w,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,w^2,0,w,w^2,0,w^2,1,w,w^2,w,w^2,w,w,w^2,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,1,w,0,w^2,w^2,1,w,w^2,1,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w,w,w^2,1,w^2,w^2,w^2,w,0,w,1,0,w^2,1,1,1,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w^2,0,w,0,0,w^2,w,w,1,w,1,0,w,w^2,1,0,0,0,0,0,0,0,0,1,w,0,1,0,w,1,w^2,0,0,0,w,1,0,w^2,1,0,w^2,w,w^2,w,w^2,1,1,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w,1,w,0,0,w,w^2,0,0,0,1,0,0,0,0,0,0,0,0,1,w,0,1,0,w,0,w,w,w^2,1,1,w,w^2,1,w^2,w^2,w^2,w,1,1,w^2,w,0,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,w,0,1,w,w^2,0,w,0,1,1,0,0,0,0,0,0,w,w^2,w,0,0,w^2,w^2,0,1,w^2,0,1,w^2,w,0,w,1,1,w^2,w^2,0,1,0,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,1,0,w,w,0,w^2,w^2,1,0,w,0,0,w,0,0,0,1,0,0,0,0,0,0,1,0,w^2,1,0,w^2,0,0,0,w,0,1,1,1,w,w,1,w,w^2,0,w,w^2,1,1,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,1,w^2,0,w,0,0,w^2,w^2,w,w^2,w^2,1,0,w^2,0,1,w^2,1,0,0,0,0,0,w^2,w^2,0,0,0,w^2,w,0,w^2,0,0,1,w,0,1,w^2,w^2,w^2,1,0,1,w,w,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w,1,0,w,w,w^2,w^2,0,1,1,0,0,1,w,1,0,0,0,0,1,1,w^2,w^2,0,w,w^2,w,w^2,1,0,1,0,1,w,w^2,w,0,1,w^2,w^2,w,1,w^2,w,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w,w,0,1,1,w,w^2,w^2,1,1,0,w,w^2,w,0,w^2,w,w^2,w,0,1,0,0,0,1,w,0,0,0,0,0,0,1,0,w,w,1,w^2,0,w^2,w,0,w,w,w,1,w,w^2,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,w^2,w^2,1,w^2,1,w^2,w,1,w,w,w,w^2,1,0,w,w^2,1,0,0,w,w,0,0,0,w^2,0,w^2,w,1,0,w^2,0,1,w^2,w,0,w,1,1,w^2,w,1,0,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w^2,w,0,0,1,w,w,0,0,1,w,0,1,0,1,0,0,w,w,w,1,w^2,1,1,0,0,w^2,w^2,w,0,w,0,1,w,w,1,w^2,1,w,0,w^2,0,1,1,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,0,0,1,w,1,w,1,1,w,w,1,0,w,1,1,w^2,w^2,0,1,w^2,w,w^2,w^2,w,w^2,1,0,0,1,0,1,w^2,w,1,w,1,w,w^2,1,0,1,1,0,w,0,w,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,0,w,1,w,0,w^2,w^2,0,w^2,w^2,0,0,w^2,0,0,w^2,1,w^2,w,0,0,w,0,w^2,w,1,1,0,0,1,w^2,w^2,0,w^2,w,1,0,w,w^2,0,w^2,w,w^2,1,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,0,0,w,0,w^2,w^2,0,0,1,0,1,w,1,0,w,1,0,w^2,1,w^2,0,0,0,0,w^2,w,0,1,w,w^2,w^2,0,0,1,1,0,1,w^2,0,0,1,1,w,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,0,0,1
+]);
 assert Rank(Gsrc) eq 37 and Rank(GX4) eq 37;
-assert Ncols(GX4) eq 63;
 assert RowSpace(Submatrix(GX4,1,1,37,59)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 13;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 9;
-Table1Generators[114] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,60,37,4) eq VerticalJoin(ZeroMatrix(F,33,4),IdentityMatrix(F,4));
+Table1Generators[66]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 63 and Dimension(Q) eq 37;
+assert Dimension(HermitianHull(Q)) eq 9;
+Table1Parameters[66]:=[63,28,12,17];
+Table1DistanceTypes[66]:="exact";
 
-// Table 1, No. 115 | source DV32 | HullDecreasing.m
-// Gsrc: [62,39]_4, hull 11; X4: [[63,29,12;14]]_2.
-// lambda=1; the final 1 rows carry the matched block [W1 | I_1].
-Gsrc := Matrix(F,39,62,[
+// Table 1, No. 67 | DV32
+// [[63,29,12;14]]_2, distance exact.
+Gsrc:=Matrix(F,39,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w,w,w,w^2,0,0,w,w^2,w^2,w^2,w,w^2,w^2,1,0,1,w^2,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,0,1,w^2,0,w,w^2,1,w,0,1,w,1,0,0,w^2,w,w,w^2,w^2,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,1,0,1,0,w,w,w^2,0,w,0,0,w^2,w^2,0,0,0,0,w^2,
@@ -7319,65 +3990,60 @@ Gsrc := Matrix(F,39,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w,w,0,w,0,w^2,0,w^2,w^2,1,0,w^2,0,w^2,w,w,w^2,w,w,w^2,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,w^2,w^2,w^2,1,0,0,w^2,1,1,1,w^2,1,1,w,0,w,1,1,0,w
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,38,62,[
-            1,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w,1,w^2,1,w^2,w,w,1,w,1,w^2,w^2,0,0,w,w,w,1,w^2,0,1,w,1,w^2,w,1,0,w^2,w,w^2,w,1,1,0,0,w^2,w^2,0,w^2,1,w,0,w,1,w^2,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w,1,w^2,1,w^2,w,w,1,w,1,w^2,w^2,0,0,w,w,w,1,w^2,0,1,w,1,w^2,w,1,0,w^2,w,w^2,w,1,1,0,0,w^2,w^2,0,w^2,1,w,0,w,1,w^2,
-            0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,w,w,0,0,w^2,w^2,w^2,w,1,1,1,1,w^2,0,w,0,w,w^2,1,0,w,w^2,w,w^2,w,w^2,1,1,w^2,1,w,w,w,1,0,w^2,0,w^2,w,w,w^2,0,0,w,1,w^2,w^2,
-            0,0,0,1,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w,w,w^2,1,w,1,w,1,w,w^2,0,1,w,w,w^2,0,w^2,w^2,w,1,0,w^2,0,1,w,w^2,w,0,w,w^2,1,0,w,w^2,w^2,w,w^2,1,0,1,0,w^2,0,1,
-            0,0,0,0,1,0,0,0,0,0,0,w,1,1,1,1,1,w,w,1,w,0,w^2,w^2,0,w,0,1,w,w,1,1,0,w,w^2,w,w^2,1,w,0,0,w^2,0,1,1,0,0,0,w,w^2,w^2,w,w,1,0,w,0,w,1,w,1,w^2,
-            0,0,0,0,0,1,0,0,0,0,0,1,w,1,w,w^2,0,w,0,0,1,0,1,0,0,0,1,w,w,w^2,w,w^2,0,w^2,0,0,w,1,w^2,w,w,w,0,w,0,0,0,1,w^2,w^2,1,w^2,1,w^2,0,w^2,1,1,w,0,w^2,w^2,
-            0,0,0,0,0,0,1,0,0,0,0,1,1,w,w,0,w,w^2,0,w,0,w^2,1,w,w^2,0,w^2,w^2,1,w^2,w^2,0,w,w^2,1,w^2,0,0,w^2,w^2,0,0,1,w,w^2,1,0,1,w,w,1,1,0,0,w,w^2,0,0,1,w^2,1,1,
-            0,0,0,0,0,0,0,1,0,0,0,w,1,1,w^2,1,w,w^2,0,w^2,w,w^2,1,0,w^2,w^2,1,0,w,w^2,w^2,0,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w^2,1,w,0,1,1,w,0,0,1,1,0,w,w,w^2,w,w,0,w^2,1,w,
-            0,0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,0,0,0,w,1,1,w^2,0,0,w,1,1,0,0,w,0,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,w,w^2,1,w^2,1,w^2,0,w^2,1,w,w,w^2,w,w,w^2,w,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w,0,0,0,w,w^2,0,0,0,0,0,1,w,w^2,w,0,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,w^2,w^2,1,w^2,w^2,0,w^2,w,1,1,1,1,w^2,w,w,w,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,1,0,1,w^2,w,0,w^2,1,w,0,w^2,0,w^2,1,w,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,w^2,w^2,0,w^2,1,0,1,1,1,0,w,1,w^2,1,1,w^2,w,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,1,1,0,w,w^2,0,1,0,1,1,w,w^2,0,w^2,w^2,w,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,0,w^2,1,w,1,w,w,0,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,w,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,1,0,1,1,w^2,w,0,0,w^2,1,w,w,w^2,0,w,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,w,0,1,w,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,1,0,0,w,1,1,0,w^2,w,w^2,0,1,1,w,w^2,1,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,1,w,1,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w^2,w,1,0,w^2,w,w^2,0,0,w^2,0,w^2,0,0,w^2,w^2,0,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,1,1,0,w,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,w^2,0,1,1,w,w^2,0,w,1,0,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,w^2,0,w^2,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,0,w,0,w,0,w,w,w,w^2,0,w,w,w,1,w^2,0,1,w,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,0,1,w^2,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,1,0,w,0,0,w^2,w,1,w^2,1,w,0,w,0,w^2,1,1,1,0,1,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,w^2,w^2,0,w,w,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w,0,0,1,w,1,w,w,w,0,1,1,w,0,w^2,1,w,w,1,1,
-            0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w^2,1,w,1,1,w^2,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,1,1,1,0,1,w,1,1,w,1,w^2,0,1,w,w^2,w,w^2,w,1,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,w,1,1,w,w,1,1,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w,w^2,0,0,1,1,w,1,0,w^2,w^2,1,1,0,w^2,0,1,1,w,1,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,0,0,w^2,w,w,w^2,0,1,w,0,w,w^2,1,0,0,0,0,0,0,0,0,1,1,w,1,0,0,1,w,1,w,w^2,0,w,w,w,w^2,1,w,0,w,w^2,w^2,w^2,w^2,1,w,
-            0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,1,0,0,0,w^2,w^2,w^2,0,w^2,0,0,0,w^2,1,0,0,0,0,0,0,0,0,1,0,1,0,w^2,w^2,w,w,w,1,w^2,w,1,w^2,w^2,1,w^2,w,w^2,w,w,w^2,w,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w,0,w,w^2,0,w,0,w^2,0,w^2,0,w,w^2,w,1,0,0,0,0,0,0,0,w^2,w,1,0,0,0,w^2,w,1,w^2,1,w^2,w^2,w^2,w^2,1,w,w,1,w^2,w,w^2,w,w,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,w^2,w,0,w^2,w,w^2,w^2,w^2,0,w^2,1,0,w^2,1,0,0,0,0,0,0,1,w^2,w,0,1,w^2,w^2,w^2,w^2,0,w^2,1,w^2,w,0,w^2,w^2,w,0,1,w^2,w^2,1,w^2,0,1,
-            0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w^2,0,w,0,w^2,w^2,0,w^2,1,1,1,1,1,w^2,w,0,0,0,0,0,w,1,w^2,1,0,w^2,0,0,0,w^2,1,1,w^2,w^2,w^2,w^2,w^2,w,0,w,w,w,1,w,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,1,w^2,w^2,w,w^2,w,w^2,0,w,0,1,1,w^2,0,w^2,0,0,0,0,0,0,w^2,w,w^2,0,0,w,w^2,0,0,0,1,0,1,w,0,1,1,w,1,1,1,1,w,0,w^2,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,1,1,w^2,w^2,w,w^2,1,0,1,w,w,1,w,w^2,w,w^2,1,1,0,0,0,0,1,w^2,0,w^2,w,w,0,w,w,w,w^2,w^2,w^2,0,w^2,w^2,0,1,1,w^2,0,w^2,0,w,0,0,
-            0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,1,w,1,w^2,w,w^2,w,1,w,w,w,w,1,w^2,1,1,0,1,0,0,0,0,w^2,1,1,1,0,w,w,0,w,w^2,w,w,1,w,1,w^2,w,w^2,w^2,w^2,0,0,1,0,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,w,w,w,w,w^2,0,w^2,0,0,1,w^2,0,1,0,w^2,w,w,0,1,w^2,1,1,1,0,0,1,1,w^2,0,w^2,0,1,w^2,w^2,w^2,0,0,w^2,w^2,w^2,0,0,0,w^2,w,0,w^2,w^2,1,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w^2,0,1,w,0,0,0,w^2,1,1,0,0,1,0,0,w^2,w,w,w^2,1,0,w^2,w^2,1,w^2,w,0,1,0,w,0,0,w,0,0,0,1,w,1,w^2,w,1,1,w^2,0,w^2,0,w,
-            0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,1,0,0,0,1,0,w,0,w^2,w^2,w^2,w^2,w^2,w,1,w^2,1,w,w^2,0,1,w^2,1,0,w^2,1,w,w^2,w^2,w^2,w^2,1,0,0,w,w,1,w,w^2,1,w^2,0,0,w^2,1,1,w^2,1
-        ]),
-        ZeroMatrix(F,38,1)),
-    HorizontalJoin(
-        Matrix(F,1,62,[
-            0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2
-        ]),
-        IdentityMatrix(F,1)));
+GX4:=Matrix(F,39,63,[
+    1,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w,1,w^2,1,w^2,w,w,1,w,1,w^2,w^2,0,0,w,w,w,1,w^2,0,1,w,1,w^2,w,1,0,w^2,w,w^2,w,1,1,0,0,w^2,w^2,0,w^2,1,w,0,w,1,w^2,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w^2,w,1,w^2,1,w^2,w,w,1,w,1,w^2,w^2,0,0,w,w,w,1,w^2,0,1,w,1,w^2,w,1,0,w^2,w,w^2,w,1,1,0,0,w^2,w^2,0,w^2,1,w,0,w,1,w^2,0,
+    0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,w,w,0,0,w^2,w^2,w^2,w,1,1,1,1,w^2,0,w,0,w,w^2,1,0,w,w^2,w,w^2,w,w^2,1,1,w^2,1,w,w,w,1,0,w^2,0,w^2,w,w,w^2,0,0,w,1,w^2,w^2,0,
+    0,0,0,1,0,0,0,0,0,0,0,1,1,0,w,w^2,w^2,1,w,w,w^2,1,w,1,w,1,w,w^2,0,1,w,w,w^2,0,w^2,w^2,w,1,0,w^2,0,1,w,w^2,w,0,w,w^2,1,0,w,w^2,w^2,w,w^2,1,0,1,0,w^2,0,1,0,
+    0,0,0,0,1,0,0,0,0,0,0,w,1,1,1,1,1,w,w,1,w,0,w^2,w^2,0,w,0,1,w,w,1,1,0,w,w^2,w,w^2,1,w,0,0,w^2,0,1,1,0,0,0,w,w^2,w^2,w,w,1,0,w,0,w,1,w,1,w^2,0,
+    0,0,0,0,0,1,0,0,0,0,0,1,w,1,w,w^2,0,w,0,0,1,0,1,0,0,0,1,w,w,w^2,w,w^2,0,w^2,0,0,w,1,w^2,w,w,w,0,w,0,0,0,1,w^2,w^2,1,w^2,1,w^2,0,w^2,1,1,w,0,w^2,w^2,0,
+    0,0,0,0,0,0,1,0,0,0,0,1,1,w,w,0,w,w^2,0,w,0,w^2,1,w,w^2,0,w^2,w^2,1,w^2,w^2,0,w,w^2,1,w^2,0,0,w^2,w^2,0,0,1,w,w^2,1,0,1,w,w,1,1,0,0,w,w^2,0,0,1,w^2,1,1,0,
+    0,0,0,0,0,0,0,1,0,0,0,w,1,1,w^2,1,w,w^2,0,w^2,w,w^2,1,0,w^2,w^2,1,0,w,w^2,w^2,0,w,w^2,0,0,w^2,w^2,w^2,w^2,0,w^2,1,w,0,1,1,w,0,0,1,1,0,w,w,w^2,w,w,0,w^2,1,w,0,
+    0,0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,0,0,0,w,1,1,w^2,0,0,w,1,1,0,0,w,0,w,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,w,w^2,1,w^2,1,w^2,0,w^2,1,w,w,w^2,w,w,w^2,w,w,w,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w,0,0,0,w,w^2,0,0,0,0,0,1,w,w^2,w,0,w,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,w^2,w^2,1,w^2,w^2,0,w^2,w,1,1,1,1,w^2,w,w,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w^2,1,0,1,w^2,w,0,w^2,1,w,0,w^2,0,w^2,1,w,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,w^2,w^2,0,w^2,1,0,1,1,1,0,w,1,w^2,1,1,w^2,w,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,1,1,0,w,w^2,0,1,0,1,1,w,w^2,0,w^2,w^2,w,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,0,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,w^2,w,w^2,w^2,1,w^2,0,0,w^2,1,w,1,w,w,0,w,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w,w,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,1,0,1,1,w^2,w,0,0,w^2,1,w,w,w^2,0,w,w,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,w,0,1,w,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,1,0,0,w,1,1,0,w^2,w,w^2,0,1,1,w,w^2,1,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,0,1,1,w,1,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w^2,w,1,0,w^2,w,w^2,0,0,w^2,0,w^2,0,0,w^2,w^2,0,0,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,0,1,1,0,w,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,1,w^2,0,1,1,w,w^2,0,w,1,0,w^2,1,0,1,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,0,w^2,0,w^2,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w,1,0,w,0,w,0,w,w,w,w^2,0,w,w,w,1,w^2,0,1,w,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,0,1,w^2,w^2,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,1,0,w,0,0,w^2,w,1,w^2,1,w,0,w,0,w^2,1,1,1,0,1,w,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,w^2,w^2,0,w,w,w,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w,0,0,1,w,1,w,w,w,0,1,1,w,0,w^2,1,w,w,1,1,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w^2,1,w,1,1,w^2,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,1,1,1,0,1,w,1,1,w,1,w^2,0,1,w,w^2,w,w^2,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,w,1,1,w,w,1,1,w^2,w^2,0,0,1,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w,w^2,0,0,1,1,w,1,0,w^2,w^2,1,1,0,w^2,0,1,1,w,1,w^2,w^2,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,0,0,w^2,w,w,w^2,0,1,w,0,w,w^2,1,0,0,0,0,0,0,0,0,1,1,w,1,0,0,1,w,1,w,w^2,0,w,w,w,w^2,1,w,0,w,w^2,w^2,w^2,w^2,1,w,0,
+    0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,1,0,0,0,w^2,w^2,w^2,0,w^2,0,0,0,w^2,1,0,0,0,0,0,0,0,0,1,0,1,0,w^2,w^2,w,w,w,1,w^2,w,1,w^2,w^2,1,w^2,w,w^2,w,w,w^2,w,w^2,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w,0,w,w^2,0,w,0,w^2,0,w^2,0,w,w^2,w,1,0,0,0,0,0,0,0,w^2,w,1,0,0,0,w^2,w,1,w^2,1,w^2,w^2,w^2,w^2,1,w,w,1,w^2,w,w^2,w,w,w^2,w,0,
+    0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,0,0,w^2,w,0,w^2,w,w^2,w^2,w^2,0,w^2,1,0,w^2,1,0,0,0,0,0,0,1,w^2,w,0,1,w^2,w^2,w^2,w^2,0,w^2,1,w^2,w,0,w^2,w^2,w,0,1,w^2,w^2,1,w^2,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w^2,0,w,0,w^2,w^2,0,w^2,1,1,1,1,1,w^2,w,0,0,0,0,0,w,1,w^2,1,0,w^2,0,0,0,w^2,1,1,w^2,w^2,w^2,w^2,w^2,w,0,w,w,w,1,w,0,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,1,w^2,w^2,w,w^2,w,w^2,0,w,0,1,1,w^2,0,w^2,0,0,0,0,0,0,w^2,w,w^2,0,0,w,w^2,0,0,0,1,0,1,w,0,1,1,w,1,1,1,1,w,0,w^2,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,1,1,w^2,w^2,w,w^2,1,0,1,w,w,1,w,w^2,w,w^2,1,1,0,0,0,0,1,w^2,0,w^2,w,w,0,w,w,w,w^2,w^2,w^2,0,w^2,w^2,0,1,1,w^2,0,w^2,0,w,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,1,w,1,w^2,w,w^2,w,1,w,w,w,w,1,w^2,1,1,0,1,0,0,0,0,w^2,1,1,1,0,w,w,0,w,w^2,w,w,1,w,1,w^2,w,w^2,w^2,w^2,0,0,1,0,w^2,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,w,w,w,w^2,0,w^2,0,0,1,w^2,0,1,0,w^2,w,w,0,1,w^2,1,1,1,0,0,1,1,w^2,0,w^2,0,1,w^2,w^2,w^2,0,0,w^2,w^2,w^2,0,0,0,w^2,w,0,w^2,w^2,1,w^2,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w^2,0,1,w,0,0,0,w^2,1,1,0,0,1,0,0,w^2,w,w,w^2,1,0,w^2,w^2,1,w^2,w,0,1,0,w,0,0,w,0,0,0,1,w,1,w^2,w,1,1,w^2,0,w^2,0,w,0,
+    0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,1,0,0,0,1,0,w,0,w^2,w^2,w^2,w^2,w^2,w,1,w^2,1,w,w^2,0,1,w^2,1,0,w^2,1,w,w^2,w^2,w^2,w^2,1,0,0,w,w,1,w,w^2,1,w^2,0,0,w^2,1,1,w^2,1,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,1,w^2,w,w,0,w,1,w^2,w^2,0,w^2,w,w^2,1,0,w,1,w^2,w,w^2,0,w,w,0,w,w,w^2,w,1,1,0,1,w^2,1,w,0,w^2,1,1,w^2,w^2,1,0,1,1,w,w^2,1
+]);
 assert Rank(Gsrc) eq 39 and Rank(GX4) eq 39;
-assert Ncols(GX4) eq 63;
 assert RowSpace(Submatrix(GX4,1,1,39,62)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 11;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 10;
-Table1Generators[115] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,63,39,1) eq VerticalJoin(ZeroMatrix(F,38,1),IdentityMatrix(F,1));
+Table1Generators[67]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 63 and Dimension(Q) eq 39;
+assert Dimension(HermitianHull(Q)) eq 10;
+Table1Parameters[67]:=[63,29,12,14];
+Table1DistanceTypes[67]:="exact";
 
-// Table 1, No. 116 | source DV35 | HullDecreasing.m
-// Gsrc: [60,39]_4, hull 15; X4: [[64,28,12;14]]_2.
-// lambda=4; the final 4 rows carry the matched block [W1 | I_4].
-Gsrc := Matrix(F,39,60,[
+// Table 1, No. 68 | DV35
+// [[64,28,12;14]]_2, distance exact.
+Gsrc:=Matrix(F,39,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,1,1,1,w^2,0,w^2,1,w^2,1,w^2,0,w,w,w,w^2,w^2,w^2,
     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,1,1,w^2,w^2,w^2,w,0,w,1,1,1,w,w,w,w^2,w,w,
     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w^2,1,0,w,w^2,w,0,w,w^2,1,0,0,w,w,1,0,1,
@@ -7418,77 +4084,56 @@ Gsrc := Matrix(F,39,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,0,w^2,w,1,w^2,0,w^2,1,1,w^2,w,1,0,w,1,1,w,w,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w,1
 ]);
-GX4 := VerticalJoin(
-    HorizontalJoin(
-        Matrix(F,35,60,[
-            1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,w,0,w^2,w^2,w,1,1,0,w,0,w^2,0,0,1,0,w^2,1,w,w^2,w^2,1,1,0,0,w,1,w^2,1,w^2,w^2,0,1,0,0,w^2,0,1,w,0,
-            0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,w,0,w^2,w^2,w,1,1,0,w,0,w^2,0,0,1,0,w^2,1,w,w^2,w^2,1,1,0,0,w,1,w^2,1,w^2,w^2,0,1,0,0,w^2,0,1,w,
-            0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,1,w^2,1,w^2,1,w^2,w,0,1,w^2,w^2,w,1,0,w,1,w,0,0,w^2,0,0,w,w,1,w,w,w,0,w,0,0,0,0,w,1,w^2,w^2,w,w^2,w,
-            0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,
-            0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,
-            0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,
-            0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,
-            0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,
-            0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,
-            0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,
-            0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w^2,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,0,0,w^2,w^2,w^2,w,w,1,1,w,w^2,1,0,1,w^2,0,0,1,w,w,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,w,w^2,0,w,w,0,w^2,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,0,0,1,w^2,0,w,w,w^2,1,1,0,w,w^2,0,1,0,0,0,0,0,w^2,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,w,w^2,w^2,0,w^2,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w,0,0,1,0,w,1,1,w,w^2,1,0,w,w^2,w,w^2,w^2,w^2,w^2,w,1,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,0,0,0,1,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,w^2,w,w^2,0,w,1,0,w,w,w,w,w,w,1,0,1,1,w,w,1,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,1,w,w,0,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,w,w^2,1,w,w^2,0,w^2,w^2,1,w,w^2,w^2,0,w^2,w,0,1,w,w,w^2,1,0,w,w^2,w^2,0,
-            0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w,w,w,1,w,w,0,1,0,1,w^2,0,w,0,0,0,0,0,1,w^2,0,0,1,0,1,w,w^2,0,w^2,0,w,w^2,1,w,w^2,w,0,0,w^2,w^2,1,w,0,w^2,1,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,1,w,w^2,w^2,w,w^2,w,1,0,w,w^2,0,w^2,0,0,0,0,0,w^2,1,1,w,1,w^2,1,1,w,w,w^2,1,w,0,1,0,w,1,w,0,w^2,0,0,w,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,0,1,w,w,0,w^2,w^2,w,0,1,0,1,w,0,0,0,0,0,1,1,0,1,w,w,w,w,w,w^2,w^2,w,0,w,1,1,w^2,w^2,0,0,0,1,w,w,0,1,0,
-            0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,w,w^2,w,0,1,1,w^2,w^2,0,0,0,w,0,0,0,1,0,w,w,w^2,w,0,1,1,w,0,1,w,w,0,w^2,w^2,w^2,0,w^2,w,0,w,1,0,w,1,w,1,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,1,0,0,w^2,w,w,0,1,0,w^2,w^2,w^2,w,0,0,0,1,0,1,0,0,w^2,w^2,w,w,1,1,w^2,1,1,1,w,w^2,w^2,w,w^2,1,0,w^2,w,0,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,0,0,0,w^2,0,w,0,w^2,0,1,1,w^2,0,1,w,0,w^2,0,w^2,w,1,w,w^2,0,1,w,w,1,1,w^2,0,1,w^2,1,0,1,w,w^2,1,w^2,0,1,w,w^2,w,
-            0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,0,w^2,0,1,0,0,0,1,0,w^2,0,0,1,w^2,0,0,0,w,w^2,0,1,w^2,0,w^2,1,0,w,1,0,w,0,w^2,0,w,1,w,1,w^2,0,0,0,w,0,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w^2,w,w^2,1,w,w,w,0,w^2,1,w,0,w,1,1,1,0,0,1,w,w^2,w,w^2,w,w,w,0,w,w^2,w,0,w,w^2,w^2,0,w^2,w,0,1,1,w^2,1,w^2,w^2,w^2,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w^2,0,0,1,w^2,w^2,w^2,1,w^2,w,1,w,1,w,w,1,1,w,w^2,0,1,w^2,w,1,1,1,1,w^2,0,0,0,1,0,w^2,0,1,w,1,w,1,0,w,w^2,w
-        ]),
-        ZeroMatrix(F,35,4)),
-    HorizontalJoin(
-        Matrix(F,4,60,[
-            0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1
-        ]),
-        IdentityMatrix(F,4)));
+GX4:=Matrix(F,39,64,[
+    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,w,0,w^2,w^2,w,1,1,0,w,0,w^2,0,0,1,0,w^2,1,w,w^2,w^2,1,1,0,0,w,1,w^2,1,w^2,w^2,0,1,0,0,w^2,0,1,w,0,0,0,0,0,
+    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,w,0,w^2,w^2,w,1,1,0,w,0,w^2,0,0,1,0,w^2,1,w,w^2,w^2,1,1,0,0,w,1,w^2,1,w^2,w^2,0,1,0,0,w^2,0,1,w,0,0,0,0,
+    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,0,1,w^2,1,w^2,1,w^2,w,0,1,w^2,w^2,w,1,0,w,1,w,0,0,w^2,0,0,w,w,1,w,w,w,0,w,0,0,0,0,w,1,w^2,w^2,w,w^2,w,0,0,0,0,
+    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,0,0,
+    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,w^2,w,w^2,w^2,0,w,w,1,w^2,w^2,1,1,1,1,1,w^2,w^2,w^2,0,0,w,w,1,w^2,w,w,0,0,0,w^2,1,1,w^2,w^2,w,w,w,0,w,1,0,0,0,0,
+    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,0,w,w,w,w^2,w^2,1,1,w^2,0,0,0,w,w,w^2,1,w,w,0,0,w^2,w^2,w^2,1,1,1,1,1,w^2,w^2,1,w,w,0,w^2,w^2,w,w^2,0,0,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,w^2,w,w^2,w^2,1,w,0,0,0,0,w,0,w,w,w,1,w,w,0,0,w^2,0,0,w,1,w,0,1,w,w^2,w^2,1,0,w,w^2,1,w^2,1,w^2,1,0,1,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,0,w^2,0,0,1,0,w^2,w^2,1,w^2,1,w,0,0,1,1,w^2,w^2,w,1,w^2,0,1,0,0,w^2,0,w,0,1,1,w,w^2,w^2,0,w,1,1,0,w,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,1,1,0,w,w^2,w^2,w,1,w,w^2,1,0,w,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,w^2,1,w,1,0,w,w^2,w^2,w^2,1,w^2,w,1,w^2,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,w^2,w,w,1,1,0,0,w,w,w^2,w^2,w,0,0,1,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w^2,0,w^2,w,1,1,w,0,w^2,0,w,w^2,0,1,w,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,0,0,0,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,1,w,w^2,0,w,w,0,w,1,1,w^2,1,0,w^2,1,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w,w^2,0,w^2,0,w^2,w,w^2,1,0,w^2,0,w^2,w,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,1,1,1,w^2,1,w,w^2,0,w,w,w,w^2,0,1,1,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w^2,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,w,1,w,0,w,w^2,w,1,0,0,1,0,w,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,1,0,w^2,1,w,w^2,1,0,w^2,w,w^2,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w^2,w^2,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w^2,0,w,1,0,w^2,0,0,w,0,1,1,w,w^2,w,w,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w^2,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,0,0,w^2,w^2,w^2,w,w,1,1,w,w^2,1,0,1,w^2,0,0,1,w,w,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,w,w^2,0,w,w,0,w^2,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,0,0,1,w^2,0,w,w,w^2,1,1,0,w,w^2,0,1,0,0,0,0,0,w^2,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,w,w^2,w^2,0,w^2,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w,0,0,1,0,w,1,1,w,w^2,1,0,w,w^2,w,w^2,w^2,w^2,w^2,w,1,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,0,0,0,1,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,w^2,w,w^2,0,w,1,0,w,w,w,w,w,w,1,0,1,1,w,w,1,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,1,w,w,0,0,w^2,1,0,1,0,0,0,0,0,0,0,0,0,w,w^2,1,w,w^2,0,w^2,w^2,1,w,w^2,w^2,0,w^2,w,0,1,w,w,w^2,1,0,w,w^2,w^2,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,w,w,w,1,w,w,0,1,0,1,w^2,0,w,0,0,0,0,0,1,w^2,0,0,1,0,1,w,w^2,0,w^2,0,w,w^2,1,w,w^2,w,0,0,w^2,w^2,1,w,0,w^2,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w,1,w,w^2,w^2,w,w^2,w,1,0,w,w^2,0,w^2,0,0,0,0,0,w^2,1,1,w,1,w^2,1,1,w,w,w^2,1,w,0,1,0,w,1,w,0,w^2,0,0,w,w,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,0,1,w,w,0,w^2,w^2,w,0,1,0,1,w,0,0,0,0,0,1,1,0,1,w,w,w,w,w,w^2,w^2,w,0,w,1,1,w^2,w^2,0,0,0,1,w,w,0,1,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,w,w,w^2,w,0,1,1,w^2,w^2,0,0,0,w,0,0,0,1,0,w,w,w^2,w,0,1,1,w,0,1,w,w,0,w^2,w^2,w^2,0,w^2,w,0,w,1,0,w,1,w,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,1,0,0,w^2,w,w,0,1,0,w^2,w^2,w^2,w,0,0,0,1,0,1,0,0,w^2,w^2,w,w,1,1,w^2,1,1,1,w,w^2,w^2,w,w^2,1,0,w^2,w,0,0,w,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,0,0,0,0,w^2,0,w,0,w^2,0,1,1,w^2,0,1,w,0,w^2,0,w^2,w,1,w,w^2,0,1,w,w,1,1,w^2,0,1,w^2,1,0,1,w,w^2,1,w^2,0,1,w,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w,0,0,1,0,0,w^2,0,1,0,0,0,1,0,w^2,0,0,1,w^2,0,0,0,w,w^2,0,1,w^2,0,w^2,1,0,w,1,0,w,0,w^2,0,w,1,w,1,w^2,0,0,0,w,0,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w^2,w,w^2,1,w,w,w,0,w^2,1,w,0,w,1,1,1,0,0,1,w,w^2,w,w^2,w,w,w,0,w,w^2,w,0,w,w^2,w^2,0,w^2,w,0,1,1,w^2,1,w^2,w^2,w^2,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w^2,0,0,1,w^2,w^2,w^2,1,w^2,w,1,w,1,w,w,1,1,w,w^2,0,1,w^2,w,1,1,1,1,w^2,0,0,0,1,0,w^2,0,1,w,1,w,1,0,w,w^2,w,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,w,1,w^2,0,0,w,1,w,0,1,w,1,w,1,w,w^2,w,0,w^2,w^2,0,w,w^2,w,1,w,1,w,1,0,w,1,w,0,0,w^2,1,w,1,w,0,0,1,0,1,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,0,1,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w^2,w,w,0,1,w,w,w^2,w,w,1,1,1,w,0,w^2,w^2,1,w^2,0,0,w^2,1,w^2,w^2,0,w,1,1,1,w,w,w^2,w,w,1,0,w,w,w^2,w,w,1,0,0,0,1
+]);
 assert Rank(Gsrc) eq 39 and Rank(GX4) eq 39;
-assert Ncols(GX4) eq 64;
 assert RowSpace(Submatrix(GX4,1,1,39,60)) eq RowSpace(Gsrc);
-assert Dimension(HermitianHull(LinearCode(Gsrc))) eq 15;
-assert Dimension(HermitianHull(LinearCode(GX4))) eq 11;
-Table1Generators[116] := <Gsrc,GX4>;
+assert Submatrix(GX4,1,61,39,4) eq VerticalJoin(ZeroMatrix(F,35,4),IdentityMatrix(F,4));
+Table1Generators[68]:=<Gsrc,GX4>;
+Q:=LinearCode(GX4);
+assert Length(Q) eq 64 and Dimension(Q) eq 39;
+assert Dimension(HermitianHull(Q)) eq 11;
+Table1Parameters[68]:=[64,28,12,14];
+Table1DistanceTypes[68]:="exact";
 
-assert #{i:i in [1..116] | IsDefined(Table1Generators,i)} eq 116;
-
-// Audit the published, un-reduced X4 block form [A1 0; W1 I_lambda].
-for i in [1..116] do
-    Matrices := Table1Generators[i];
-    Gsrc := Matrices[1];
-    GX4 := Matrices[2];
-    n := Ncols(Gsrc);
-    lambda := Ncols(GX4)-n;
-    k := Nrows(GX4);
-    assert lambda ge 1 and lambda le k;
-    assert Submatrix(GX4,k-lambda+1,n+1,lambda,lambda)
-           eq IdentityMatrix(F,lambda);
-    if k gt lambda then
-        assert IsZero(Submatrix(GX4,1,n+1,k-lambda,lambda));
-    end if;
-end for;
-
-print "TABLE 1: ALL 116 GENERATOR PAIRS AND X4 BLOCK FORMS VERIFIED";
+assert #Keys(Table1Generators) eq 68;
+print "TABLE1_VERIFIED 68";
