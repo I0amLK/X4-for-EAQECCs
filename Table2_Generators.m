@@ -1,5 +1,5 @@
 // Table 2: Corollary 3.4: two-ingredient dual constructions.
-// 126 records, manuscript Nos. 69-194.
+// 109 records, manuscript Nos. 69-177.
 // CSV matrices and Magma matrices have exactly the same row order.
 // Table2Generators[No] = <Gsrc1,Gsrc2,W1,W2,lambda,GX4>.
 // Gsrc_i=[U_i;W_i]; the last lambda rows are the matched basis.
@@ -401,112 +401,7 @@ assert Dimension(HermitianHull(Q)) eq 5;
 Table2Parameters[72]:=[26,5,10,11];
 Table2DistanceTypes[72]:="lower_bound";
 
-// Table 2, No. 73 | D34_P3_00834_3
-// [[26,10,8;14]]_2, distance exact.
-Gsrc1:=Matrix(F,9,14,[
-    1,w^2,1,0,w^2,w,w,0,w^2,w^2,1,0,0,1,
-    1,w^2,w^2,w,1,w^2,1,w^2,1,1,w^2,0,1,w^2,
-    w,w^2,w^2,0,1,1,1,1,w^2,0,w,w,0,1,
-    1,w,w,0,1,w,1,w,1,1,w,w^2,1,w,
-    1,1,1,0,w,1,w^2,w^2,0,1,1,0,1,w^2,
-    w^2,w,w,w,1,0,0,w,0,w,1,0,w^2,w,
-    w,w^2,w,0,w^2,w,0,w^2,1,0,w^2,w,1,0,
-    w,0,w,w,w,w,w^2,w^2,w^2,1,1,w^2,0,w,
-    w^2,0,w,1,0,1,1,w,0,w,w^2,0,w,1
-]);
-Gsrc2:=Matrix(F,10,12,[
-    w^2,0,w,1,w^2,0,1,0,0,w^2,0,w^2,
-    w,0,1,1,w^2,1,w^2,0,w,w,w^2,0,
-    1,w^2,w^2,w^2,w,0,w,1,1,w^2,1,w,
-    0,w,w,0,w,w^2,0,w^2,w,w,1,w^2,
-    w,w,1,w,w^2,w^2,1,w,0,w,w,w^2,
-    1,w,w,1,w,0,w,1,w,w^2,w,1,
-    0,0,1,w^2,1,1,1,w,1,w,w^2,0,
-    0,1,0,0,w,0,w^2,w,1,w,0,w,
-    w^2,w^2,w,0,0,w^2,w,1,0,w^2,1,w,
-    0,w,w^2,w^2,w,1,0,w,1,w,0,w^2
-]);
-W1:=Matrix(F,4,14,[
-    w^2,w,w,w,1,0,0,w,0,w,1,0,w^2,w,
-    w,w^2,w,0,w^2,w,0,w^2,1,0,w^2,w,1,0,
-    w,0,w,w,w,w,w^2,w^2,w^2,1,1,w^2,0,w,
-    w^2,0,w,1,0,1,1,w,0,w,w^2,0,w,1
-]);
-W2:=Matrix(F,4,12,[
-    0,0,1,w^2,1,1,1,w,1,w,w^2,0,
-    0,1,0,0,w,0,w^2,w,1,w,0,w,
-    w^2,w^2,w,0,0,w^2,w,1,0,w^2,1,w,
-    0,w,w^2,w^2,w,1,0,w,1,w,0,w^2
-]);
-lambda:=4;
-U1:=Matrix(F,5,14,[
-    1,w^2,1,0,w^2,w,w,0,w^2,w^2,1,0,0,1,
-    1,w^2,w^2,w,1,w^2,1,w^2,1,1,w^2,0,1,w^2,
-    w,w^2,w^2,0,1,1,1,1,w^2,0,w,w,0,1,
-    1,w,w,0,1,w,1,w,1,1,w,w^2,1,w,
-    1,1,1,0,w,1,w^2,w^2,0,1,1,0,1,w^2
-]);
-U2:=Matrix(F,6,12,[
-    w^2,0,w,1,w^2,0,1,0,0,w^2,0,w^2,
-    w,0,1,1,w^2,1,w^2,0,w,w,w^2,0,
-    1,w^2,w^2,w^2,w,0,w,1,1,w^2,1,w,
-    0,w,w,0,w,w^2,0,w^2,w,w,1,w^2,
-    w,w,1,w,w^2,w^2,1,w,0,w,w,w^2,
-    1,w,w,1,w,0,w,1,w,w^2,w,1
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,15,26,[
-    1,w^2,1,0,w^2,w,w,0,w^2,w^2,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w^2,w^2,w,1,w^2,1,w^2,1,1,w^2,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w^2,w^2,0,1,1,1,1,w^2,0,w,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w,w,0,1,w,1,w,1,1,w,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,1,1,0,w,1,w^2,w^2,0,1,1,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,1,w^2,0,1,0,0,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,1,w^2,0,w,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w,0,w,1,1,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,w^2,0,w^2,w,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w^2,w^2,1,w,0,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,w,0,w,1,w,w^2,w,1,
-    w^2,w,w,w,1,0,0,w,0,w,1,0,w^2,w,0,0,1,w^2,1,1,1,w,1,w,w^2,0,
-    w,w^2,w,0,w^2,w,0,w^2,1,0,w^2,w,1,0,0,1,0,0,w,0,w^2,w,1,w,0,w,
-    w,0,w,w,w,w,w^2,w^2,w^2,1,1,w^2,0,w,w^2,w^2,w,0,0,w^2,w,1,0,w^2,1,w,
-    w^2,0,w,1,0,1,1,w,0,w,w^2,0,w,1,0,w,w^2,w^2,w,1,0,w,1,w,0,w^2
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 9 and Rank(Gsrc2) eq 10;
-assert 9-Rank(Gsrc1*HDag(Gsrc1)) eq 5;
-assert 10-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 6;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[73]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,11,26,[
-    1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,0,w,w,w,w,w^2,w,w,w,0,0,
-    0,1,0,0,0,0,0,0,0,w^2,1,1,0,w,0,0,1,w^2,0,0,1,w^2,1,w^2,w^2,0,
-    0,0,1,0,0,0,0,0,0,1,1,1,w,w,0,0,w^2,0,0,1,1,w^2,1,1,0,w^2,
-    0,0,0,1,0,0,0,0,0,w^2,1,1,w,0,0,0,1,w^2,w,0,w^2,w,w,1,1,1,
-    0,0,0,0,1,0,0,0,0,1,w^2,0,0,w^2,0,0,1,1,1,w,1,0,0,1,w^2,w,
-    0,0,0,0,0,1,0,0,0,w^2,1,w,w,w^2,0,0,1,1,w,0,0,1,w,w,w,1,
-    0,0,0,0,0,0,1,0,0,1,1,w^2,w,0,0,0,1,w^2,w,w,1,1,1,1,w^2,0,
-    0,0,0,0,0,0,0,1,0,w^2,0,0,w^2,1,0,0,w^2,0,w,w^2,1,1,1,w^2,0,w^2,
-    0,0,0,0,0,0,0,0,1,0,w,1,w,0,0,0,w,0,w,w,0,1,w,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,w,1,w^2,0,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,0,w,1,1,0
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[73]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 26 and Dimension(Q) eq 11;
-assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[73]:=[26,10,8,14];
-Table2DistanceTypes[73]:="exact";
-
-// Table 2, No. 74 | D34_M011
+// Table 2, No. 73 | D34_M011
 // [[27,9,11;16]]_2, distance exact.
 Gsrc1:=Matrix(F,17,26,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,1,1,1,0,
@@ -590,7 +485,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 16;
-Table2Parts[74]:="a";
+Table2Parts[73]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,10,27,[
     0,1,0,0,0,0,0,0,0,0,1,0,1,1,w,w,w,0,w,0,w^2,w,0,0,0,1,0,
@@ -605,117 +500,13 @@ RecordedQuantum:=Matrix(F,10,27,[
     1,1,1,0,w^2,0,w^2,w^2,w,w^2,0,w^2,w,w,1,w^2,w,0,1,w,0,w^2,0,0,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[74]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[73]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 27 and Dimension(Q) eq 10;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[74]:=[27,9,11,16];
-Table2DistanceTypes[74]:="exact";
+Table2Parameters[73]:=[27,9,11,16];
+Table2DistanceTypes[73]:="exact";
 
-// Table 2, No. 75 | D34_P3_01395_2
-// [[27,14,7;13]]_2, distance exact.
-Gsrc1:=Matrix(F,8,14,[
-    w,w^2,w,w,0,w,1,w,w^2,1,0,w^2,w,0,
-    0,w,w,w,w^2,w,0,1,w^2,0,w,w,1,w,
-    1,0,w,1,w,w^2,w,1,0,1,0,w^2,w^2,1,
-    w,1,1,w,0,w^2,w^2,w^2,w^2,0,w^2,w^2,w^2,w^2,
-    1,w,0,w^2,0,1,0,w^2,0,w,0,0,w,w,
-    w^2,0,1,w,0,1,w,0,w,1,w^2,0,1,w,
-    w,w,w,w^2,1,w^2,w^2,1,w^2,w,1,w,1,w,
-    w^2,0,0,w^2,0,w^2,0,0,w^2,0,1,w^2,w^2,1
-]);
-Gsrc2:=Matrix(F,10,13,[
-    0,w^2,w^2,1,0,1,w,0,1,0,1,w,w,
-    w,w,0,w,0,0,w^2,0,1,w^2,w,w,w,
-    w,1,w,0,1,1,1,w,w^2,w,0,w^2,w^2,
-    w,1,1,w^2,w^2,1,1,w,w^2,w^2,1,w^2,w,
-    w^2,w,1,0,w,w,w^2,w,w^2,w,0,w,1,
-    w,w^2,0,w,w^2,1,w^2,1,1,1,w^2,0,w^2,
-    w^2,w^2,w^2,0,w^2,0,w^2,w,w,w^2,1,w^2,1,
-    0,w^2,w,0,w,0,w,0,w^2,w,w^2,w,w^2,
-    0,1,0,w,w,w^2,1,w^2,w^2,w^2,w^2,w,w,
-    0,0,w,w,w,1,w,w,w^2,1,w^2,1,w^2
-]);
-W1:=Matrix(F,5,14,[
-    w,1,1,w,0,w^2,w^2,w^2,w^2,0,w^2,w^2,w^2,w^2,
-    1,w,0,w^2,0,1,0,w^2,0,w,0,0,w,w,
-    w^2,0,1,w,0,1,w,0,w,1,w^2,0,1,w,
-    w,w,w,w^2,1,w^2,w^2,1,w^2,w,1,w,1,w,
-    w^2,0,0,w^2,0,w^2,0,0,w^2,0,1,w^2,w^2,1
-]);
-W2:=Matrix(F,5,13,[
-    w,w^2,0,w,w^2,1,w^2,1,1,1,w^2,0,w^2,
-    w^2,w^2,w^2,0,w^2,0,w^2,w,w,w^2,1,w^2,1,
-    0,w^2,w,0,w,0,w,0,w^2,w,w^2,w,w^2,
-    0,1,0,w,w,w^2,1,w^2,w^2,w^2,w^2,w,w,
-    0,0,w,w,w,1,w,w,w^2,1,w^2,1,w^2
-]);
-lambda:=5;
-U1:=Matrix(F,3,14,[
-    w,w^2,w,w,0,w,1,w,w^2,1,0,w^2,w,0,
-    0,w,w,w,w^2,w,0,1,w^2,0,w,w,1,w,
-    1,0,w,1,w,w^2,w,1,0,1,0,w^2,w^2,1
-]);
-U2:=Matrix(F,5,13,[
-    0,w^2,w^2,1,0,1,w,0,1,0,1,w,w,
-    w,w,0,w,0,0,w^2,0,1,w^2,w,w,w,
-    w,1,w,0,1,1,1,w,w^2,w,0,w^2,w^2,
-    w,1,1,w^2,w^2,1,1,w,w^2,w^2,1,w^2,w,
-    w^2,w,1,0,w,w,w^2,w,w^2,w,0,w,1
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,13,27,[
-    w,w^2,w,w,0,w,1,w,w^2,1,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w,w,w,w^2,w,0,1,w^2,0,w,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,0,w,1,w,w^2,w,1,0,1,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,w,0,1,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,0,0,w^2,0,1,w^2,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,1,w,w^2,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,w^2,1,1,w,w^2,w^2,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,w,w,w^2,w,w^2,w,0,w,1,
-    w,1,1,w,0,w^2,w^2,w^2,w^2,0,w^2,w^2,w^2,w^2,w,w^2,0,w,w^2,1,w^2,1,1,1,w^2,0,w^2,
-    1,w,0,w^2,0,1,0,w^2,0,w,0,0,w,w,w^2,w^2,w^2,0,w^2,0,w^2,w,w,w^2,1,w^2,1,
-    w^2,0,1,w,0,1,w,0,w,1,w^2,0,1,w,0,w^2,w,0,w,0,w,0,w^2,w,w^2,w,w^2,
-    w,w,w,w^2,1,w^2,w^2,1,w^2,w,1,w,1,w,0,1,0,w,w,w^2,1,w^2,w^2,w^2,w^2,w,w,
-    w^2,0,0,w^2,0,w^2,0,0,w^2,0,1,w^2,w^2,1,0,0,w,w,w,1,w,w,w^2,1,w^2,1,w^2
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 8 and Rank(Gsrc2) eq 10;
-assert 8-Rank(Gsrc1*HDag(Gsrc1)) eq 5;
-assert 10-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 5;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[75]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,14,27,[
-    1,0,0,0,0,0,0,0,0,0,0,w,0,w,0,0,w,0,1,w,w^2,1,w^2,0,1,w^2,1,
-    0,1,0,0,0,0,0,0,0,0,0,w,w,0,0,0,1,0,1,0,1,w^2,w^2,1,w^2,1,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,0,1,0,0,1,1,0,0,0,1,1,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,0,w^2,0,w^2,w^2,w^2,1,0,1,w,w^2,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,0,0,1,0,1,w^2,0,w,1,w,1,0,w,
-    0,0,0,0,0,1,0,0,0,0,0,1,w,w^2,0,0,1,0,0,w,w^2,1,1,w^2,1,w^2,0,
-    0,0,0,0,0,0,1,0,0,0,0,1,1,w^2,0,0,w,0,1,w,w^2,w^2,w,1,0,w^2,1,
-    0,0,0,0,0,0,0,1,0,0,0,1,w,0,0,0,w^2,0,0,0,w^2,1,w^2,w^2,w,w^2,0,
-    0,0,0,0,0,0,0,0,1,0,0,1,0,w,0,0,w,0,w,w,w^2,w^2,1,w^2,w,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,0,0,w^2,0,w^2,1,1,w^2,w^2,0,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,1,w,1,1,0,0,1,0,0,w^2,0,1,w,w^2,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,0,1,w,w,w,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,w^2,1,w^2,w^2,w^2,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[75]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 27 and Dimension(Q) eq 14;
-assert Dimension(HermitianHull(Q)) eq 0;
-Table2Parameters[75]:=[27,14,7,13];
-Table2DistanceTypes[75]:="exact";
-
-// Table 2, No. 76 | D34_P3_00846_3
+// Table 2, No. 74 | D34_P3_00846_3
 // [[28,6,9;10]]_2, distance exact.
 Gsrc1:=Matrix(F,10,14,[
     w,w,w^2,0,w,w^2,1,1,w^2,w,0,w^2,w,w,
@@ -801,7 +592,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[76]:="a";
+Table2Parts[74]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,12,28,[
     1,0,0,0,0,0,0,0,w,w,w,w^2,w,w,0,0,0,0,w^2,w,w,w^2,w,1,w,0,0,0,
@@ -818,13 +609,13 @@ RecordedQuantum:=Matrix(F,12,28,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[76]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[74]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 28 and Dimension(Q) eq 12;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[76]:=[28,6,9,10];
-Table2DistanceTypes[76]:="exact";
+Table2Parameters[74]:=[28,6,9,10];
+Table2DistanceTypes[74]:="exact";
 
-// Table 2, No. 77 | D34_M015
+// Table 2, No. 75 | D34_M015
 // [[28,6,13;16]]_2, distance exact.
 Gsrc1:=Matrix(F,19,27,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,w^2,1,w^2,w^2,
@@ -914,7 +705,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 16;
-Table2Parts[77]:="a";
+Table2Parts[75]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,9,28,[
     1,0,w,1,0,w,1,0,w,w,w^2,1,w,w^2,1,w,w^2,1,w,w,w,w,w,w,w,w,w,0,
@@ -928,13 +719,13 @@ RecordedQuantum:=Matrix(F,9,28,[
     1,w^2,w,1,w,0,w,0,0,1,1,1,w,1,w^2,0,0,1,1,0,w^2,w^2,w^2,w,w^2,1,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[77]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[75]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 28 and Dimension(Q) eq 9;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[77]:=[28,6,13,16];
-Table2DistanceTypes[77]:="exact";
+Table2Parameters[75]:=[28,6,13,16];
+Table2DistanceTypes[75]:="exact";
 
-// Table 2, No. 78 | D34_M016
+// Table 2, No. 76 | D34_M016
 // [[28,17,6;7]]_2, distance exact.
 Gsrc1:=Matrix(F,9,27,[
     1,0,0,0,0,0,1,w^2,w^2,0,1,w,0,w,w,0,1,w^2,w,1,0,w,w,1,w^2,0,w^2,
@@ -994,7 +785,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[78]:="a";
+Table2Parts[76]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,19,28,[
     1,1,w^2,w^2,1,w,1,w,w^2,w^2,0,w,1,1,w,1,0,w,0,0,w,w,w^2,0,w^2,0,0,0,
@@ -1018,13 +809,13 @@ RecordedQuantum:=Matrix(F,19,28,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w,w,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[78]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[76]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 28 and Dimension(Q) eq 19;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[78]:=[28,17,6,7];
-Table2DistanceTypes[78]:="exact";
+Table2Parameters[76]:=[28,17,6,7];
+Table2DistanceTypes[76]:="exact";
 
-// Table 2, No. 79 | D34_M018
+// Table 2, No. 77 | D34_M018
 // [[29,5,17;22]]_2, distance exact.
 Gsrc1:=Matrix(F,23,28,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w^2,1,
@@ -1126,7 +917,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 22;
-Table2Parts[79]:="a";
+Table2Parts[77]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,6,29,[
     0,w^2,w,w,0,0,w^2,w,1,w,1,w^2,0,w^2,w,0,0,w^2,0,w,w^2,w^2,1,0,w,0,0,0,0,
@@ -1137,13 +928,13 @@ RecordedQuantum:=Matrix(F,6,29,[
     1,0,0,0,0,0,1,w^2,0,w,w,w^2,w,w,w^2,w,w,1,0,w,0,w^2,1,1,0,w^2,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[79]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[77]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 29 and Dimension(Q) eq 6;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[79]:=[29,5,17,22];
-Table2DistanceTypes[79]:="exact";
+Table2Parameters[77]:=[29,5,17,22];
+Table2DistanceTypes[77]:="exact";
 
-// Table 2, No. 80 | D34_M020
+// Table 2, No. 78 | D34_M020
 // [[30,8,14;20]]_2, distance exact.
 Gsrc1:=Matrix(F,21,29,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,1,w,0,w^2,w^2,1,
@@ -1239,7 +1030,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 20;
-Table2Parts[80]:="a";
+Table2Parts[78]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,9,30,[
     1,0,0,0,0,0,0,0,0,w,w,1,0,1,1,w^2,w^2,w^2,w,w^2,w^2,0,0,0,0,0,w,1,w,0,
@@ -1253,126 +1044,13 @@ RecordedQuantum:=Matrix(F,9,30,[
     1,0,0,0,0,0,0,0,1,w^2,w^2,w,1,w,w,1,w,w^2,w,w,w,w^2,w,1,w^2,w^2,w,w^2,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[80]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[78]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 30 and Dimension(Q) eq 9;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[80]:=[30,8,14,20];
-Table2DistanceTypes[80]:="exact";
+Table2Parameters[78]:=[30,8,14,20];
+Table2DistanceTypes[78]:="exact";
 
-// Table 2, No. 81 | D34_P3_00859_3
-// [[30,9,9;13]]_2, distance exact.
-Gsrc1:=Matrix(F,10,12,[
-    w,w,w,w^2,1,0,w,w^2,w,w,1,1,
-    1,w^2,0,w,1,w^2,w^2,w,1,w,w,w,
-    0,1,1,0,w,1,w,w^2,0,w,w,1,
-    0,w,1,1,w,1,w,1,w^2,1,w,w,
-    1,w^2,0,w,w,1,1,0,1,w,0,1,
-    w^2,1,w^2,0,0,0,w,1,w,0,0,1,
-    w,0,1,1,w^2,w^2,1,w,w,w^2,1,1,
-    w,1,w,w^2,w^2,w,0,1,w,w,w,1,
-    w^2,w,w,0,w,1,0,0,w,1,w^2,1,
-    1,w,0,1,w,w^2,w^2,w^2,w^2,0,0,w^2
-]);
-Gsrc2:=Matrix(F,11,18,[
-    1,1,1,0,0,w^2,w^2,0,w^2,w^2,1,1,w^2,0,w,1,0,w^2,
-    0,1,w,w,w,w^2,w,w,0,w^2,0,w,w,0,1,0,w^2,1,
-    1,w,1,1,0,w,w,w^2,0,w^2,1,w,w,w^2,0,1,1,1,
-    1,1,w^2,w^2,0,0,1,1,1,1,0,w,1,w^2,w,w^2,w^2,w,
-    w^2,1,1,w,0,1,w^2,w^2,1,w^2,0,0,1,1,w,w^2,w,w,
-    1,0,0,0,0,1,1,0,1,0,w,1,1,1,0,w^2,1,w^2,
-    0,0,1,0,1,1,1,0,1,w^2,0,w,0,1,0,1,1,w^2,
-    1,0,0,0,w,w^2,w^2,w,1,0,w^2,1,0,w,w^2,1,1,1,
-    w,0,w,1,w,w^2,w^2,w,w^2,w,w^2,0,w^2,0,0,0,0,0,
-    w^2,w,0,w^2,1,w,1,0,w^2,1,w,w^2,1,1,w^2,w,w,0,
-    w^2,1,0,1,0,1,w,1,w^2,w^2,1,w,0,w^2,w^2,w^2,1,w^2
-]);
-W1:=Matrix(F,4,12,[
-    w,0,1,1,w^2,w^2,1,w,w,w^2,1,1,
-    w,1,w,w^2,w^2,w,0,1,w,w,w,1,
-    w^2,w,w,0,w,1,0,0,w,1,w^2,1,
-    1,w,0,1,w,w^2,w^2,w^2,w^2,0,0,w^2
-]);
-W2:=Matrix(F,4,18,[
-    1,0,0,0,w,w^2,w^2,w,1,0,w^2,1,0,w,w^2,1,1,1,
-    w,0,w,1,w,w^2,w^2,w,w^2,w,w^2,0,w^2,0,0,0,0,0,
-    w^2,w,0,w^2,1,w,1,0,w^2,1,w,w^2,1,1,w^2,w,w,0,
-    w^2,1,0,1,0,1,w,1,w^2,w^2,1,w,0,w^2,w^2,w^2,1,w^2
-]);
-lambda:=4;
-U1:=Matrix(F,6,12,[
-    w,w,w,w^2,1,0,w,w^2,w,w,1,1,
-    1,w^2,0,w,1,w^2,w^2,w,1,w,w,w,
-    0,1,1,0,w,1,w,w^2,0,w,w,1,
-    0,w,1,1,w,1,w,1,w^2,1,w,w,
-    1,w^2,0,w,w,1,1,0,1,w,0,1,
-    w^2,1,w^2,0,0,0,w,1,w,0,0,1
-]);
-U2:=Matrix(F,7,18,[
-    1,1,1,0,0,w^2,w^2,0,w^2,w^2,1,1,w^2,0,w,1,0,w^2,
-    0,1,w,w,w,w^2,w,w,0,w^2,0,w,w,0,1,0,w^2,1,
-    1,w,1,1,0,w,w,w^2,0,w^2,1,w,w,w^2,0,1,1,1,
-    1,1,w^2,w^2,0,0,1,1,1,1,0,w,1,w^2,w,w^2,w^2,w,
-    w^2,1,1,w,0,1,w^2,w^2,1,w^2,0,0,1,1,w,w^2,w,w,
-    1,0,0,0,0,1,1,0,1,0,w,1,1,1,0,w^2,1,w^2,
-    0,0,1,0,1,1,1,0,1,w^2,0,w,0,1,0,1,1,w^2
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,17,30,[
-    w,w,w,w^2,1,0,w,w^2,w,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w^2,0,w,1,w^2,w^2,w,1,w,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,1,1,0,w,1,w,w^2,0,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w,1,1,w,1,w,1,w^2,1,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w^2,0,w,w,1,1,0,1,w,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,1,w^2,0,0,0,w,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w^2,w^2,0,w^2,w^2,1,1,w^2,0,w,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,w^2,w,w,0,w^2,0,w,w,0,1,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,1,0,w,w,w^2,0,w^2,1,w,w,w^2,0,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,0,0,1,1,1,1,0,w,1,w^2,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,1,w^2,w^2,1,w^2,0,0,1,1,w,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,1,0,w,1,1,1,0,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,1,w^2,0,w,0,1,0,1,1,w^2,
-    w,0,1,1,w^2,w^2,1,w,w,w^2,1,1,1,0,0,0,w,w^2,w^2,w,1,0,w^2,1,0,w,w^2,1,1,1,
-    w,1,w,w^2,w^2,w,0,1,w,w,w,1,w,0,w,1,w,w^2,w^2,w,w^2,w,w^2,0,w^2,0,0,0,0,0,
-    w^2,w,w,0,w,1,0,0,w,1,w^2,1,w^2,w,0,w^2,1,w,1,0,w^2,1,w,w^2,1,1,w^2,w,w,0,
-    1,w,0,1,w,w^2,w^2,w^2,w^2,0,0,w^2,w^2,1,0,1,0,1,w,1,w^2,w^2,1,w,0,w^2,w^2,w^2,1,w^2
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 10 and Rank(Gsrc2) eq 11;
-assert 10-Rank(Gsrc1*HDag(Gsrc1)) eq 0;
-assert 11-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 7;
-assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[81]:="a";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,13,30,[
-    1,0,0,0,0,0,w^2,w^2,0,w,w,w^2,0,0,0,0,0,0,0,w,1,0,0,w,0,1,w^2,1,w^2,w,
-    0,1,0,0,0,0,w,w,w^2,1,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,w,0,0,0,w,
-    0,0,1,0,0,0,w,w^2,w,w,w,1,0,0,0,0,0,0,0,w^2,0,w^2,w,1,w,1,w^2,0,0,w,
-    0,0,0,1,0,0,1,1,w^2,w,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,w^2,0,w^2,1,w^2,0,
-    0,0,0,0,1,0,1,w^2,w,w,w,1,0,0,0,0,0,0,0,w^2,0,1,w^2,w^2,w^2,w,1,w^2,w,w,
-    0,0,0,0,0,1,0,1,w^2,w,w,w^2,0,0,0,0,0,0,0,w,1,w,1,0,w,w^2,0,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,w,w^2,0,w,0,0,w,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w^2,1,w,1,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,w,w,1,w,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,w,0,w^2,w^2,w,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,0,w,w,w^2,w,0,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,1,1,1,1,w^2,w,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,1,0,1,w^2,w,w,w
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[81]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 30 and Dimension(Q) eq 13;
-assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[81]:=[30,9,9,13];
-Table2DistanceTypes[81]:="exact";
-
-// Table 2, No. 82 | D34_M023
+// Table 2, No. 79 | D34_M023
 // [[31,8,12;15]]_2, distance lower_bound.
 Gsrc1:=Matrix(F,19,30,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,1,w,w^2,w,w^2,w,w^2,1,1,0,1,
@@ -1462,7 +1140,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 15;
-Table2Parts[82]:="a";
+Table2Parts[79]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,12,31,[
     1,0,0,1,1,w,0,0,w,w,w^2,0,0,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,w^2,w,0,w,0,1,0,
@@ -1479,129 +1157,13 @@ RecordedQuantum:=Matrix(F,12,31,[
     1,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,0,1,w^2,w^2,w^2,w,w,1,1,0,1,w^2,w^2,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[82]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[79]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 31 and Dimension(Q) eq 12;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[82]:=[31,8,12,15];
-Table2DistanceTypes[82]:="lower_bound";
+Table2Parameters[79]:=[31,8,12,15];
+Table2DistanceTypes[79]:="lower_bound";
 
-// Table 2, No. 83 | D34_P3_01433_2
-// [[31,9,9;12]]_2, distance exact.
-Gsrc1:=Matrix(F,11,13,[
-    w^2,w^2,w^2,w^2,w^2,0,1,1,0,0,w^2,w^2,0,
-    1,0,w^2,w,0,0,w,0,w,w,w^2,w,w,
-    w,0,1,1,w,0,1,1,1,w^2,0,0,w,
-    w^2,w^2,w^2,1,w,1,0,w^2,w,w^2,w,0,w,
-    w,1,w^2,1,0,1,w,0,1,w^2,1,1,w,
-    w,1,1,w^2,1,0,w^2,1,w^2,w^2,w^2,w,0,
-    w^2,w,0,1,w,0,w^2,1,w^2,w^2,w,1,w^2,
-    1,0,w,0,w^2,0,0,w,w^2,1,0,1,0,
-    w,0,1,1,w^2,0,w,1,w,w,1,w,w,
-    w,1,w,w^2,1,w,w^2,w^2,0,w^2,w^2,0,w^2,
-    w^2,w^2,w,0,w^2,w,w,w^2,w,w^2,w^2,1,0
-]);
-Gsrc2:=Matrix(F,11,18,[
-    w^2,w,w,1,0,0,w,w,w^2,0,0,w^2,w,1,1,w,0,w^2,
-    0,0,w,0,w^2,w,w^2,w^2,w,w,1,0,w,1,0,1,1,w^2,
-    w^2,1,w,1,w,0,0,w^2,0,1,0,1,w^2,0,w,0,0,1,
-    w,0,w^2,w,w^2,w^2,1,1,w^2,w,w^2,1,w^2,1,w^2,w,1,w^2,
-    w,0,1,w^2,w^2,0,1,w,w,w,1,w^2,0,w^2,w^2,w,1,1,
-    0,w,1,w,0,w^2,w^2,0,w,w^2,w,0,1,w,w^2,1,1,0,
-    w,w,w^2,w^2,w^2,w,0,w,0,1,1,1,1,0,w^2,w^2,1,1,
-    1,0,1,0,w,w,w,w^2,1,1,w^2,1,w,1,0,w,1,w,
-    w^2,1,w,1,1,1,1,w,1,0,w^2,w,1,w^2,w,w,1,1,
-    1,w,w,w^2,0,w,1,w^2,w,1,w^2,1,0,0,w^2,0,0,1,
-    w,w,1,w,0,1,w^2,0,w,1,w,w,0,w,1,w^2,0,0
-]);
-W1:=Matrix(F,5,13,[
-    w^2,w,0,1,w,0,w^2,1,w^2,w^2,w,1,w^2,
-    1,0,w,0,w^2,0,0,w,w^2,1,0,1,0,
-    w,0,1,1,w^2,0,w,1,w,w,1,w,w,
-    w,1,w,w^2,1,w,w^2,w^2,0,w^2,w^2,0,w^2,
-    w^2,w^2,w,0,w^2,w,w,w^2,w,w^2,w^2,1,0
-]);
-W2:=Matrix(F,5,18,[
-    w,w,w^2,w^2,w^2,w,0,w,0,1,1,1,1,0,w^2,w^2,1,1,
-    1,0,1,0,w,w,w,w^2,1,1,w^2,1,w,1,0,w,1,w,
-    w^2,1,w,1,1,1,1,w,1,0,w^2,w,1,w^2,w,w,1,1,
-    1,w,w,w^2,0,w,1,w^2,w,1,w^2,1,0,0,w^2,0,0,1,
-    w,w,1,w,0,1,w^2,0,w,1,w,w,0,w,1,w^2,0,0
-]);
-lambda:=5;
-U1:=Matrix(F,6,13,[
-    w^2,w^2,w^2,w^2,w^2,0,1,1,0,0,w^2,w^2,0,
-    1,0,w^2,w,0,0,w,0,w,w,w^2,w,w,
-    w,0,1,1,w,0,1,1,1,w^2,0,0,w,
-    w^2,w^2,w^2,1,w,1,0,w^2,w,w^2,w,0,w,
-    w,1,w^2,1,0,1,w,0,1,w^2,1,1,w,
-    w,1,1,w^2,1,0,w^2,1,w^2,w^2,w^2,w,0
-]);
-U2:=Matrix(F,6,18,[
-    w^2,w,w,1,0,0,w,w,w^2,0,0,w^2,w,1,1,w,0,w^2,
-    0,0,w,0,w^2,w,w^2,w^2,w,w,1,0,w,1,0,1,1,w^2,
-    w^2,1,w,1,w,0,0,w^2,0,1,0,1,w^2,0,w,0,0,1,
-    w,0,w^2,w,w^2,w^2,1,1,w^2,w,w^2,1,w^2,1,w^2,w,1,w^2,
-    w,0,1,w^2,w^2,0,1,w,w,w,1,w^2,0,w^2,w^2,w,1,1,
-    0,w,1,w,0,w^2,w^2,0,w,w^2,w,0,1,w,w^2,1,1,0
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,17,31,[
-    w^2,w^2,w^2,w^2,w^2,0,1,1,0,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,0,w^2,w,0,0,w,0,w,w,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,0,1,1,w,0,1,1,1,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w^2,w^2,1,w,1,0,w^2,w,w^2,w,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,1,w^2,1,0,1,w,0,1,w^2,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,1,1,w^2,1,0,w^2,1,w^2,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,0,0,w,w,w^2,0,0,w^2,w,1,1,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w^2,w^2,w,w,1,0,w,1,0,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w,0,0,w^2,0,1,0,1,w^2,0,w,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w^2,w^2,1,1,w^2,w,w^2,1,w^2,1,w^2,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w^2,0,1,w,w,w,1,w^2,0,w^2,w^2,w,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,w^2,w^2,0,w,w^2,w,0,1,w,w^2,1,1,0,
-    w^2,w,0,1,w,0,w^2,1,w^2,w^2,w,1,w^2,w,w,w^2,w^2,w^2,w,0,w,0,1,1,1,1,0,w^2,w^2,1,1,
-    1,0,w,0,w^2,0,0,w,w^2,1,0,1,0,1,0,1,0,w,w,w,w^2,1,1,w^2,1,w,1,0,w,1,w,
-    w,0,1,1,w^2,0,w,1,w,w,1,w,w,w^2,1,w,1,1,1,1,w,1,0,w^2,w,1,w^2,w,w,1,1,
-    w,1,w,w^2,1,w,w^2,w^2,0,w^2,w^2,0,w^2,1,w,w,w^2,0,w,1,w^2,w,1,w^2,1,0,0,w^2,0,0,1,
-    w^2,w^2,w,0,w^2,w,w,w^2,w,w^2,w^2,1,0,w,w,1,w,0,1,w^2,0,w,1,w,w,0,w,1,w^2,0,0
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 11 and Rank(Gsrc2) eq 11;
-assert 11-Rank(Gsrc1*HDag(Gsrc1)) eq 0;
-assert 11-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 6;
-assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[83]:="a";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,14,31,[
-    1,0,0,0,0,0,0,w^2,0,w,1,w,1,0,0,0,0,0,0,0,w^2,w,w,w,0,w^2,w,w,w^2,1,w^2,
-    0,1,0,0,0,0,0,0,w,w,w,w^2,w,0,0,0,0,0,0,0,w,w^2,0,w^2,w^2,0,w^2,1,w^2,w^2,w^2,
-    0,0,1,0,0,0,0,1,0,w^2,0,w,w,0,0,0,0,0,0,0,w,w,w^2,0,0,w,w^2,1,w,0,0,
-    0,0,0,1,0,0,0,w^2,0,0,w^2,0,w^2,0,0,0,0,0,0,0,0,w,1,1,0,0,w^2,0,w^2,1,1,
-    0,0,0,0,1,0,0,1,1,w^2,w,0,w^2,0,0,0,0,0,0,0,w^2,w,w^2,1,w^2,0,0,w^2,w^2,1,w^2,
-    0,0,0,0,0,1,0,w^2,w^2,0,w^2,1,0,0,0,0,0,0,0,0,w,w,1,w,w,1,1,w^2,0,1,0,
-    0,0,0,0,0,0,1,w^2,w^2,0,w^2,w,w,0,0,0,0,0,0,0,0,1,w,w,w,0,1,1,0,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,w,w^2,0,w,0,0,w,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w^2,1,w,1,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,w,w,1,w,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,w,0,w^2,w^2,w,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,0,w,w,w^2,w,0,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,1,1,1,1,w^2,w,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,1,0,1,w^2,w,w,w
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[83]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 31 and Dimension(Q) eq 14;
-assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[83]:=[31,9,9,12];
-Table2DistanceTypes[83]:="exact";
-
-// Table 2, No. 84 | D34_M028
+// Table 2, No. 80 | D34_M028
 // [[32,7,12;15]]_2, distance lower_bound.
 Gsrc1:=Matrix(F,20,30,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,1,w,w^2,w,w^2,w,w^2,1,1,0,1,
@@ -1696,7 +1258,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 15;
-Table2Parts[84]:="a";
+Table2Parts[80]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,12,32,[
     1,0,0,1,1,w,0,0,w,w,w^2,0,0,w^2,w^2,w^2,0,w^2,0,w,1,0,1,0,w^2,w,0,w,0,1,0,0,
@@ -1713,130 +1275,13 @@ RecordedQuantum:=Matrix(F,12,32,[
     1,1,1,w,0,0,w,w,w^2,0,w^2,1,w,1,1,0,0,0,0,1,1,w,w,1,w^2,1,1,1,w,1,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[84]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[80]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 32 and Dimension(Q) eq 12;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[84]:=[32,7,12,15];
-Table2DistanceTypes[84]:="lower_bound";
+Table2Parameters[80]:=[32,7,12,15];
+Table2DistanceTypes[80]:="lower_bound";
 
-// Table 2, No. 85 | D34_P3_01444_3
-// [[32,9,9;11]]_2, distance exact.
-Gsrc1:=Matrix(F,11,14,[
-    w^2,w^2,1,0,w^2,1,w,w,1,w^2,0,1,w^2,w^2,
-    0,w^2,w,w,1,1,w,1,1,w^2,w,w^2,w,1,
-    0,0,w^2,w,w,1,0,w,w^2,w^2,w,1,w^2,1,
-    1,1,w,w,w,w^2,0,w,0,1,0,w^2,w,w^2,
-    w^2,1,1,1,w,1,w^2,1,w,0,0,w,0,w^2,
-    w^2,w^2,w^2,w,w,0,w,w,0,0,w^2,w^2,1,w^2,
-    w^2,w^2,w,w^2,w^2,w^2,w^2,w,1,1,w,w^2,w,0,
-    w^2,0,w^2,w^2,0,0,w^2,1,w,1,w^2,0,w,0,
-    1,1,w,w,1,w,w,w,0,1,0,1,w^2,0,
-    1,1,1,w,0,1,w^2,w,w^2,w,1,1,w^2,w,
-    0,w^2,w^2,0,1,w^2,1,w^2,1,1,1,w,0,w
-]);
-Gsrc2:=Matrix(F,11,18,[
-    1,0,w^2,w^2,w,1,w^2,1,w^2,w^2,1,0,0,1,w^2,w,w,w^2,
-    0,w^2,1,0,1,0,w,0,w,1,1,w,0,0,0,0,w^2,0,
-    1,1,1,w^2,w^2,w^2,1,0,w^2,w,1,w^2,w,w,w,0,0,w,
-    0,w,1,0,1,w^2,w,0,1,0,w^2,w^2,w,0,0,w^2,0,1,
-    0,w,w,w^2,w^2,w,1,w^2,0,1,w,w^2,w,w,0,0,0,w^2,
-    w,0,w,w^2,0,0,w^2,0,0,1,w^2,0,1,1,w^2,1,1,0,
-    0,w^2,w,1,1,w,w,w^2,0,w^2,1,w^2,w^2,0,1,w,w,1,
-    0,w^2,0,w^2,0,0,w,0,w,1,1,1,1,1,w,w^2,1,w^2,
-    0,w^2,w,1,w,w,w,w,0,0,1,w,0,w,1,w,0,w,
-    w^2,w^2,w,w^2,w,w^2,1,w,w^2,w,0,0,w,w,w,0,1,w,
-    w^2,w^2,0,1,w,w^2,1,0,w,w,0,0,w^2,w^2,0,w,w,1
-]);
-W1:=Matrix(F,5,14,[
-    w^2,w^2,w,w^2,w^2,w^2,w^2,w,1,1,w,w^2,w,0,
-    w^2,0,w^2,w^2,0,0,w^2,1,w,1,w^2,0,w,0,
-    1,1,w,w,1,w,w,w,0,1,0,1,w^2,0,
-    1,1,1,w,0,1,w^2,w,w^2,w,1,1,w^2,w,
-    0,w^2,w^2,0,1,w^2,1,w^2,1,1,1,w,0,w
-]);
-W2:=Matrix(F,5,18,[
-    0,w^2,w,1,1,w,w,w^2,0,w^2,1,w^2,w^2,0,1,w,w,1,
-    0,w^2,0,w^2,0,0,w,0,w,1,1,1,1,1,w,w^2,1,w^2,
-    0,w^2,w,1,w,w,w,w,0,0,1,w,0,w,1,w,0,w,
-    w^2,w^2,w,w^2,w,w^2,1,w,w^2,w,0,0,w,w,w,0,1,w,
-    w^2,w^2,0,1,w,w^2,1,0,w,w,0,0,w^2,w^2,0,w,w,1
-]);
-lambda:=5;
-U1:=Matrix(F,6,14,[
-    w^2,w^2,1,0,w^2,1,w,w,1,w^2,0,1,w^2,w^2,
-    0,w^2,w,w,1,1,w,1,1,w^2,w,w^2,w,1,
-    0,0,w^2,w,w,1,0,w,w^2,w^2,w,1,w^2,1,
-    1,1,w,w,w,w^2,0,w,0,1,0,w^2,w,w^2,
-    w^2,1,1,1,w,1,w^2,1,w,0,0,w,0,w^2,
-    w^2,w^2,w^2,w,w,0,w,w,0,0,w^2,w^2,1,w^2
-]);
-U2:=Matrix(F,6,18,[
-    1,0,w^2,w^2,w,1,w^2,1,w^2,w^2,1,0,0,1,w^2,w,w,w^2,
-    0,w^2,1,0,1,0,w,0,w,1,1,w,0,0,0,0,w^2,0,
-    1,1,1,w^2,w^2,w^2,1,0,w^2,w,1,w^2,w,w,w,0,0,w,
-    0,w,1,0,1,w^2,w,0,1,0,w^2,w^2,w,0,0,w^2,0,1,
-    0,w,w,w^2,w^2,w,1,w^2,0,1,w,w^2,w,w,0,0,0,w^2,
-    w,0,w,w^2,0,0,w^2,0,0,1,w^2,0,1,1,w^2,1,1,0
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,17,32,[
-    w^2,w^2,1,0,w^2,1,w,w,1,w^2,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w^2,w,w,1,1,w,1,1,w^2,w,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,w^2,w,w,1,0,w,w^2,w^2,w,1,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,1,w,w,w,w^2,0,w,0,1,0,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,1,1,1,w,1,w^2,1,w,0,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w^2,w^2,w,w,0,w,w,0,0,w^2,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,1,w^2,1,w^2,w^2,1,0,0,1,w^2,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,0,w,0,w,1,1,w,0,0,0,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,w^2,1,0,w^2,w,1,w^2,w,w,w,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,1,w^2,w,0,1,0,w^2,w^2,w,0,0,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,w,1,w^2,0,1,w,w^2,w,w,0,0,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,0,0,w^2,0,0,1,w^2,0,1,1,w^2,1,1,0,
-    w^2,w^2,w,w^2,w^2,w^2,w^2,w,1,1,w,w^2,w,0,0,w^2,w,1,1,w,w,w^2,0,w^2,1,w^2,w^2,0,1,w,w,1,
-    w^2,0,w^2,w^2,0,0,w^2,1,w,1,w^2,0,w,0,0,w^2,0,w^2,0,0,w,0,w,1,1,1,1,1,w,w^2,1,w^2,
-    1,1,w,w,1,w,w,w,0,1,0,1,w^2,0,0,w^2,w,1,w,w,w,w,0,0,1,w,0,w,1,w,0,w,
-    1,1,1,w,0,1,w^2,w,w^2,w,1,1,w^2,w,w^2,w^2,w,w^2,w,w^2,1,w,w^2,w,0,0,w,w,w,0,1,w,
-    0,w^2,w^2,0,1,w^2,1,w^2,1,1,1,w,0,w,w^2,w^2,0,1,w,w^2,1,0,w,w,0,0,w^2,w^2,0,w,w,1
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 11 and Rank(Gsrc2) eq 11;
-assert 11-Rank(Gsrc1*HDag(Gsrc1)) eq 1;
-assert 11-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 6;
-assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
-assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[85]:="a";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,15,32,[
-    1,0,0,0,0,0,0,0,0,1,w^2,w^2,w,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w^2,w,w,1,1,w^2,
-    0,1,0,0,0,0,0,0,0,w,w,1,1,1,0,0,0,0,0,0,0,0,1,1,w,w^2,w^2,1,1,w^2,1,0,
-    0,0,1,0,0,0,0,0,w^2,w^2,w^2,w,w,1,0,0,0,0,0,0,0,w,1,0,0,1,0,1,0,1,0,1,
-    0,0,0,1,0,0,0,0,0,1,0,1,w^2,1,0,0,0,0,0,0,0,1,w,1,0,0,1,1,w,w,0,w,
-    0,0,0,0,1,0,0,0,1,w,w,w^2,w^2,1,0,0,0,0,0,0,0,w,w^2,1,w,w,0,w,0,0,0,w^2,
-    0,0,0,0,0,1,0,0,w,0,1,w,0,w^2,0,0,0,0,0,0,0,0,w,1,w,w^2,1,0,1,1,0,1,
-    0,0,0,0,0,0,1,0,1,w^2,w,w^2,w,w,0,0,0,0,0,0,0,1,0,w,w,w,1,0,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,1,w^2,1,w,w,1,1,0,0,0,0,0,0,0,w^2,w^2,0,w,w,w,1,0,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,w,w^2,0,w,0,0,w,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,w,0,w^2,1,w,1,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,w,w,1,w,w,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,w,0,w^2,w^2,w,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,0,w,w,w^2,w,0,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,1,1,1,1,w^2,w,w^2,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,1,0,1,w^2,w,w,w
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[85]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 32 and Dimension(Q) eq 15;
-assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[85]:=[32,9,9,11];
-Table2DistanceTypes[85]:="exact";
-
-// Table 2, No. 86 | D34_M031
+// Table 2, No. 81 | D34_M031
 // [[32,18,7;10]]_2, distance exact.
 Gsrc1:=Matrix(F,12,31,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w,0,w,0,0,w,w^2,w,w^2,1,w,1,1,w^2,
@@ -1905,7 +1350,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 10;
-Table2Parts[86]:="a";
+Table2Parts[81]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,20,32,[
     1,w^2,w,1,0,w,w^2,1,0,1,1,0,w^2,0,w,0,w^2,0,1,1,0,1,w^2,0,0,1,w,w^2,w,w,1,0,
@@ -1930,13 +1375,13 @@ RecordedQuantum:=Matrix(F,20,32,[
     w,w,1,w^2,0,1,w,w^2,0,w^2,w^2,0,w,0,1,0,w,0,w^2,0,w^2,w^2,w^2,1,w^2,1,w,1,w,1,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[86]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[81]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 32 and Dimension(Q) eq 20;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[86]:=[32,18,7,10];
-Table2DistanceTypes[86]:="exact";
+Table2Parameters[81]:=[32,18,7,10];
+Table2DistanceTypes[81]:="exact";
 
-// Table 2, No. 87 | D34_P2_01263_2
+// Table 2, No. 82 | D34_P2_01263_2
 // [[32,19,6;9]]_2, distance exact.
 Gsrc1:=Matrix(F,10,23,[
     1,w,w,1,0,w^2,1,1,w,0,1,w^2,w,w,0,1,0,0,w,0,0,0,0,
@@ -2009,7 +1454,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[87]:="b";
+Table2Parts[82]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,21,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w,1,0,0,0,w,1,w^2,w,w^2,w,
@@ -2035,13 +1480,13 @@ RecordedQuantum:=Matrix(F,21,32,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,w^2,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[87]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[82]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 32 and Dimension(Q) eq 21;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[87]:=[32,19,6,9];
-Table2DistanceTypes[87]:="exact";
+Table2Parameters[82]:=[32,19,6,9];
+Table2DistanceTypes[82]:="exact";
 
-// Table 2, No. 88 | D34_P1_00400_2
+// Table 2, No. 83 | D34_P1_00400_2
 // [[32,19,6;11]]_2, distance exact.
 Gsrc1:=Matrix(F,8,20,[
     w,w,0,1,0,w^2,w^2,w,w^2,1,0,w,0,w,0,1,0,0,w^2,w^2,
@@ -2111,7 +1556,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 3;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[88]:="b";
+Table2Parts[83]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,20,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,1,w^2,w^2,0,0,0,0,0,0,w^2,0,1,w^2,0,1,
@@ -2136,13 +1581,13 @@ RecordedQuantum:=Matrix(F,20,32,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,w,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[88]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[83]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 32 and Dimension(Q) eq 20;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[88]:=[32,19,6,11];
-Table2DistanceTypes[88]:="exact";
+Table2Parameters[83]:=[32,19,6,11];
+Table2DistanceTypes[83]:="exact";
 
-// Table 2, No. 89 | D34_M032
+// Table 2, No. 84 | D34_M032
 // [[33,9,11;10]]_2, distance exact.
 Gsrc1:=Matrix(F,17,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,0,w,w,w,0,1,0,w,0,1,w^2,0,1,w^2,
@@ -2226,7 +1671,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 10;
-Table2Parts[89]:="a";
+Table2Parts[84]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,16,33,[
     1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,0,
@@ -2247,13 +1692,13 @@ RecordedQuantum:=Matrix(F,16,33,[
     0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,w^2,w^2,w^2,w,1,w,w,w,0,0,w,0,0,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[89]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[84]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 33 and Dimension(Q) eq 16;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table2Parameters[89]:=[33,9,11,10];
-Table2DistanceTypes[89]:="exact";
+Table2Parameters[84]:=[33,9,11,10];
+Table2DistanceTypes[84]:="exact";
 
-// Table 2, No. 90 | D34_M033
+// Table 2, No. 85 | D34_M033
 // [[33,10,14;21]]_2, distance exact.
 Gsrc1:=Matrix(F,22,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,
@@ -2352,7 +1797,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 21;
-Table2Parts[90]:="a";
+Table2Parts[85]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,11,33,[
     1,1,0,0,0,0,0,0,0,w,0,w^2,1,w,0,w,0,1,w,w,w,0,0,1,1,w^2,w,0,w,1,w,1,0,
@@ -2368,13 +1813,13 @@ RecordedQuantum:=Matrix(F,11,33,[
     0,0,0,1,0,0,0,0,0,w^2,0,w,w,1,1,1,w,1,0,1,1,w^2,w,w,1,w,1,w,w,w^2,1,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[90]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[85]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 33 and Dimension(Q) eq 11;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[90]:=[33,10,14,21];
-Table2DistanceTypes[90]:="exact";
+Table2Parameters[85]:=[33,10,14,21];
+Table2DistanceTypes[85]:="exact";
 
-// Table 2, No. 91 | D34_M035
+// Table 2, No. 86 | D34_M035
 // [[33,18,7;9]]_2, distance exact.
 Gsrc1:=Matrix(F,12,32,[
     1,0,0,0,0,0,0,0,0,0,1,w^2,0,1,1,1,0,1,w,1,w^2,w^2,1,w^2,0,1,0,1,0,w,w^2,0,
@@ -2443,7 +1888,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 9;
-Table2Parts[91]:="a";
+Table2Parts[86]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,21,33,[
     1,0,1,w^2,1,1,w,w,1,0,w,w,w,w,1,1,1,w,w,w,w,0,0,w,w,1,1,w^2,1,1,1,1,0,
@@ -2469,13 +1914,13 @@ RecordedQuantum:=Matrix(F,21,33,[
     0,w,w^2,w,w,w,w,1,1,w^2,0,w^2,1,w^2,w^2,w,0,w^2,0,0,0,w^2,w,w^2,w^2,w,0,1,w^2,w^2,w,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[91]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[86]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 33 and Dimension(Q) eq 21;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[91]:=[33,18,7,9];
-Table2DistanceTypes[91]:="exact";
+Table2Parameters[86]:=[33,18,7,9];
+Table2DistanceTypes[86]:="exact";
 
-// Table 2, No. 92 | D34_P3_00889_3
+// Table 2, No. 87 | D34_P3_00889_3
 // [[33,18,7;11]]_2, distance exact.
 Gsrc1:=Matrix(F,8,14,[
     1,0,w^2,w,0,w,w,w^2,0,w^2,1,0,w^2,w,
@@ -2552,7 +1997,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 4;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[92]:="b";
+Table2Parts[87]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,20,33,[
     1,0,0,0,0,0,0,0,0,0,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,w^2,1,0,w^2,0,
@@ -2577,13 +2022,13 @@ RecordedQuantum:=Matrix(F,20,33,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[92]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[87]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 33 and Dimension(Q) eq 20;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[92]:=[33,18,7,11];
-Table2DistanceTypes[92]:="exact";
+Table2Parameters[87]:=[33,18,7,11];
+Table2DistanceTypes[87]:="exact";
 
-// Table 2, No. 93 | D34_M036
+// Table 2, No. 88 | D34_M036
 // [[33,19,7;10]]_2, distance exact.
 Gsrc1:=Matrix(F,12,32,[
     1,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,0,0,w,w^2,1,0,1,1,0,0,w,0,w^2,0,w,w^2,1,
@@ -2652,7 +2097,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 10;
-Table2Parts[93]:="a";
+Table2Parts[88]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,21,33,[
     1,w^2,w,1,0,0,w,w^2,1,0,1,1,0,w^2,0,w,0,w^2,0,1,1,0,1,w^2,0,0,1,w,w^2,w,w,1,0,
@@ -2678,13 +2123,13 @@ RecordedQuantum:=Matrix(F,21,33,[
     w,w,1,w^2,0,0,1,w,w^2,0,w^2,w^2,0,w,0,1,0,w,0,w^2,0,w^2,w^2,w^2,1,w^2,1,w,1,w,1,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[93]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[88]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 33 and Dimension(Q) eq 21;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[93]:=[33,19,7,10];
-Table2DistanceTypes[93]:="exact";
+Table2Parameters[88]:=[33,19,7,10];
+Table2DistanceTypes[88]:="exact";
 
-// Table 2, No. 94 | D34_M039
+// Table 2, No. 89 | D34_M039
 // [[34,8,11;10]]_2, distance exact.
 Gsrc1:=Matrix(F,18,32,[
     1,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,0,0,0,w,w,w,0,1,0,w,0,1,w^2,0,1,w^2,
@@ -2773,7 +2218,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 10;
-Table2Parts[94]:="a";
+Table2Parts[89]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,16,34,[
     1,0,0,0,0,1,0,1,0,0,1,1,0,1,1,0,1,1,1,0,0,0,0,1,0,1,0,0,1,1,w,1,0,0,
@@ -2794,13 +2239,13 @@ RecordedQuantum:=Matrix(F,16,34,[
     1,1,0,1,0,0,w^2,0,0,w^2,0,0,w,w^2,w,0,0,0,w^2,0,w,1,w^2,1,w,w^2,1,1,w,w,1,w,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[94]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[89]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 34 and Dimension(Q) eq 16;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[94]:=[34,8,11,10];
-Table2DistanceTypes[94]:="exact";
+Table2Parameters[89]:=[34,8,11,10];
+Table2DistanceTypes[89]:="exact";
 
-// Table 2, No. 95 | D34_M040
+// Table 2, No. 90 | D34_M040
 // [[34,10,15;22]]_2, distance exact.
 Gsrc1:=Matrix(F,23,33,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,0,
@@ -2902,7 +2347,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 22;
-Table2Parts[95]:="a";
+Table2Parts[90]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,11,34,[
     1,w,0,0,0,0,0,0,0,0,0,w,w,0,0,1,w,w,0,w^2,1,1,1,1,1,w^2,w,w,1,w,w^2,w^2,w^2,0,
@@ -2918,136 +2363,13 @@ RecordedQuantum:=Matrix(F,11,34,[
     0,0,0,0,0,0,0,0,0,0,w,0,0,0,w,0,w^2,1,w^2,w^2,w^2,w,0,w,w,0,w^2,w^2,w,w,w,w,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[95]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[90]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 34 and Dimension(Q) eq 11;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[95]:=[34,10,15,22];
-Table2DistanceTypes[95]:="exact";
+Table2Parameters[90]:=[34,10,15,22];
+Table2DistanceTypes[90]:="exact";
 
-// Table 2, No. 96 | D34_P3_01490_3
-// [[34,14,10;18]]_2, distance exact.
-Gsrc1:=Matrix(F,13,21,[
-    0,w,0,w^2,0,1,w^2,0,1,1,w^2,w,0,0,0,w,w^2,1,w,w,w,
-    w^2,w^2,w^2,1,1,1,w,0,1,w,0,0,1,1,1,w,w^2,w^2,0,1,w,
-    w^2,w^2,w^2,w,w,w^2,1,1,w,w^2,w^2,w^2,w,1,1,w,1,w,0,0,1,
-    1,w,0,1,w,0,w,w,0,w,w^2,w,w,1,w^2,w,1,1,0,w,w,
-    0,w,0,w^2,w,0,w^2,0,w,1,w,w^2,w,1,1,w,w,w,1,1,1,
-    1,w,w^2,0,1,0,1,w,1,w^2,0,w^2,w,1,1,0,0,1,0,w,1,
-    0,1,0,w^2,0,w^2,0,0,1,0,w^2,0,w,w,0,1,w,0,w^2,0,1,
-    1,0,w^2,w,1,1,0,0,w,w^2,w,w^2,0,w^2,0,0,w,w,1,1,1,
-    0,1,0,w,w,0,0,0,w,w,w,0,0,1,0,0,w^2,w^2,w^2,w,w^2,
-    0,0,w^2,w^2,w^2,1,0,0,0,w,w,w^2,w^2,w,0,0,w^2,0,0,w,1,
-    1,w,w^2,1,w,w,w^2,w,0,1,0,w^2,1,w,0,w,0,0,0,0,w^2,
-    w^2,w,w^2,0,w,w,w^2,1,0,1,w,0,1,1,0,0,w^2,w^2,w^2,1,1,
-    1,w,0,w^2,0,0,w,0,0,w,0,w^2,w,1,w,w,w,0,0,0,w
-]);
-Gsrc2:=Matrix(F,11,13,[
-    1,w^2,1,w,0,w,w^2,w,1,w^2,0,w,1,
-    0,0,1,1,1,w,1,w,0,w,0,w^2,1,
-    0,1,w^2,0,w^2,w,w^2,w,w,0,0,1,1,
-    w^2,w,0,1,0,0,w,0,0,w^2,w,0,1,
-    w,0,w^2,0,1,0,w^2,w,w^2,w,1,0,1,
-    1,w,0,w,w^2,1,w^2,1,w,1,w,w^2,0,
-    w^2,w,0,w^2,w^2,0,w,w^2,1,1,w^2,w^2,w,
-    1,0,1,w,w,0,0,w^2,1,0,w,1,1,
-    w^2,0,w^2,0,0,0,0,w^2,0,1,w^2,w,1,
-    w^2,w,1,0,0,w,1,1,w^2,0,w,0,w,
-    1,w^2,w^2,1,w^2,w^2,1,0,0,1,0,w^2,0
-]);
-W1:=Matrix(F,5,21,[
-    0,1,0,w,w,0,0,0,w,w,w,0,0,1,0,0,w^2,w^2,w^2,w,w^2,
-    0,0,w^2,w^2,w^2,1,0,0,0,w,w,w^2,w^2,w,0,0,w^2,0,0,w,1,
-    1,w,w^2,1,w,w,w^2,w,0,1,0,w^2,1,w,0,w,0,0,0,0,w^2,
-    w^2,w,w^2,0,w,w,w^2,1,0,1,w,0,1,1,0,0,w^2,w^2,w^2,1,1,
-    1,w,0,w^2,0,0,w,0,0,w,0,w^2,w,1,w,w,w,0,0,0,w
-]);
-W2:=Matrix(F,5,13,[
-    w^2,w,0,w^2,w^2,0,w,w^2,1,1,w^2,w^2,w,
-    1,0,1,w,w,0,0,w^2,1,0,w,1,1,
-    w^2,0,w^2,0,0,0,0,w^2,0,1,w^2,w,1,
-    w^2,w,1,0,0,w,1,1,w^2,0,w,0,w,
-    1,w^2,w^2,1,w^2,w^2,1,0,0,1,0,w^2,0
-]);
-lambda:=5;
-U1:=Matrix(F,8,21,[
-    0,w,0,w^2,0,1,w^2,0,1,1,w^2,w,0,0,0,w,w^2,1,w,w,w,
-    w^2,w^2,w^2,1,1,1,w,0,1,w,0,0,1,1,1,w,w^2,w^2,0,1,w,
-    w^2,w^2,w^2,w,w,w^2,1,1,w,w^2,w^2,w^2,w,1,1,w,1,w,0,0,1,
-    1,w,0,1,w,0,w,w,0,w,w^2,w,w,1,w^2,w,1,1,0,w,w,
-    0,w,0,w^2,w,0,w^2,0,w,1,w,w^2,w,1,1,w,w,w,1,1,1,
-    1,w,w^2,0,1,0,1,w,1,w^2,0,w^2,w,1,1,0,0,1,0,w,1,
-    0,1,0,w^2,0,w^2,0,0,1,0,w^2,0,w,w,0,1,w,0,w^2,0,1,
-    1,0,w^2,w,1,1,0,0,w,w^2,w,w^2,0,w^2,0,0,w,w,1,1,1
-]);
-U2:=Matrix(F,6,13,[
-    1,w^2,1,w,0,w,w^2,w,1,w^2,0,w,1,
-    0,0,1,1,1,w,1,w,0,w,0,w^2,1,
-    0,1,w^2,0,w^2,w,w^2,w,w,0,0,1,1,
-    w^2,w,0,1,0,0,w,0,0,w^2,w,0,1,
-    w,0,w^2,0,1,0,w^2,w,w^2,w,1,0,1,
-    1,w,0,w,w^2,1,w^2,1,w,1,w,w^2,0
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,19,34,[
-    0,w,0,w^2,0,1,w^2,0,1,1,w^2,w,0,0,0,w,w^2,1,w,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w^2,w^2,1,1,1,w,0,1,w,0,0,1,1,1,w,w^2,w^2,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w^2,w^2,w,w,w^2,1,1,w,w^2,w^2,w^2,w,1,1,w,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w,0,1,w,0,w,w,0,w,w^2,w,w,1,w^2,w,1,1,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w,0,w^2,w,0,w^2,0,w,1,w,w^2,w,1,1,w,w,w,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w,w^2,0,1,0,1,w,1,w^2,0,w^2,w,1,1,0,0,1,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,1,0,w^2,0,w^2,0,0,1,0,w^2,0,w,w,0,1,w,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,0,w^2,w,1,1,0,0,w,w^2,w,w^2,0,w^2,0,0,w,w,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w^2,w,1,w^2,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,1,w,0,w,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w,w^2,w,w,0,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,1,0,0,w,0,0,w^2,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,1,0,w^2,w,w^2,w,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,w^2,1,w^2,1,w,1,w,w^2,0,
-    0,1,0,w,w,0,0,0,w,w,w,0,0,1,0,0,w^2,w^2,w^2,w,w^2,w^2,w,0,w^2,w^2,0,w,w^2,1,1,w^2,w^2,w,
-    0,0,w^2,w^2,w^2,1,0,0,0,w,w,w^2,w^2,w,0,0,w^2,0,0,w,1,1,0,1,w,w,0,0,w^2,1,0,w,1,1,
-    1,w,w^2,1,w,w,w^2,w,0,1,0,w^2,1,w,0,w,0,0,0,0,w^2,w^2,0,w^2,0,0,0,0,w^2,0,1,w^2,w,1,
-    w^2,w,w^2,0,w,w,w^2,1,0,1,w,0,1,1,0,0,w^2,w^2,w^2,1,1,w^2,w,1,0,0,w,1,1,w^2,0,w,0,w,
-    1,w,0,w^2,0,0,w,0,0,w,0,w^2,w,1,w,w,w,0,0,0,w,1,w^2,w^2,1,w^2,w^2,1,0,0,1,0,w^2,0
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 13 and Rank(Gsrc2) eq 11;
-assert 13-Rank(Gsrc1*HDag(Gsrc1)) eq 6;
-assert 11-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 6;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[96]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,15,34,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,w,0,1,1,0,0,w^2,1,w,w^2,w,w,1,0,w,0,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,w,w,0,0,w,w,w^2,w^2,0,0,1,1,0,0,w^2,w^2,1,0,0,1,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w^2,0,w^2,0,0,w^2,0,0,w,w,1,w^2,w^2,1,1,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,w^2,w,0,0,w,0,0,1,1,0,0,1,w,w,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,w,w^2,w,0,1,w,0,0,w^2,1,w^2,0,w,w^2,1,1,0,0,w,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,1,w,w,1,0,0,0,0,w,w,1,w^2,1,1,1,0,0,0,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,0,w,w^2,1,1,w^2,0,0,1,0,1,1,w^2,w,1,1,1,w^2,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,0,w^2,0,w,0,1,1,0,0,w,0,0,w,1,1,1,0,w,w,w,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,w,w^2,1,w,w^2,1,0,0,0,1,0,w^2,0,1,0,1,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w^2,w^2,1,w,1,0,0,0,0,0,w,w,0,0,0,0,0,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w,0,1,1,1,w,1,0,0,w,1,1,w,1,0,w,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,0,0,0,0,0,1,0,0,w,0,w,w^2,1,0,w^2,1,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,0,w^2,0,0,w^2,0,0,w,0,1,0,1,0,w,1,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,w,1,w^2,0,1,w^2,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,w^2,1,w^2,w^2,w^2,w^2,1,w^2
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[96]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 34 and Dimension(Q) eq 15;
-assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[96]:=[34,14,10,18];
-Table2DistanceTypes[96]:="exact";
-
-// Table 2, No. 97 | D34_M043
+// Table 2, No. 91 | D34_M043
 // [[35,7,16;22]]_2, distance exact.
 Gsrc1:=Matrix(F,25,34,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,w,0,w^2,w,w,0,1,w^2,
@@ -3155,7 +2477,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 22;
-Table2Parts[97]:="a";
+Table2Parts[91]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,10,35,[
     1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,1,0,w,0,0,0,0,0,0,0,0,0,0,0,
@@ -3170,259 +2492,13 @@ RecordedQuantum:=Matrix(F,10,35,[
     1,w^2,w^2,0,1,w^2,1,w^2,0,0,0,w,0,0,w^2,1,w,w,1,0,w^2,0,w^2,0,1,1,w^2,1,1,1,1,1,1,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[97]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[91]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 35 and Dimension(Q) eq 10;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[97]:=[35,7,16,22];
-Table2DistanceTypes[97]:="exact";
+Table2Parameters[91]:=[35,7,16,22];
+Table2DistanceTypes[91]:="exact";
 
-// Table 2, No. 98 | D34_P3_01507_3
-// [[35,10,10;13]]_2, distance exact.
-Gsrc1:=Matrix(F,12,18,[
-    w,0,1,w,1,w,0,1,w^2,0,w^2,0,w^2,w^2,0,0,0,0,
-    w,w^2,0,w^2,w^2,w^2,w^2,w,w^2,1,w^2,1,0,0,1,1,w,1,
-    1,w,1,w,1,1,w,0,w^2,0,1,0,0,1,w,w,0,w^2,
-    w,w,1,w,w^2,1,w^2,1,0,w,w,1,1,w^2,w^2,w^2,w,1,
-    1,w,w,0,1,w^2,1,w,w^2,0,0,w,w,1,0,0,w,w,
-    1,w^2,w,0,0,w^2,w,0,w,1,w^2,0,w,1,0,w,1,w,
-    w^2,w,w,1,w,0,0,w,1,0,w,1,1,0,0,1,w,1,
-    0,w,1,w,0,w^2,0,1,1,0,w^2,w,w^2,w^2,w,1,w,1,
-    w^2,1,0,0,0,w,w^2,w^2,1,w,0,w^2,w,w^2,w^2,w,1,1,
-    w,w^2,w,0,w,w,0,1,0,w,w^2,w,0,0,0,w^2,1,w,
-    w^2,0,w,w,1,w^2,0,w,w,w^2,1,1,1,w,1,1,w,1,
-    w^2,w,w^2,w^2,w^2,0,w,w,w,w^2,w^2,w^2,1,1,1,0,w^2,w
-]);
-Gsrc2:=Matrix(F,12,17,[
-    w^2,w^2,w^2,1,w,w^2,1,0,w,0,0,1,1,w,0,w^2,0,
-    1,1,0,1,w^2,1,w,w^2,0,0,1,w,1,w,1,w^2,1,
-    w,0,1,0,w,w^2,0,0,1,w,w^2,1,w,0,w,w^2,w^2,
-    0,w^2,w^2,0,0,1,w^2,w^2,0,w^2,w,w,w^2,w^2,0,1,1,
-    0,w^2,0,1,0,0,1,1,0,0,0,1,w^2,w,1,1,1,
-    0,1,w^2,1,1,0,w,1,0,0,w^2,1,0,w^2,1,0,w,
-    w,w,w^2,0,0,w,w,0,1,w^2,w,1,w^2,w,w,0,w,
-    w^2,1,0,w^2,1,w,w^2,1,w,w,w,1,w^2,0,0,0,w^2,
-    0,1,1,0,1,1,w,w^2,w,0,w^2,0,w,w^2,1,1,w,
-    1,1,w,w,w,0,w,w^2,0,0,w,w,w^2,w,w,1,0,
-    1,w,0,w^2,w,w,1,1,1,w,w,1,0,1,0,0,w,
-    w,1,0,w,1,w^2,1,w,w,w,1,0,1,1,w,w,w
-]);
-W1:=Matrix(F,5,18,[
-    0,w,1,w,0,w^2,0,1,1,0,w^2,w,w^2,w^2,w,1,w,1,
-    w^2,1,0,0,0,w,w^2,w^2,1,w,0,w^2,w,w^2,w^2,w,1,1,
-    w,w^2,w,0,w,w,0,1,0,w,w^2,w,0,0,0,w^2,1,w,
-    w^2,0,w,w,1,w^2,0,w,w,w^2,1,1,1,w,1,1,w,1,
-    w^2,w,w^2,w^2,w^2,0,w,w,w,w^2,w^2,w^2,1,1,1,0,w^2,w
-]);
-W2:=Matrix(F,5,17,[
-    w^2,1,0,w^2,1,w,w^2,1,w,w,w,1,w^2,0,0,0,w^2,
-    0,1,1,0,1,1,w,w^2,w,0,w^2,0,w,w^2,1,1,w,
-    1,1,w,w,w,0,w,w^2,0,0,w,w,w^2,w,w,1,0,
-    1,w,0,w^2,w,w,1,1,1,w,w,1,0,1,0,0,w,
-    w,1,0,w,1,w^2,1,w,w,w,1,0,1,1,w,w,w
-]);
-lambda:=5;
-U1:=Matrix(F,7,18,[
-    w,0,1,w,1,w,0,1,w^2,0,w^2,0,w^2,w^2,0,0,0,0,
-    w,w^2,0,w^2,w^2,w^2,w^2,w,w^2,1,w^2,1,0,0,1,1,w,1,
-    1,w,1,w,1,1,w,0,w^2,0,1,0,0,1,w,w,0,w^2,
-    w,w,1,w,w^2,1,w^2,1,0,w,w,1,1,w^2,w^2,w^2,w,1,
-    1,w,w,0,1,w^2,1,w,w^2,0,0,w,w,1,0,0,w,w,
-    1,w^2,w,0,0,w^2,w,0,w,1,w^2,0,w,1,0,w,1,w,
-    w^2,w,w,1,w,0,0,w,1,0,w,1,1,0,0,1,w,1
-]);
-U2:=Matrix(F,7,17,[
-    w^2,w^2,w^2,1,w,w^2,1,0,w,0,0,1,1,w,0,w^2,0,
-    1,1,0,1,w^2,1,w,w^2,0,0,1,w,1,w,1,w^2,1,
-    w,0,1,0,w,w^2,0,0,1,w,w^2,1,w,0,w,w^2,w^2,
-    0,w^2,w^2,0,0,1,w^2,w^2,0,w^2,w,w,w^2,w^2,0,1,1,
-    0,w^2,0,1,0,0,1,1,0,0,0,1,w^2,w,1,1,1,
-    0,1,w^2,1,1,0,w,1,0,0,w^2,1,0,w^2,1,0,w,
-    w,w,w^2,0,0,w,w,0,1,w^2,w,1,w^2,w,w,0,w
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,19,35,[
-    w,0,1,w,1,w,0,1,w^2,0,w^2,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w^2,0,w^2,w^2,w^2,w^2,w,w^2,1,w^2,1,0,0,1,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w,1,w,1,1,w,0,w^2,0,1,0,0,1,w,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w,1,w,w^2,1,w^2,1,0,w,w,1,1,w^2,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w,w,0,1,w^2,1,w,w^2,0,0,w,w,1,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w^2,w,0,0,w^2,w,0,w,1,w^2,0,w,1,0,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w,w,1,w,0,0,w,1,0,w,1,1,0,0,1,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,w,w^2,1,0,w,0,0,1,1,w,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,w^2,1,w,w^2,0,0,1,w,1,w,1,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,w,w^2,0,0,1,w,w^2,1,w,0,w,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,1,w^2,w^2,0,w^2,w,w,w^2,w^2,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,0,1,1,0,0,0,1,w^2,w,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,1,0,w,1,0,0,w^2,1,0,w^2,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,0,w,w,0,1,w^2,w,1,w^2,w,w,0,w,
-    0,w,1,w,0,w^2,0,1,1,0,w^2,w,w^2,w^2,w,1,w,1,w^2,1,0,w^2,1,w,w^2,1,w,w,w,1,w^2,0,0,0,w^2,
-    w^2,1,0,0,0,w,w^2,w^2,1,w,0,w^2,w,w^2,w^2,w,1,1,0,1,1,0,1,1,w,w^2,w,0,w^2,0,w,w^2,1,1,w,
-    w,w^2,w,0,w,w,0,1,0,w,w^2,w,0,0,0,w^2,1,w,1,1,w,w,w,0,w,w^2,0,0,w,w,w^2,w,w,1,0,
-    w^2,0,w,w,1,w^2,0,w,w,w^2,1,1,1,w,1,1,w,1,1,w,0,w^2,w,w,1,1,1,w,w,1,0,1,0,0,w,
-    w^2,w,w^2,w^2,w^2,0,w,w,w,w^2,w^2,w^2,1,1,1,0,w^2,w,w,1,0,w,1,w^2,1,w,w,w,1,0,1,1,w,w,w
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 12 and Rank(Gsrc2) eq 12;
-assert 12-Rank(Gsrc1*HDag(Gsrc1)) eq 6;
-assert 12-Rank(Gsrc2*HDag(Gsrc2)) eq 5;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 2;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[98]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,16,35,[
-    1,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,1,w,0,0,0,0,0,w,0,1,0,0,w,w,w,0,w^2,w,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,w,0,0,0,0,0,0,w^2,1,w,w,w^2,0,0,w,0,0,w,w,
-    0,0,1,0,0,0,0,0,0,0,1,0,w^2,1,1,w^2,0,0,0,0,0,0,0,w,0,1,w^2,w,w^2,w,w,w,1,0,0,
-    0,0,0,1,0,0,0,0,0,0,w,0,w,w,w^2,0,w,w^2,0,0,0,0,0,w,1,0,0,w,1,w^2,w,0,0,w,w^2,
-    0,0,0,0,1,0,0,0,0,0,w,0,w^2,w,0,w^2,0,w,0,0,0,0,0,w^2,1,w,w,w,0,1,0,w,w,w^2,w,
-    0,0,0,0,0,1,0,0,0,0,1,0,0,w^2,w^2,w,w,0,0,0,0,0,0,w,w,w^2,w^2,w,w,w^2,w^2,w^2,1,w^2,w^2,
-    0,0,0,0,0,0,1,0,0,0,w^2,0,w^2,0,w,w,1,0,0,0,0,0,0,w^2,0,w^2,1,w,w,0,0,0,w^2,1,1,
-    0,0,0,0,0,0,0,1,0,0,1,0,w^2,1,w,1,1,1,0,0,0,0,0,w^2,w,w^2,w,w,w^2,0,0,w,w^2,w,1,
-    0,0,0,0,0,0,0,0,1,0,w^2,0,1,w^2,1,w^2,1,w,0,0,0,0,0,w,w^2,1,w^2,w^2,w^2,0,1,1,1,0,w,
-    0,0,0,0,0,0,0,0,0,1,w,0,w,0,1,w,w,0,0,0,0,0,0,w,0,1,w,w,1,1,w^2,0,w^2,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,w,w,0,0,0,0,0,0,0,1,w,0,0,w^2,w^2,w,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,0,1,w^2,w^2,0,w,1,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w^2,w,1,w,w^2,0,0,w,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,w^2,1,w^2,0,w^2,1,w^2,w^2,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,0,w^2,1,w,1,w^2,w^2,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,0,1,1,0,w^2,1,0,w
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[98]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 35 and Dimension(Q) eq 16;
-assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[98]:=[35,10,10,13];
-Table2DistanceTypes[98]:="exact";
-
-// Table 2, No. 99 | D34_P3_01508_2
-// [[35,11,9;12]]_2, distance exact.
-Gsrc1:=Matrix(F,12,18,[
-    1,0,0,w,1,w,0,w,1,1,1,w^2,w^2,w^2,w,w^2,1,0,
-    0,0,w,w,w,w,0,w^2,0,w,1,0,w,1,0,1,0,1,
-    w,1,w^2,w,1,1,0,0,w^2,w,w,w,1,w^2,0,0,w,0,
-    1,w^2,1,w,1,w,w^2,w,w,0,0,w,1,0,w,1,1,1,
-    0,1,1,w^2,w^2,0,w^2,1,1,1,w,0,w,w,1,1,1,w,
-    0,w^2,w,w,1,w^2,w,1,w,1,1,w,w^2,w^2,1,1,1,1,
-    w,1,0,w,0,1,w,1,1,w,w^2,w^2,0,w^2,w,w^2,w^2,w,
-    1,1,1,w,w,w,w^2,0,w^2,w^2,w^2,w,w^2,w^2,w^2,0,1,w,
-    1,w,w^2,0,w^2,w,1,w,w,1,w^2,0,0,1,0,1,w,w,
-    w,w^2,w,0,w^2,1,0,w,w,0,w^2,0,w^2,1,0,0,1,w^2,
-    0,w^2,w,w^2,w^2,w^2,w,1,0,w^2,0,1,0,0,w,w^2,1,0,
-    w^2,w^2,w,w,0,w,w^2,w^2,1,1,0,1,0,w^2,0,w^2,w^2,w^2
-]);
-Gsrc2:=Matrix(F,11,17,[
-    0,1,1,1,w^2,w,w^2,0,0,0,w,1,w,0,0,0,w,
-    1,1,0,w,1,1,w^2,0,0,w^2,w,w^2,w^2,1,1,w,1,
-    0,w^2,w,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,w,1,w^2,0,
-    1,w,1,w^2,0,w^2,w,0,0,0,w^2,0,1,w^2,w,0,0,
-    w^2,w,w,0,0,w,0,w,w^2,0,w^2,1,w^2,1,1,w^2,0,
-    0,0,w,1,w^2,0,w^2,0,w,w^2,w,0,0,1,1,w^2,w^2,
-    w,0,1,w,w,1,w,w^2,0,w,0,w,w,0,w,1,1,
-    1,w,0,w,w,0,0,w^2,w,w,1,0,w,w^2,w^2,w,w,
-    1,1,1,0,0,w,1,0,w^2,w^2,w^2,0,w,0,0,0,0,
-    0,1,w,w^2,0,1,w,w^2,w,0,0,0,w,0,w,w^2,w,
-    0,0,w,1,w^2,w^2,1,0,w,w,1,w,1,w,w^2,w,0
-]);
-W1:=Matrix(F,5,18,[
-    1,1,1,w,w,w,w^2,0,w^2,w^2,w^2,w,w^2,w^2,w^2,0,1,w,
-    1,w,w^2,0,w^2,w,1,w,w,1,w^2,0,0,1,0,1,w,w,
-    w,w^2,w,0,w^2,1,0,w,w,0,w^2,0,w^2,1,0,0,1,w^2,
-    0,w^2,w,w^2,w^2,w^2,w,1,0,w^2,0,1,0,0,w,w^2,1,0,
-    w^2,w^2,w,w,0,w,w^2,w^2,1,1,0,1,0,w^2,0,w^2,w^2,w^2
-]);
-W2:=Matrix(F,5,17,[
-    w,0,1,w,w,1,w,w^2,0,w,0,w,w,0,w,1,1,
-    1,w,0,w,w,0,0,w^2,w,w,1,0,w,w^2,w^2,w,w,
-    1,1,1,0,0,w,1,0,w^2,w^2,w^2,0,w,0,0,0,0,
-    0,1,w,w^2,0,1,w,w^2,w,0,0,0,w,0,w,w^2,w,
-    0,0,w,1,w^2,w^2,1,0,w,w,1,w,1,w,w^2,w,0
-]);
-lambda:=5;
-U1:=Matrix(F,7,18,[
-    1,0,0,w,1,w,0,w,1,1,1,w^2,w^2,w^2,w,w^2,1,0,
-    0,0,w,w,w,w,0,w^2,0,w,1,0,w,1,0,1,0,1,
-    w,1,w^2,w,1,1,0,0,w^2,w,w,w,1,w^2,0,0,w,0,
-    1,w^2,1,w,1,w,w^2,w,w,0,0,w,1,0,w,1,1,1,
-    0,1,1,w^2,w^2,0,w^2,1,1,1,w,0,w,w,1,1,1,w,
-    0,w^2,w,w,1,w^2,w,1,w,1,1,w,w^2,w^2,1,1,1,1,
-    w,1,0,w,0,1,w,1,1,w,w^2,w^2,0,w^2,w,w^2,w^2,w
-]);
-U2:=Matrix(F,6,17,[
-    0,1,1,1,w^2,w,w^2,0,0,0,w,1,w,0,0,0,w,
-    1,1,0,w,1,1,w^2,0,0,w^2,w,w^2,w^2,1,1,w,1,
-    0,w^2,w,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,w,1,w^2,0,
-    1,w,1,w^2,0,w^2,w,0,0,0,w^2,0,1,w^2,w,0,0,
-    w^2,w,w,0,0,w,0,w,w^2,0,w^2,1,w^2,1,1,w^2,0,
-    0,0,w,1,w^2,0,w^2,0,w,w^2,w,0,0,1,1,w^2,w^2
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,18,35,[
-    1,0,0,w,1,w,0,w,1,1,1,w^2,w^2,w^2,w,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,w,w,w,w,0,w^2,0,w,1,0,w,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,1,w^2,w,1,1,0,0,w^2,w,w,w,1,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w^2,1,w,1,w,w^2,w,w,0,0,w,1,0,w,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,1,1,w^2,w^2,0,w^2,1,1,1,w,0,w,w,1,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w^2,w,w,1,w^2,w,1,w,1,1,w,w^2,w^2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,1,0,w,0,1,w,1,1,w,w^2,w^2,0,w^2,w,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w,w^2,0,0,0,w,1,w,0,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,1,1,w^2,0,0,w^2,w,w^2,w^2,1,1,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,1,w^2,0,w^2,w^2,w^2,w,0,w,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,0,w^2,w,0,0,0,w^2,0,1,w^2,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,0,0,w,0,w,w^2,0,w^2,1,w^2,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,w^2,0,w,w^2,w,0,0,1,1,w^2,w^2,
-    1,1,1,w,w,w,w^2,0,w^2,w^2,w^2,w,w^2,w^2,w^2,0,1,w,w,0,1,w,w,1,w,w^2,0,w,0,w,w,0,w,1,1,
-    1,w,w^2,0,w^2,w,1,w,w,1,w^2,0,0,1,0,1,w,w,1,w,0,w,w,0,0,w^2,w,w,1,0,w,w^2,w^2,w,w,
-    w,w^2,w,0,w^2,1,0,w,w,0,w^2,0,w^2,1,0,0,1,w^2,1,1,1,0,0,w,1,0,w^2,w^2,w^2,0,w,0,0,0,0,
-    0,w^2,w,w^2,w^2,w^2,w,1,0,w^2,0,1,0,0,w,w^2,1,0,0,1,w,w^2,0,1,w,w^2,w,0,0,0,w,0,w,w^2,w,
-    w^2,w^2,w,w,0,w,w^2,w^2,1,1,0,1,0,w^2,0,w^2,w^2,w^2,0,0,w,1,w^2,w^2,1,0,w,w,1,w,1,w,w^2,w,0
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 12 and Rank(Gsrc2) eq 11;
-assert 12-Rank(Gsrc1*HDag(Gsrc1)) eq 6;
-assert 11-Rank(Gsrc2*HDag(Gsrc2)) eq 5;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 1;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[99]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,17,35,[
-    1,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,1,1,0,0,0,0,0,1,0,w,0,w^2,w,0,0,1,1,w^2,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,w^2,0,1,1,1,w,0,0,0,0,0,0,1,0,w^2,0,0,w^2,w^2,1,w,w,w^2,w,
-    0,0,1,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w,w,w,0,0,0,0,0,1,0,w^2,0,w^2,w^2,0,w^2,0,0,w^2,1,
-    0,0,0,1,0,0,0,0,0,0,0,w,w,0,w^2,w^2,0,1,0,0,0,0,0,0,0,0,w,w,1,1,1,w,0,0,w,
-    0,0,0,0,1,0,0,0,0,0,0,w^2,0,1,1,w,w,0,0,0,0,0,0,w^2,0,0,w,w^2,1,w,1,w^2,1,w^2,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w,w,1,0,0,0,0,0,w,0,w,w,w^2,w^2,1,1,w,0,w,w,
-    0,0,0,0,0,0,1,0,0,0,0,w,w,1,1,w,w,w,0,0,0,0,0,w,0,0,0,0,0,1,w^2,0,0,w^2,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,w^2,w^2,0,0,w^2,w,w^2,0,0,0,0,0,1,0,w,w,w,w^2,w,1,w^2,1,1,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,1,1,w^2,w^2,w,1,0,0,0,0,0,w^2,0,0,0,w^2,0,1,1,0,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,1,0,w,w,1,1,w,w^2,1,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,0,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w^2,w,w^2,0,0,0,0,0,0,0,0,w,0,1,w,1,0,w^2,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,w,0,0,1,1,w^2,w,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,0,0,0,1,1,1,1,1,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,w,w,1,1,0,w,1,w,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w,w,w,0,0,w,0,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w,w,0,w,w^2,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w^2,w,w,1,w^2,w,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[99]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 35 and Dimension(Q) eq 17;
-assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[99]:=[35,11,9,12];
-Table2DistanceTypes[99]:="exact";
-
-// Table 2, No. 100 | D34_P3_00916_2
+// Table 2, No. 92 | D34_P3_00916_2
 // [[36,17,8;11]]_2, distance exact.
 Gsrc1:=Matrix(F,9,16,[
     0,w^2,1,1,1,w,w,1,0,w^2,1,0,1,w,0,w,
@@ -3505,7 +2581,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[100]:="b";
+Table2Parts[92]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,21,36,[
     1,0,0,0,0,0,0,0,1,0,0,0,w^2,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w,w,w,0,0,w,0,0,1,1,
@@ -3531,132 +2607,13 @@ RecordedQuantum:=Matrix(F,21,36,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w,w,0,w,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[100]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[92]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 36 and Dimension(Q) eq 21;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[100]:=[36,17,8,11];
-Table2DistanceTypes[100]:="exact";
+Table2Parameters[92]:=[36,17,8,11];
+Table2DistanceTypes[92]:="exact";
 
-// Table 2, No. 101 | D34_P3_01525_2
-// [[36,20,8;16]]_2, distance exact.
-Gsrc1:=Matrix(F,11,17,[
-    0,w,w^2,0,w^2,w^2,w^2,0,1,0,0,1,w,w,0,w,1,
-    w,1,0,w^2,0,0,w,1,0,0,w^2,0,1,w^2,0,w,0,
-    w^2,1,1,0,w,w^2,0,w,1,0,0,w,1,w^2,0,w,0,
-    w^2,w^2,0,w^2,w^2,w,w^2,0,0,w^2,w,w^2,w^2,0,w,w^2,w,
-    w,w,0,1,w^2,0,w,0,w,0,w,w^2,w,1,1,1,w^2,
-    w^2,w,1,0,w^2,0,w^2,w,w,w,1,w,0,w,0,w,w^2,
-    1,1,w,w^2,1,1,w^2,1,1,w^2,0,w^2,w,w^2,w^2,1,w^2,
-    0,w^2,w,0,1,w^2,w^2,w,0,0,w^2,0,w,w^2,w,w,1,
-    w,w^2,w,1,0,1,w^2,0,0,0,1,0,w,1,w^2,0,0,
-    w,w,w^2,1,1,0,0,w^2,1,1,w^2,w,w^2,w^2,w,w,0,
-    w,0,1,0,w^2,0,w,w,0,w,w,0,w,w^2,w^2,w^2,1
-]);
-Gsrc2:=Matrix(F,10,19,[
-    w^2,0,w^2,w,w^2,w,w^2,w^2,w,0,0,w,0,1,1,w^2,1,1,w^2,
-    0,1,0,1,w,0,w^2,1,w^2,w,w^2,1,0,w^2,1,w,1,1,w,
-    w,1,0,1,0,w,w^2,0,w,w,w^2,1,1,w,1,0,0,1,0,
-    1,w,1,w^2,w,1,0,w^2,w^2,w,1,w,0,1,1,1,0,0,1,
-    w^2,w^2,w^2,0,w^2,0,w,0,1,1,1,0,w,0,0,w^2,w^2,w,w^2,
-    1,w,0,1,w^2,w,1,0,0,1,w,0,w^2,w,0,0,w,1,1,
-    1,w,1,w,w,w^2,0,0,w,1,1,1,0,0,w,w,w,w,w,
-    w^2,0,w,w,1,w,0,w,w^2,0,w,1,w^2,w,1,w^2,w,w,0,
-    w,w^2,0,0,1,1,1,1,1,1,w^2,1,w,0,1,w,w^2,0,w,
-    0,w^2,w,w,0,1,0,w,0,1,0,w,w^2,0,w,w^2,1,w,w
-]);
-W1:=Matrix(F,5,17,[
-    1,1,w,w^2,1,1,w^2,1,1,w^2,0,w^2,w,w^2,w^2,1,w^2,
-    0,w^2,w,0,1,w^2,w^2,w,0,0,w^2,0,w,w^2,w,w,1,
-    w,w^2,w,1,0,1,w^2,0,0,0,1,0,w,1,w^2,0,0,
-    w,w,w^2,1,1,0,0,w^2,1,1,w^2,w,w^2,w^2,w,w,0,
-    w,0,1,0,w^2,0,w,w,0,w,w,0,w,w^2,w^2,w^2,1
-]);
-W2:=Matrix(F,5,19,[
-    1,w,0,1,w^2,w,1,0,0,1,w,0,w^2,w,0,0,w,1,1,
-    1,w,1,w,w,w^2,0,0,w,1,1,1,0,0,w,w,w,w,w,
-    w^2,0,w,w,1,w,0,w,w^2,0,w,1,w^2,w,1,w^2,w,w,0,
-    w,w^2,0,0,1,1,1,1,1,1,w^2,1,w,0,1,w,w^2,0,w,
-    0,w^2,w,w,0,1,0,w,0,1,0,w,w^2,0,w,w^2,1,w,w
-]);
-lambda:=5;
-U1:=Matrix(F,6,17,[
-    0,w,w^2,0,w^2,w^2,w^2,0,1,0,0,1,w,w,0,w,1,
-    w,1,0,w^2,0,0,w,1,0,0,w^2,0,1,w^2,0,w,0,
-    w^2,1,1,0,w,w^2,0,w,1,0,0,w,1,w^2,0,w,0,
-    w^2,w^2,0,w^2,w^2,w,w^2,0,0,w^2,w,w^2,w^2,0,w,w^2,w,
-    w,w,0,1,w^2,0,w,0,w,0,w,w^2,w,1,1,1,w^2,
-    w^2,w,1,0,w^2,0,w^2,w,w,w,1,w,0,w,0,w,w^2
-]);
-U2:=Matrix(F,5,19,[
-    w^2,0,w^2,w,w^2,w,w^2,w^2,w,0,0,w,0,1,1,w^2,1,1,w^2,
-    0,1,0,1,w,0,w^2,1,w^2,w,w^2,1,0,w^2,1,w,1,1,w,
-    w,1,0,1,0,w,w^2,0,w,w,w^2,1,1,w,1,0,0,1,0,
-    1,w,1,w^2,w,1,0,w^2,w^2,w,1,w,0,1,1,1,0,0,1,
-    w^2,w^2,w^2,0,w^2,0,w,0,1,1,1,0,w,0,0,w^2,w^2,w,w^2
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,16,36,[
-    0,w,w^2,0,w^2,w^2,w^2,0,1,0,0,1,w,w,0,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,1,0,w^2,0,0,w,1,0,0,w^2,0,1,w^2,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,1,1,0,w,w^2,0,w,1,0,0,w,1,w^2,0,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w^2,0,w^2,w^2,w,w^2,0,0,w^2,w,w^2,w^2,0,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w,0,1,w^2,0,w,0,w,0,w,w^2,w,1,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w,1,0,w^2,0,w^2,w,w,w,1,w,0,w,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,w^2,w,w^2,w^2,w,0,0,w,0,1,1,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,w^2,1,w^2,w,w^2,1,0,w^2,1,w,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,1,0,w,w^2,0,w,w,w^2,1,1,w,1,0,0,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,w,1,0,w^2,w^2,w,1,w,0,1,1,1,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,w^2,0,w,0,1,1,1,0,w,0,0,w^2,w^2,w,w^2,
-    1,1,w,w^2,1,1,w^2,1,1,w^2,0,w^2,w,w^2,w^2,1,w^2,1,w,0,1,w^2,w,1,0,0,1,w,0,w^2,w,0,0,w,1,1,
-    0,w^2,w,0,1,w^2,w^2,w,0,0,w^2,0,w,w^2,w,w,1,1,w,1,w,w,w^2,0,0,w,1,1,1,0,0,w,w,w,w,w,
-    w,w^2,w,1,0,1,w^2,0,0,0,1,0,w,1,w^2,0,0,w^2,0,w,w,1,w,0,w,w^2,0,w,1,w^2,w,1,w^2,w,w,0,
-    w,w,w^2,1,1,0,0,w^2,1,1,w^2,w,w^2,w^2,w,w,0,w,w^2,0,0,1,1,1,1,1,1,w^2,1,w,0,1,w,w^2,0,w,
-    w,0,1,0,w^2,0,w,w,0,w,w,0,w,w^2,w^2,w^2,1,0,w^2,w,w,0,1,0,w,0,1,0,w,w^2,0,w,w^2,1,w,w
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 11 and Rank(Gsrc2) eq 10;
-assert 11-Rank(Gsrc1*HDag(Gsrc1)) eq 5;
-assert 10-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 5;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[101]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,20,36,[
-    1,0,0,0,0,0,0,w^2,0,0,0,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,w^2,w,w^2,w^2,w^2,
-    0,1,0,0,0,0,0,w,0,0,0,1,0,0,w,1,1,0,0,0,0,0,0,0,0,0,w,0,1,w,0,1,0,0,w^2,w^2,
-    0,0,1,0,0,0,0,1,0,0,0,1,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,1,1,w,w,1,w^2,1,0,1,0,
-    0,0,0,1,0,0,0,w^2,0,0,0,1,0,0,1,w,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,w^2,1,1,w^2,1,w,
-    0,0,0,0,1,0,0,1,0,0,0,w,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,w^2,w,w^2,1,
-    0,0,0,0,0,1,0,w^2,0,0,0,1,0,w^2,w^2,w^2,w^2,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,0,0,w,w^2,1,w,
-    0,0,0,0,0,0,1,w^2,0,0,0,w^2,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,w,1,w,1,w,1,w^2,
-    0,0,0,0,0,0,0,0,1,0,0,w,0,1,1,w^2,w,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w,1,1,0,1,w,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w^2,1,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w^2,w,0,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,1,w^2,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w^2,1,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,0,1,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,0,0,w,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,1,0,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,1,w,0,w,w^2,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w^2,w^2,w,w^2,w,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,w^2,w,w^2,0,w^2,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w,w,1,0,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w,w,1,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,1,0,w,w,w^2,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[101]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 36 and Dimension(Q) eq 20;
-assert Dimension(HermitianHull(Q)) eq 0;
-Table2Parameters[101]:=[36,20,8,16];
-Table2DistanceTypes[101]:="exact";
-
-// Table 2, No. 102 | D34_M050
+// Table 2, No. 93 | D34_M050
 // [[37,4,18;23]]_2, distance exact.
 Gsrc1:=Matrix(F,28,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,0,w^2,1,w,w,
@@ -3773,7 +2730,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 23;
-Table2Parts[102]:="a";
+Table2Parts[93]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,9,37,[
     1,0,0,0,w^2,1,w,w,w^2,1,0,1,w,0,w,w^2,0,w^2,0,1,0,0,w,0,0,w^2,0,1,w^2,w,0,w,w,w,0,w,0,
@@ -3787,13 +2744,13 @@ RecordedQuantum:=Matrix(F,9,37,[
     0,0,0,0,w,0,0,0,0,1,w,0,0,w^2,0,w^2,w^2,w,1,1,0,w,w^2,w^2,0,0,w,1,w^2,1,0,1,1,0,w,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[102]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[93]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 37 and Dimension(Q) eq 9;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[102]:=[37,4,18,23];
-Table2DistanceTypes[102]:="exact";
+Table2Parameters[93]:=[37,4,18,23];
+Table2DistanceTypes[93]:="exact";
 
-// Table 2, No. 103 | D34_M051
+// Table 2, No. 94 | D34_M051
 // [[37,11,13;18]]_2, distance exact.
 Gsrc1:=Matrix(F,22,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,1,0,1,w^2,0,1,0,1,0,1,0,
@@ -3892,7 +2849,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 18;
-Table2Parts[103]:="a";
+Table2Parts[94]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,15,37,[
     1,0,0,0,w^2,w,1,0,1,1,w^2,w,0,w^2,w,w^2,w^2,w,1,w,w,1,w^2,w^2,0,w^2,0,w^2,w,0,w,1,w^2,w^2,w,w,0,
@@ -3912,395 +2869,13 @@ RecordedQuantum:=Matrix(F,15,37,[
     0,1,1,w^2,0,w,1,0,0,w^2,1,0,0,0,0,w^2,w,w,w,w^2,w^2,w,w^2,1,w,w^2,1,1,w,0,1,1,1,w^2,w,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[103]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[94]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 37 and Dimension(Q) eq 15;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[103]:=[37,11,13,18];
-Table2DistanceTypes[103]:="exact";
+Table2Parameters[94]:=[37,11,13,18];
+Table2DistanceTypes[94]:="exact";
 
-// Table 2, No. 104 | D34_P3_00928_3
-// [[37,21,7;14]]_2, distance exact.
-Gsrc1:=Matrix(F,12,28,[
-    w^2,w^2,w,1,w^2,1,1,w^2,w,w,w,w^2,0,0,w^2,1,w^2,w^2,w,w^2,1,w,1,w^2,w,1,1,0,
-    1,1,1,0,0,1,w^2,1,0,w^2,0,1,1,1,w,1,w^2,0,w,w^2,1,w^2,w^2,w,w,w^2,1,w^2,
-    w^2,w,w,0,0,w,w,0,w,w,0,0,w^2,0,0,1,w,w,w^2,w,w,1,0,w,0,w^2,w,w,
-    0,1,w^2,1,1,0,1,w,1,w,w^2,1,1,w^2,w^2,w,w^2,w,w,0,w,w^2,1,w^2,w^2,w,w^2,w,
-    w^2,0,w,0,w^2,0,0,w^2,w,0,w^2,1,w^2,1,w,w,w^2,w,1,0,w,w^2,0,1,w^2,w,w^2,1,
-    1,w^2,w,w^2,0,1,1,w,w,1,w,1,0,w,0,1,1,1,0,w^2,w,w,1,0,0,1,0,w,
-    0,w^2,0,0,1,w,w,0,0,0,0,0,w,w^2,0,w^2,w^2,w,w,0,0,1,w^2,w^2,w^2,0,0,w,
-    w,0,0,1,w^2,1,w^2,1,1,1,w^2,w^2,w^2,0,w^2,w^2,1,0,1,0,1,w^2,w^2,w,1,1,w,1,
-    w,0,w,0,0,0,0,0,w^2,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,w,0,1,w^2,1,w^2,0,1,
-    0,w^2,0,0,1,1,0,w,1,w,0,1,w,w^2,w,w^2,w,w^2,w^2,0,1,1,w^2,w^2,0,w,w^2,0,
-    0,0,w^2,0,0,1,1,0,w,1,w,0,1,w,w^2,w,w^2,w,w^2,w^2,0,1,1,w^2,w^2,0,w,w^2,
-    0,0,w^2,w^2,w^2,w,w^2,w^2,1,0,w,w,w^2,1,w,0,w^2,1,w,1,1,0,1,w,1,1,w^2,0
-]);
-Gsrc2:=Matrix(F,7,9,[
-    1,w,w,1,0,1,w,w,1,
-    0,w^2,0,1,0,w,w^2,1,0,
-    w,w,w^2,w^2,w,1,1,1,w^2,
-    w,0,w^2,w,0,0,0,w,w^2,
-    w,w,w,w^2,1,1,w^2,w,w^2,
-    1,1,w^2,w^2,1,w^2,w^2,w,w^2,
-    0,0,w^2,w^2,w,1,w,w^2,w^2
-]);
-W1:=Matrix(F,4,28,[
-    w,0,w,0,0,0,0,0,w^2,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,w,0,1,w^2,1,w^2,0,1,
-    0,w^2,0,0,1,1,0,w,1,w,0,1,w,w^2,w,w^2,w,w^2,w^2,0,1,1,w^2,w^2,0,w,w^2,0,
-    0,0,w^2,0,0,1,1,0,w,1,w,0,1,w,w^2,w,w^2,w,w^2,w^2,0,1,1,w^2,w^2,0,w,w^2,
-    0,0,w^2,w^2,w^2,w,w^2,w^2,1,0,w,w,w^2,1,w,0,w^2,1,w,1,1,0,1,w,1,1,w^2,0
-]);
-W2:=Matrix(F,4,9,[
-    w,0,w^2,w,0,0,0,w,w^2,
-    w,w,w,w^2,1,1,w^2,w,w^2,
-    1,1,w^2,w^2,1,w^2,w^2,w,w^2,
-    0,0,w^2,w^2,w,1,w,w^2,w^2
-]);
-lambda:=4;
-U1:=Matrix(F,8,28,[
-    w^2,w^2,w,1,w^2,1,1,w^2,w,w,w,w^2,0,0,w^2,1,w^2,w^2,w,w^2,1,w,1,w^2,w,1,1,0,
-    1,1,1,0,0,1,w^2,1,0,w^2,0,1,1,1,w,1,w^2,0,w,w^2,1,w^2,w^2,w,w,w^2,1,w^2,
-    w^2,w,w,0,0,w,w,0,w,w,0,0,w^2,0,0,1,w,w,w^2,w,w,1,0,w,0,w^2,w,w,
-    0,1,w^2,1,1,0,1,w,1,w,w^2,1,1,w^2,w^2,w,w^2,w,w,0,w,w^2,1,w^2,w^2,w,w^2,w,
-    w^2,0,w,0,w^2,0,0,w^2,w,0,w^2,1,w^2,1,w,w,w^2,w,1,0,w,w^2,0,1,w^2,w,w^2,1,
-    1,w^2,w,w^2,0,1,1,w,w,1,w,1,0,w,0,1,1,1,0,w^2,w,w,1,0,0,1,0,w,
-    0,w^2,0,0,1,w,w,0,0,0,0,0,w,w^2,0,w^2,w^2,w,w,0,0,1,w^2,w^2,w^2,0,0,w,
-    w,0,0,1,w^2,1,w^2,1,1,1,w^2,w^2,w^2,0,w^2,w^2,1,0,1,0,1,w^2,w^2,w,1,1,w,1
-]);
-U2:=Matrix(F,3,9,[
-    1,w,w,1,0,1,w,w,1,
-    0,w^2,0,1,0,w,w^2,1,0,
-    w,w,w^2,w^2,w,1,1,1,w^2
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,15,37,[
-    w^2,w^2,w,1,w^2,1,1,w^2,w,w,w,w^2,0,0,w^2,1,w^2,w^2,w,w^2,1,w,1,w^2,w,1,1,0,0,0,0,0,0,0,0,0,0,
-    1,1,1,0,0,1,w^2,1,0,w^2,0,1,1,1,w,1,w^2,0,w,w^2,1,w^2,w^2,w,w,w^2,1,w^2,0,0,0,0,0,0,0,0,0,
-    w^2,w,w,0,0,w,w,0,w,w,0,0,w^2,0,0,1,w,w,w^2,w,w,1,0,w,0,w^2,w,w,0,0,0,0,0,0,0,0,0,
-    0,1,w^2,1,1,0,1,w,1,w,w^2,1,1,w^2,w^2,w,w^2,w,w,0,w,w^2,1,w^2,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,
-    w^2,0,w,0,w^2,0,0,w^2,w,0,w^2,1,w^2,1,w,w,w^2,w,1,0,w,w^2,0,1,w^2,w,w^2,1,0,0,0,0,0,0,0,0,0,
-    1,w^2,w,w^2,0,1,1,w,w,1,w,1,0,w,0,1,1,1,0,w^2,w,w,1,0,0,1,0,w,0,0,0,0,0,0,0,0,0,
-    0,w^2,0,0,1,w,w,0,0,0,0,0,w,w^2,0,w^2,w^2,w,w,0,0,1,w^2,w^2,w^2,0,0,w,0,0,0,0,0,0,0,0,0,
-    w,0,0,1,w^2,1,w^2,1,1,1,w^2,w^2,w^2,0,w^2,w^2,1,0,1,0,1,w^2,w^2,w,1,1,w,1,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,1,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,w,1,1,1,w^2,
-    w,0,w,0,0,0,0,0,w^2,w,w,w^2,w^2,w^2,1,w,0,0,w^2,w^2,w,0,1,w^2,1,w^2,0,1,w,0,w^2,w,0,0,0,w,w^2,
-    0,w^2,0,0,1,1,0,w,1,w,0,1,w,w^2,w,w^2,w,w^2,w^2,0,1,1,w^2,w^2,0,w,w^2,0,w,w,w,w^2,1,1,w^2,w,w^2,
-    0,0,w^2,0,0,1,1,0,w,1,w,0,1,w,w^2,w,w^2,w,w^2,w^2,0,1,1,w^2,w^2,0,w,w^2,1,1,w^2,w^2,1,w^2,w^2,w,w^2,
-    0,0,w^2,w^2,w^2,w,w^2,w^2,1,0,w,w,w^2,1,w,0,w^2,1,w,1,1,0,1,w,1,1,w^2,0,0,0,w^2,w^2,w,1,w,w^2,w^2
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 12 and Rank(Gsrc2) eq 7;
-assert 12-Rank(Gsrc1*HDag(Gsrc1)) eq 4;
-assert 7-Rank(Gsrc2*HDag(Gsrc2)) eq 1;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 2;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 8;
-Table2Parts[104]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,22,37,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w^2,w^2,w,w^2,0,0,w,w,w^2,1,0,1,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,w^2,w^2,0,0,0,w,w^2,1,w^2,w^2,0,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,w,1,w,0,0,1,w,1,0,w^2,w^2,1,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w^2,1,w^2,w^2,0,0,1,0,1,0,1,w,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,1,w,1,1,0,0,w^2,w^2,w,1,0,0,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,1,1,w,w^2,0,0,w^2,w,0,w^2,0,0,w^2,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,1,w^2,w,0,0,1,1,w,w^2,0,w^2,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,1,w,1,w,0,0,1,w,w^2,w,w,0,w,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,w,w^2,0,0,0,0,0,1,w,w,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,1,0,w^2,0,0,0,w^2,w,0,w^2,0,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w^2,0,0,0,0,1,0,0,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,0,0,w,0,0,0,0,0,1,1,w,w^2,w^2,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,w^2,0,1,1,w^2,0,0,1,0,w^2,w,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w,w^2,0,w^2,w,w^2,0,0,0,0,w^2,w,w,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,w^2,0,w^2,w,0,0,0,w^2,1,1,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,w^2,w^2,w,0,w,w^2,1,0,0,1,1,1,0,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,0,0,1,0,w^2,0,0,0,0,1,w^2,w^2,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,0,w^2,w,w,w^2,1,0,0,w,0,1,w^2,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,0,w,1,0,0,1,w,1,0,1,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,0,1,0,1,w^2,0,0,w,1,0,w,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,1,w,w
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[104]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 37 and Dimension(Q) eq 22;
-assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[104]:=[37,21,7,14];
-Table2DistanceTypes[104]:="exact";
-
-// Table 2, No. 105 | D34_DC237
-// [[37,21,8;16]]_2, distance exact.
-Gsrc1:=Matrix(F,12,18,[
-    1,w^2,w,0,w^2,1,w^2,w,0,1,0,1,w^2,1,0,1,w,0,
-    w,w,w,0,1,1,1,1,1,1,w^2,w,w,0,1,0,w^2,w^2,
-    1,1,1,w^2,w,w,0,1,0,1,0,1,0,1,1,w^2,0,w^2,
-    1,w^2,1,w^2,w,0,1,w,w,0,0,0,0,w,1,1,0,0,
-    w,w,w^2,w,w,0,0,w,0,w^2,0,w^2,0,w,0,0,1,w^2,
-    0,w^2,w,1,w^2,1,0,1,0,0,0,0,w^2,w^2,w^2,1,0,w^2,
-    0,0,0,1,1,1,0,1,0,0,0,w,1,1,1,0,w,w^2,
-    0,1,w,w^2,w^2,w,0,0,w^2,w^2,w^2,0,1,0,1,0,w,w,
-    0,w^2,w,w,w,w,0,1,w^2,1,1,0,w,w^2,w,0,1,w,
-    0,w^2,w,w,w^2,1,w^2,0,0,0,w^2,w^2,0,1,0,w,w,1,
-    1,w^2,1,1,w^2,1,0,0,1,1,w^2,w^2,w,w^2,0,0,w,w^2,
-    0,0,0,w^2,w,0,1,w^2,0,w^2,w^2,1,w,w^2,0,1,0,0
-]);
-Gsrc2:=Matrix(F,10,19,[
-    w^2,w,1,0,1,w^2,0,w^2,w,1,w,w,0,0,w,0,0,w,w,
-    w,1,w,0,1,w^2,w^2,1,1,w^2,0,0,w,1,0,w^2,1,1,1,
-    0,w^2,0,w^2,1,w,w,w,w,1,w^2,1,w,0,w^2,0,1,w,w,
-    w,1,1,w^2,w,w^2,w^2,0,0,w,w,1,w^2,1,0,w,1,0,w^2,
-    w,w^2,1,w^2,w,w,w,1,0,w,1,w^2,1,1,w^2,1,w,w^2,0,
-    1,1,w^2,1,w,1,0,1,1,0,0,1,w,w^2,0,w,1,w^2,w^2,
-    w,1,w^2,w^2,1,1,w,0,w^2,1,0,w^2,w^2,1,w,w^2,1,w,w,
-    0,0,1,w^2,w^2,w^2,0,w,w^2,w^2,w,0,w,1,w,w,0,0,w,
-    w,0,w,w^2,1,0,w^2,1,1,0,0,w,0,1,1,w^2,1,1,0,
-    w,w,0,w^2,w,0,0,w,1,w,w^2,w^2,1,1,0,w,w^2,w,1
-]);
-W1:=Matrix(F,6,18,[
-    0,0,0,1,1,1,0,1,0,0,0,w,1,1,1,0,w,w^2,
-    0,1,w,w^2,w^2,w,0,0,w^2,w^2,w^2,0,1,0,1,0,w,w,
-    0,w^2,w,w,w,w,0,1,w^2,1,1,0,w,w^2,w,0,1,w,
-    0,w^2,w,w,w^2,1,w^2,0,0,0,w^2,w^2,0,1,0,w,w,1,
-    1,w^2,1,1,w^2,1,0,0,1,1,w^2,w^2,w,w^2,0,0,w,w^2,
-    0,0,0,w^2,w,0,1,w^2,0,w^2,w^2,1,w,w^2,0,1,0,0
-]);
-W2:=Matrix(F,6,19,[
-    w,w^2,1,w^2,w,w,w,1,0,w,1,w^2,1,1,w^2,1,w,w^2,0,
-    1,1,w^2,1,w,1,0,1,1,0,0,1,w,w^2,0,w,1,w^2,w^2,
-    w,1,w^2,w^2,1,1,w,0,w^2,1,0,w^2,w^2,1,w,w^2,1,w,w,
-    0,0,1,w^2,w^2,w^2,0,w,w^2,w^2,w,0,w,1,w,w,0,0,w,
-    w,0,w,w^2,1,0,w^2,1,1,0,0,w,0,1,1,w^2,1,1,0,
-    w,w,0,w^2,w,0,0,w,1,w,w^2,w^2,1,1,0,w,w^2,w,1
-]);
-lambda:=6;
-U1:=Matrix(F,6,18,[
-    1,w^2,w,0,w^2,1,w^2,w,0,1,0,1,w^2,1,0,1,w,0,
-    w,w,w,0,1,1,1,1,1,1,w^2,w,w,0,1,0,w^2,w^2,
-    1,1,1,w^2,w,w,0,1,0,1,0,1,0,1,1,w^2,0,w^2,
-    1,w^2,1,w^2,w,0,1,w,w,0,0,0,0,w,1,1,0,0,
-    w,w,w^2,w,w,0,0,w,0,w^2,0,w^2,0,w,0,0,1,w^2,
-    0,w^2,w,1,w^2,1,0,1,0,0,0,0,w^2,w^2,w^2,1,0,w^2
-]);
-U2:=Matrix(F,4,19,[
-    w^2,w,1,0,1,w^2,0,w^2,w,1,w,w,0,0,w,0,0,w,w,
-    w,1,w,0,1,w^2,w^2,1,1,w^2,0,0,w,1,0,w^2,1,1,1,
-    0,w^2,0,w^2,1,w,w,w,w,1,w^2,1,w,0,w^2,0,1,w,w,
-    w,1,1,w^2,w,w^2,w^2,0,0,w,w,1,w^2,1,0,w,1,0,w^2
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,16,37,[
-    1,w^2,w,0,w^2,1,w^2,w,0,1,0,1,w^2,1,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w,w,0,1,1,1,1,1,1,w^2,w,w,0,1,0,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,1,1,w^2,w,w,0,1,0,1,0,1,0,1,1,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w^2,1,w^2,w,0,1,w,w,0,0,0,0,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w,w^2,w,w,0,0,w,0,w^2,0,w^2,0,w,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w^2,w,1,w^2,1,0,1,0,0,0,0,w^2,w^2,w^2,1,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,w^2,0,w^2,w,1,w,w,0,0,w,0,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,w^2,w^2,1,1,w^2,0,0,w,1,0,w^2,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w,w,w,w,1,w^2,1,w,0,w^2,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w^2,w,w^2,w^2,0,0,w,w,1,w^2,1,0,w,1,0,w^2,
-    0,0,0,1,1,1,0,1,0,0,0,w,1,1,1,0,w,w^2,w,w^2,1,w^2,w,w,w,1,0,w,1,w^2,1,1,w^2,1,w,w^2,0,
-    0,1,w,w^2,w^2,w,0,0,w^2,w^2,w^2,0,1,0,1,0,w,w,1,1,w^2,1,w,1,0,1,1,0,0,1,w,w^2,0,w,1,w^2,w^2,
-    0,w^2,w,w,w,w,0,1,w^2,1,1,0,w,w^2,w,0,1,w,w,1,w^2,w^2,1,1,w,0,w^2,1,0,w^2,w^2,1,w,w^2,1,w,w,
-    0,w^2,w,w,w^2,1,w^2,0,0,0,w^2,w^2,0,1,0,w,w,1,0,0,1,w^2,w^2,w^2,0,w,w^2,w^2,w,0,w,1,w,w,0,0,w,
-    1,w^2,1,1,w^2,1,0,0,1,1,w^2,w^2,w,w^2,0,0,w,w^2,w,0,w,w^2,1,0,w^2,1,1,0,0,w,0,1,1,w^2,1,1,0,
-    0,0,0,w^2,w,0,1,w^2,0,w^2,w^2,1,w,w^2,0,1,0,0,w,w,0,w^2,w,0,0,w,1,w,w^2,w^2,1,1,0,w,w^2,w,1
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 12 and Rank(Gsrc2) eq 10;
-assert 12-Rank(Gsrc1*HDag(Gsrc1)) eq 6;
-assert 10-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 4;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[105]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,21,37,[
-    1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,w^2,1,0,0,0,0,0,0,0,0,0,w,1,w,w^2,w^2,w^2,1,w^2,w,1,
-    0,1,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,1,w,w^2,w,w,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,w^2,0,0,1,1,w,0,0,0,0,0,0,0,0,0,1,w^2,0,1,1,1,w^2,1,w^2,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,1,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,1,0,w,w,w,0,w,w,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,w^2,w,1,0,0,0,0,0,0,0,0,0,0,1,w,1,w,0,0,w,1,1,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,w^2,w^2,w^2,1,w^2,w^2,0,0,0,0,0,0,0,0,0,w,w,w^2,1,0,1,1,1,1,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,w,0,w,w^2,w^2,w,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,w,1,w^2,1,0,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,w,w^2,1,0,1,0,0,0,0,0,0,0,0,0,1,w^2,w,0,1,w,0,w,1,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,w^2,1,w,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,0,w^2,w^2,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,w^2,1,w,1,w,w^2,0,0,0,0,0,0,0,0,0,1,1,1,w,w^2,0,0,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,1,w,w^2,0,0,0,0,0,0,0,0,0,w,w,1,w^2,w,w,w^2,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,1,0,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,1,w,0,w,w^2,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w^2,w^2,w,w^2,w,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,w^2,w,w^2,0,w^2,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w,w,1,0,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w,w,1,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,1,0,w,w,w^2,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[105]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 37 and Dimension(Q) eq 21;
-assert Dimension(HermitianHull(Q)) eq 0;
-Table2Parameters[105]:=[37,21,8,16];
-Table2DistanceTypes[105]:="exact";
-
-// Table 2, No. 106 | D34_M054
-// [[38,6,15;22]]_2, distance lower_bound.
-Gsrc1:=Matrix(F,27,33,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,0,w,w,w,0,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w^2,0,w,w,w,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w^2,0,w,w,w,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,w^2,w,w^2,0,w,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,1,0,w^2,w,w^2,0,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,w,1,0,w^2,w,w^2,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,w,1,0,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w,0,w,1,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,w,w,0,w,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,w,w,1,w,w,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,w,w,1,w,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w,0,w^2,0,0,w,w,1,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,0,w^2,0,0,w,w,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w,0,w^2,0,0,w,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,w,0,w^2,0,0,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,w,0,w^2,0,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w,1,w,0,w^2,0,0,w,
-    1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,1,
-    0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,0,0,w,w^2,w,w^2,1,1,0,w^2,1,0,1,1,1,w,w,w^2,
-    1,0,0,0,0,0,0,0,0,w,1,1,0,w,1,w,w^2,w,w,w^2,w,w^2,1,w^2,0,w,1,w,1,w,w,1,w,
-    1,0,0,0,0,0,0,0,w,1,w,1,w,1,1,w,w^2,w,1,1,0,0,0,w^2,0,0,w^2,w,w^2,0,w^2,0,w,
-    0,0,0,0,1,0,0,1,0,1,w,w,w,1,w^2,1,w,1,0,0,w,0,0,0,1,w,w^2,w^2,w^2,1,w^2,w,w
-]);
-Gsrc2:=Matrix(F,5,5,[
-    1,0,0,0,0,
-    0,1,0,0,0,
-    0,0,1,0,0,
-    0,0,0,1,0,
-    0,0,0,0,1
-]);
-W1:=Matrix(F,5,33,[
-    1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,1,
-    0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,0,0,w,w^2,w,w^2,1,1,0,w^2,1,0,1,1,1,w,w,w^2,
-    1,0,0,0,0,0,0,0,0,w,1,1,0,w,1,w,w^2,w,w,w^2,w,w^2,1,w^2,0,w,1,w,1,w,w,1,w,
-    1,0,0,0,0,0,0,0,w,1,w,1,w,1,1,w,w^2,w,1,1,0,0,0,w^2,0,0,w^2,w,w^2,0,w^2,0,w,
-    0,0,0,0,1,0,0,1,0,1,w,w,w,1,w^2,1,w,1,0,0,w,0,0,0,1,w,w^2,w^2,w^2,1,w^2,w,w
-]);
-W2:=Matrix(F,5,5,[
-    1,0,0,0,0,
-    0,1,0,0,0,
-    0,0,1,0,0,
-    0,0,0,1,0,
-    0,0,0,0,1
-]);
-lambda:=5;
-U1:=Matrix(F,22,33,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,0,w,w,w,0,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w^2,0,w,w,w,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w^2,0,w,w,w,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,w^2,w,w^2,0,w,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,1,0,w^2,w,w^2,0,w,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,w,1,0,w^2,w,w^2,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,w,1,0,w^2,w,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w,0,w,1,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,w,w,0,w,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,w,w,1,w,w,1,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,w,w,1,w,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w,0,w^2,0,0,w,w,1,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,0,w^2,0,0,w,w,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w,0,w^2,0,0,w,w,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,w,0,w^2,0,0,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,w,0,w^2,0,0,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w,1,w,0,w^2,0,0,w
-]);
-U2:=Matrix(F,0,5,[
-
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,27,38,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,0,0,0,0,0,0,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,0,w,w,w,0,w,1,0,0,0,0,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w^2,0,w,w,w,0,w,0,0,0,0,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w^2,0,w,w,w,0,0,0,0,0,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w,w^2,0,w,w,w,0,0,0,0,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,1,0,w^2,w,w^2,0,w,w,0,0,0,0,0,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,1,0,w^2,w,w^2,0,w,0,0,0,0,0,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,w,1,0,w^2,w,w^2,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,0,w,1,0,w^2,w,w^2,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,w,w,0,w,1,0,w^2,w,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,w,w,0,w,1,0,w^2,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,w,1,w,w,1,w,0,w^2,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,w,w,1,w,w,1,w,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,w,w,1,w,w,1,w,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w,0,w^2,0,0,w,w,1,w,w,1,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w,0,w^2,0,0,w,w,1,w,w,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,1,w,0,w^2,0,0,w,w,1,w,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,w,1,w,0,w^2,0,0,w,w,1,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,w,0,w^2,0,0,w,w,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w,1,w,0,w^2,0,0,w,0,0,0,0,0,
-    1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,1,1,0,0,0,0,
-    0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,0,0,w,w^2,w,w^2,1,1,0,w^2,1,0,1,1,1,w,w,w^2,0,1,0,0,0,
-    1,0,0,0,0,0,0,0,0,w,1,1,0,w,1,w,w^2,w,w,w^2,w,w^2,1,w^2,0,w,1,w,1,w,w,1,w,0,0,1,0,0,
-    1,0,0,0,0,0,0,0,w,1,w,1,w,1,1,w,w^2,w,1,1,0,0,0,w^2,0,0,w^2,w,w^2,0,w^2,0,w,0,0,0,1,0,
-    0,0,0,0,1,0,0,1,0,1,w,w,w,1,w^2,1,w,1,0,0,w,0,0,0,1,w,w^2,w^2,w^2,1,w^2,w,w,0,0,0,0,1
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 27 and Rank(Gsrc2) eq 5;
-assert 27-Rank(Gsrc1*HDag(Gsrc1)) eq 0;
-assert 5-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 0;
-assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
-assert Rank(U1*HDag(U1)) eq 22;
-Table2Parts[106]:="a";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,11,38,[
-    0,w^2,w,0,0,0,w,w^2,0,0,1,1,w^2,w,0,w,w^2,w,0,w^2,w,1,w,w^2,w^2,w,w,1,w,1,w^2,1,1,0,0,0,0,0,
-    0,w^2,w^2,0,0,0,1,1,1,1,0,1,1,w^2,w^2,1,w,0,0,0,w,1,w,0,w^2,w^2,w^2,w^2,w^2,w^2,1,w^2,0,0,0,0,0,0,
-    w^2,1,1,0,0,1,1,w,1,w,w,w^2,w^2,1,1,0,1,w,0,1,0,w,1,w,w^2,1,w^2,0,w^2,w,w^2,w^2,w^2,0,0,0,0,0,
-    0,0,w^2,0,0,1,w,w,w^2,w,1,1,w,1,0,w^2,w^2,w^2,w,w^2,w^2,w,w^2,1,w,w^2,0,w^2,w^2,1,w^2,w^2,w^2,0,0,0,0,0,
-    1,w^2,w^2,1,0,1,1,0,w^2,w^2,0,1,w,w^2,0,w,w^2,0,w^2,w^2,1,0,w,0,w^2,1,w,w,1,0,0,0,1,0,0,0,0,0,
-    1,w,w,w,1,w^2,w^2,w,1,1,w,w,w,w,1,w,1,1,w^2,1,w,0,0,w,0,1,1,w,0,0,w^2,0,w,0,0,0,0,0,
-    1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,w,w^2,w,w,w,w^2,0,1,1,0,w,w,1,1,1,1,1,0,0,0,0,
-    0,1,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,0,0,w,w^2,w,w^2,1,1,0,w^2,1,0,1,1,1,w,w,w^2,0,1,0,0,0,
-    1,0,0,0,0,0,0,0,0,w,1,1,0,w,1,w,w^2,w,w,w^2,w,w^2,1,w^2,0,w,1,w,1,w,w,1,w,0,0,1,0,0,
-    1,0,0,0,0,0,0,0,w,1,w,1,w,1,1,w,w^2,w,1,1,0,0,0,w^2,0,0,w^2,w,w^2,0,w^2,0,w,0,0,0,1,0,
-    0,0,0,0,1,0,0,1,0,1,w,w,w,1,w^2,1,w,1,0,0,w,0,0,0,1,w,w^2,w^2,w^2,1,w^2,w,w,0,0,0,0,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[106]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 38 and Dimension(Q) eq 11;
-assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[106]:=[38,6,15,22];
-Table2DistanceTypes[106]:="lower_bound";
-
-// Table 2, No. 107 | D34_M055
+// Table 2, No. 95 | D34_M055
 // [[38,8,15;22]]_2, distance lower_bound.
 Gsrc1:=Matrix(F,26,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,w,w^2,1,w,w,w^2,1,w,w,
@@ -4413,7 +2988,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 22;
-Table2Parts[107]:="a";
+Table2Parts[95]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,12,38,[
     1,0,w^2,1,0,w^2,1,0,w^2,1,0,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,w^2,1,w^2,w,1,w^2,w,1,w^2,w,1,w^2,w,0,0,
@@ -4430,132 +3005,13 @@ RecordedQuantum:=Matrix(F,12,38,[
     w^2,0,w^2,w^2,0,w,w^2,0,w,w^2,0,0,w^2,1,0,w,0,w^2,w,0,0,1,1,0,0,1,w,w^2,w^2,1,w^2,w^2,w,w,1,w^2,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[107]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[95]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 38 and Dimension(Q) eq 12;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[107]:=[38,8,15,22];
-Table2DistanceTypes[107]:="lower_bound";
+Table2Parameters[95]:=[38,8,15,22];
+Table2DistanceTypes[95]:="lower_bound";
 
-// Table 2, No. 108 | D34_P3_00942_2
-// [[38,20,8;14]]_2, distance exact.
-Gsrc1:=Matrix(F,12,28,[
-    1,w^2,w,w,w^2,w,1,w,w,w^2,w,w^2,1,w,w,w,0,w^2,w^2,w,w,1,0,1,w,0,w^2,w,
-    w,1,0,1,w^2,w,w,w,w,w,0,w^2,1,w^2,w^2,w^2,0,w^2,1,w,0,w,w,w,w,0,1,w,
-    1,0,1,0,1,1,w,w^2,w^2,1,w^2,0,w,0,0,0,1,w,w^2,w^2,0,1,w^2,1,0,1,w,0,
-    w^2,w,w,1,1,0,w^2,w^2,w,1,1,1,0,1,w,0,w^2,0,w^2,w,w,0,0,w^2,w^2,0,w,w^2,
-    1,1,1,0,0,0,1,0,1,0,w,w,w^2,w^2,0,w^2,w^2,w^2,w^2,1,w,w^2,w^2,1,0,w,1,w,
-    w,w,0,w^2,1,w,0,1,w,1,w^2,w,w,w^2,w^2,w,w,w^2,0,1,w^2,w,1,0,w^2,w^2,0,w^2,
-    w^2,w,1,1,w,0,w,w,1,1,1,0,w^2,1,1,w^2,0,w^2,w^2,w,w,1,0,w^2,w^2,0,1,w,
-    0,0,0,w,w^2,0,w,1,w^2,1,w^2,0,0,0,w^2,w^2,1,w^2,1,w^2,0,1,w,w^2,w,w,w^2,0,
-    0,w,w,1,w,1,0,0,w^2,0,1,0,1,w,1,0,w^2,w,w,1,1,w,1,w,1,w^2,1,w^2,
-    w^2,w^2,w,0,1,w^2,w,w,w^2,w^2,0,0,1,1,1,w^2,w^2,0,w^2,0,w,w^2,w^2,w^2,w^2,w^2,0,w^2,
-    w,w^2,1,w^2,w,w^2,w^2,1,w^2,0,0,0,w,1,1,1,1,w,w,w,w,1,w^2,w,0,0,0,1,
-    w^2,1,0,w^2,1,0,w^2,0,w,0,1,1,1,1,w^2,w,0,0,w,0,0,w,w,w,w^2,w^2,w,w
-]);
-Gsrc2:=Matrix(F,8,10,[
-    0,w^2,1,1,w^2,0,w^2,1,1,w^2,
-    1,w,w,1,0,1,w,w,1,0,
-    1,1,w^2,w^2,1,1,0,w,w^2,w^2,
-    w,0,1,w^2,w,w,1,w,w,w,
-    w^2,w,w^2,w^2,w^2,1,0,0,w,0,
-    w,w,0,w,w^2,w,w^2,w^2,w^2,w^2,
-    0,w^2,w,w,w,0,0,1,w,w^2,
-    0,1,1,w^2,w^2,1,0,w^2,0,1
-]);
-W1:=Matrix(F,4,28,[
-    0,w,w,1,w,1,0,0,w^2,0,1,0,1,w,1,0,w^2,w,w,1,1,w,1,w,1,w^2,1,w^2,
-    w^2,w^2,w,0,1,w^2,w,w,w^2,w^2,0,0,1,1,1,w^2,w^2,0,w^2,0,w,w^2,w^2,w^2,w^2,w^2,0,w^2,
-    w,w^2,1,w^2,w,w^2,w^2,1,w^2,0,0,0,w,1,1,1,1,w,w,w,w,1,w^2,w,0,0,0,1,
-    w^2,1,0,w^2,1,0,w^2,0,w,0,1,1,1,1,w^2,w,0,0,w,0,0,w,w,w,w^2,w^2,w,w
-]);
-W2:=Matrix(F,4,10,[
-    w^2,w,w^2,w^2,w^2,1,0,0,w,0,
-    w,w,0,w,w^2,w,w^2,w^2,w^2,w^2,
-    0,w^2,w,w,w,0,0,1,w,w^2,
-    0,1,1,w^2,w^2,1,0,w^2,0,1
-]);
-lambda:=4;
-U1:=Matrix(F,8,28,[
-    1,w^2,w,w,w^2,w,1,w,w,w^2,w,w^2,1,w,w,w,0,w^2,w^2,w,w,1,0,1,w,0,w^2,w,
-    w,1,0,1,w^2,w,w,w,w,w,0,w^2,1,w^2,w^2,w^2,0,w^2,1,w,0,w,w,w,w,0,1,w,
-    1,0,1,0,1,1,w,w^2,w^2,1,w^2,0,w,0,0,0,1,w,w^2,w^2,0,1,w^2,1,0,1,w,0,
-    w^2,w,w,1,1,0,w^2,w^2,w,1,1,1,0,1,w,0,w^2,0,w^2,w,w,0,0,w^2,w^2,0,w,w^2,
-    1,1,1,0,0,0,1,0,1,0,w,w,w^2,w^2,0,w^2,w^2,w^2,w^2,1,w,w^2,w^2,1,0,w,1,w,
-    w,w,0,w^2,1,w,0,1,w,1,w^2,w,w,w^2,w^2,w,w,w^2,0,1,w^2,w,1,0,w^2,w^2,0,w^2,
-    w^2,w,1,1,w,0,w,w,1,1,1,0,w^2,1,1,w^2,0,w^2,w^2,w,w,1,0,w^2,w^2,0,1,w,
-    0,0,0,w,w^2,0,w,1,w^2,1,w^2,0,0,0,w^2,w^2,1,w^2,1,w^2,0,1,w,w^2,w,w,w^2,0
-]);
-U2:=Matrix(F,4,10,[
-    0,w^2,1,1,w^2,0,w^2,1,1,w^2,
-    1,w,w,1,0,1,w,w,1,0,
-    1,1,w^2,w^2,1,1,0,w,w^2,w^2,
-    w,0,1,w^2,w,w,1,w,w,w
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,16,38,[
-    1,w^2,w,w,w^2,w,1,w,w,w^2,w,w^2,1,w,w,w,0,w^2,w^2,w,w,1,0,1,w,0,w^2,w,0,0,0,0,0,0,0,0,0,0,
-    w,1,0,1,w^2,w,w,w,w,w,0,w^2,1,w^2,w^2,w^2,0,w^2,1,w,0,w,w,w,w,0,1,w,0,0,0,0,0,0,0,0,0,0,
-    1,0,1,0,1,1,w,w^2,w^2,1,w^2,0,w,0,0,0,1,w,w^2,w^2,0,1,w^2,1,0,1,w,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w,w,1,1,0,w^2,w^2,w,1,1,1,0,1,w,0,w^2,0,w^2,w,w,0,0,w^2,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,
-    1,1,1,0,0,0,1,0,1,0,w,w,w^2,w^2,0,w^2,w^2,w^2,w^2,1,w,w^2,w^2,1,0,w,1,w,0,0,0,0,0,0,0,0,0,0,
-    w,w,0,w^2,1,w,0,1,w,1,w^2,w,w,w^2,w^2,w,w,w^2,0,1,w^2,w,1,0,w^2,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,
-    w^2,w,1,1,w,0,w,w,1,1,1,0,w^2,1,1,w^2,0,w^2,w^2,w,w,1,0,w^2,w^2,0,1,w,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,w,w^2,0,w,1,w^2,1,w^2,0,0,0,w^2,w^2,1,w^2,1,w^2,0,1,w,w^2,w,w,w^2,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,0,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,1,w,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w^2,1,1,0,w,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w,w,1,w,w,w,
-    0,w,w,1,w,1,0,0,w^2,0,1,0,1,w,1,0,w^2,w,w,1,1,w,1,w,1,w^2,1,w^2,w^2,w,w^2,w^2,w^2,1,0,0,w,0,
-    w^2,w^2,w,0,1,w^2,w,w,w^2,w^2,0,0,1,1,1,w^2,w^2,0,w^2,0,w,w^2,w^2,w^2,w^2,w^2,0,w^2,w,w,0,w,w^2,w,w^2,w^2,w^2,w^2,
-    w,w^2,1,w^2,w,w^2,w^2,1,w^2,0,0,0,w,1,1,1,1,w,w,w,w,1,w^2,w,0,0,0,1,0,w^2,w,w,w,0,0,1,w,w^2,
-    w^2,1,0,w^2,1,0,w^2,0,w,0,1,1,1,1,w^2,w,0,0,w,0,0,w,w,w,w^2,w^2,w,w,0,1,1,w^2,w^2,1,0,w^2,0,1
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 12 and Rank(Gsrc2) eq 8;
-assert 12-Rank(Gsrc1*HDag(Gsrc1)) eq 4;
-assert 8-Rank(Gsrc2*HDag(Gsrc2)) eq 2;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 2;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 8;
-Table2Parts[108]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,22,38,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w,0,0,1,0,0,0,0,1,w,w,w^2,1,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,w^2,w,w,1,0,0,1,0,0,w^2,0,w^2,w,0,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,1,w,0,w^2,0,0,w^2,w^2,1,0,1,1,1,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,1,0,w,1,0,0,w,0,1,w^2,1,0,1,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w,1,w^2,w,w^2,0,0,1,w,0,w^2,w^2,0,0,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,w^2,1,0,0,w,w^2,1,w^2,w,0,0,0,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w^2,1,w^2,w,w^2,0,0,0,0,w^2,1,1,w,w^2,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,0,1,w,1,0,0,w^2,0,0,w,0,w,1,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,1,w,w,1,w,0,0,w,w,1,w^2,w^2,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,0,1,w,w,0,0,w,w^2,1,w^2,w,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w,w,0,1,1,w^2,0,0,0,0,0,0,1,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,0,0,w,0,0,w,1,w^2,0,w,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w^2,w,1,w,1,1,0,0,w^2,0,0,w,w,w^2,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,w^2,0,0,0,w^2,w,0,0,1,0,1,1,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,w,w^2,w^2,0,w^2,0,0,1,1,w^2,w,w,0,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,0,w,w,1,0,w,1,0,0,1,w,1,1,1,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,w^2,1,w,1,w,0,1,0,0,w^2,w^2,w,1,w,w,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,w,0,w^2,0,1,w^2,0,0,w,w,0,1,w,1,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,1,w^2,1,0,w,0,0,w,0,1,w^2,w^2,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,w,w,1,0,0,w^2,0,0,w,0,w^2,0,0,0,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w,1,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,1,w,w,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[108]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 38 and Dimension(Q) eq 22;
-assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[108]:=[38,20,8,14];
-Table2DistanceTypes[108]:="exact";
-
-// Table 2, No. 109 | D34_M063
+// Table 2, No. 96 | D34_M063
 // [[40,21,8;11]]_2, distance exact.
 Gsrc1:=Matrix(F,15,39,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,0,0,1,w,w^2,0,w,1,w,w^2,w,w,w^2,0,w,1,w,w,0,w,1,0,
@@ -4633,7 +3089,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 11;
-Table2Parts[109]:="a";
+Table2Parts[96]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,25,40,[
     1,0,0,w,0,w,w^2,w,w,w^2,w,w^2,w,0,1,w^2,0,1,1,w,w,0,w^2,w,0,1,0,w^2,1,w^2,1,1,w^2,1,0,1,0,0,w,0,
@@ -4663,13 +3119,13 @@ RecordedQuantum:=Matrix(F,25,40,[
     w,w^2,1,w,w^2,w^2,1,0,0,1,w^2,w^2,0,w^2,w^2,1,w^2,0,1,1,0,w,0,0,0,1,w^2,1,1,1,1,1,0,1,w^2,w,0,w,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[109]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[96]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 40 and Dimension(Q) eq 25;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[109]:=[40,21,8,11];
-Table2DistanceTypes[109]:="exact";
+Table2Parameters[96]:=[40,21,8,11];
+Table2DistanceTypes[96]:="exact";
 
-// Table 2, No. 110 | D34_M064
+// Table 2, No. 97 | D34_M064
 // [[40,23,8;13]]_2, distance exact.
 Gsrc1:=Matrix(F,15,39,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,1,0,w,0,0,1,1,0,0,w^2,w,0,0,1,1,0,0,w^2,0,1,
@@ -4747,7 +3203,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 13;
-Table2Parts[110]:="a";
+Table2Parts[97]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,25,40,[
     1,1,1,w^2,w^2,1,w,0,w,1,w^2,0,0,w,w,w^2,0,0,1,0,w,0,0,w^2,1,1,0,0,w^2,w,1,0,1,w,w^2,w^2,w,w,w,0,
@@ -4777,130 +3233,13 @@ RecordedQuantum:=Matrix(F,25,40,[
     0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w,1,0,1,w,w^2,1,0,1,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[110]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[97]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 40 and Dimension(Q) eq 25;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[110]:=[40,23,8,13];
-Table2DistanceTypes[110]:="exact";
+Table2Parameters[97]:=[40,23,8,13];
+Table2DistanceTypes[97]:="exact";
 
-// Table 2, No. 111 | D34_P3_00594_2
-// [[40,24,7;14]]_2, distance exact.
-Gsrc1:=Matrix(F,9,21,[
-    w^2,1,0,1,1,w,w^2,0,w,w^2,w^2,w,0,0,w^2,1,w^2,1,w^2,w,w,
-    w,0,w,w,w,w,w,w,w^2,0,1,w,w^2,1,w^2,w^2,1,0,w^2,w,0,
-    1,w^2,0,w,w,1,w^2,0,0,w^2,0,1,w^2,1,0,0,1,w,w,1,w,
-    w^2,w^2,0,w^2,w,w,1,w^2,1,0,w^2,w,w,w^2,0,w^2,0,w,0,0,w^2,
-    w^2,w,w,w,w^2,0,w,0,0,w^2,0,w,0,0,w,1,w,w,1,w,w,
-    0,w,w^2,w,1,0,0,w^2,0,0,w^2,w^2,w^2,w^2,w,w,0,0,w^2,0,w^2,
-    1,w^2,w,0,1,0,w,1,w,1,1,w,w^2,w^2,w^2,0,w^2,1,0,0,w^2,
-    0,w^2,w,w^2,w,w,w^2,1,1,1,0,1,w,0,0,1,1,w^2,w,0,1,
-    w^2,0,w^2,1,0,0,w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w
-]);
-Gsrc2:=Matrix(F,9,19,[
-    w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,
-    w,w^2,0,w^2,0,1,1,0,w^2,0,w,w,w,0,w^2,0,1,1,w^2,
-    0,w,w,0,w,0,1,1,1,1,0,1,w^2,1,0,w^2,0,w^2,1,
-    w,w^2,w,w,w^2,w,1,w,1,w,w,1,w,w,0,1,w^2,w,0,
-    1,w,w,0,w,w,w,w,0,1,1,0,w,1,0,1,w^2,w^2,1,
-    w^2,0,w,0,0,1,w,0,w,w^2,w,w,w^2,w^2,0,w,w,0,1,
-    0,w,w^2,w,1,w^2,0,1,0,1,w,w^2,0,1,0,w,0,1,w^2,
-    0,0,1,w^2,1,w^2,w^2,w,w,w,1,1,w,1,0,w^2,1,w,0,
-    0,0,0,w,0,w^2,0,1,1,1,1,w,1,1,w^2,1,0,w^2,w^2
-]);
-W1:=Matrix(F,3,21,[
-    1,w^2,w,0,1,0,w,1,w,1,1,w,w^2,w^2,w^2,0,w^2,1,0,0,w^2,
-    0,w^2,w,w^2,w,w,w^2,1,1,1,0,1,w,0,0,1,1,w^2,w,0,1,
-    w^2,0,w^2,1,0,0,w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w
-]);
-W2:=Matrix(F,3,19,[
-    0,w,w^2,w,1,w^2,0,1,0,1,w,w^2,0,1,0,w,0,1,w^2,
-    0,0,1,w^2,1,w^2,w^2,w,w,w,1,1,w,1,0,w^2,1,w,0,
-    0,0,0,w,0,w^2,0,1,1,1,1,w,1,1,w^2,1,0,w^2,w^2
-]);
-lambda:=3;
-U1:=Matrix(F,6,21,[
-    w^2,1,0,1,1,w,w^2,0,w,w^2,w^2,w,0,0,w^2,1,w^2,1,w^2,w,w,
-    w,0,w,w,w,w,w,w,w^2,0,1,w,w^2,1,w^2,w^2,1,0,w^2,w,0,
-    1,w^2,0,w,w,1,w^2,0,0,w^2,0,1,w^2,1,0,0,1,w,w,1,w,
-    w^2,w^2,0,w^2,w,w,1,w^2,1,0,w^2,w,w,w^2,0,w^2,0,w,0,0,w^2,
-    w^2,w,w,w,w^2,0,w,0,0,w^2,0,w,0,0,w,1,w,w,1,w,w,
-    0,w,w^2,w,1,0,0,w^2,0,0,w^2,w^2,w^2,w^2,w,w,0,0,w^2,0,w^2
-]);
-U2:=Matrix(F,6,19,[
-    w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,
-    w,w^2,0,w^2,0,1,1,0,w^2,0,w,w,w,0,w^2,0,1,1,w^2,
-    0,w,w,0,w,0,1,1,1,1,0,1,w^2,1,0,w^2,0,w^2,1,
-    w,w^2,w,w,w^2,w,1,w,1,w,w,1,w,w,0,1,w^2,w,0,
-    1,w,w,0,w,w,w,w,0,1,1,0,w,1,0,1,w^2,w^2,1,
-    w^2,0,w,0,0,1,w,0,w,w^2,w,w,w^2,w^2,0,w,w,0,1
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,15,40,[
-    w^2,1,0,1,1,w,w^2,0,w,w^2,w^2,w,0,0,w^2,1,w^2,1,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,0,w,w,w,w,w,w,w^2,0,1,w,w^2,1,w^2,w^2,1,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,w^2,0,w,w,1,w^2,0,0,w^2,0,1,w^2,1,0,0,1,w,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w^2,0,w^2,w,w,1,w^2,1,0,w^2,w,w,w^2,0,w^2,0,w,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w,w,w,w^2,0,w,0,0,w^2,0,w,0,0,w,1,w,w,1,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w,w^2,w,1,0,0,w^2,0,0,w^2,w^2,w^2,w^2,w,w,0,0,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,1,1,0,w^2,0,w,w,w,0,w^2,0,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w,0,1,1,1,1,0,1,w^2,1,0,w^2,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w,w^2,w,1,w,1,w,w,1,w,w,0,1,w^2,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,w,w,w,w,0,1,1,0,w,1,0,1,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,0,1,w,0,w,w^2,w,w,w^2,w^2,0,w,w,0,1,
-    1,w^2,w,0,1,0,w,1,w,1,1,w,w^2,w^2,w^2,0,w^2,1,0,0,w^2,0,w,w^2,w,1,w^2,0,1,0,1,w,w^2,0,1,0,w,0,1,w^2,
-    0,w^2,w,w^2,w,w,w^2,1,1,1,0,1,w,0,0,1,1,w^2,w,0,1,0,0,1,w^2,1,w^2,w^2,w,w,w,1,1,w,1,0,w^2,1,w,0,
-    w^2,0,w^2,1,0,0,w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,0,0,0,w,0,w^2,0,1,1,1,1,w,1,1,w^2,1,0,w^2,w^2
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 9 and Rank(Gsrc2) eq 9;
-assert 9-Rank(Gsrc1*HDag(Gsrc1)) eq 3;
-assert 9-Rank(Gsrc2*HDag(Gsrc2)) eq 1;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 5;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[111]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,25,40,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,1,1,0,0,0,0,0,0,0,0,0,0,1,1,w^2,0,1,w,1,0,w^2,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,0,0,w^2,w,1,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,1,w^2,1,w,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,1,0,w^2,0,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,w^2,1,0,w^2,w^2,w^2,0,w^2,w,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,w,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,w^2,0,0,w^2,w,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,w,w,1,1,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,0,1,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,w,w^2,w^2,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w,1,1,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,0,w^2,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w,w^2,0,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,1,0,w^2,0,1,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,w,w^2,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,w^2,0,w,0,0,0,0,0,0,0,0,0,0,w,w,0,1,w^2,1,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,0,w,w^2,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,1,w,w,w^2,0,0,0,0,0,0,0,0,0,0,w,w,0,1,w^2,1,w,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w,1,1,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,w,1,w,w,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,w^2,1,w^2,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,0,w^2,0,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,0,w^2,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,w,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[111]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 40 and Dimension(Q) eq 25;
-assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[111]:=[40,24,7,14];
-Table2DistanceTypes[111]:="exact";
-
-// Table 2, No. 112 | D34_M065
+// Table 2, No. 98 | D34_M065
 // [[41,7,16;20]]_2, distance exact.
 Gsrc1:=Matrix(F,27,40,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,0,w^2,w,0,1,w,w^2,0,w,1,w^2,w^2,
@@ -5014,7 +3353,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 20;
-Table2Parts[112]:="a";
+Table2Parts[98]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,14,41,[
     1,0,0,0,0,0,1,1,w^2,0,w^2,0,w^2,0,0,w^2,0,w^2,0,w^2,1,w,w,1,w^2,1,w^2,1,1,w^2,w^2,1,1,w^2,1,w^2,1,w,w,0,0,
@@ -5033,13 +3372,13 @@ RecordedQuantum:=Matrix(F,14,41,[
     1,w,w,1,w^2,1,w^2,w,0,0,0,0,0,0,w^2,w,1,1,0,w^2,1,w,w,w,w^2,1,w^2,0,0,1,w,1,w,w,w,w^2,1,0,w,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[112]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[98]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 41 and Dimension(Q) eq 14;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table2Parameters[112]:=[41,7,16,20];
-Table2DistanceTypes[112]:="exact";
+Table2Parameters[98]:=[41,7,16,20];
+Table2DistanceTypes[98]:="exact";
 
-// Table 2, No. 113 | D34_M066
+// Table 2, No. 99 | D34_M066
 // [[41,10,15;19]]_2, distance lower_bound.
 Gsrc1:=Matrix(F,25,40,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,1,w^2,w,w,1,w,1,1,0,0,w,0,
@@ -5147,7 +3486,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[113]:="a";
+Table2Parts[99]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,16,41,[
     1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,w^2,1,0,1,w,0,
@@ -5168,131 +3507,13 @@ RecordedQuantum:=Matrix(F,16,41,[
     0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,w,0,w,w^2,0,w^2,0,w,1,1,w^2,0,w,w,w^2,w^2,1,w^2,1,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[113]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[99]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 41 and Dimension(Q) eq 16;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[113]:=[41,10,15,19];
-Table2DistanceTypes[113]:="lower_bound";
+Table2Parameters[99]:=[41,10,15,19];
+Table2DistanceTypes[99]:="lower_bound";
 
-// Table 2, No. 114 | D34_P3_00599_3
-// [[41,24,7;13]]_2, distance exact.
-Gsrc1:=Matrix(F,9,21,[
-    w,0,1,0,1,0,w,1,w^2,w,1,w^2,w,w,0,w,w,w^2,w^2,w,w,
-    0,w,w,w,w,w,1,w^2,w^2,0,1,w^2,0,1,0,0,w,w,0,1,1,
-    w,1,0,w,w^2,w,0,w^2,w^2,1,0,w,w^2,w,1,w^2,0,w^2,w^2,1,w^2,
-    w^2,w,1,w^2,w^2,w,1,w,w,w,1,w^2,w,w^2,w,0,w^2,0,0,0,w^2,
-    1,1,w^2,w^2,0,1,1,w^2,w^2,w^2,1,w^2,1,w^2,w^2,1,w,w,1,w,0,
-    w,w,w^2,1,w,1,0,w^2,1,0,1,0,0,w^2,1,1,w,w,w^2,w,1,
-    w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,0,0,w,w,1,w^2,0,w,0,w^2,
-    w^2,1,w,w,w,0,w,w^2,0,0,w,w,1,w^2,0,w,0,w^2,w,w^2,w,
-    1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,0,0,w,w,1
-]);
-Gsrc2:=Matrix(F,9,20,[
-    1,w,0,0,1,1,w^2,w,0,1,0,w,1,w,1,1,w,w^2,w^2,w^2,
-    0,w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,
-    1,w^2,0,w^2,w^2,w^2,0,1,w^2,1,1,w^2,1,w^2,w^2,0,1,1,w^2,w,
-    w,w^2,0,w,w^2,w,1,0,w^2,w^2,1,0,1,w^2,0,0,1,w,w^2,1,
-    1,1,0,0,w^2,w^2,w^2,1,1,w^2,0,0,1,0,w^2,1,w^2,1,1,1,
-    0,0,0,w^2,0,0,0,0,w^2,w,1,w,w,0,1,0,1,0,0,w,
-    w^2,w,w,0,w^2,0,w,1,w^2,0,w,w,0,1,w,w^2,0,1,0,0,
-    w,w^2,w^2,w^2,w,0,w^2,1,w,w,1,w^2,0,1,0,w^2,0,1,1,0,
-    1,w^2,w,w^2,w^2,1,0,0,w^2,0,w^2,0,w,1,w^2,w,1,w^2,w,0
-]);
-W1:=Matrix(F,3,21,[
-    w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,0,0,w,w,1,w^2,0,w,0,w^2,
-    w^2,1,w,w,w,0,w,w^2,0,0,w,w,1,w^2,0,w,0,w^2,w,w^2,w,
-    1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,0,0,w,w,1
-]);
-W2:=Matrix(F,3,20,[
-    w^2,w,w,0,w^2,0,w,1,w^2,0,w,w,0,1,w,w^2,0,1,0,0,
-    w,w^2,w^2,w^2,w,0,w^2,1,w,w,1,w^2,0,1,0,w^2,0,1,1,0,
-    1,w^2,w,w^2,w^2,1,0,0,w^2,0,w^2,0,w,1,w^2,w,1,w^2,w,0
-]);
-lambda:=3;
-U1:=Matrix(F,6,21,[
-    w,0,1,0,1,0,w,1,w^2,w,1,w^2,w,w,0,w,w,w^2,w^2,w,w,
-    0,w,w,w,w,w,1,w^2,w^2,0,1,w^2,0,1,0,0,w,w,0,1,1,
-    w,1,0,w,w^2,w,0,w^2,w^2,1,0,w,w^2,w,1,w^2,0,w^2,w^2,1,w^2,
-    w^2,w,1,w^2,w^2,w,1,w,w,w,1,w^2,w,w^2,w,0,w^2,0,0,0,w^2,
-    1,1,w^2,w^2,0,1,1,w^2,w^2,w^2,1,w^2,1,w^2,w^2,1,w,w,1,w,0,
-    w,w,w^2,1,w,1,0,w^2,1,0,1,0,0,w^2,1,1,w,w,w^2,w,1
-]);
-U2:=Matrix(F,6,20,[
-    1,w,0,0,1,1,w^2,w,0,1,0,w,1,w,1,1,w,w^2,w^2,w^2,
-    0,w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,
-    1,w^2,0,w^2,w^2,w^2,0,1,w^2,1,1,w^2,1,w^2,w^2,0,1,1,w^2,w,
-    w,w^2,0,w,w^2,w,1,0,w^2,w^2,1,0,1,w^2,0,0,1,w,w^2,1,
-    1,1,0,0,w^2,w^2,w^2,1,1,w^2,0,0,1,0,w^2,1,w^2,1,1,1,
-    0,0,0,w^2,0,0,0,0,w^2,w,1,w,w,0,1,0,1,0,0,w
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,15,41,[
-    w,0,1,0,1,0,w,1,w^2,w,1,w^2,w,w,0,w,w,w^2,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,w,w,w,w,w,1,w^2,w^2,0,1,w^2,0,1,0,0,w,w,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,1,0,w,w^2,w,0,w^2,w^2,1,0,w,w^2,w,1,w^2,0,w^2,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w,1,w^2,w^2,w,1,w,w,w,1,w^2,w,w^2,w,0,w^2,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,1,w^2,w^2,0,1,1,w^2,w^2,w^2,1,w^2,1,w^2,w^2,1,w,w,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w,w^2,1,w,1,0,w^2,1,0,1,0,0,w^2,1,1,w,w,w^2,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,1,1,w^2,w,0,1,0,w,1,w,1,1,w,w^2,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w^2,0,1,w^2,1,1,w^2,1,w^2,w^2,0,1,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,w^2,w,1,0,w^2,w^2,1,0,1,w^2,0,0,1,w,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,w^2,w^2,w^2,1,1,w^2,0,0,1,0,w^2,1,w^2,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,0,0,w^2,w,1,w,w,0,1,0,1,0,0,w,
-    w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,0,0,w,w,1,w^2,0,w,0,w^2,w^2,w,w,0,w^2,0,w,1,w^2,0,w,w,0,1,w,w^2,0,1,0,0,
-    w^2,1,w,w,w,0,w,w^2,0,0,w,w,1,w^2,0,w,0,w^2,w,w^2,w,w,w^2,w^2,w^2,w,0,w^2,1,w,w,1,w^2,0,1,0,w^2,0,1,1,0,
-    1,0,w^2,0,1,w^2,1,w^2,w^2,1,w,w,w,0,w,w^2,0,0,w,w,1,1,w^2,w,w^2,w^2,1,0,0,w^2,0,w^2,0,w,1,w^2,w,1,w^2,w,0
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 9 and Rank(Gsrc2) eq 9;
-assert 9-Rank(Gsrc1*HDag(Gsrc1)) eq 3;
-assert 9-Rank(Gsrc2*HDag(Gsrc2)) eq 2;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 4;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[114]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,26,41,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,w^2,1,0,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,w,1,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,1,1,w^2,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,1,0,1,w,1,0,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w^2,0,w^2,1,0,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,1,w,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,w,w^2,w^2,0,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,1,0,1,1,1,w^2,w,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,0,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,w^2,0,0,1,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,0,w^2,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,w^2,1,0,0,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,0,0,1,w^2,1,1,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,w,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w,w^2,0,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,w^2,1,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,w^2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w^2,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,0,w^2,0,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,w^2,1,0,0,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,1,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w^2,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,0,0,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w^2,0,1,w,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,w,1,w^2,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,w,1,w,w,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,1,w,1,w^2,w^2,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,w^2,1,w^2,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,0,w^2,0,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,0,w^2,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,w,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,w,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[114]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 41 and Dimension(Q) eq 26;
-assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[114]:=[41,24,7,13];
-Table2DistanceTypes[114]:="exact";
-
-// Table 2, No. 115 | D34_P3_00424_2
+// Table 2, No. 100 | D34_P3_00424_2
 // [[41,34,4;5]]_2, distance exact.
 Gsrc1:=Matrix(F,3,6,[
     1,1,1,1,1,1,
@@ -5344,7 +3565,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 3;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 0;
-Table2Parts[115]:="b";
+Table2Parts[100]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,35,41,[
     1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,1,w,
@@ -5384,138 +3605,13 @@ RecordedQuantum:=Matrix(F,35,41,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[115]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[100]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 41 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[115]:=[41,34,4,5];
-Table2DistanceTypes[115]:="exact";
+Table2Parameters[100]:=[41,34,4,5];
+Table2DistanceTypes[100]:="exact";
 
-// Table 2, No. 116 | D34_P3_00997_3
-// [[42,21,8;13]]_2, distance exact.
-Gsrc1:=Matrix(F,11,22,[
-    1,w^2,w,1,0,w,0,w,w,1,1,0,w^2,1,0,w,w^2,w,0,1,w^2,0,
-    w,w,w^2,1,1,w,0,0,1,0,w^2,w,1,w^2,0,0,0,w,w,w,w^2,w,
-    w^2,0,0,w^2,1,w^2,w^2,w,w^2,w,w^2,1,w^2,w,0,0,w^2,w^2,w,w^2,w,w,
-    0,0,0,w^2,w^2,0,0,0,w^2,1,0,1,w^2,1,w^2,0,w^2,w^2,w^2,1,1,0,
-    w,0,0,w^2,1,0,w^2,w,1,w,1,w^2,w^2,w^2,0,1,w^2,1,w,0,w,w,
-    w^2,w^2,w^2,w^2,w^2,w,w,0,0,w,1,1,1,w^2,w,0,1,0,w^2,w,0,w^2,
-    w^2,0,w,1,w,w^2,w^2,1,w^2,0,w,0,w,1,w^2,w^2,w^2,w,1,1,w,w^2,
-    w^2,1,w^2,w^2,1,1,w,0,1,w^2,1,1,0,0,w,0,w,0,1,1,0,w,
-    w,0,w^2,w^2,w,w^2,0,w,1,1,w,w,1,w^2,w,w^2,w^2,w^2,w,1,w^2,w,
-    1,w^2,w^2,w^2,1,0,1,0,0,1,1,1,0,w^2,w^2,0,1,0,w^2,1,w^2,w^2,
-    0,1,w^2,w^2,w^2,w^2,w^2,0,w,0,1,w,1,1,1,0,0,1,w^2,0,w^2,w^2
-]);
-Gsrc2:=Matrix(F,10,20,[
-    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    w^2,w^2,w^2,w,w^2,w,w^2,0,w^2,0,w^2,w^2,w^2,0,w^2,1,1,w^2,w,1,
-    w^2,0,w^2,0,0,0,w^2,w,w,w,1,w^2,w,1,1,w^2,0,1,1,w,
-    w^2,1,0,1,1,w,1,w^2,w^2,w,w^2,w,1,1,1,0,w^2,0,w^2,w^2,
-    w^2,w,1,0,w^2,w,w,w,1,w,w^2,1,0,w,0,0,w,0,0,0,
-    w,1,w,w,1,w,0,0,w,1,0,w^2,0,w,0,0,w^2,w,w^2,0,
-    0,1,1,w^2,w^2,0,w,1,w^2,0,1,0,0,w,1,0,w,1,0,1,
-    1,0,w,1,w,1,1,w^2,1,1,w,w,w,w,0,w^2,1,w^2,0,w,
-    0,w^2,0,w,w,0,1,0,w^2,w,0,1,1,w^2,w^2,w,1,1,w^2,w,
-    0,0,w,w,w^2,w^2,0,1,w,1,w^2,0,w^2,0,0,w^2,w^2,w^2,1,0
-]);
-W1:=Matrix(F,4,22,[
-    w^2,1,w^2,w^2,1,1,w,0,1,w^2,1,1,0,0,w,0,w,0,1,1,0,w,
-    w,0,w^2,w^2,w,w^2,0,w,1,1,w,w,1,w^2,w,w^2,w^2,w^2,w,1,w^2,w,
-    1,w^2,w^2,w^2,1,0,1,0,0,1,1,1,0,w^2,w^2,0,1,0,w^2,1,w^2,w^2,
-    0,1,w^2,w^2,w^2,w^2,w^2,0,w,0,1,w,1,1,1,0,0,1,w^2,0,w^2,w^2
-]);
-W2:=Matrix(F,4,20,[
-    0,1,1,w^2,w^2,0,w,1,w^2,0,1,0,0,w,1,0,w,1,0,1,
-    1,0,w,1,w,1,1,w^2,1,1,w,w,w,w,0,w^2,1,w^2,0,w,
-    0,w^2,0,w,w,0,1,0,w^2,w,0,1,1,w^2,w^2,w,1,1,w^2,w,
-    0,0,w,w,w^2,w^2,0,1,w,1,w^2,0,w^2,0,0,w^2,w^2,w^2,1,0
-]);
-lambda:=4;
-U1:=Matrix(F,7,22,[
-    1,w^2,w,1,0,w,0,w,w,1,1,0,w^2,1,0,w,w^2,w,0,1,w^2,0,
-    w,w,w^2,1,1,w,0,0,1,0,w^2,w,1,w^2,0,0,0,w,w,w,w^2,w,
-    w^2,0,0,w^2,1,w^2,w^2,w,w^2,w,w^2,1,w^2,w,0,0,w^2,w^2,w,w^2,w,w,
-    0,0,0,w^2,w^2,0,0,0,w^2,1,0,1,w^2,1,w^2,0,w^2,w^2,w^2,1,1,0,
-    w,0,0,w^2,1,0,w^2,w,1,w,1,w^2,w^2,w^2,0,1,w^2,1,w,0,w,w,
-    w^2,w^2,w^2,w^2,w^2,w,w,0,0,w,1,1,1,w^2,w,0,1,0,w^2,w,0,w^2,
-    w^2,0,w,1,w,w^2,w^2,1,w^2,0,w,0,w,1,w^2,w^2,w^2,w,1,1,w,w^2
-]);
-U2:=Matrix(F,6,20,[
-    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    w^2,w^2,w^2,w,w^2,w,w^2,0,w^2,0,w^2,w^2,w^2,0,w^2,1,1,w^2,w,1,
-    w^2,0,w^2,0,0,0,w^2,w,w,w,1,w^2,w,1,1,w^2,0,1,1,w,
-    w^2,1,0,1,1,w,1,w^2,w^2,w,w^2,w,1,1,1,0,w^2,0,w^2,w^2,
-    w^2,w,1,0,w^2,w,w,w,1,w,w^2,1,0,w,0,0,w,0,0,0,
-    w,1,w,w,1,w,0,0,w,1,0,w^2,0,w,0,0,w^2,w,w^2,0
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,17,42,[
-    1,w^2,w,1,0,w,0,w,w,1,1,0,w^2,1,0,w,w^2,w,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w,w^2,1,1,w,0,0,1,0,w^2,w,1,w^2,0,0,0,w,w,w,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,0,0,w^2,1,w^2,w^2,w,w^2,w,w^2,1,w^2,w,0,0,w^2,w^2,w,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,w^2,w^2,0,0,0,w^2,1,0,1,w^2,1,w^2,0,w^2,w^2,w^2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,0,0,w^2,1,0,w^2,w,1,w,1,w^2,w^2,w^2,0,1,w^2,1,w,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w^2,w^2,w^2,w^2,w,w,0,0,w,1,1,1,w^2,w,0,1,0,w^2,w,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,0,w,1,w,w^2,w^2,1,w^2,0,w,0,w,1,w^2,w^2,w^2,w,1,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w,w^2,w,w^2,0,w^2,0,w^2,w^2,w^2,0,w^2,1,1,w^2,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,0,0,0,w^2,w,w,w,1,w^2,w,1,1,w^2,0,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,1,w,1,w^2,w^2,w,w^2,w,1,1,1,0,w^2,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,w^2,w,w,w,1,w,w^2,1,0,w,0,0,w,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w,1,w,0,0,w,1,0,w^2,0,w,0,0,w^2,w,w^2,0,
-    w^2,1,w^2,w^2,1,1,w,0,1,w^2,1,1,0,0,w,0,w,0,1,1,0,w,0,1,1,w^2,w^2,0,w,1,w^2,0,1,0,0,w,1,0,w,1,0,1,
-    w,0,w^2,w^2,w,w^2,0,w,1,1,w,w,1,w^2,w,w^2,w^2,w^2,w,1,w^2,w,1,0,w,1,w,1,1,w^2,1,1,w,w,w,w,0,w^2,1,w^2,0,w,
-    1,w^2,w^2,w^2,1,0,1,0,0,1,1,1,0,w^2,w^2,0,1,0,w^2,1,w^2,w^2,0,w^2,0,w,w,0,1,0,w^2,w,0,1,1,w^2,w^2,w,1,1,w^2,w,
-    0,1,w^2,w^2,w^2,w^2,w^2,0,w,0,1,w,1,1,1,0,0,1,w^2,0,w^2,w^2,0,0,w,w,w^2,w^2,0,1,w,1,w^2,0,w^2,0,0,w^2,w^2,w^2,1,0
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 11 and Rank(Gsrc2) eq 10;
-assert 11-Rank(Gsrc1*HDag(Gsrc1)) eq 7;
-assert 10-Rank(Gsrc2*HDag(Gsrc2)) eq 1;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 5;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[116]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,25,42,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w^2,1,w^2,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,0,1,w,1,1,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,w,1,0,1,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,1,1,w^2,0,1,w^2,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,w,0,0,0,w^2,0,w,1,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,0,1,w,0,1,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,w,w^2,0,0,w,w,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,w^2,0,0,1,0,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,1,0,w^2,w,w^2,w,1,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,w^2,0,w,1,w,w^2,0,1,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,1,1,0,w,0,1,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,w^2,0,0,0,w^2,w,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w,1,1,w,w^2,1,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,0,w,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w,0,w,0,0,0,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,0,w^2,0,0,w,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w,0,0,w,w,1,0,0,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,0,w,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w,0,1,w^2,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,w,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,w,1,w,0,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w,0,w,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,w,w,1,w,1,0,0,w,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,1,1,w,1,w^2,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,0,0,w^2,1,1,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,w^2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,0,w,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w,1,w,w^2,0,0,0,0,0,0,0,0,0,0,w,w^2,w,0,1,w,0,1,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w,w,0,w,1,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,w,0,w^2,1,w,0,1,w,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w,1,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,w^2,1,0,w,w^2,w,w,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w^2,w^2,w,w^2,0,1,w,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,w^2,w^2,w,w^2,0,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w,w,1,0,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,1,0,w^2,1,w,0,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w^2,w^2,w,w,0,w,1,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[116]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 42 and Dimension(Q) eq 25;
-assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[116]:=[42,21,8,13];
-Table2DistanceTypes[116]:="exact";
-
-// Table 2, No. 117 | D34_P3_01658_3
+// Table 2, No. 101 | D34_P3_01658_3
 // [[42,22,8;12]]_2, distance exact.
 Gsrc1:=Matrix(F,12,29,[
     0,w,w,w,0,1,w,w^2,w,0,w,w^2,0,w^2,0,w,w^2,w,1,w,0,w,w,0,0,1,1,w^2,w^2,
@@ -5603,7 +3699,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[117]:="b";
+Table2Parts[101]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,26,42,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,0,w,w,0,0,0,0,0,w^2,w,1,1,w,w^2,w,1,
@@ -5634,13 +3730,13 @@ RecordedQuantum:=Matrix(F,26,42,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,w,w,w,w^2,0,w^2
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[117]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[101]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 42 and Dimension(Q) eq 26;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[117]:=[42,22,8,12];
-Table2DistanceTypes[117]:="exact";
+Table2Parameters[101]:=[42,22,8,12];
+Table2DistanceTypes[101]:="exact";
 
-// Table 2, No. 118 | D34_P2_01447_2
+// Table 2, No. 102 | D34_P2_01447_2
 // [[43,10,12;15]]_2, distance exact.
 Gsrc1:=Matrix(F,15,26,[
     0,w,w^2,0,1,0,1,0,1,w,1,w,w,0,w,0,1,w,w^2,w^2,1,w^2,0,w^2,0,w^2,
@@ -5752,7 +3848,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[118]:="b";
+Table2Parts[102]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,19,43,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w^2,w^2,1,w,0,w^2,0,0,0,w,w^2,1,1,0,1,1,0,w^2,w^2,1,w,w,0,
@@ -5776,13 +3872,13 @@ RecordedQuantum:=Matrix(F,19,43,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,1,w^2,1,0,1,w^2,1,w,w^2,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[118]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[102]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 43 and Dimension(Q) eq 19;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[118]:=[43,10,12,15];
-Table2DistanceTypes[118]:="exact";
+Table2Parameters[102]:=[43,10,12,15];
+Table2DistanceTypes[102]:="exact";
 
-// Table 2, No. 119 | D34_P3_01009_2
+// Table 2, No. 103 | D34_P3_01009_2
 // [[43,21,8;12]]_2, distance exact.
 Gsrc1:=Matrix(F,11,24,[
     1,w^2,w,0,0,0,w,w,w^2,w,1,0,0,w^2,w,w,w,0,1,w^2,w,0,0,1,
@@ -5871,7 +3967,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[119]:="b";
+Table2Parts[103]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,26,43,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,w^2,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,0,0,1,w,w,
@@ -5902,13 +3998,13 @@ RecordedQuantum:=Matrix(F,26,43,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,1,0,w,w,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[119]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[103]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 43 and Dimension(Q) eq 26;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[119]:=[43,21,8,12];
-Table2DistanceTypes[119]:="exact";
+Table2Parameters[103]:=[43,21,8,12];
+Table2DistanceTypes[103]:="exact";
 
-// Table 2, No. 120 | D34_P2_01460_2
+// Table 2, No. 104 | D34_P2_01460_2
 // [[43,22,8;11]]_2, distance exact.
 Gsrc1:=Matrix(F,12,31,[
     w^2,w,1,w,w^2,0,w,0,1,1,w^2,1,0,1,1,w^2,0,w,1,1,0,w^2,1,1,1,w,0,0,1,w^2,w,
@@ -5996,7 +4092,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 1;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[120]:="b";
+Table2Parts[104]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,27,43,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,1,w^2,w^2,0,0,0,w,1,0,1,1,w,w^2,1,1,
@@ -6028,141 +4124,13 @@ RecordedQuantum:=Matrix(F,27,43,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w^2,w^2,w^2,0,w^2,w,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[120]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[104]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 43 and Dimension(Q) eq 27;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[120]:=[43,22,8,11];
-Table2DistanceTypes[120]:="exact";
+Table2Parameters[104]:=[43,22,8,11];
+Table2DistanceTypes[104]:="exact";
 
-// Table 2, No. 121 | D34_P2_01444_2
-// [[43,22,8;13]]_2, distance exact.
-Gsrc1:=Matrix(F,12,24,[
-    0,0,1,w^2,0,w^2,1,w^2,w^2,w,w,w,w^2,w,1,w^2,w^2,w,w^2,1,1,0,1,w,
-    w^2,w,0,w^2,w,1,0,w,0,1,1,w^2,1,w,w^2,1,1,w,w,0,w^2,w^2,w,w,
-    0,1,w,0,1,w,0,0,1,w,w^2,1,w^2,1,w,w,w^2,w^2,w,1,w,w,w,w,
-    1,0,w^2,0,w,0,w^2,1,0,w^2,0,0,0,w,w,w,1,1,1,1,0,0,0,w^2,
-    0,1,1,1,w,w,1,0,1,0,w,1,1,0,1,w,w,w,1,1,0,w^2,1,w,
-    w,w,w^2,w^2,1,w^2,1,w^2,0,1,0,1,w,w^2,0,w^2,w^2,w^2,w^2,1,w^2,1,1,w^2,
-    w^2,1,1,w,0,w^2,w^2,w^2,1,0,w,0,1,w^2,w,w,0,0,w,w,w,w^2,w,w^2,
-    0,0,w^2,w,w,1,0,1,w^2,w^2,w^2,1,w,w,1,w^2,w^2,w^2,1,0,1,w,w,w^2,
-    1,w^2,1,w^2,w^2,w^2,w,w^2,w,0,w,w,w,1,0,1,0,1,0,w^2,1,w^2,w^2,w,
-    w^2,1,w,0,0,0,w^2,w,w^2,0,w^2,w,w^2,1,w,1,w,w,1,w,w,0,0,w^2,
-    w,0,1,w^2,1,0,w,1,w,1,w,w,0,0,w,w^2,w,1,0,1,0,w,1,1,
-    1,1,w^2,1,0,w,0,0,w,1,0,w,w^2,w,1,1,0,1,w^2,w,0,w^2,1,w
-]);
-Gsrc2:=Matrix(F,10,19,[
-    w^2,1,w^2,w^2,w,0,0,0,w,w^2,0,w,w^2,0,w,w,w,0,w^2,
-    1,w,1,w^2,0,w^2,w,w^2,0,w,1,1,1,w^2,w^2,w,1,w,w^2,
-    w^2,1,w^2,w,w,w,w^2,0,0,1,w,0,0,0,w^2,w^2,w,w,0,
-    1,0,w^2,0,w,0,w^2,w,w,w,w^2,w^2,0,w,w^2,1,0,0,w,
-    w^2,1,w,w^2,0,1,0,w^2,w^2,0,w^2,w,0,1,1,w^2,0,1,0,
-    1,w,1,0,w^2,0,w^2,0,1,w,w,w,w^2,w^2,w,1,1,0,w^2,
-    0,1,0,w^2,1,w^2,w,w^2,0,1,1,1,0,w,0,w^2,w^2,0,1,
-    w^2,0,w,w^2,w^2,0,w,1,w,0,w^2,w^2,w^2,1,0,w,1,1,w^2,
-    0,0,1,w^2,1,0,w,w^2,0,w,w,0,w,1,w,w^2,0,w,w,
-    w^2,0,0,1,1,0,1,0,w^2,w,0,w,w^2,w^2,w^2,w^2,0,w,w^2
-]);
-W1:=Matrix(F,5,24,[
-    0,0,w^2,w,w,1,0,1,w^2,w^2,w^2,1,w,w,1,w^2,w^2,w^2,1,0,1,w,w,w^2,
-    1,w^2,1,w^2,w^2,w^2,w,w^2,w,0,w,w,w,1,0,1,0,1,0,w^2,1,w^2,w^2,w,
-    w^2,1,w,0,0,0,w^2,w,w^2,0,w^2,w,w^2,1,w,1,w,w,1,w,w,0,0,w^2,
-    w,0,1,w^2,1,0,w,1,w,1,w,w,0,0,w,w^2,w,1,0,1,0,w,1,1,
-    1,1,w^2,1,0,w,0,0,w,1,0,w,w^2,w,1,1,0,1,w^2,w,0,w^2,1,w
-]);
-W2:=Matrix(F,5,19,[
-    1,w,1,0,w^2,0,w^2,0,1,w,w,w,w^2,w^2,w,1,1,0,w^2,
-    0,1,0,w^2,1,w^2,w,w^2,0,1,1,1,0,w,0,w^2,w^2,0,1,
-    w^2,0,w,w^2,w^2,0,w,1,w,0,w^2,w^2,w^2,1,0,w,1,1,w^2,
-    0,0,1,w^2,1,0,w,w^2,0,w,w,0,w,1,w,w^2,0,w,w,
-    w^2,0,0,1,1,0,1,0,w^2,w,0,w,w^2,w^2,w^2,w^2,0,w,w^2
-]);
-lambda:=5;
-U1:=Matrix(F,7,24,[
-    0,0,1,w^2,0,w^2,1,w^2,w^2,w,w,w,w^2,w,1,w^2,w^2,w,w^2,1,1,0,1,w,
-    w^2,w,0,w^2,w,1,0,w,0,1,1,w^2,1,w,w^2,1,1,w,w,0,w^2,w^2,w,w,
-    0,1,w,0,1,w,0,0,1,w,w^2,1,w^2,1,w,w,w^2,w^2,w,1,w,w,w,w,
-    1,0,w^2,0,w,0,w^2,1,0,w^2,0,0,0,w,w,w,1,1,1,1,0,0,0,w^2,
-    0,1,1,1,w,w,1,0,1,0,w,1,1,0,1,w,w,w,1,1,0,w^2,1,w,
-    w,w,w^2,w^2,1,w^2,1,w^2,0,1,0,1,w,w^2,0,w^2,w^2,w^2,w^2,1,w^2,1,1,w^2,
-    w^2,1,1,w,0,w^2,w^2,w^2,1,0,w,0,1,w^2,w,w,0,0,w,w,w,w^2,w,w^2
-]);
-U2:=Matrix(F,5,19,[
-    w^2,1,w^2,w^2,w,0,0,0,w,w^2,0,w,w^2,0,w,w,w,0,w^2,
-    1,w,1,w^2,0,w^2,w,w^2,0,w,1,1,1,w^2,w^2,w,1,w,w^2,
-    w^2,1,w^2,w,w,w,w^2,0,0,1,w,0,0,0,w^2,w^2,w,w,0,
-    1,0,w^2,0,w,0,w^2,w,w,w,w^2,w^2,0,w,w^2,1,0,0,w,
-    w^2,1,w,w^2,0,1,0,w^2,w^2,0,w^2,w,0,1,1,w^2,0,1,0
-]);
-GX4:=VerticalJoin(
-    VerticalJoin(HorizontalJoin(U1,ZeroMatrix(F,Nrows(U1),Ncols(U2))),
-                 HorizontalJoin(ZeroMatrix(F,Nrows(U2),Ncols(U1)),U2)),
-    HorizontalJoin(W1,W2));
-RecordedGX4:=Matrix(F,17,43,[
-    0,0,1,w^2,0,w^2,1,w^2,w^2,w,w,w,w^2,w,1,w^2,w^2,w,w^2,1,1,0,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,w,0,w^2,w,1,0,w,0,1,1,w^2,1,w,w^2,1,1,w,w,0,w^2,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,1,w,0,1,w,0,0,1,w,w^2,1,w^2,1,w,w,w^2,w^2,w,1,w,w,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    1,0,w^2,0,w,0,w^2,1,0,w^2,0,0,0,w,w,w,1,1,1,1,0,0,0,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,1,1,1,w,w,1,0,1,0,w,1,1,0,1,w,w,w,1,1,0,w^2,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w,w,w^2,w^2,1,w^2,1,w^2,0,1,0,1,w,w^2,0,w^2,w^2,w^2,w^2,1,w^2,1,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    w^2,1,1,w,0,w^2,w^2,w^2,1,0,w,0,1,w^2,w,w,0,0,w,w,w,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w,0,0,0,w,w^2,0,w,w^2,0,w,w,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,0,w^2,w,w^2,0,w,1,1,1,w^2,w^2,w,1,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w,w,w,w^2,0,0,1,w,0,0,0,w^2,w^2,w,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,0,w,0,w^2,w,w,w,w^2,w^2,0,w,w^2,1,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w^2,0,1,0,w^2,w^2,0,w^2,w,0,1,1,w^2,0,1,0,
-    0,0,w^2,w,w,1,0,1,w^2,w^2,w^2,1,w,w,1,w^2,w^2,w^2,1,0,1,w,w,w^2,1,w,1,0,w^2,0,w^2,0,1,w,w,w,w^2,w^2,w,1,1,0,w^2,
-    1,w^2,1,w^2,w^2,w^2,w,w^2,w,0,w,w,w,1,0,1,0,1,0,w^2,1,w^2,w^2,w,0,1,0,w^2,1,w^2,w,w^2,0,1,1,1,0,w,0,w^2,w^2,0,1,
-    w^2,1,w,0,0,0,w^2,w,w^2,0,w^2,w,w^2,1,w,1,w,w,1,w,w,0,0,w^2,w^2,0,w,w^2,w^2,0,w,1,w,0,w^2,w^2,w^2,1,0,w,1,1,w^2,
-    w,0,1,w^2,1,0,w,1,w,1,w,w,0,0,w,w^2,w,1,0,1,0,w,1,1,0,0,1,w^2,1,0,w,w^2,0,w,w,0,w,1,w,w^2,0,w,w,
-    1,1,w^2,1,0,w,0,0,w,1,0,w,w^2,w,1,1,0,1,w^2,w,0,w^2,1,w,w^2,0,0,1,1,0,1,0,w^2,w,0,w,w^2,w^2,w^2,w^2,0,w,w^2
-]);
-assert GX4 eq RecordedGX4;
-assert Gsrc1 eq VerticalJoin(U1,W1) and Gsrc2 eq VerticalJoin(U2,W2);
-assert Rank(Gsrc1) eq 12 and Rank(Gsrc2) eq 10;
-assert 12-Rank(Gsrc1*HDag(Gsrc1)) eq 9;
-assert 10-Rank(Gsrc2*HDag(Gsrc2)) eq 0;
-assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
-assert Rank(U2*HDag(U2)) eq 5;
-assert IsZero(W1*HDag(Gsrc1));
-assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[121]:="b";
-Q:=HermitianDual(LinearCode(GX4));
-RecordedQuantum:=Matrix(F,26,43,[
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w,0,w,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w,w,w^2,0,0,w,
-    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w,w,1,1,0,0,0,0,0,0,0,0,0,1,0,w,w,w,0,0,1,w^2,w,
-    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w,w,1,w,w^2,w^2,
-    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,1,w^2,w^2,0,0,0,0,0,0,0,0,0,1,0,0,w^2,0,0,0,w,0,1,
-    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w^2,1,1,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,1,1,w^2,0,0,0,
-    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,1,0,w,1,1,0,
-    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w,w,1,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,1,w,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,w,0,w^2,0,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,1,w,1,
-    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,w,w,1,1,w,0,0,0,0,0,0,0,0,0,1,0,w^2,0,1,1,1,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w,1,1,w^2,w,w,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,w^2,w,0,w^2,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,w^2,w^2,0,1,0,w^2,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,1,0,1,1,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w,w^2,1,0,0,w,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w,w,1,1,w,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,1,1,w^2,w,1,w,0,0,0,0,0,0,0,0,0,1,w,w^2,w,w,1,w^2,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,w^2,0,0,1,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w^2,w,0,w,w^2,1,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w^2,w^2,1,w,w,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w,0,w^2,w,0,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w^2,0,w^2,w^2,1,0,0,0,0,0,0,0,0,0,w^2,0,w^2,1,w,w,w^2,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w^2,w,w^2,w^2,0,0,0,0,0,0,0,0,0,w,0,w^2,1,w,0,w^2,0,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,1,0,w,w,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,1,1,w^2,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,w^2,0,0,1,w^2,w^2,1,1,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,w^2,1,1,w,0,w,w^2,w,0,w^2,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,w^2,w,w^2,w^2,w,w^2,w,w,w^2,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w,0,w^2,w,w^2,0,w^2,1,1,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w,w,1,0,0,w,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w,1,1,w,w,1,0,0,w,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,0,1,0,w,w,w^2,1
-]);
-assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[121]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
-assert Length(Q) eq 43 and Dimension(Q) eq 26;
-assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[121]:=[43,22,8,13];
-Table2DistanceTypes[121]:="exact";
-
-// Table 2, No. 122 | D34_P2_01478_2
+// Table 2, No. 105 | D34_P2_01478_2
 // [[44,11,11;11]]_2, distance exact.
 Gsrc1:=Matrix(F,15,30,[
     w^2,1,0,w^2,1,w^2,w^2,0,1,w^2,w^2,1,w^2,1,0,w^2,w^2,w^2,w,w,0,w,1,w^2,w^2,w,w^2,w,w,w^2,
@@ -6268,7 +4236,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 0;
-Table2Parts[122]:="b";
+Table2Parts[105]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,22,44,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,1,0,w^2,w,0,0,0,w^2,w^2,1,1,w,w,0,w,w,w^2,w,w,
@@ -6295,13 +4263,13 @@ RecordedQuantum:=Matrix(F,22,44,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w,0,w,1,w,w^2,1,0,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[122]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[105]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 44 and Dimension(Q) eq 22;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table2Parameters[122]:=[44,11,11,11];
-Table2DistanceTypes[122]:="exact";
+Table2Parameters[105]:=[44,11,11,11];
+Table2DistanceTypes[105]:="exact";
 
-// Table 2, No. 123 | D34_M069
+// Table 2, No. 106 | D34_M069
 // [[46,10,18;26]]_2, distance lower_bound.
 Gsrc1:=Matrix(F,31,45,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w,w,1,0,1,0,0,0,0,0,0,
@@ -6427,7 +4395,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 26;
-Table2Parts[123]:="a";
+Table2Parts[106]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,15,46,[
     1,0,0,0,w^2,w,0,0,0,1,w^2,0,0,0,w,w^2,0,1,1,w^2,1,0,w,w,1,w,0,w^2,w^2,w,0,0,w,1,0,0,0,w^2,w,0,0,0,1,w^2,0,0,
@@ -6447,13 +4415,13 @@ RecordedQuantum:=Matrix(F,15,46,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w^2,0,1,1,w,w^2,0,1,1,0,w,0,0,1,0,0,1,w,0,0,w^2,w^2,0,w,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[123]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[106]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 46 and Dimension(Q) eq 15;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[123]:=[46,10,18,26];
-Table2DistanceTypes[123]:="lower_bound";
+Table2Parameters[106]:=[46,10,18,26];
+Table2DistanceTypes[106]:="lower_bound";
 
-// Table 2, No. 124 | D34_P3_01799_2
+// Table 2, No. 107 | D34_P3_01799_2
 // [[48,12,11;10]]_2, distance exact.
 Gsrc1:=Matrix(F,14,24,[
     w,w^2,w^2,0,w,0,w^2,0,w,0,w^2,w,w^2,1,w,1,w^2,w,0,1,w^2,0,w^2,1,
@@ -6562,7 +4530,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[124]:="b";
+Table2Parts[107]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,25,48,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,w^2,w^2,w^2,w^2,w,w^2,w,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,0,w^2,w,w^2,0,1,1,w^2,w,w^2,
@@ -6592,13 +4560,13 @@ RecordedQuantum:=Matrix(F,25,48,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,w^2,1,w^2,w,w^2,1,w^2,w,0,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[124]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[107]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 48 and Dimension(Q) eq 25;
 assert Dimension(HermitianHull(Q)) eq 13;
-Table2Parameters[124]:=[48,12,11,10];
-Table2DistanceTypes[124]:="exact";
+Table2Parameters[107]:=[48,12,11,10];
+Table2DistanceTypes[107]:="exact";
 
-// Table 2, No. 125 | D34_P3_02805_3
+// Table 2, No. 108 | D34_P3_02805_3
 // [[48,13,11;11]]_2, distance exact.
 Gsrc1:=Matrix(F,14,24,[
     w^2,w,1,w,w,w^2,w,w,w,w^2,0,w^2,w,1,0,0,1,0,1,0,0,0,0,w,
@@ -6709,7 +4677,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[125]:="b";
+Table2Parts[108]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,25,48,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,0,w^2,w^2,0,0,0,0,0,0,0,0,0,w,0,w,1,0,0,0,w,w^2,0,1,0,w,w^2,w,
@@ -6739,13 +4707,13 @@ RecordedQuantum:=Matrix(F,25,48,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w,1,w,w,1,1,w,w,1,w,w,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[125]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[108]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 48 and Dimension(Q) eq 25;
 assert Dimension(HermitianHull(Q)) eq 12;
-Table2Parameters[125]:=[48,13,11,11];
-Table2DistanceTypes[125]:="exact";
+Table2Parameters[108]:=[48,13,11,11];
+Table2DistanceTypes[108]:="exact";
 
-// Table 2, No. 126 | D34_M071
+// Table 2, No. 109 | D34_M071
 // [[48,23,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,22,47,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,w^2,1,w^2,0,w,0,1,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,
@@ -6844,7 +4812,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[126]:="a";
+Table2Parts[109]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,26,48,[
     1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,
@@ -6875,13 +4843,13 @@ RecordedQuantum:=Matrix(F,26,48,[
     0,1,w,1,0,w,w,w,w,1,0,w,1,w,0,0,1,0,0,w,w^2,w^2,1,0,0,0,w^2,0,w^2,w,w,w,w,1,w^2,w^2,1,w,1,1,w,1,w^2,w,0,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[126]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[109]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 48 and Dimension(Q) eq 26;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[126]:=[48,23,12,19];
-Table2DistanceTypes[126]:="exact";
+Table2Parameters[109]:=[48,23,12,19];
+Table2DistanceTypes[109]:="exact";
 
-// Table 2, No. 127 | D34_P3_01805_2
+// Table 2, No. 110 | D34_P3_01805_2
 // [[48,24,9;16]]_2, distance exact.
 Gsrc1:=Matrix(F,15,36,[
     0,w^2,w^2,w^2,w^2,0,1,1,w^2,0,w^2,w^2,w^2,w,1,w,1,w^2,1,w^2,w^2,w,0,0,1,0,w^2,0,w,w^2,0,1,1,1,w,w^2,
@@ -6981,7 +4949,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[127]:="b";
+Table2Parts[110]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,28,48,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,0,1,0,w,w,1,w^2,0,0,1,w,w,1,w,w,w,w^2,0,w,
@@ -7014,13 +4982,13 @@ RecordedQuantum:=Matrix(F,28,48,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,0,w,1,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[127]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[110]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 48 and Dimension(Q) eq 28;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[127]:=[48,24,9,16];
-Table2DistanceTypes[127]:="exact";
+Table2Parameters[110]:=[48,24,9,16];
+Table2DistanceTypes[110]:="exact";
 
-// Table 2, No. 128 | D34_M073
+// Table 2, No. 111 | D34_M073
 // [[49,22,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,23,47,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,w^2,1,w^2,0,w,0,1,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,
@@ -7124,7 +5092,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[128]:="a";
+Table2Parts[111]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,26,49,[
     1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,0,
@@ -7155,13 +5123,13 @@ RecordedQuantum:=Matrix(F,26,49,[
     0,1,w,1,0,w,w,w,w,1,0,w,1,w,0,0,1,0,0,w,w^2,w^2,1,0,0,0,w^2,0,w^2,w,w,w,w,1,w^2,w^2,1,w,1,1,w,1,w^2,w,0,0,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[128]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[111]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 49 and Dimension(Q) eq 26;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[128]:=[49,22,12,19];
-Table2DistanceTypes[128]:="exact";
+Table2Parameters[111]:=[49,22,12,19];
+Table2DistanceTypes[111]:="exact";
 
-// Table 2, No. 129 | D34_M075
+// Table 2, No. 112 | D34_M075
 // [[50,21,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,24,47,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,w^2,1,w^2,0,w,0,1,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,
@@ -7270,7 +5238,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[129]:="a";
+Table2Parts[112]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,26,50,[
     1,0,1,0,w^2,1,w^2,1,0,1,0,w^2,1,w,w^2,w^2,0,w^2,w^2,w,0,1,1,0,w^2,0,1,w,1,w,w,w^2,w^2,0,1,0,w^2,1,w,w,w,1,0,w^2,1,w,w,0,0,0,
@@ -7301,13 +5269,13 @@ RecordedQuantum:=Matrix(F,26,50,[
     0,1,w,1,0,w,w,w,w,1,0,w,1,w,0,0,1,0,0,w,w^2,w^2,1,0,0,0,w^2,0,w^2,w,w,w,w,1,w^2,w^2,1,w,1,1,w,1,w^2,w,0,0,0,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[129]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[112]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 50 and Dimension(Q) eq 26;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[129]:=[50,21,12,19];
-Table2DistanceTypes[129]:="exact";
+Table2Parameters[112]:=[50,21,12,19];
+Table2DistanceTypes[112]:="exact";
 
-// Table 2, No. 130 | D34_P3_01113_3
+// Table 2, No. 113 | D34_P3_01113_3
 // [[50,23,9;15]]_2, distance exact.
 Gsrc1:=Matrix(F,15,37,[
     0,0,w^2,1,0,w,w,w^2,w,w,1,0,w^2,w,w^2,1,1,w^2,w,w^2,w,1,w,w,w^2,w,0,0,0,1,w,0,1,w,w^2,0,w^2,
@@ -7408,7 +5376,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[130]:="b";
+Table2Parts[113]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,29,50,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w^2,w^2,0,0,0,w,w,w^2,w^2,0,0,w^2,0,0,w,w^2,w^2,1,w,w^2,1,w^2,
@@ -7442,13 +5410,13 @@ RecordedQuantum:=Matrix(F,29,50,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[130]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[113]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 50 and Dimension(Q) eq 29;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[130]:=[50,23,9,15];
-Table2DistanceTypes[130]:="exact";
+Table2Parameters[113]:=[50,23,9,15];
+Table2DistanceTypes[113]:="exact";
 
-// Table 2, No. 131 | D34_M076
+// Table 2, No. 114 | D34_M076
 // [[50,23,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,23,49,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,0,1,w^2,0,w,0,1,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,0,w^2,
@@ -7550,7 +5518,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[131]:="a";
+Table2Parts[114]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,27,50,[
     1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,
@@ -7582,13 +5550,13 @@ RecordedQuantum:=Matrix(F,27,50,[
     1,w^2,w,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w,0,w,1,w,1,1,1,w,w,0,0,0,w^2,0,w,w,w^2,1,w,1,0,1,w^2,w,w,w,w^2,w,w,0,0,0,1,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[131]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[114]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 50 and Dimension(Q) eq 27;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table2Parameters[131]:=[50,23,12,19];
-Table2DistanceTypes[131]:="exact";
+Table2Parameters[114]:=[50,23,12,19];
+Table2DistanceTypes[114]:="exact";
 
-// Table 2, No. 132 | D34_M077
+// Table 2, No. 115 | D34_M077
 // [[50,24,11;16]]_2, distance exact.
 Gsrc1:=Matrix(F,21,49,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,0,w,1,w^2,0,0,w^2,w^2,1,w,w^2,1,w^2,w^2,1,w^2,w,w,1,w,w,0,0,w^2,w,1,
@@ -7684,7 +5652,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 16;
-Table2Parts[132]:="a";
+Table2Parts[115]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,29,50,[
     1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,
@@ -7718,13 +5686,13 @@ RecordedQuantum:=Matrix(F,29,50,[
     w^2,w^2,1,0,1,0,1,w,w^2,w,w^2,w^2,w,w^2,w,0,w,0,0,0,1,w,1,w^2,0,0,0,0,1,w,1,0,1,0,w,w^2,w^2,0,w,w,0,1,w^2,1,w,1,1,1,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[132]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[115]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 50 and Dimension(Q) eq 29;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[132]:=[50,24,11,16];
-Table2DistanceTypes[132]:="exact";
+Table2Parameters[115]:=[50,24,11,16];
+Table2DistanceTypes[115]:="exact";
 
-// Table 2, No. 133 | D34_P3_01879_2
+// Table 2, No. 116 | D34_P3_01879_2
 // [[51,16,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,15,27,[
     w,1,w^2,w^2,0,w^2,0,w^2,1,w^2,w^2,w,1,w^2,1,1,0,0,1,w^2,w,w,w^2,w^2,w,0,w,
@@ -7845,7 +5813,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 11;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[133]:="b";
+Table2Parts[116]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,24,51,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,0,w,0,0,w,w,0,0,0,0,0,0,0,w^2,w^2,0,w^2,w,w^2,w,1,w^2,1,1,w,w,w^2,w^2,w,w,
@@ -7874,13 +5842,13 @@ RecordedQuantum:=Matrix(F,24,51,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w^2,1,w^2,0,0,w^2,w,1,w^2,0,w^2,1,w,1,w^2
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[133]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[116]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 51 and Dimension(Q) eq 24;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[133]:=[51,16,12,19];
-Table2DistanceTypes[133]:="exact";
+Table2Parameters[116]:=[51,16,12,19];
+Table2DistanceTypes[116]:="exact";
 
-// Table 2, No. 134 | D34_M079
+// Table 2, No. 117 | D34_M079
 // [[51,22,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,24,49,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,0,1,w^2,0,w,0,1,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,0,w^2,
@@ -7987,7 +5955,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[134]:="a";
+Table2Parts[117]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,27,51,[
     1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,
@@ -8019,13 +5987,13 @@ RecordedQuantum:=Matrix(F,27,51,[
     1,w^2,w,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w,0,w,1,w,1,1,1,w,w,0,0,0,w^2,0,w,w,w^2,1,w,1,0,1,w^2,w,w,w,w^2,w,w,0,0,0,1,1,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[134]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[117]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 51 and Dimension(Q) eq 27;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[134]:=[51,22,12,19];
-Table2DistanceTypes[134]:="exact";
+Table2Parameters[117]:=[51,22,12,19];
+Table2DistanceTypes[117]:="exact";
 
-// Table 2, No. 135 | D34_M080
+// Table 2, No. 118 | D34_M080
 // [[51,23,12;16]]_2, distance exact.
 Gsrc1:=Matrix(F,22,50,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,w^2,1,w^2,0,w,0,1,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,0,w^2,w^2,
@@ -8124,7 +6092,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 16;
-Table2Parts[135]:="a";
+Table2Parts[118]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,29,51,[
     1,0,0,0,0,w,w^2,1,0,w^2,0,0,w,w,w^2,w,0,w,1,w^2,0,w^2,0,0,0,1,w,w,1,w,w,0,1,0,0,w,0,w,w,w,w^2,0,0,w,w,w,w,1,1,w,0,
@@ -8158,13 +6126,13 @@ RecordedQuantum:=Matrix(F,29,51,[
     1,w^2,1,1,0,0,w,0,w^2,1,0,0,w,0,w,w^2,0,1,1,0,w^2,w,1,w,0,0,0,0,0,w,w^2,w,w^2,0,0,1,1,w^2,1,w,0,w^2,w^2,w^2,0,1,w^2,w,w,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[135]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[118]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 51 and Dimension(Q) eq 29;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[135]:=[51,23,12,16];
-Table2DistanceTypes[135]:="exact";
+Table2Parameters[118]:=[51,23,12,16];
+Table2DistanceTypes[118]:="exact";
 
-// Table 2, No. 136 | D34_M081
+// Table 2, No. 119 | D34_M081
 // [[52,21,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,25,49,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,0,1,w^2,0,w,0,1,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,0,w^2,
@@ -8276,7 +6244,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[136]:="a";
+Table2Parts[119]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,27,52,[
     1,0,0,0,w,1,0,0,w^2,0,0,w,1,1,w,1,w^2,0,w^2,1,w^2,w^2,1,1,w,0,w,w,0,0,w^2,1,1,w^2,w,0,w,1,1,w^2,0,w^2,w,w,1,1,w^2,w,w,0,0,0,
@@ -8308,13 +6276,13 @@ RecordedQuantum:=Matrix(F,27,52,[
     1,w^2,w,0,w^2,w^2,1,w,0,w^2,1,w^2,1,0,w,0,w,1,w,1,1,1,w,w,0,0,0,w^2,0,w,w,w^2,1,w,1,0,1,w^2,w,w,w,w^2,w,w,0,0,0,1,1,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[136]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[119]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 52 and Dimension(Q) eq 27;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[136]:=[52,21,12,19];
-Table2DistanceTypes[136]:="exact";
+Table2Parameters[119]:=[52,21,12,19];
+Table2DistanceTypes[119]:="exact";
 
-// Table 2, No. 137 | D34_M082
+// Table 2, No. 120 | D34_M082
 // [[52,23,12;19]]_2, distance exact.
 Gsrc1:=Matrix(F,24,51,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,w,0,w,w,w^2,1,w^2,0,w,0,0,0,1,w^2,w^2,0,w^2,w,1,1,1,w,w^2,0,w^2,w^2,1,
@@ -8419,7 +6387,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 19;
-Table2Parts[137]:="a";
+Table2Parts[120]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,28,52,[
     1,0,0,0,1,w^2,0,w^2,0,0,1,1,w^2,1,1,w,w^2,w,w^2,1,1,w,w^2,1,w^2,1,0,w,w,1,w,1,w^2,w,0,0,w,w^2,1,0,w^2,w^2,0,1,0,1,0,1,w,w,w^2,0,
@@ -8452,13 +6420,13 @@ RecordedQuantum:=Matrix(F,28,52,[
     1,w,w^2,1,0,0,0,0,1,0,w,w,1,0,w^2,w^2,w^2,w^2,w,w^2,1,w,0,0,0,0,0,0,0,0,w,1,w,w,0,0,w,0,1,w,1,w^2,1,0,w,w,0,w^2,w^2,0,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[137]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[120]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 52 and Dimension(Q) eq 28;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[137]:=[52,23,12,19];
-Table2DistanceTypes[137]:="exact";
+Table2Parameters[120]:=[52,23,12,19];
+Table2DistanceTypes[120]:="exact";
 
-// Table 2, No. 138 | D34_P1_00459_2
+// Table 2, No. 121 | D34_P1_00459_2
 // [[52,37,6;11]]_2, distance exact.
 Gsrc1:=Matrix(F,6,10,[
     w,1,w^2,w^2,w^2,w,1,0,1,w,
@@ -8531,7 +6499,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 7;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[138]:="a";
+Table2Parts[121]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,52,[
     1,0,0,0,0,0,0,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w,w,w,w^2,1,0,
@@ -8575,13 +6543,13 @@ RecordedQuantum:=Matrix(F,39,52,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w^2,1,w,0,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[138]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[121]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 52 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[138]:=[52,37,6,11];
-Table2DistanceTypes[138]:="exact";
+Table2Parameters[121]:=[52,37,6,11];
+Table2DistanceTypes[121]:="exact";
 
-// Table 2, No. 139 | D34_P1_00463_2
+// Table 2, No. 122 | D34_P1_00463_2
 // [[52,38,6;12]]_2, distance exact.
 Gsrc1:=Matrix(F,6,8,[
     w,0,1,0,w^2,w^2,1,0,
@@ -8654,7 +6622,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[139]:="b";
+Table2Parts[122]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,52,[
     1,0,0,0,1,w^2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,w,w^2,1,1,w,
@@ -8698,13 +6666,13 @@ RecordedQuantum:=Matrix(F,39,52,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w^2,1,w,0,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[139]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[122]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 52 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table2Parameters[139]:=[52,38,6,12];
-Table2DistanceTypes[139]:="exact";
+Table2Parameters[122]:=[52,38,6,12];
+Table2DistanceTypes[122]:="exact";
 
-// Table 2, No. 140 | D34_P2_00838_2
+// Table 2, No. 123 | D34_P2_00838_2
 // [[53,37,6;10]]_2, distance exact.
 Gsrc1:=Matrix(F,8,15,[
     0,0,0,w^2,w^2,w,w^2,w^2,1,w^2,1,w^2,0,0,w,
@@ -8781,7 +6749,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 4;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[140]:="b";
+Table2Parts[123]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,40,53,[
     1,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,0,1,0,0,0,
@@ -8826,13 +6794,13 @@ RecordedQuantum:=Matrix(F,40,53,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w^2,1,w,0,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[140]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[123]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 53 and Dimension(Q) eq 40;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[140]:=[53,37,6,10];
-Table2DistanceTypes[140]:="exact";
+Table2Parameters[123]:=[53,37,6,10];
+Table2DistanceTypes[123]:="exact";
 
-// Table 2, No. 141 | D34_M084
+// Table 2, No. 124 | D34_M084
 // [[53,37,7;12]]_2, distance exact.
 Gsrc1:=Matrix(F,14,52,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,1,0,w^2,w^2,1,1,1,w^2,0,w^2,w,0,1,w^2,w^2,0,w,0,w,w,w^2,1,0,0,1,w^2,0,0,w^2,0,0,1,w^2,1,w,0,
@@ -8907,7 +6875,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 12;
-Table2Parts[141]:="a";
+Table2Parts[124]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,53,[
     1,w,w^2,w,1,0,w^2,w^2,1,1,1,w^2,0,w^2,w,0,1,w^2,w^2,0,w,0,w,w,w^2,1,0,0,1,w^2,0,0,w^2,0,0,1,w^2,1,w,0,w^2,0,w,w,w,0,w,w,w^2,w,w,w^2,0,
@@ -8951,13 +6919,13 @@ RecordedQuantum:=Matrix(F,39,53,[
     1,w^2,w^2,0,w,0,w^2,1,0,1,0,0,1,w^2,1,w^2,w,w^2,1,0,1,1,w^2,1,0,w,0,w,1,1,w,w,w,w,w,w,0,w,0,0,w,w^2,0,1,w,0,w,w^2,0,0,w,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[141]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[124]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 53 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table2Parameters[141]:=[53,37,7,12];
-Table2DistanceTypes[141]:="exact";
+Table2Parameters[124]:=[53,37,7,12];
+Table2DistanceTypes[124]:="exact";
 
-// Table 2, No. 142 | D34_M086
+// Table 2, No. 125 | D34_M086
 // [[54,36,8;12]]_2, distance exact.
 Gsrc1:=Matrix(F,15,53,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,1,0,w,w,1,1,0,w,w,0,w^2,w^2,w,0,w,w,0,w,0,1,w,0,w,0,0,w^2,0,1,1,1,1,w,w,0,0,
@@ -9035,7 +7003,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 12;
-Table2Parts[142]:="a";
+Table2Parts[125]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,54,[
     1,0,1,w,w^2,w^2,0,w^2,w^2,1,1,0,w^2,w,0,1,1,0,1,w^2,w,1,1,w,1,w^2,1,1,w^2,w^2,w,0,w,0,0,w^2,1,w,w^2,0,1,w^2,w,1,1,1,w^2,w^2,w,1,0,w,0,0,
@@ -9079,13 +7047,13 @@ RecordedQuantum:=Matrix(F,39,54,[
     1,w,0,1,0,w,w,1,0,w^2,w,1,w^2,0,1,w,1,1,w^2,w,w^2,w,1,w,w,0,0,w,0,w,w^2,0,1,w^2,1,0,w^2,0,1,1,0,w,1,w,w,w,1,w,1,0,w,1,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[142]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[125]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 54 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[142]:=[54,36,8,12];
-Table2DistanceTypes[142]:="exact";
+Table2Parameters[125]:=[54,36,8,12];
+Table2DistanceTypes[125]:="exact";
 
-// Table 2, No. 143 | D34_P3_00669_3
+// Table 2, No. 126 | D34_P3_00669_3
 // [[54,39,6;9]]_2, distance exact.
 Gsrc1:=Matrix(F,6,11,[
     w,1,0,0,1,w^2,w,w^2,1,w,w^2,
@@ -9157,7 +7125,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[143]:="a";
+Table2Parts[126]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,42,54,[
     1,0,0,0,0,0,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,w^2,w^2,w,w,w,0,
@@ -9204,13 +7172,13 @@ RecordedQuantum:=Matrix(F,42,54,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,w^2,1,w,0,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[143]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[126]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 54 and Dimension(Q) eq 42;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[143]:=[54,39,6,9];
-Table2DistanceTypes[143]:="exact";
+Table2Parameters[126]:=[54,39,6,9];
+Table2DistanceTypes[126]:="exact";
 
-// Table 2, No. 144 | D34_P3_00681_3
+// Table 2, No. 127 | D34_P3_00681_3
 // [[55,40,6;9]]_2, distance exact.
 Gsrc1:=Matrix(F,9,47,[
     0,1,0,0,w^2,0,w,1,w^2,w^2,1,w^2,w^2,0,w^2,w^2,w,0,1,0,1,0,1,w,w,w,1,0,w,w,0,w,w,1,0,1,0,w^2,1,w^2,w,w^2,0,w,w,0,0,
@@ -9282,7 +7250,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 1;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[144]:="b";
+Table2Parts[127]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,43,55,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,0,0,0,0,w,w,w,0,w,w^2,
@@ -9330,13 +7298,13 @@ RecordedQuantum:=Matrix(F,43,55,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,0,w^2,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[144]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[127]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 55 and Dimension(Q) eq 43;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[144]:=[55,40,6,9];
-Table2DistanceTypes[144]:="exact";
+Table2Parameters[127]:=[55,40,6,9];
+Table2DistanceTypes[127]:="exact";
 
-// Table 2, No. 145 | D34_P3_02043_3
+// Table 2, No. 128 | D34_P3_02043_3
 // [[57,28,9;15]]_2, distance exact.
 Gsrc1:=Matrix(F,16,42,[
     0,0,w,w^2,0,w,w^2,1,1,w^2,w^2,0,1,1,w^2,w,0,0,w,w^2,1,w,w,1,w^2,1,w,w,w^2,w,w,0,1,w,w,w,0,w^2,0,0,0,0,
@@ -9442,7 +7410,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 4;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[145]:="b";
+Table2Parts[128]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,35,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,0,1,w,1,w^2,0,w^2,w,0,0,0,0,w^2,w^2,0,1,w,1,0,w,1,w^2,1,
@@ -9482,13 +7450,13 @@ RecordedQuantum:=Matrix(F,35,57,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[145]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[128]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 57 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table2Parameters[145]:=[57,28,9,15];
-Table2DistanceTypes[145]:="exact";
+Table2Parameters[128]:=[57,28,9,15];
+Table2DistanceTypes[128]:="exact";
 
-// Table 2, No. 146 | D34_P3_01213_3
+// Table 2, No. 129 | D34_P3_01213_3
 // [[57,30,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,16,44,[
     1,w,w,w,0,1,w,w^2,w,1,0,w^2,1,w^2,w,1,1,w^2,0,1,w^2,1,w,0,1,1,w^2,0,1,w,0,w,1,1,1,1,1,1,w,1,w^2,w^2,1,1,
@@ -9592,7 +7560,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[146]:="b";
+Table2Parts[129]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,35,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,0,0,w^2,w^2,w^2,w,w^2,0,0,0,0,0,w^2,0,0,0,w^2,w,w^2,0,w^2,
@@ -9632,13 +7600,13 @@ RecordedQuantum:=Matrix(F,35,57,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[146]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[129]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 57 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[146]:=[57,30,9,17];
-Table2DistanceTypes[146]:="exact";
+Table2Parameters[129]:=[57,30,9,17];
+Table2DistanceTypes[129]:="exact";
 
-// Table 2, No. 147 | D34_M091
+// Table 2, No. 130 | D34_M091
 // [[58,15,14;11]]_2, distance exact.
 Gsrc1:=Matrix(F,27,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w,w,0,1,w^2,0,w,0,1,1,1,w,1,w^2,w,w,0,0,w^2,1,w^2,w,w,w^2,0,w,1,
@@ -9752,7 +7720,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 11;
-Table2Parts[147]:="a";
+Table2Parts[130]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,31,58,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,
@@ -9788,13 +7756,13 @@ RecordedQuantum:=Matrix(F,31,58,[
     1,1,w,w^2,1,0,1,w,w,1,w^2,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,w,w^2,0,0,1,0,1,0,w,w,w,w,1,1,0,1,w,0,1,w,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[147]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[130]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 58 and Dimension(Q) eq 31;
 assert Dimension(HermitianHull(Q)) eq 16;
-Table2Parameters[147]:=[58,15,14,11];
-Table2DistanceTypes[147]:="exact";
+Table2Parameters[130]:=[58,15,14,11];
+Table2DistanceTypes[130]:="exact";
 
-// Table 2, No. 148 | D34_P3_00693_3
+// Table 2, No. 131 | D34_P3_00693_3
 // [[58,28,9;16]]_2, distance exact.
 Gsrc1:=Matrix(F,16,44,[
     w,0,1,1,1,0,w^2,1,0,0,1,1,0,w,w,w^2,w^2,w^2,1,w,0,0,w,1,0,0,1,w,w,w^2,0,1,w^2,w^2,0,w^2,w^2,w^2,0,w,w,w,w,w,
@@ -9899,7 +7867,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[148]:="b";
+Table2Parts[131]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,35,58,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w^2,w^2,w^2,1,1,0,1,w,w,0,w,0,0,0,0,1,1,1,w^2,1,1,1,w^2,w^2,w,
@@ -9939,13 +7907,13 @@ RecordedQuantum:=Matrix(F,35,58,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[148]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[131]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 58 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table2Parameters[148]:=[58,28,9,16];
-Table2DistanceTypes[148]:="exact";
+Table2Parameters[131]:=[58,28,9,16];
+Table2DistanceTypes[131]:="exact";
 
-// Table 2, No. 149 | D34_P2_00911_2
+// Table 2, No. 132 | D34_P2_00911_2
 // [[58,29,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,17,46,[
     w^2,1,w^2,w^2,w^2,w,w,w,0,w,1,w,1,w^2,w,0,0,w,0,1,w^2,w^2,w,0,w,w,w^2,1,1,0,1,w,w,1,1,1,1,w,w^2,w^2,1,w^2,0,w,0,w^2,
@@ -10052,7 +8020,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[149]:="b";
+Table2Parts[132]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,35,58,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,1,1,0,w^2,w^2,0,w,w^2,w,1,0,0,1,1,0,1,0,1,1,1,w,1,
@@ -10092,13 +8060,13 @@ RecordedQuantum:=Matrix(F,35,58,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,0,w,1,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[149]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[132]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 58 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[149]:=[58,29,9,17];
-Table2DistanceTypes[149]:="exact";
+Table2Parameters[132]:=[58,29,9,17];
+Table2DistanceTypes[132]:="exact";
 
-// Table 2, No. 150 | D34_M094
+// Table 2, No. 133 | D34_M094
 // [[59,14,14;11]]_2, distance exact.
 Gsrc1:=Matrix(F,28,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w,w,0,1,w^2,0,w,0,1,1,1,w,1,w^2,w,w,0,0,w^2,1,w^2,w,w,w^2,0,w,1,
@@ -10217,7 +8185,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 11;
-Table2Parts[150]:="a";
+Table2Parts[133]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,31,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,0,
@@ -10253,13 +8221,13 @@ RecordedQuantum:=Matrix(F,31,59,[
     1,1,w,w^2,1,0,1,w,w,1,w^2,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,w,w^2,0,0,1,0,1,0,w,w,w,w,1,1,0,1,w,0,1,w,w,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[150]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[133]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 31;
 assert Dimension(HermitianHull(Q)) eq 17;
-Table2Parameters[150]:=[59,14,14,11];
-Table2DistanceTypes[150]:="exact";
+Table2Parameters[133]:=[59,14,14,11];
+Table2DistanceTypes[133]:="exact";
 
-// Table 2, No. 151 | D34_P3_03406_3
+// Table 2, No. 134 | D34_P3_03406_3
 // [[59,14,14;19]]_2, distance exact.
 Gsrc1:=Matrix(F,18,25,[
     w^2,1,0,0,1,0,0,w^2,1,0,w^2,w^2,w^2,w,0,w,0,0,w^2,1,1,0,w^2,0,w^2,
@@ -10399,7 +8367,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 1;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 11;
-Table2Parts[151]:="b";
+Table2Parts[134]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,27,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,w^2,w,w,w^2,w^2,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,1,w,w,0,1,w,w^2,w,1,w^2,w,1,0,0,w^2,w^2,w^2,0,
@@ -10431,13 +8399,13 @@ RecordedQuantum:=Matrix(F,27,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,1,1,w,w,w,w,1,w,1,1,1,w,w,w^2,w^2,1,0,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[151]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[134]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 27;
 assert Dimension(HermitianHull(Q)) eq 13;
-Table2Parameters[151]:=[59,14,14,19];
-Table2DistanceTypes[151]:="exact";
+Table2Parameters[134]:=[59,14,14,19];
+Table2DistanceTypes[134]:="exact";
 
-// Table 2, No. 152 | D34_I_00049_2
+// Table 2, No. 135 | D34_I_00049_2
 // [[59,21,13;20]]_2, distance exact.
 Gsrc1:=Matrix(F,15,17,[
     w,1,w,0,w^2,w^2,0,w,w^2,w^2,1,w,w,1,1,1,0,
@@ -10568,7 +8536,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 13;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[152]:="a";
+Table2Parts[135]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,30,59,[
     1,0,0,0,0,0,0,0,0,0,1,w^2,0,1,w^2,w,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w^2,w^2,w,w^2,0,w,0,1,w,w,1,1,w,1,0,0,w^2,
@@ -10603,13 +8571,13 @@ RecordedQuantum:=Matrix(F,30,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,1,0,1,1,0,w,w,w^2,w^2,w,w,w^2,w^2,0,1,1,0,1,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[152]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[135]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 30;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[152]:=[59,21,13,20];
-Table2DistanceTypes[152]:="exact";
+Table2Parameters[135]:=[59,21,13,20];
+Table2DistanceTypes[135]:="exact";
 
-// Table 2, No. 153 | D34_P3_00699_2
+// Table 2, No. 136 | D34_P3_00699_2
 // [[59,28,9;15]]_2, distance exact.
 Gsrc1:=Matrix(F,16,45,[
     1,1,1,w,0,1,w^2,0,w,w^2,1,1,w,w,w,1,w,w,0,w^2,0,w^2,w,0,w,w,w,w^2,w,0,1,w^2,0,0,1,0,w^2,1,1,0,1,0,0,w^2,0,
@@ -10714,7 +8682,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[153]:="b";
+Table2Parts[136]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,36,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,1,w,1,0,w,w^2,1,w,0,0,0,0,w^2,w,1,0,w^2,w,0,0,0,0,
@@ -10755,13 +8723,13 @@ RecordedQuantum:=Matrix(F,36,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[153]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[136]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 36;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[153]:=[59,28,9,15];
-Table2DistanceTypes[153]:="exact";
+Table2Parameters[136]:=[59,28,9,15];
+Table2DistanceTypes[136]:="exact";
 
-// Table 2, No. 154 | D34_P3_01237_2
+// Table 2, No. 137 | D34_P3_01237_2
 // [[59,29,9;14]]_2, distance exact.
 Gsrc1:=Matrix(F,16,47,[
     w,1,0,1,w,1,0,0,1,0,1,1,w^2,1,0,w,1,w^2,w^2,w^2,w,w^2,w,w,1,0,1,w,w^2,0,0,0,1,0,0,w,w^2,w^2,0,w,1,1,0,w,1,0,0,
@@ -10865,7 +8833,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[154]:="b";
+Table2Parts[137]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,w,1,w,0,0,w,0,1,w^2,w,w^2,w,0,w,w,
@@ -10907,13 +8875,13 @@ RecordedQuantum:=Matrix(F,37,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,0,w,1,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[154]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[137]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[154]:=[59,29,9,14];
-Table2DistanceTypes[154]:="exact";
+Table2Parameters[137]:=[59,29,9,14];
+Table2DistanceTypes[137]:="exact";
 
-// Table 2, No. 155 | D34_P3_01235_2
+// Table 2, No. 138 | D34_P3_01235_2
 // [[59,30,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,17,45,[
     w,w,w,w^2,w,w^2,w^2,w^2,w,0,w^2,1,1,1,w^2,w,1,1,w,0,w^2,w^2,0,w^2,0,w^2,1,w,0,0,1,w^2,w,0,w,w^2,w,1,w,1,w,0,0,1,w,
@@ -11020,7 +8988,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 8;
-Table2Parts[155]:="b";
+Table2Parts[138]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,36,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,1,w,w,w^2,1,1,0,0,0,1,0,0,0,0,w^2,w,w,1,w,1,w^2,0,0,w^2,
@@ -11061,13 +9029,13 @@ RecordedQuantum:=Matrix(F,36,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[155]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[138]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 36;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[155]:=[59,30,9,17];
-Table2DistanceTypes[155]:="exact";
+Table2Parameters[138]:=[59,30,9,17];
+Table2DistanceTypes[138]:="exact";
 
-// Table 2, No. 156 | D34_P3_02077_3
+// Table 2, No. 139 | D34_P3_02077_3
 // [[59,32,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,17,45,[
     1,0,0,0,w^2,1,w,1,0,w,w^2,w^2,0,0,1,w^2,1,0,w^2,0,0,0,1,1,w^2,w^2,1,w,0,w,1,w^2,w,0,1,w,1,w,w,w,0,1,w,w,w,
@@ -11173,7 +9141,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 4;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 8;
-Table2Parts[156]:="b";
+Table2Parts[139]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w^2,1,w^2,0,1,0,0,0,0,0,0,w,w,w^2,w^2,1,w,w,w^2,w,
@@ -11215,13 +9183,13 @@ RecordedQuantum:=Matrix(F,37,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[156]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[139]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[156]:=[59,32,9,17];
-Table2DistanceTypes[156]:="exact";
+Table2Parameters[139]:=[59,32,9,17];
+Table2DistanceTypes[139]:="exact";
 
-// Table 2, No. 157 | D34_P3_01234_2
+// Table 2, No. 140 | D34_P3_01234_2
 // [[59,39,7;14]]_2, distance exact.
 Gsrc1:=Matrix(F,10,25,[
     0,0,1,0,0,w^2,w^2,0,0,w,1,0,0,w^2,w^2,1,0,w,1,w,1,0,w^2,w,w^2,
@@ -11310,7 +9278,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 4;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[157]:="b";
+Table2Parts[140]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,42,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,w,w^2,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,1,1,0,1,0,w,w,
@@ -11357,13 +9325,13 @@ RecordedQuantum:=Matrix(F,42,59,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,w,w,1,0,0,1,1,w,w^2
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[157]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[140]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 59 and Dimension(Q) eq 42;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[157]:=[59,39,7,14];
-Table2DistanceTypes[157]:="exact";
+Table2Parameters[140]:=[59,39,7,14];
+Table2DistanceTypes[140]:="exact";
 
-// Table 2, No. 158 | D34_M097
+// Table 2, No. 141 | D34_M097
 // [[60,13,14;11]]_2, distance exact.
 Gsrc1:=Matrix(F,29,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,0,w,w,0,1,w^2,0,w,0,1,1,1,w,1,w^2,w,w,0,0,w^2,1,w^2,w,w,w^2,0,w,1,
@@ -11487,7 +9455,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 11;
-Table2Parts[158]:="a";
+Table2Parts[141]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,31,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,w^2,w,w,w,w,w^2,1,w^2,w^2,1,w^2,0,w^2,w,w,w^2,w^2,1,w^2,0,1,0,0,w^2,1,1,w,0,0,w^2,1,0,w,0,1,1,0,1,0,0,0,0,
@@ -11523,13 +9491,13 @@ RecordedQuantum:=Matrix(F,31,60,[
     1,1,w,w^2,1,0,1,w,w,1,w^2,w,w,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w^2,1,w^2,w,w^2,0,0,1,0,1,0,w,w,w,w,1,1,0,1,w,0,1,w,w,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[158]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[141]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 60 and Dimension(Q) eq 31;
 assert Dimension(HermitianHull(Q)) eq 18;
-Table2Parameters[158]:=[60,13,14,11];
-Table2DistanceTypes[158]:="exact";
+Table2Parameters[141]:=[60,13,14,11];
+Table2DistanceTypes[141]:="exact";
 
-// Table 2, No. 159 | D34_M098
+// Table 2, No. 142 | D34_M098
 // [[60,17,14;13]]_2, distance exact.
 Gsrc1:=Matrix(F,28,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w,w^2,w^2,w,1,w,0,1,0,0,0,0,w,w,w^2,w^2,0,0,w,w^2,0,w^2,w,0,0,w^2,w,w,w,
@@ -11646,7 +9614,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 13;
-Table2Parts[159]:="a";
+Table2Parts[142]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,32,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,0,0,w,w^2,0,w^2,w^2,w,1,w^2,0,w^2,0,0,w^2,w,w,1,0,1,1,0,0,1,w,w,w,w,1,w^2,w,0,w,0,0,w,1,1,w^2,1,0,w^2,0,
@@ -11683,13 +9651,13 @@ RecordedQuantum:=Matrix(F,32,60,[
     0,1,w,0,0,1,w,w,w,w,w^2,0,w,1,w,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,w,1,w^2,w^2,w^2,w,0,w,w,1,w^2,1,w^2,w^2,0,w^2,1,w^2,0,1,0,w^2,1,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[159]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[142]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 60 and Dimension(Q) eq 32;
 assert Dimension(HermitianHull(Q)) eq 15;
-Table2Parameters[159]:=[60,17,14,13];
-Table2DistanceTypes[159]:="exact";
+Table2Parameters[142]:=[60,17,14,13];
+Table2DistanceTypes[142]:="exact";
 
-// Table 2, No. 160 | D34_P2_03743_2
+// Table 2, No. 143 | D34_P2_03743_2
 // [[60,28,9;12]]_2, distance exact.
 Gsrc1:=Matrix(F,16,42,[
     1,1,w,w^2,1,w,w,w,0,1,1,w^2,w,0,w,w,0,0,1,w^2,1,1,w,1,w^2,w,w,w^2,w,1,0,w,w,w^2,w,w^2,w,w,w^2,0,0,0,
@@ -11797,7 +9765,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[160]:="b";
+Table2Parts[143]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,38,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,w,1,1,0,w,0,0,0,0,0,w^2,0,0,0,1,w^2,0,w^2,1,w,w^2,w^2,w^2,
@@ -11840,13 +9808,13 @@ RecordedQuantum:=Matrix(F,38,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w^2,w,w,1,w^2,w,1,w^2
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[160]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[143]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 60 and Dimension(Q) eq 38;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table2Parameters[160]:=[60,28,9,12];
-Table2DistanceTypes[160]:="exact";
+Table2Parameters[143]:=[60,28,9,12];
+Table2DistanceTypes[143]:="exact";
 
-// Table 2, No. 161 | D34_P3_00705_2
+// Table 2, No. 144 | D34_P3_00705_2
 // [[60,28,9;14]]_2, distance exact.
 Gsrc1:=Matrix(F,16,46,[
     w,0,w^2,1,0,0,0,1,0,w,w^2,1,w^2,w,1,1,1,0,1,w^2,1,w,w^2,1,w,w,w^2,0,1,w,w,0,1,w,0,w^2,w,0,1,0,1,1,0,w^2,0,0,
@@ -11951,7 +9919,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[161]:="b";
+Table2Parts[144]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,0,1,w,w,w^2,1,0,1,w,0,0,0,0,w,1,w^2,w,1,0,0,w^2,w,0,
@@ -11993,13 +9961,13 @@ RecordedQuantum:=Matrix(F,37,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[161]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[144]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 60 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[161]:=[60,28,9,14];
-Table2DistanceTypes[161]:="exact";
+Table2Parameters[144]:=[60,28,9,14];
+Table2DistanceTypes[144]:="exact";
 
-// Table 2, No. 162 | D34_P3_00704_2
+// Table 2, No. 145 | D34_P3_00704_2
 // [[60,28,9;16]]_2, distance exact.
 Gsrc1:=Matrix(F,17,46,[
     w,w^2,1,1,w,1,w,w^2,w^2,w^2,0,0,w^2,w^2,1,w^2,w,w,0,w^2,w,0,1,1,1,w,1,w^2,w,0,1,0,0,w,w,w^2,w,1,w,w^2,w,0,w,0,w^2,0,
@@ -12107,7 +10075,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[162]:="b";
+Table2Parts[145]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,36,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,w^2,0,w^2,1,w,1,0,0,w^2,w^2,0,0,0,0,w,1,w^2,w^2,w,w,1,w^2,w^2,w^2,
@@ -12148,13 +10116,13 @@ RecordedQuantum:=Matrix(F,36,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[162]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[145]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 60 and Dimension(Q) eq 36;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[162]:=[60,28,9,16];
-Table2DistanceTypes[162]:="exact";
+Table2Parameters[145]:=[60,28,9,16];
+Table2DistanceTypes[145]:="exact";
 
-// Table 2, No. 163 | D34_P2_03744_2
+// Table 2, No. 146 | D34_P2_03744_2
 // [[60,30,9;14]]_2, distance exact.
 Gsrc1:=Matrix(F,17,43,[
     1,0,w^2,1,1,w^2,1,w^2,w,w,w^2,1,1,w,w^2,w^2,0,0,w,w,w,1,1,w^2,w^2,0,w,0,w^2,w,0,1,w,w,w,w^2,1,0,w,0,0,0,0,
@@ -12262,7 +10230,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 8;
-Table2Parts[163]:="b";
+Table2Parts[146]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,38,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w,0,w,w^2,w,w^2,0,1,0,0,0,0,0,w^2,0,0,1,w^2,1,1,1,0,w^2,1,1,
@@ -12305,13 +10273,13 @@ RecordedQuantum:=Matrix(F,38,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w^2,w,w,1,w^2,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[163]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[146]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 60 and Dimension(Q) eq 38;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[163]:=[60,30,9,14];
-Table2DistanceTypes[163]:="exact";
+Table2Parameters[146]:=[60,30,9,14];
+Table2DistanceTypes[146]:="exact";
 
-// Table 2, No. 164 | D34_P3_01247_2
+// Table 2, No. 147 | D34_P3_01247_2
 // [[60,31,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,16,42,[
     1,w,w,1,0,w,0,w^2,w,w,1,w^2,1,1,1,w^2,w^2,w^2,1,0,0,w^2,w^2,1,w^2,w,w,1,w^2,0,1,1,w^2,w,w,w^2,1,1,w^2,0,0,0,
@@ -12418,7 +10386,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 7;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[164]:="b";
+Table2Parts[147]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w^2,w^2,1,w^2,w,1,1,w^2,w,0,0,0,0,0,0,0,0,w^2,1,1,w^2,0,1,0,1,1,w,1,
@@ -12460,13 +10428,13 @@ RecordedQuantum:=Matrix(F,37,60,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,w^2,w^2,1,0,1,w^2,w,w,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[164]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[147]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 60 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[164]:=[60,31,9,17];
-Table2DistanceTypes[164]:="exact";
+Table2Parameters[147]:=[60,31,9,17];
+Table2DistanceTypes[147]:="exact";
 
-// Table 2, No. 165 | D34_M104
+// Table 2, No. 148 | D34_M104
 // [[61,16,15;13]]_2, distance exact.
 Gsrc1:=Matrix(F,29,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,w,0,0,w,0,w,w^2,1,1,w,w,w,1,1,1,1,w^2,w,1,w,0,w^2,w,0,w^2,0,w^2,0,
@@ -12586,7 +10554,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 13;
-Table2Parts[165]:="a";
+Table2Parts[148]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,32,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,0,
@@ -12623,13 +10591,13 @@ RecordedQuantum:=Matrix(F,32,61,[
     w,w,0,0,1,0,w,1,0,0,0,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,1,w^2,w,0,1,w^2,w,0,w,1,w^2,w,w,w,w,0,0,1,0,0,w^2,1,w^2,w^2,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[165]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[148]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 32;
 assert Dimension(HermitianHull(Q)) eq 16;
-Table2Parameters[165]:=[61,16,15,13];
-Table2DistanceTypes[165]:="exact";
+Table2Parameters[148]:=[61,16,15,13];
+Table2DistanceTypes[148]:="exact";
 
-// Table 2, No. 166 | D34_M107
+// Table 2, No. 149 | D34_M107
 // [[61,25,12;16]]_2, distance exact.
 Gsrc1:=Matrix(F,26,58,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,w^2,0,1,1,1,w^2,1,w^2,w,0,w^2,w,0,w,1,0,0,w^2,1,0,w,0,1,w,0,1,1,w,1,1,w^2,
@@ -12744,7 +10712,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 16;
-Table2Parts[166]:="a";
+Table2Parts[149]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,35,61,[
     1,0,0,0,0,0,0,w,1,1,1,1,1,w,w,1,w,0,w^2,w^2,0,w,0,1,w,w,1,1,0,w,w^2,w,w^2,1,w,0,0,w^2,0,1,1,0,0,0,w,w^2,w^2,w,w,1,0,w,0,w,1,w,1,w^2,0,0,0,
@@ -12784,13 +10752,13 @@ RecordedQuantum:=Matrix(F,35,61,[
     1,w^2,0,1,0,1,1,1,1,w^2,w,w,0,1,w^2,w,w,1,w^2,w^2,1,0,0,w^2,1,1,1,0,0,0,0,0,0,0,w,w^2,0,1,w,1,w^2,w,w^2,w,w,1,1,w,w^2,0,w^2,0,1,0,w,w^2,w^2,0,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[166]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[149]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table2Parameters[166]:=[61,25,12,16];
-Table2DistanceTypes[166]:="exact";
+Table2Parameters[149]:=[61,25,12,16];
+Table2DistanceTypes[149]:="exact";
 
-// Table 2, No. 167 | D34_P3_01267_2
+// Table 2, No. 150 | D34_P3_01267_2
 // [[61,27,10;16]]_2, distance exact.
 Gsrc1:=Matrix(F,13,26,[
     w,1,w,w,w^2,0,w^2,1,0,1,w^2,w^2,w,1,w,w^2,0,0,1,1,w,0,w^2,w^2,0,w^2,
@@ -12903,7 +10871,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 10;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[167]:="b";
+Table2Parts[150]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,36,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,0,w^2,w,w^2,0,0,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,w,0,w^2,1,1,w,0,1,0,w^2,w^2,1,
@@ -12944,13 +10912,13 @@ RecordedQuantum:=Matrix(F,36,61,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[167]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[150]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 36;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[167]:=[61,27,10,16];
-Table2DistanceTypes[167]:="exact";
+Table2Parameters[150]:=[61,27,10,16];
+Table2DistanceTypes[150]:="exact";
 
-// Table 2, No. 168 | D34_P3_00713_2
+// Table 2, No. 151 | D34_P3_00713_2
 // [[61,28,9;13]]_2, distance exact.
 Gsrc1:=Matrix(F,16,47,[
     0,1,0,0,1,w^2,0,0,w,1,1,1,w,0,w^2,w,w^2,w,w^2,0,w,w^2,w,1,w^2,0,1,0,1,w,w,1,1,w,w,1,1,w^2,w,1,1,w,w^2,w^2,1,1,w^2,
@@ -13055,7 +11023,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[168]:="b";
+Table2Parts[151]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,38,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w,w^2,1,w,w^2,w,0,w,w,w,1,0,0,0,0,w,1,0,w^2,w^2,w^2,w^2,w,0,0,
@@ -13098,13 +11066,13 @@ RecordedQuantum:=Matrix(F,38,61,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[168]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[151]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 38;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table2Parameters[168]:=[61,28,9,13];
-Table2DistanceTypes[168]:="exact";
+Table2Parameters[151]:=[61,28,9,13];
+Table2DistanceTypes[151]:="exact";
 
-// Table 2, No. 169 | D34_P3_00712_2
+// Table 2, No. 152 | D34_P3_00712_2
 // [[61,28,9;15]]_2, distance exact.
 Gsrc1:=Matrix(F,17,47,[
     1,w,w^2,0,w,0,w^2,w^2,w^2,w,w,1,w,w,0,w^2,1,w^2,1,w^2,0,1,1,w^2,w^2,1,0,w^2,0,w,0,0,0,w,w,1,w,w,0,1,1,0,w^2,w,w,w^2,w,
@@ -13212,7 +11180,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[169]:="b";
+Table2Parts[152]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w^2,w,w^2,1,1,0,0,w,w,0,0,0,0,0,1,w^2,w^2,w,1,0,w,1,1,0,
@@ -13254,13 +11222,13 @@ RecordedQuantum:=Matrix(F,37,61,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[169]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[152]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[169]:=[61,28,9,15];
-Table2DistanceTypes[169]:="exact";
+Table2Parameters[152]:=[61,28,9,15];
+Table2DistanceTypes[152]:="exact";
 
-// Table 2, No. 170 | D34_P2_02047_2
+// Table 2, No. 153 | D34_P2_02047_2
 // [[61,29,9;14]]_2, distance exact.
 Gsrc1:=Matrix(F,18,49,[
     w,w,w^2,w^2,w^2,w^2,1,w^2,0,1,1,w^2,w,w^2,w^2,0,w^2,1,w^2,0,w^2,0,w^2,0,0,1,1,w,1,w,w,1,1,w,w^2,1,1,w,w^2,1,0,0,1,w^2,w,1,w^2,0,w,
@@ -13369,7 +11337,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[170]:="b";
+Table2Parts[153]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,38,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,1,1,w,w^2,1,w,0,0,w,w^2,0,0,0,1,w^2,w,w^2,1,1,w,w^2,1,
@@ -13412,13 +11380,13 @@ RecordedQuantum:=Matrix(F,38,61,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,0,w,1,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[170]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[153]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 38;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[170]:=[61,29,9,14];
-Table2DistanceTypes[170]:="exact";
+Table2Parameters[153]:=[61,29,9,14];
+Table2DistanceTypes[153]:="exact";
 
-// Table 2, No. 171 | D34_P2_03802_2
+// Table 2, No. 154 | D34_P2_03802_2
 // [[61,30,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,17,42,[
     w^2,1,0,w,1,0,1,w,w^2,w^2,w,w^2,w^2,w^2,0,1,0,w^2,1,w^2,1,0,0,0,w,0,1,w,1,w^2,w^2,0,0,0,1,w^2,1,0,0,0,0,0,
@@ -13532,7 +11500,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 3;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 8;
-Table2Parts[171]:="b";
+Table2Parts[154]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w,w,w^2,1,w^2,w,w^2,w,0,0,0,0,0,0,0,w,0,1,w,0,w^2,1,1,w^2,w^2,1,1,
@@ -13574,13 +11542,13 @@ RecordedQuantum:=Matrix(F,37,61,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,w^2,w^2,0,w^2,1,1,1,w,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[171]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[154]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table2Parameters[171]:=[61,30,9,17];
-Table2DistanceTypes[171]:="exact";
+Table2Parameters[154]:=[61,30,9,17];
+Table2DistanceTypes[154]:="exact";
 
-// Table 2, No. 172 | D34_P2_02022_2
+// Table 2, No. 155 | D34_P2_02022_2
 // [[61,39,7;12]]_2, distance exact.
 Gsrc1:=Matrix(F,12,40,[
     w^2,1,1,w,0,0,0,w^2,w^2,w^2,w,w^2,w^2,0,1,1,1,0,1,1,w,w,w,0,0,0,0,0,0,1,w,w^2,w^2,w^2,1,0,w^2,1,w^2,w^2,
@@ -13671,7 +11639,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 3;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[172]:="b";
+Table2Parts[155]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,44,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,0,0,0,w^2,0,w,w,0,
@@ -13720,13 +11688,13 @@ RecordedQuantum:=Matrix(F,44,61,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,1,1,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[172]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[155]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 61 and Dimension(Q) eq 44;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table2Parameters[172]:=[61,39,7,12];
-Table2DistanceTypes[172]:="exact";
+Table2Parameters[155]:=[61,39,7,12];
+Table2DistanceTypes[155]:="exact";
 
-// Table 2, No. 173 | D34_M111
+// Table 2, No. 156 | D34_M111
 // [[62,18,15;16]]_2, distance exact.
 Gsrc1:=Matrix(F,30,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,w,0,w^2,0,1,w,w,w,0,w,w^2,w,w^2,w^2,w^2,w,0,w^2,w,w,0,w^2,1,w^2,w,w,0,w^2,
@@ -13849,7 +11817,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 16;
-Table2Parts[173]:="a";
+Table2Parts[156]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,32,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,1,1,w^2,1,w^2,0,w^2,w^2,w,w^2,w,w,w^2,1,1,1,w^2,w^2,w,w^2,w,w,w,1,0,w,w,0,w^2,w^2,1,1,w,w,1,0,0,w^2,1,1,1,w,w,w^2,0,0,
@@ -13886,13 +11854,13 @@ RecordedQuantum:=Matrix(F,32,62,[
     1,1,w,1,0,1,1,w^2,0,w^2,w,w^2,w,w^2,1,w^2,1,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,w,w,1,0,0,w^2,w^2,0,w,1,0,1,1,0,w,w^2,0,0,1,0,w,0,w,w^2,w^2,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[173]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[156]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 32;
 assert Dimension(HermitianHull(Q)) eq 14;
-Table2Parameters[173]:=[62,18,15,16];
-Table2DistanceTypes[173]:="exact";
+Table2Parameters[156]:=[62,18,15,16];
+Table2DistanceTypes[156]:="exact";
 
-// Table 2, No. 174 | D34_P2_01010_2
+// Table 2, No. 157 | D34_P2_01010_2
 // [[62,27,10;15]]_2, distance exact.
 Gsrc1:=Matrix(F,18,47,[
     1,w^2,w,0,1,w,1,1,1,w,1,w^2,w^2,0,w^2,0,w,1,1,w,0,w^2,w,w^2,w^2,0,0,1,w^2,w,0,1,0,w,w,w^2,w,w^2,1,1,0,1,w,1,w,w,w,
@@ -14005,7 +11973,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[174]:="b";
+Table2Parts[157]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,w^2,w,0,w,w,w,1,w^2,0,1,0,0,0,0,0,w^2,w^2,0,w^2,w^2,0,0,w,0,w^2,0,
@@ -14047,13 +12015,13 @@ RecordedQuantum:=Matrix(F,37,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[174]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[157]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table2Parameters[174]:=[62,27,10,15];
-Table2DistanceTypes[174]:="exact";
+Table2Parameters[157]:=[62,27,10,15];
+Table2DistanceTypes[157]:="exact";
 
-// Table 2, No. 175 | D34_P3_00723_2
+// Table 2, No. 158 | D34_P3_00723_2
 // [[62,28,9;12]]_2, distance exact.
 Gsrc1:=Matrix(F,16,48,[
     w,w,1,w^2,w,0,w^2,w,0,w,0,0,w^2,w,0,w^2,w,0,w,w,w^2,w^2,1,w,w^2,w,w,0,1,w,1,1,0,1,w,w^2,0,1,w,0,w^2,w^2,1,w^2,w,w^2,0,0,
@@ -14158,7 +12126,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[175]:="b";
+Table2Parts[158]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w^2,0,w^2,1,w,0,w,0,0,0,0,0,0,w,w^2,w^2,1,w^2,0,1,1,w,0,
@@ -14202,13 +12170,13 @@ RecordedQuantum:=Matrix(F,39,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[175]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[158]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table2Parameters[175]:=[62,28,9,12];
-Table2DistanceTypes[175]:="exact";
+Table2Parameters[158]:=[62,28,9,12];
+Table2DistanceTypes[158]:="exact";
 
-// Table 2, No. 176 | D34_P3_00722_2
+// Table 2, No. 159 | D34_P3_00722_2
 // [[62,28,9;14]]_2, distance exact.
 Gsrc1:=Matrix(F,17,48,[
     1,1,w^2,w^2,w,w^2,w^2,w,w^2,0,1,w,0,w^2,w,1,w,w^2,w^2,1,1,w,1,w^2,w,1,w^2,0,0,w,w,0,0,w,w^2,0,w^2,1,w,w,1,0,w,w,1,0,1,0,
@@ -14316,7 +12284,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[176]:="b";
+Table2Parts[159]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,38,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,w^2,1,w,0,0,1,0,0,0,0,0,0,0,w,w,0,w,w,w^2,1,0,w,0,
@@ -14359,13 +12327,13 @@ RecordedQuantum:=Matrix(F,38,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[176]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[159]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 38;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table2Parameters[176]:=[62,28,9,14];
-Table2DistanceTypes[176]:="exact";
+Table2Parameters[159]:=[62,28,9,14];
+Table2DistanceTypes[159]:="exact";
 
-// Table 2, No. 177 | D34_P2_03868_2
+// Table 2, No. 160 | D34_P2_03868_2
 // [[62,29,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,17,42,[
     w^2,w^2,w,w,w^2,w,1,w,w^2,w,0,1,0,1,1,0,w^2,w^2,1,0,0,w^2,0,w^2,w^2,0,w,1,w,w^2,1,0,w,w,1,0,1,w,w,0,0,0,
@@ -14482,7 +12450,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 3;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 8;
-Table2Parts[177]:="b";
+Table2Parts[160]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w,1,0,1,w^2,0,w,0,0,0,0,0,0,w^2,0,0,1,w^2,0,w^2,1,w^2,w^2,w,1,1,w,
@@ -14524,13 +12492,13 @@ RecordedQuantum:=Matrix(F,37,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,w,w^2,1,w^2,w,w^2,1,w^2,w,0,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[177]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[160]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[177]:=[62,29,9,17];
-Table2DistanceTypes[177]:="exact";
+Table2Parameters[160]:=[62,29,9,17];
+Table2DistanceTypes[160]:="exact";
 
-// Table 2, No. 178 | D34_P3_01282_2
+// Table 2, No. 161 | D34_P3_01282_2
 // [[62,30,9;14]]_2, distance exact.
 Gsrc1:=Matrix(F,17,48,[
     1,w^2,w,w^2,0,w^2,w,w,1,w^2,w^2,1,w,w,0,w,w,w^2,w,w,w,1,0,w,w^2,0,1,w^2,0,0,w,0,w,w^2,w^2,w,0,0,w,1,w,w,0,w,w^2,0,w^2,0,
@@ -14637,7 +12605,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 5;
-Table2Parts[178]:="b";
+Table2Parts[161]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,w^2,1,0,0,w,w,w^2,1,w^2,0,0,0,0,w^2,w^2,w,0,1,w^2,w^2,1,w,w^2,
@@ -14681,13 +12649,13 @@ RecordedQuantum:=Matrix(F,39,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[178]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[161]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[178]:=[62,30,9,14];
-Table2DistanceTypes[178]:="exact";
+Table2Parameters[161]:=[62,30,9,14];
+Table2DistanceTypes[161]:="exact";
 
-// Table 2, No. 179 | D34_P3_02117_2
+// Table 2, No. 162 | D34_P3_02117_2
 // [[62,31,9;17]]_2, distance exact.
 Gsrc1:=Matrix(F,10,14,[
     w^2,w^2,1,0,w^2,1,w,w,1,w^2,0,1,w^2,w^2,
@@ -14799,7 +12767,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 13;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[179]:="a";
+Table2Parts[162]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,38,62,[
     1,0,0,0,0,0,0,0,0,w,1,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w^2,w^2,w^2,0,0,1,w,w,w^2,w,0,1,w^2,w,0,w^2,
@@ -14842,13 +12810,13 @@ RecordedQuantum:=Matrix(F,38,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,w^2,w,w^2,w^2,w^2,0,0,w^2,w^2,w^2,w,w^2,w^2,1,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[179]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[162]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 38;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table2Parameters[179]:=[62,31,9,17];
-Table2DistanceTypes[179]:="exact";
+Table2Parameters[162]:=[62,31,9,17];
+Table2DistanceTypes[162]:="exact";
 
-// Table 2, No. 180 | D34_P3_02135_2
+// Table 2, No. 163 | D34_P3_02135_2
 // [[62,32,9;14]]_2, distance exact.
 Gsrc1:=Matrix(F,17,49,[
     0,1,w^2,0,0,w,w,1,w^2,w,0,0,w,0,1,0,1,w^2,w^2,w,1,w^2,0,w^2,w,w^2,0,0,0,w,1,w,0,w,w,1,w^2,0,w^2,1,1,w^2,w^2,w,1,w,w^2,0,0,
@@ -14954,7 +12922,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[180]:="b";
+Table2Parts[163]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,40,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w,w^2,0,0,0,w^2,1,0,1,0,0,w,0,0,1,w,0,w,0,w^2,w,1,
@@ -14999,13 +12967,13 @@ RecordedQuantum:=Matrix(F,40,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[180]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[163]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 40;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table2Parameters[180]:=[62,32,9,14];
-Table2DistanceTypes[180]:="exact";
+Table2Parameters[163]:=[62,32,9,14];
+Table2DistanceTypes[163]:="exact";
 
-// Table 2, No. 181 | D34_P3_00716_2
+// Table 2, No. 164 | D34_P3_00716_2
 // [[62,37,8;13]]_2, distance exact.
 Gsrc1:=Matrix(F,8,10,[
     0,w,w^2,w^2,w,0,w,w^2,w^2,w,
@@ -15098,7 +13066,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 10;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[181]:="a";
+Table2Parts[164]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,43,62,[
     1,0,0,0,0,1,0,w^2,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w^2,1,1,0,1,1,w,0,w,w,0,w,
@@ -15146,13 +13114,13 @@ RecordedQuantum:=Matrix(F,43,62,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,0,1,0,1,w,1,1,1,w,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[181]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[164]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 62 and Dimension(Q) eq 43;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table2Parameters[181]:=[62,37,8,13];
-Table2DistanceTypes[181]:="exact";
+Table2Parameters[164]:=[62,37,8,13];
+Table2DistanceTypes[164]:="exact";
 
-// Table 2, No. 182 | D34_M113
+// Table 2, No. 165 | D34_M113
 // [[63,14,15;13]]_2, distance exact.
 Gsrc1:=Matrix(F,31,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,0,1,w,0,0,w,0,w,w^2,1,1,w,w,w,1,1,1,1,w^2,w,1,w,0,w^2,w,0,w^2,0,w^2,0,
@@ -15282,7 +13250,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 13;
-Table2Parts[182]:="a";
+Table2Parts[165]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,32,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,1,w^2,w,w,w,w^2,0,w,0,0,0,w,w,w^2,1,0,0,0,0,w,0,w^2,w,1,w^2,1,w,0,1,0,0,0,1,1,w,w^2,0,0,0,w^2,w^2,w,0,0,0,
@@ -15319,13 +13287,13 @@ RecordedQuantum:=Matrix(F,32,63,[
     w,w,0,0,1,0,w,1,0,0,0,w,1,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,1,w,1,w^2,w,0,1,w^2,w,0,w,1,w^2,w,w,w,w,0,0,1,0,0,w^2,1,w^2,w^2,1,0,0,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[182]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[165]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 32;
 assert Dimension(HermitianHull(Q)) eq 18;
-Table2Parameters[182]:=[63,14,15,13];
-Table2DistanceTypes[182]:="exact";
+Table2Parameters[165]:=[63,14,15,13];
+Table2DistanceTypes[165]:="exact";
 
-// Table 2, No. 183 | D34_P2_01038_2
+// Table 2, No. 166 | D34_P2_01038_2
 // [[63,27,10;14]]_2, distance exact.
 Gsrc1:=Matrix(F,18,50,[
     0,0,0,0,1,w,w,w,w^2,w^2,1,0,w,1,0,w,0,1,1,w^2,w,w,1,0,w^2,w,1,1,0,1,w^2,0,w,w^2,w,w^2,w^2,1,w,1,1,1,1,0,0,0,w,0,w^2,w^2,
@@ -15438,7 +13406,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 7;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 3;
-Table2Parts[183]:="b";
+Table2Parts[166]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,38,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,1,w^2,1,w,0,0,w^2,w,1,w,0,0,w,0,w^2,1,0,w,0,w^2,0,1,1,
@@ -15481,13 +13449,13 @@ RecordedQuantum:=Matrix(F,38,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,w^2,1,w^2,w^2,w^2,w^2,1,w^2
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[183]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[166]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 38;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table2Parameters[183]:=[63,27,10,14];
-Table2DistanceTypes[183]:="exact";
+Table2Parameters[166]:=[63,27,10,14];
+Table2DistanceTypes[166]:="exact";
 
-// Table 2, No. 184 | D34_P2_02111_2
+// Table 2, No. 167 | D34_P2_02111_2
 // [[63,27,10;16]]_2, distance exact.
 Gsrc1:=Matrix(F,11,15,[
     0,w,w,w^2,0,w,w^2,1,1,w^2,w,0,w^2,w,w,
@@ -15605,7 +13573,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 12;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[184]:="a";
+Table2Parts[167]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,63,[
     1,0,0,0,0,0,0,0,0,w,0,w,0,w,w^2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,1,0,w,w^2,1,w,0,1,0,w,w^2,w^2,1,1,0,w^2,1,
@@ -15647,13 +13615,13 @@ RecordedQuantum:=Matrix(F,37,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[184]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[167]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table2Parameters[184]:=[63,27,10,16];
-Table2DistanceTypes[184]:="exact";
+Table2Parameters[167]:=[63,27,10,16];
+Table2DistanceTypes[167]:="exact";
 
-// Table 2, No. 185 | D34_P3_00730_2
+// Table 2, No. 168 | D34_P3_00730_2
 // [[63,28,9;11]]_2, distance exact.
 Gsrc1:=Matrix(F,16,49,[
     w,1,0,w,1,1,w,w^2,w,w,w^2,w^2,w,w,1,w^2,1,w,1,w,w,w^2,w^2,1,0,1,w^2,1,1,w,1,0,0,w,w,0,1,w,w^2,w^2,1,0,w^2,w^2,1,1,0,w^2,1,
@@ -15758,7 +13726,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[185]:="b";
+Table2Parts[168]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,40,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,1,w^2,1,w^2,w^2,0,w^2,1,0,0,0,0,0,w,0,w^2,0,0,1,0,0,w^2,1,
@@ -15803,13 +13771,13 @@ RecordedQuantum:=Matrix(F,40,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[185]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[168]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 40;
 assert Dimension(HermitianHull(Q)) eq 12;
-Table2Parameters[185]:=[63,28,9,11];
-Table2DistanceTypes[185]:="exact";
+Table2Parameters[168]:=[63,28,9,11];
+Table2DistanceTypes[168]:="exact";
 
-// Table 2, No. 186 | D34_P3_00729_2
+// Table 2, No. 169 | D34_P3_00729_2
 // [[63,28,9;13]]_2, distance exact.
 Gsrc1:=Matrix(F,17,49,[
     w^2,w,0,1,w^2,w^2,w^2,1,w^2,1,w^2,0,w^2,w,0,1,0,w^2,0,0,0,w,w,1,w,1,0,0,w^2,w^2,w,w,0,w^2,1,w^2,1,0,w,0,w,w^2,0,w,w^2,0,w,0,w,
@@ -15917,7 +13885,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 4;
-Table2Parts[186]:="b";
+Table2Parts[169]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,0,1,w^2,1,1,1,w,w,w^2,0,w^2,1,w^2,0,0,0,0,0,1,w,w^2,1,w^2,0,w,w^2,w^2,
@@ -15961,13 +13929,13 @@ RecordedQuantum:=Matrix(F,39,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[186]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[169]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table2Parameters[186]:=[63,28,9,13];
-Table2DistanceTypes[186]:="exact";
+Table2Parameters[169]:=[63,28,9,13];
+Table2DistanceTypes[169]:="exact";
 
-// Table 2, No. 187 | D34_P3_01300_3
+// Table 2, No. 170 | D34_P3_01300_3
 // [[63,29,9;10]]_2, distance exact.
 Gsrc1:=Matrix(F,16,51,[
     w^2,w^2,0,0,1,0,1,0,w,1,w^2,0,0,1,0,1,w,w,w,0,0,w^2,1,w,0,w^2,w,1,w,w^2,w,1,w,0,1,1,1,w^2,w^2,0,w,1,w,w,w,w,1,0,1,0,0,
@@ -16071,7 +14039,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 0;
-Table2Parts[187]:="b";
+Table2Parts[170]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,41,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,w^2,w^2,1,1,w,1,w,1,w,w^2,1,0,0,1,0,w,0,0,w^2,0,1,w^2,1,
@@ -16117,13 +14085,13 @@ RecordedQuantum:=Matrix(F,41,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,0,w,1,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[187]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[170]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 41;
 assert Dimension(HermitianHull(Q)) eq 12;
-Table2Parameters[187]:=[63,29,9,10];
-Table2DistanceTypes[187]:="exact";
+Table2Parameters[170]:=[63,29,9,10];
+Table2DistanceTypes[170]:="exact";
 
-// Table 2, No. 188 | D34_P2_01043_2
+// Table 2, No. 171 | D34_P2_01043_2
 // [[63,29,9;12]]_2, distance exact.
 Gsrc1:=Matrix(F,17,51,[
     w^2,1,w,w,1,w^2,w,1,0,w^2,w^2,w,1,1,1,w,w,w^2,0,1,1,0,w^2,1,w^2,w,0,0,0,0,w,w^2,1,1,0,0,0,1,w^2,w^2,w,w,1,w,w,w,1,w^2,w^2,w,0,
@@ -16230,7 +14198,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 6;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[188]:="b";
+Table2Parts[171]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,40,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,w^2,w^2,w^2,0,w^2,1,w^2,0,1,w,0,0,1,1,1,w^2,0,w^2,w^2,1,1,0,
@@ -16275,13 +14243,13 @@ RecordedQuantum:=Matrix(F,40,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w^2,w,1,0,w,1,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[188]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[171]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 40;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table2Parameters[188]:=[63,29,9,12];
-Table2DistanceTypes[188]:="exact";
+Table2Parameters[171]:=[63,29,9,12];
+Table2DistanceTypes[171]:="exact";
 
-// Table 2, No. 189 | D34_P3_01298_2
+// Table 2, No. 172 | D34_P3_01298_2
 // [[63,30,9;11]]_2, distance exact.
 Gsrc1:=Matrix(F,16,49,[
     0,w,0,w^2,0,w^2,1,w^2,0,0,w^2,w^2,1,0,0,w,0,w,w,w,0,w^2,w,w^2,w^2,0,1,1,w^2,w,0,1,0,w,1,0,w^2,w^2,w,1,1,w,w,w^2,w,w^2,0,0,w^2,
@@ -16385,7 +14353,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 5;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[189]:="b";
+Table2Parts[172]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,41,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,1,0,1,0,1,1,1,0,0,0,0,0,0,w,1,w,1,0,0,0,1,
@@ -16431,13 +14399,13 @@ RecordedQuantum:=Matrix(F,41,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,1,w,w^2,w^2,w,1,0
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[189]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[172]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 41;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table2Parameters[189]:=[63,30,9,11];
-Table2DistanceTypes[189]:="exact";
+Table2Parameters[172]:=[63,30,9,11];
+Table2DistanceTypes[172]:="exact";
 
-// Table 2, No. 190 | D34_P2_02149_2
+// Table 2, No. 173 | D34_P2_02149_2
 // [[63,30,9;13]]_2, distance exact.
 Gsrc1:=Matrix(F,17,46,[
     w^2,w^2,w,0,w^2,w^2,0,1,0,0,w,1,w,1,w,0,w^2,w,w^2,w,w,1,w,w^2,w^2,1,w,w,w,0,w^2,0,0,0,w,0,w,0,0,w,w^2,w^2,1,w^2,0,0,
@@ -16546,7 +14514,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 1;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[190]:="b";
+Table2Parts[173]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,40,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,w,w^2,0,w,w^2,w,0,1,1,0,0,0,0,0,1,0,w,w^2,w^2,1,0,0,1,w^2,w,0,
@@ -16591,13 +14559,13 @@ RecordedQuantum:=Matrix(F,40,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w^2,w,w,1,w^2,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[190]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[173]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 40;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table2Parameters[190]:=[63,30,9,13];
-Table2DistanceTypes[190]:="exact";
+Table2Parameters[173]:=[63,30,9,13];
+Table2DistanceTypes[173]:="exact";
 
-// Table 2, No. 191 | D34_P2_03935_2
+// Table 2, No. 174 | D34_P2_03935_2
 // [[63,32,9;13]]_2, distance exact.
 Gsrc1:=Matrix(F,17,46,[
     w,w,w,0,w,w,w^2,1,w^2,w^2,1,1,0,w,w,w^2,0,w,w,w^2,w^2,0,w,1,w^2,0,1,1,w^2,0,1,0,w,1,w,w^2,1,1,1,w^2,w,w,w^2,1,w^2,0,
@@ -16705,7 +14673,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 0;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 7;
-Table2Parts[191]:="b";
+Table2Parts[174]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,41,63,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,0,1,w,1,w^2,w,1,w,0,0,0,0,0,w^2,0,w,w,w,w,w,w^2,w^2,0,w,1,
@@ -16751,13 +14719,13 @@ RecordedQuantum:=Matrix(F,41,63,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w,1,w^2,w,w,1,w^2,w,1
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[191]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[174]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 63 and Dimension(Q) eq 41;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table2Parameters[191]:=[63,32,9,13];
-Table2DistanceTypes[191]:="exact";
+Table2Parameters[174]:=[63,32,9,13];
+Table2DistanceTypes[174]:="exact";
 
-// Table 2, No. 192 | D34_P3_02157_2
+// Table 2, No. 175 | D34_P3_02157_2
 // [[64,26,11;16]]_2, distance exact.
 Gsrc1:=Matrix(F,12,14,[
     w,w,w^2,0,w,w^2,1,1,w^2,w,0,w^2,w,w,
@@ -16878,7 +14846,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 10;
 assert W1*HDag(W1) eq IdentityMatrix(F,lambda) and IsZero(U1*HDag(W1));
 assert Rank(U1*HDag(U1)) eq 6;
-Table2Parts[192]:="a";
+Table2Parts[175]:="a";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,37,64,[
     1,0,0,0,0,0,0,0,1,1,w^2,w^2,w^2,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,w^2,w,1,1,w,w,1,0,1,1,w^2,w,1,w^2,w^2,0,w^2,w^2,
@@ -16920,13 +14888,13 @@ RecordedQuantum:=Matrix(F,37,64,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w,w,0,0,w^2,w^2,0,w^2,1,1,w^2,0,w^2,w^2,0,0,w,w,w
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[192]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[175]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 64 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table2Parameters[192]:=[64,26,11,16];
-Table2DistanceTypes[192]:="exact";
+Table2Parameters[175]:=[64,26,11,16];
+Table2DistanceTypes[175]:="exact";
 
-// Table 2, No. 193 | D34_P2_01046_2
+// Table 2, No. 176 | D34_P2_01046_2
 // [[64,27,10;13]]_2, distance exact.
 Gsrc1:=Matrix(F,18,51,[
     1,w^2,w,1,w^2,0,w,w^2,w^2,0,1,w^2,0,0,1,w^2,w,0,w,w^2,w,w,w,0,w,1,w,1,0,w,w,1,w^2,w^2,0,0,0,1,1,1,1,0,1,0,w^2,w,1,w,1,0,w,
@@ -17039,7 +15007,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 7;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 2;
-Table2Parts[193]:="b";
+Table2Parts[176]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,39,64,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w,w^2,1,w,0,w,w,0,0,w,w,0,0,0,1,1,w^2,w^2,w^2,w^2,0,1,0,w^2,w^2,
@@ -17083,13 +15051,13 @@ RecordedQuantum:=Matrix(F,39,64,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,0,w^2,1,w^2,w^2,w^2,w^2,1,w^2
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[193]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[176]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 64 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 12;
-Table2Parameters[193]:=[64,27,10,13];
-Table2DistanceTypes[193]:="exact";
+Table2Parameters[176]:=[64,27,10,13];
+Table2DistanceTypes[176]:="exact";
 
-// Table 2, No. 194 | D34_P3_01306_2
+// Table 2, No. 177 | D34_P3_01306_2
 // [[64,44,7;14]]_2, distance exact.
 Gsrc1:=Matrix(F,8,16,[
     1,0,1,0,1,1,w,w,w^2,w^2,0,1,w,0,w,1,
@@ -17178,7 +15146,7 @@ assert W2*HDag(W2) eq IdentityMatrix(F,lambda) and IsZero(U2*HDag(W2));
 assert Rank(U2*HDag(U2)) eq 9;
 assert IsZero(W1*HDag(Gsrc1));
 assert Rank(U1*HDag(U1)) eq 1;
-Table2Parts[194]:="b";
+Table2Parts[177]:="b";
 Q:=HermitianDual(LinearCode(GX4));
 RecordedQuantum:=Matrix(F,47,64,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,1,0,w^2,1,w^2,w,0,w^2,1,
@@ -17230,11 +15198,11 @@ RecordedQuantum:=Matrix(F,47,64,[
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,0,w,w^2,w^2,w,w^2,0,w,w,w,w^2
 ]);
 assert Q eq LinearCode(RecordedQuantum);
-Table2Generators[194]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
+Table2Generators[177]:=<Gsrc1,Gsrc2,W1,W2,lambda,GX4>;
 assert Length(Q) eq 64 and Dimension(Q) eq 47;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table2Parameters[194]:=[64,44,7,14];
-Table2DistanceTypes[194]:="exact";
+Table2Parameters[177]:=[64,44,7,14];
+Table2DistanceTypes[177]:="exact";
 
-assert #Keys(Table2Generators) eq 126;
-print "TABLE2_VERIFIED 126";
+assert #Keys(Table2Generators) eq 109;
+print "TABLE2_VERIFIED 109";
