@@ -12,7 +12,7 @@ The files below contain the explicit matrices for the **200 direct constructions
 
 The three Magma files are self-contained and sufficient to reconstruct all listed codes. The CSV files contain the same matrices in a readable form.
 
-All entries lie in GF(4) = GF(2)(w), where w² + w + 1 = 0. CSV matrices list their rows as
+All entries lie in $GF(4) = GF(2)(w)$, where $w² + w + 1 = 0$. CSV matrices list their rows as
 
 ~~~text
 [[a11,a12,...]; [a21,a22,...]; ...]
@@ -25,7 +25,7 @@ Commas separate entries; semicolons separate rows. A zero-row matrix is written 
 **Table 1 CSV** has three columns: `No, G_src, G_X4`.
 
 - `G_src` generates the input code.
-- `G_X4` is the extension generator, with the final lambda columns equal to the block `[0; I_lambda]`. Its row space is the classical ingredient used for the EAQECC.
+- `G_X4` is the extension generator, with the final lambda columns equal to the block `[0; I_lambda]`. 
 
 **Tables 2 and 3 CSVs** have seven columns: `No, G_src1, G_src2, W1, W2, lambda, G_X4`.
 
@@ -117,8 +117,4 @@ G2 := IdentityMatrix(F,1);
 GX4,A1,W1,A2,W2 := HullDecreasingX4(G1,G2,1);
 assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
 ~~~
-
-These routines select matching bases automatically. Consequently, they need not reproduce the **same minimum distances** as the particular published examples. For the 200 direct constructions in Tables 1, 2 and 3, use the explicit matrices in the table-specific CSV/Magma data files above. The general routines do not implement the extra module-preserving choices needed to produce QC codes.
-
-Propagation-derived results elsewhere in the manuscript are outside the scope of these direct-construction data files.
 
