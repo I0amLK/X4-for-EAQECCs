@@ -1,5 +1,5 @@
 // Table 1: Corollary 3.6: direct arbitrary-hull constructions.
-// 68 records, manuscript Nos. 1-68.
+// 67 records, manuscript Nos. 1-67.
 // CSV matrices and Magma matrices have exactly the same row order.
 // Table1Generators[No] = <Gsrc,GX4>.
 
@@ -1243,43 +1243,7 @@ assert Dimension(HermitianHull(Q)) eq 0;
 Table1Parameters[27]:=[35,19,9,16];
 Table1DistanceTypes[27]:="exact";
 
-// Table 1, No. 28 | BS007
-// [[36,6,17;22]]_2, distance exact.
-Gsrc:=Matrix(F,10,35,[
-    1,0,0,0,0,0,0,0,0,0,w,0,w^2,w^2,0,0,w,w,1,0,w^2,0,w^2,w^2,1,0,0,1,w^2,w,1,w^2,w,w,w,
-    0,1,0,0,0,0,0,0,0,0,0,w,w^2,w^2,w^2,0,0,w,w,1,0,w^2,0,w^2,1,1,0,0,1,w^2,w,1,w^2,w,w,
-    0,0,1,0,0,0,0,0,0,0,w^2,0,w,w,w^2,w^2,w^2,w^2,0,w,0,0,w,1,0,1,1,w,1,w,1,w^2,w,0,1,
-    0,0,0,1,0,0,0,0,0,0,0,w^2,1,w,w,w^2,w^2,w^2,w^2,0,w,0,0,w,0,0,1,1,w,1,w,1,w^2,w,0,
-    0,0,0,0,1,0,0,0,0,0,1,0,0,w^2,w,w,w,w,0,w^2,w,w,w,w,w,0,0,w,w^2,w^2,w,0,0,w,w^2,
-    0,0,0,0,0,1,0,0,0,0,0,1,w,0,w^2,w,w,w,w,0,w^2,w,w,w,w^2,w,0,0,w,w^2,w^2,w,0,0,w,
-    0,0,0,0,0,0,1,0,0,0,w,0,1,1,0,w^2,0,0,w^2,w,w^2,w^2,1,1,w,w^2,w,1,w^2,0,w,0,0,w,w,
-    0,0,0,0,0,0,0,1,0,0,0,w,1,1,1,0,w^2,0,0,w^2,w,w^2,w^2,1,w^2,w,w^2,w,1,w^2,0,w,0,0,w,
-    0,0,0,0,0,0,0,0,1,0,w^2,0,0,0,1,1,w^2,0,w,0,w,w,w,w,0,w^2,w,1,w^2,w,1,1,1,w^2,w^2,
-    0,0,0,0,0,0,0,0,0,1,0,w^2,w,0,0,1,1,w^2,0,w,0,w,w,w,0,0,w^2,w,1,w^2,w,1,1,1,w^2
-]);
-GX4:=Matrix(F,10,36,[
-    1,0,0,0,0,w^2,1,0,0,0,0,w^2,w^2,w,w,w,w^2,w^2,w^2,w,w,w,w^2,w^2,1,w,w,0,1,0,1,w,w,0,1,0,
-    0,1,0,0,0,0,0,1,0,0,0,0,w,w,w,0,w^2,w,w,w,w,0,w^2,w,w,w^2,w^2,w,0,0,w,w^2,w^2,w,0,0,
-    0,0,1,0,0,0,0,0,1,0,0,0,w,w,w,w,0,w^2,w,w,w,w,0,w^2,0,w,w^2,w^2,w,0,0,w,w^2,w^2,w,0,
-    0,0,0,1,0,w^2,0,0,0,1,0,w^2,w,w,0,w^2,w^2,1,w,w,0,w^2,w^2,1,w,1,w,w^2,w,0,w,1,w,w^2,w,0,
-    0,0,0,0,0,1,0,0,0,w,0,0,1,0,w^2,0,0,w^2,w,w^2,w^2,1,1,1,w^2,w,1,w^2,0,w,0,0,w,w,w^2,0,
-    0,0,0,0,w,0,1,0,0,1,0,w^2,w^2,0,w^2,1,w,0,w^2,1,0,w,0,0,1,w^2,1,0,w^2,w,w^2,1,1,0,0,0,
-    0,0,0,0,0,w^2,1,0,0,0,w,w^2,0,1,w,w,1,1,w,w,1,w,0,0,0,w,w,1,w,w,0,1,0,w,w^2,0,
-    0,0,0,0,0,w^2,w^2,w^2,w,w,0,w^2,w,0,w^2,w^2,0,0,0,0,w,1,0,1,1,w^2,1,w^2,w^2,w,w,0,0,w,1,0,
-    0,0,0,0,w^2,w,1,w^2,w^2,w,w^2,w,w,0,0,0,0,w^2,1,1,w^2,1,w^2,w,0,w^2,0,1,1,1,w,w^2,1,w^2,1,0,
-    0,0,0,0,1,1,0,0,0,0,1,1,w,w^2,1,0,0,0,w,w^2,1,0,0,0,1,w,0,w,1,0,1,w,0,w,1,1
-]);
-assert Rank(Gsrc) eq 10 and Rank(GX4) eq 10;
-assert RowSpace(Submatrix(GX4,1,1,10,35)) eq RowSpace(Gsrc);
-assert Submatrix(GX4,1,36,10,1) eq VerticalJoin(ZeroMatrix(F,9,1),IdentityMatrix(F,1));
-Table1Generators[28]:=<Gsrc,GX4>;
-Q:=LinearCode(GX4);
-assert Length(Q) eq 36 and Dimension(Q) eq 10;
-assert Dimension(HermitianHull(Q)) eq 4;
-Table1Parameters[28]:=[36,6,17,22];
-Table1DistanceTypes[28]:="exact";
-
-// Table 1, No. 29 | B35_20_s7
+// Table 1, No. 28 | B35_20_s7
 // [[36,13,9;9]]_2, distance exact.
 Gsrc:=Matrix(F,20,35,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,w,w^2,w,w,0,w,0,w,0,1,1,0,0,
@@ -1328,14 +1292,14 @@ GX4:=Matrix(F,20,36,[
 assert Rank(Gsrc) eq 20 and Rank(GX4) eq 20;
 assert RowSpace(Submatrix(GX4,1,1,20,35)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,36,20,1) eq VerticalJoin(ZeroMatrix(F,19,1),IdentityMatrix(F,1));
-Table1Generators[29]:=<Gsrc,GX4>;
+Table1Generators[28]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 36 and Dimension(Q) eq 20;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table1Parameters[29]:=[36,13,9,9];
-Table1DistanceTypes[29]:="exact";
+Table1Parameters[28]:=[36,13,9,9];
+Table1DistanceTypes[28]:="exact";
 
-// Table 1, No. 30 | B35_19_s1
+// Table 1, No. 29 | B35_19_s1
 // [[36,18,10;16]]_2, distance exact.
 Gsrc:=Matrix(F,19,35,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w^2,0,w,w^2,1,1,0,w,w,w,0,0,w^2,w,w^2,
@@ -1382,14 +1346,14 @@ GX4:=Matrix(F,19,36,[
 assert Rank(Gsrc) eq 19 and Rank(GX4) eq 19;
 assert RowSpace(Submatrix(GX4,1,1,19,35)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,36,19,1) eq VerticalJoin(ZeroMatrix(F,18,1),IdentityMatrix(F,1));
-Table1Generators[30]:=<Gsrc,GX4>;
+Table1Generators[29]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 36 and Dimension(Q) eq 19;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table1Parameters[30]:=[36,18,10,16];
-Table1DistanceTypes[30]:="exact";
+Table1Parameters[29]:=[36,18,10,16];
+Table1DistanceTypes[29]:="exact";
 
-// Table 1, No. 31 | B36_21_s8
+// Table 1, No. 30 | B36_21_s8
 // [[37,13,9;8]]_2, distance exact.
 Gsrc:=Matrix(F,21,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,w,1,w^2,0,0,w^2,1,1,0,w,
@@ -1440,14 +1404,14 @@ GX4:=Matrix(F,21,37,[
 assert Rank(Gsrc) eq 21 and Rank(GX4) eq 21;
 assert RowSpace(Submatrix(GX4,1,1,21,36)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,37,21,1) eq VerticalJoin(ZeroMatrix(F,20,1),IdentityMatrix(F,1));
-Table1Generators[31]:=<Gsrc,GX4>;
+Table1Generators[30]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 37 and Dimension(Q) eq 21;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table1Parameters[31]:=[37,13,9,8];
-Table1DistanceTypes[31]:="exact";
+Table1Parameters[30]:=[37,13,9,8];
+Table1DistanceTypes[30]:="exact";
 
-// Table 1, No. 32 | B36_20_s2
+// Table 1, No. 31 | B36_20_s2
 // [[37,18,10;15]]_2, distance exact.
 Gsrc:=Matrix(F,20,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,1,0,1,w,w^2,w^2,0,1,w,w,w,1,
@@ -1496,14 +1460,14 @@ GX4:=Matrix(F,20,37,[
 assert Rank(Gsrc) eq 20 and Rank(GX4) eq 20;
 assert RowSpace(Submatrix(GX4,1,1,20,36)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,37,20,1) eq VerticalJoin(ZeroMatrix(F,19,1),IdentityMatrix(F,1));
-Table1Generators[32]:=<Gsrc,GX4>;
+Table1Generators[31]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 37 and Dimension(Q) eq 20;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table1Parameters[32]:=[37,18,10,15];
-Table1DistanceTypes[32]:="exact";
+Table1Parameters[31]:=[37,18,10,15];
+Table1DistanceTypes[31]:="exact";
 
-// Table 1, No. 33 | H26
+// Table 1, No. 32 | H26
 // [[38,19,10;17]]_2, distance lower_bound.
 Gsrc:=Matrix(F,20,36,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,w^2,w,1,0,1,w,w^2,w^2,0,1,w,w,w,1,
@@ -1552,14 +1516,14 @@ GX4:=Matrix(F,20,38,[
 assert Rank(Gsrc) eq 20 and Rank(GX4) eq 20;
 assert RowSpace(Submatrix(GX4,1,1,20,36)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,37,20,2) eq VerticalJoin(ZeroMatrix(F,18,2),IdentityMatrix(F,2));
-Table1Generators[33]:=<Gsrc,GX4>;
+Table1Generators[32]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 38 and Dimension(Q) eq 20;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table1Parameters[33]:=[38,19,10,17];
-Table1DistanceTypes[33]:="lower_bound";
+Table1Parameters[32]:=[38,19,10,17];
+Table1DistanceTypes[32]:="lower_bound";
 
-// Table 1, No. 34 | B38_14_s2
+// Table 1, No. 33 | B38_14_s2
 // [[39,12,15;23]]_2, distance exact.
 Gsrc:=Matrix(F,14,38,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,w,0,1,1,1,w^2,w^2,0,1,w,w,w^2,0,1,w,1,w^2,1,w^2,1,w,w,0,w,
@@ -1596,14 +1560,14 @@ GX4:=Matrix(F,14,39,[
 assert Rank(Gsrc) eq 14 and Rank(GX4) eq 14;
 assert RowSpace(Submatrix(GX4,1,1,14,38)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,39,14,1) eq VerticalJoin(ZeroMatrix(F,13,1),IdentityMatrix(F,1));
-Table1Generators[34]:=<Gsrc,GX4>;
+Table1Generators[33]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 39 and Dimension(Q) eq 14;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table1Parameters[34]:=[39,12,15,23];
-Table1DistanceTypes[34]:="exact";
+Table1Parameters[33]:=[39,12,15,23];
+Table1DistanceTypes[33]:="exact";
 
-// Table 1, No. 35 | B38_23_s10
+// Table 1, No. 34 | B38_23_s10
 // [[39,13,9;6]]_2, distance exact.
 Gsrc:=Matrix(F,23,38,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w^2,w^2,1,1,w^2,0,w^2,0,w,
@@ -1658,14 +1622,14 @@ GX4:=Matrix(F,23,39,[
 assert Rank(Gsrc) eq 23 and Rank(GX4) eq 23;
 assert RowSpace(Submatrix(GX4,1,1,23,38)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,39,23,1) eq VerticalJoin(ZeroMatrix(F,22,1),IdentityMatrix(F,1));
-Table1Generators[35]:=<Gsrc,GX4>;
+Table1Generators[34]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 39 and Dimension(Q) eq 23;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table1Parameters[35]:=[39,13,9,6];
-Table1DistanceTypes[35]:="exact";
+Table1Parameters[34]:=[39,13,9,6];
+Table1DistanceTypes[34]:="exact";
 
-// Table 1, No. 36 | B38_22_s9
+// Table 1, No. 35 | B38_22_s9
 // [[39,13,9;8]]_2, distance exact.
 Gsrc:=Matrix(F,22,38,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,w^2,1,w^2,w^2,1,1,w^2,0,w^2,0,w,
@@ -1718,14 +1682,14 @@ GX4:=Matrix(F,22,39,[
 assert Rank(Gsrc) eq 22 and Rank(GX4) eq 22;
 assert RowSpace(Submatrix(GX4,1,1,22,38)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,39,22,1) eq VerticalJoin(ZeroMatrix(F,21,1),IdentityMatrix(F,1));
-Table1Generators[36]:=<Gsrc,GX4>;
+Table1Generators[35]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 39 and Dimension(Q) eq 22;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table1Parameters[36]:=[39,13,9,8];
-Table1DistanceTypes[36]:="exact";
+Table1Parameters[35]:=[39,13,9,8];
+Table1DistanceTypes[35]:="exact";
 
-// Table 1, No. 37 | B38_5_s1
+// Table 1, No. 36 | B38_5_s1
 // [[40,4,26;34]]_2, distance exact.
 Gsrc:=Matrix(F,5,38,[
     1,0,0,0,0,w^2,w,w^2,w,w^2,w^2,w^2,w^2,0,1,0,0,1,w,1,0,w^2,0,1,w,0,1,1,1,w,0,w,1,0,w^2,1,1,w^2,
@@ -1744,14 +1708,14 @@ GX4:=Matrix(F,5,40,[
 assert Rank(Gsrc) eq 5 and Rank(GX4) eq 5;
 assert RowSpace(Submatrix(GX4,1,1,5,38)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,39,5,2) eq VerticalJoin(ZeroMatrix(F,3,2),IdentityMatrix(F,2));
-Table1Generators[37]:=<Gsrc,GX4>;
+Table1Generators[36]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 40 and Dimension(Q) eq 5;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table1Parameters[37]:=[40,4,26,34];
-Table1DistanceTypes[37]:="exact";
+Table1Parameters[36]:=[40,4,26,34];
+Table1DistanceTypes[36]:="exact";
 
-// Table 1, No. 38 | B39_15_s3
+// Table 1, No. 37 | B39_15_s3
 // [[40,12,15;22]]_2, distance exact.
 Gsrc:=Matrix(F,15,39,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,w,w,w,w^2,0,0,0,w,w,1,w,1,w^2,w,0,w^2,w^2,1,1,w^2,w^2,
@@ -1790,14 +1754,14 @@ GX4:=Matrix(F,15,40,[
 assert Rank(Gsrc) eq 15 and Rank(GX4) eq 15;
 assert RowSpace(Submatrix(GX4,1,1,15,39)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,40,15,1) eq VerticalJoin(ZeroMatrix(F,14,1),IdentityMatrix(F,1));
-Table1Generators[38]:=<Gsrc,GX4>;
+Table1Generators[37]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 40 and Dimension(Q) eq 15;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table1Parameters[38]:=[40,12,15,22];
-Table1DistanceTypes[38]:="exact";
+Table1Parameters[37]:=[40,12,15,22];
+Table1DistanceTypes[37]:="exact";
 
-// Table 1, No. 39 | B39_26_s9
+// Table 1, No. 38 | B39_26_s9
 // [[40,17,8;5]]_2, distance exact.
 Gsrc:=Matrix(F,26,39,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,w,1,w^2,1,0,w^2,1,0,0,1,1,
@@ -1858,14 +1822,14 @@ GX4:=Matrix(F,26,40,[
 assert Rank(Gsrc) eq 26 and Rank(GX4) eq 26;
 assert RowSpace(Submatrix(GX4,1,1,26,39)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,40,26,1) eq VerticalJoin(ZeroMatrix(F,25,1),IdentityMatrix(F,1));
-Table1Generators[39]:=<Gsrc,GX4>;
+Table1Generators[38]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 40 and Dimension(Q) eq 26;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table1Parameters[39]:=[40,17,8,5];
-Table1DistanceTypes[39]:="exact";
+Table1Parameters[38]:=[40,17,8,5];
+Table1DistanceTypes[38]:="exact";
 
-// Table 1, No. 40 | DV04
+// Table 1, No. 39 | DV04
 // [[41,25,8;14]]_2, distance exact.
 Gsrc:=Matrix(F,26,40,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w^2,0,w^2,0,w^2,w,0,w,1,w,1,w^2,w,
@@ -1926,14 +1890,14 @@ GX4:=Matrix(F,26,41,[
 assert Rank(Gsrc) eq 26 and Rank(GX4) eq 26;
 assert RowSpace(Submatrix(GX4,1,1,26,40)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,41,26,1) eq VerticalJoin(ZeroMatrix(F,25,1),IdentityMatrix(F,1));
-Table1Generators[40]:=<Gsrc,GX4>;
+Table1Generators[39]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 41 and Dimension(Q) eq 26;
 assert Dimension(HermitianHull(Q)) eq 1;
-Table1Parameters[40]:=[41,25,8,14];
-Table1DistanceTypes[40]:="exact";
+Table1Parameters[39]:=[41,25,8,14];
+Table1DistanceTypes[39]:="exact";
 
-// Table 1, No. 41 | DV02
+// Table 1, No. 40 | DV02
 // [[42,7,18;23]]_2, distance exact.
 Gsrc:=Matrix(F,13,41,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,1,0,w,w^2,0,w^2,0,1,1,w,w,w,1,w,w,0,1,0,w,1,w,0,w^2,
@@ -1968,14 +1932,14 @@ GX4:=Matrix(F,13,42,[
 assert Rank(Gsrc) eq 13 and Rank(GX4) eq 13;
 assert RowSpace(Submatrix(GX4,1,1,13,41)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,42,13,1) eq VerticalJoin(ZeroMatrix(F,12,1),IdentityMatrix(F,1));
-Table1Generators[41]:=<Gsrc,GX4>;
+Table1Generators[40]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 42 and Dimension(Q) eq 13;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table1Parameters[41]:=[42,7,18,23];
-Table1DistanceTypes[41]:="exact";
+Table1Parameters[40]:=[42,7,18,23];
+Table1DistanceTypes[40]:="exact";
 
-// Table 1, No. 42 | DV05
+// Table 1, No. 41 | DV05
 // [[47,8,18;23]]_2, distance exact.
 Gsrc:=Matrix(F,16,46,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,w,w,0,w^2,w,w^2,w^2,0,w^2,w,w^2,1,1,w,0,1,1,1,w^2,w,w^2,w,w^2,0,0,1,
@@ -2016,14 +1980,14 @@ GX4:=Matrix(F,16,47,[
 assert Rank(Gsrc) eq 16 and Rank(GX4) eq 16;
 assert RowSpace(Submatrix(GX4,1,1,16,46)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,47,16,1) eq VerticalJoin(ZeroMatrix(F,15,1),IdentityMatrix(F,1));
-Table1Generators[42]:=<Gsrc,GX4>;
+Table1Generators[41]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 47 and Dimension(Q) eq 16;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table1Parameters[42]:=[47,8,18,23];
-Table1DistanceTypes[42]:="exact";
+Table1Parameters[41]:=[47,8,18,23];
+Table1DistanceTypes[41]:="exact";
 
-// Table 1, No. 43 | H30
+// Table 1, No. 42 | H30
 // [[49,13,18;26]]_2, distance lower_bound.
 Gsrc:=Matrix(F,18,48,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,w^2,0,1,1,1,0,1,w,w^2,0,0,0,1,1,w^2,0,1,w^2,1,1,w^2,w,w^2,w^2,1,0,w,w^2,
@@ -2068,14 +2032,14 @@ GX4:=Matrix(F,18,49,[
 assert Rank(Gsrc) eq 18 and Rank(GX4) eq 18;
 assert RowSpace(Submatrix(GX4,1,1,18,48)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,49,18,1) eq VerticalJoin(ZeroMatrix(F,17,1),IdentityMatrix(F,1));
-Table1Generators[43]:=<Gsrc,GX4>;
+Table1Generators[42]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 49 and Dimension(Q) eq 18;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table1Parameters[43]:=[49,13,18,26];
-Table1DistanceTypes[43]:="lower_bound";
+Table1Parameters[42]:=[49,13,18,26];
+Table1DistanceTypes[42]:="lower_bound";
 
-// Table 1, No. 44 | DV09
+// Table 1, No. 43 | DV09
 // [[49,26,11;19]]_2, distance exact.
 Gsrc:=Matrix(F,28,48,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,
@@ -2140,14 +2104,14 @@ GX4:=Matrix(F,28,49,[
 assert Rank(Gsrc) eq 28 and Rank(GX4) eq 28;
 assert RowSpace(Submatrix(GX4,1,1,28,48)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,49,28,1) eq VerticalJoin(ZeroMatrix(F,27,1),IdentityMatrix(F,1));
-Table1Generators[44]:=<Gsrc,GX4>;
+Table1Generators[43]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 49 and Dimension(Q) eq 28;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table1Parameters[44]:=[49,26,11,19];
-Table1DistanceTypes[44]:="exact";
+Table1Parameters[43]:=[49,26,11,19];
+Table1DistanceTypes[43]:="exact";
 
-// Table 1, No. 45 | DV13
+// Table 1, No. 44 | DV13
 // [[50,25,12;19]]_2, distance exact.
 Gsrc:=Matrix(F,28,49,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,1,0,0,1,w,1,0,1,w^2,w,w,0,1,1,w^2,w^2,1,w^2,w,
@@ -2212,14 +2176,14 @@ GX4:=Matrix(F,28,50,[
 assert Rank(Gsrc) eq 28 and Rank(GX4) eq 28;
 assert RowSpace(Submatrix(GX4,1,1,28,49)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,50,28,1) eq VerticalJoin(ZeroMatrix(F,27,1),IdentityMatrix(F,1));
-Table1Generators[45]:=<Gsrc,GX4>;
+Table1Generators[44]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 50 and Dimension(Q) eq 28;
 assert Dimension(HermitianHull(Q)) eq 3;
-Table1Parameters[45]:=[50,25,12,19];
-Table1DistanceTypes[45]:="exact";
+Table1Parameters[44]:=[50,25,12,19];
+Table1DistanceTypes[44]:="exact";
 
-// Table 1, No. 46 | DV15
+// Table 1, No. 45 | DV15
 // [[53,26,12;19]]_2, distance exact.
 Gsrc:=Matrix(F,30,51,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,1,w^2,w^2,w^2,0,w,1,w,w^2,0,w^2,0,w^2,w,w,w^2,0,1,
@@ -2288,14 +2252,14 @@ GX4:=Matrix(F,30,53,[
 assert Rank(Gsrc) eq 30 and Rank(GX4) eq 30;
 assert RowSpace(Submatrix(GX4,1,1,30,51)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,52,30,2) eq VerticalJoin(ZeroMatrix(F,28,2),IdentityMatrix(F,2));
-Table1Generators[46]:=<Gsrc,GX4>;
+Table1Generators[45]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 53 and Dimension(Q) eq 30;
 assert Dimension(HermitianHull(Q)) eq 4;
-Table1Parameters[46]:=[53,26,12,19];
-Table1DistanceTypes[46]:="exact";
+Table1Parameters[45]:=[53,26,12,19];
+Table1DistanceTypes[45]:="exact";
 
-// Table 1, No. 47 | DV17
+// Table 1, No. 46 | DV17
 // [[54,25,12;19]]_2, distance exact.
 Gsrc:=Matrix(F,30,53,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,1,0,0,1,0,0,1,0,0,w^2,1,w,w^2,w^2,0,w,w,0,1,w,
@@ -2364,14 +2328,14 @@ GX4:=Matrix(F,30,54,[
 assert Rank(Gsrc) eq 30 and Rank(GX4) eq 30;
 assert RowSpace(Submatrix(GX4,1,1,30,53)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,54,30,1) eq VerticalJoin(ZeroMatrix(F,29,1),IdentityMatrix(F,1));
-Table1Generators[47]:=<Gsrc,GX4>;
+Table1Generators[46]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 54 and Dimension(Q) eq 30;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table1Parameters[47]:=[54,25,12,19];
-Table1DistanceTypes[47]:="exact";
+Table1Parameters[46]:=[54,25,12,19];
+Table1DistanceTypes[46]:="exact";
 
-// Table 1, No. 48 | DV20
+// Table 1, No. 47 | DV20
 // [[55,32,9;13]]_2, distance exact.
 Gsrc:=Matrix(F,37,54,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,w^2,0,w,0,w,w,1,w^2,1,0,w,w,0,
@@ -2454,14 +2418,14 @@ GX4:=Matrix(F,37,55,[
 assert Rank(Gsrc) eq 37 and Rank(GX4) eq 37;
 assert RowSpace(Submatrix(GX4,1,1,37,54)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,55,37,1) eq VerticalJoin(ZeroMatrix(F,36,1),IdentityMatrix(F,1));
-Table1Generators[48]:=<Gsrc,GX4>;
+Table1Generators[47]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 55 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 5;
-Table1Parameters[48]:=[55,32,9,13];
-Table1DistanceTypes[48]:="exact";
+Table1Parameters[47]:=[55,32,9,13];
+Table1DistanceTypes[47]:="exact";
 
-// Table 1, No. 49 | DV21
+// Table 1, No. 48 | DV21
 // [[55,38,8;13]]_2, distance exact.
 Gsrc:=Matrix(F,40,54,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,0,1,w,0,w,w^2,1,0,0,w,w^2,0,
@@ -2550,14 +2514,14 @@ GX4:=Matrix(F,40,55,[
 assert Rank(Gsrc) eq 40 and Rank(GX4) eq 40;
 assert RowSpace(Submatrix(GX4,1,1,40,54)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,55,40,1) eq VerticalJoin(ZeroMatrix(F,39,1),IdentityMatrix(F,1));
-Table1Generators[49]:=<Gsrc,GX4>;
+Table1Generators[48]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 55 and Dimension(Q) eq 40;
 assert Dimension(HermitianHull(Q)) eq 2;
-Table1Parameters[49]:=[55,38,8,13];
-Table1DistanceTypes[49]:="exact";
+Table1Parameters[48]:=[55,38,8,13];
+Table1DistanceTypes[48]:="exact";
 
-// Table 1, No. 50 | DV23
+// Table 1, No. 49 | DV23
 // [[56,25,12;19]]_2, distance exact.
 Gsrc:=Matrix(F,31,55,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,0,0,w^2,0,w^2,0,w,w,w,1,1,w^2,w^2,w^2,w^2,0,w,w^2,w^2,w,0,
@@ -2628,14 +2592,14 @@ GX4:=Matrix(F,31,56,[
 assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
 assert RowSpace(Submatrix(GX4,1,1,31,55)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,56,31,1) eq VerticalJoin(ZeroMatrix(F,30,1),IdentityMatrix(F,1));
-Table1Generators[50]:=<Gsrc,GX4>;
+Table1Generators[49]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 56 and Dimension(Q) eq 31;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table1Parameters[50]:=[56,25,12,19];
-Table1DistanceTypes[50]:="exact";
+Table1Parameters[49]:=[56,25,12,19];
+Table1DistanceTypes[49]:="exact";
 
-// Table 1, No. 51 | DV19
+// Table 1, No. 50 | DV19
 // [[57,28,11;17]]_2, distance exact.
 Gsrc:=Matrix(F,34,54,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,
@@ -2712,14 +2676,14 @@ GX4:=Matrix(F,34,57,[
 assert Rank(Gsrc) eq 34 and Rank(GX4) eq 34;
 assert RowSpace(Submatrix(GX4,1,1,34,54)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,55,34,3) eq VerticalJoin(ZeroMatrix(F,31,3),IdentityMatrix(F,3));
-Table1Generators[51]:=<Gsrc,GX4>;
+Table1Generators[50]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 57 and Dimension(Q) eq 34;
 assert Dimension(HermitianHull(Q)) eq 6;
-Table1Parameters[51]:=[57,28,11,17];
-Table1DistanceTypes[51]:="exact";
+Table1Parameters[50]:=[57,28,11,17];
+Table1DistanceTypes[50]:="exact";
 
-// Table 1, No. 52 | BS076
+// Table 1, No. 51 | BS076
 // [[58,17,14;13]]_2, distance exact.
 Gsrc:=Matrix(F,31,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
@@ -2790,14 +2754,14 @@ GX4:=Matrix(F,31,58,[
 assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
 assert RowSpace(Submatrix(GX4,1,1,31,57)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,58,31,1) eq VerticalJoin(ZeroMatrix(F,30,1),IdentityMatrix(F,1));
-Table1Generators[52]:=<Gsrc,GX4>;
+Table1Generators[51]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 58 and Dimension(Q) eq 31;
 assert Dimension(HermitianHull(Q)) eq 14;
-Table1Parameters[52]:=[58,17,14,13];
-Table1DistanceTypes[52]:="exact";
+Table1Parameters[51]:=[58,17,14,13];
+Table1DistanceTypes[51]:="exact";
 
-// Table 1, No. 53 | DV24
+// Table 1, No. 52 | DV24
 // [[58,27,12;17]]_2, distance exact.
 Gsrc:=Matrix(F,34,55,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,w,w^2,1,w^2,w^2,w,w^2,w^2,w^2,w,1,0,1,w,w^2,w^2,0,1,w^2,
@@ -2874,14 +2838,14 @@ GX4:=Matrix(F,34,58,[
 assert Rank(Gsrc) eq 34 and Rank(GX4) eq 34;
 assert RowSpace(Submatrix(GX4,1,1,34,55)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,56,34,3) eq VerticalJoin(ZeroMatrix(F,31,3),IdentityMatrix(F,3));
-Table1Generators[53]:=<Gsrc,GX4>;
+Table1Generators[52]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 58 and Dimension(Q) eq 34;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table1Parameters[53]:=[58,27,12,17];
-Table1DistanceTypes[53]:="exact";
+Table1Parameters[52]:=[58,27,12,17];
+Table1DistanceTypes[52]:="exact";
 
-// Table 1, No. 54 | DV27
+// Table 1, No. 53 | DV27
 // [[59,26,12;17]]_2, distance exact.
 Gsrc:=Matrix(F,34,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w,w^2,w,0,w^2,1,1,w^2,w,w^2,0,w,0,w^2,w,
@@ -2958,14 +2922,14 @@ GX4:=Matrix(F,34,59,[
 assert Rank(Gsrc) eq 34 and Rank(GX4) eq 34;
 assert RowSpace(Submatrix(GX4,1,1,34,57)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,58,34,2) eq VerticalJoin(ZeroMatrix(F,32,2),IdentityMatrix(F,2));
-Table1Generators[54]:=<Gsrc,GX4>;
+Table1Generators[53]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 59 and Dimension(Q) eq 34;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table1Parameters[54]:=[59,26,12,17];
-Table1DistanceTypes[54]:="exact";
+Table1Parameters[53]:=[59,26,12,17];
+Table1DistanceTypes[53]:="exact";
 
-// Table 1, No. 55 | DV29
+// Table 1, No. 54 | DV29
 // [[60,18,14;14]]_2, distance exact.
 Gsrc:=Matrix(F,32,58,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,0,
@@ -3038,14 +3002,14 @@ GX4:=Matrix(F,32,60,[
 assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
 assert RowSpace(Submatrix(GX4,1,1,32,58)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,59,32,2) eq VerticalJoin(ZeroMatrix(F,30,2),IdentityMatrix(F,2));
-Table1Generators[55]:=<Gsrc,GX4>;
+Table1Generators[54]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 60 and Dimension(Q) eq 32;
 assert Dimension(HermitianHull(Q)) eq 14;
-Table1Parameters[55]:=[60,18,14,14];
-Table1DistanceTypes[55]:="exact";
+Table1Parameters[54]:=[60,18,14,14];
+Table1DistanceTypes[54]:="exact";
 
-// Table 1, No. 56 | BS074
+// Table 1, No. 55 | BS074
 // [[60,19,14;17]]_2, distance exact.
 Gsrc:=Matrix(F,31,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w^2,0,w,w^2,w,1,1,0,1,0,1,w^2,0,w^2,w^2,w,w,w,1,w^2,w^2,w,w^2,w^2,
@@ -3116,14 +3080,14 @@ GX4:=Matrix(F,31,60,[
 assert Rank(Gsrc) eq 31 and Rank(GX4) eq 31;
 assert RowSpace(Submatrix(GX4,1,1,31,57)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,58,31,3) eq VerticalJoin(ZeroMatrix(F,28,3),IdentityMatrix(F,3));
-Table1Generators[56]:=<Gsrc,GX4>;
+Table1Generators[55]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 60 and Dimension(Q) eq 31;
 assert Dimension(HermitianHull(Q)) eq 12;
-Table1Parameters[56]:=[60,19,14,17];
-Table1DistanceTypes[56]:="exact";
+Table1Parameters[55]:=[60,19,14,17];
+Table1DistanceTypes[55]:="exact";
 
-// Table 1, No. 57 | DV28
+// Table 1, No. 56 | DV28
 // [[60,27,12;17]]_2, distance exact.
 Gsrc:=Matrix(F,35,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w,w^2,w,0,w^2,1,1,w^2,w,w^2,0,w,0,w^2,w,
@@ -3202,14 +3166,14 @@ GX4:=Matrix(F,35,60,[
 assert Rank(Gsrc) eq 35 and Rank(GX4) eq 35;
 assert RowSpace(Submatrix(GX4,1,1,35,57)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,58,35,3) eq VerticalJoin(ZeroMatrix(F,32,3),IdentityMatrix(F,3));
-Table1Generators[57]:=<Gsrc,GX4>;
+Table1Generators[56]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 60 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table1Parameters[57]:=[60,27,12,17];
-Table1DistanceTypes[57]:="exact";
+Table1Parameters[56]:=[60,27,12,17];
+Table1DistanceTypes[56]:="exact";
 
-// Table 1, No. 58 | BS064
+// Table 1, No. 57 | BS064
 // [[60,29,12;17]]_2, distance exact.
 Gsrc:=Matrix(F,36,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w,0,1,1,0,w,1,0,w^2,0,1,w,w^2,w,w,0,w^2,w^2,w,w,0,
@@ -3290,14 +3254,14 @@ GX4:=Matrix(F,36,60,[
 assert Rank(Gsrc) eq 36 and Rank(GX4) eq 36;
 assert RowSpace(Submatrix(GX4,1,1,36,59)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,60,36,1) eq VerticalJoin(ZeroMatrix(F,35,1),IdentityMatrix(F,1));
-Table1Generators[58]:=<Gsrc,GX4>;
+Table1Generators[57]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 60 and Dimension(Q) eq 36;
 assert Dimension(HermitianHull(Q)) eq 7;
-Table1Parameters[58]:=[60,29,12,17];
-Table1DistanceTypes[58]:="exact";
+Table1Parameters[57]:=[60,29,12,17];
+Table1DistanceTypes[57]:="exact";
 
-// Table 1, No. 59 | DV26
+// Table 1, No. 58 | DV26
 // [[61,11,19;26]]_2, distance exact.
 Gsrc:=Matrix(F,23,56,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,1,w,0,0,w^2,0,0,w,w^2,0,w^2,0,w^2,w,w,w,0,w,w^2,w^2,w^2,w^2,1,w^2,1,1,w^2,
@@ -3352,14 +3316,14 @@ GX4:=Matrix(F,23,61,[
 assert Rank(Gsrc) eq 23 and Rank(GX4) eq 23;
 assert RowSpace(Submatrix(GX4,1,1,23,56)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,57,23,5) eq VerticalJoin(ZeroMatrix(F,18,5),IdentityMatrix(F,5));
-Table1Generators[59]:=<Gsrc,GX4>;
+Table1Generators[58]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 61 and Dimension(Q) eq 23;
 assert Dimension(HermitianHull(Q)) eq 12;
-Table1Parameters[59]:=[61,11,19,26];
-Table1DistanceTypes[59]:="exact";
+Table1Parameters[58]:=[61,11,19,26];
+Table1DistanceTypes[58]:="exact";
 
-// Table 1, No. 60 | DV34
+// Table 1, No. 59 | DV34
 // [[61,19,14;14]]_2, distance exact.
 Gsrc:=Matrix(F,33,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,0,0,w,w^2,0,0,1,0,0,w^2,w,w^2,1,1,w,w,w^2,w^2,w,1,1,w,1,0,0,1,
@@ -3434,14 +3398,14 @@ GX4:=Matrix(F,33,61,[
 assert Rank(Gsrc) eq 33 and Rank(GX4) eq 33;
 assert RowSpace(Submatrix(GX4,1,1,33,60)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,61,33,1) eq VerticalJoin(ZeroMatrix(F,32,1),IdentityMatrix(F,1));
-Table1Generators[60]:=<Gsrc,GX4>;
+Table1Generators[59]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 61 and Dimension(Q) eq 33;
 assert Dimension(HermitianHull(Q)) eq 14;
-Table1Parameters[60]:=[61,19,14,14];
-Table1DistanceTypes[60]:="exact";
+Table1Parameters[59]:=[61,19,14,14];
+Table1DistanceTypes[59]:="exact";
 
-// Table 1, No. 61 | DV30
+// Table 1, No. 60 | DV30
 // [[61,20,14;17]]_2, distance exact.
 Gsrc:=Matrix(F,32,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w,1,w^2,w,1,w^2,w^2,w,1,w^2,0,0,1,1,0,w,w,1,0,w^2,1,w^2,0,w^2,w,w^2,1,
@@ -3514,14 +3478,14 @@ GX4:=Matrix(F,32,61,[
 assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
 assert RowSpace(Submatrix(GX4,1,1,32,59)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,60,32,2) eq VerticalJoin(ZeroMatrix(F,30,2),IdentityMatrix(F,2));
-Table1Generators[61]:=<Gsrc,GX4>;
+Table1Generators[60]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 61 and Dimension(Q) eq 32;
 assert Dimension(HermitianHull(Q)) eq 12;
-Table1Parameters[61]:=[61,20,14,17];
-Table1DistanceTypes[61]:="exact";
+Table1Parameters[60]:=[61,20,14,17];
+Table1DistanceTypes[60]:="exact";
 
-// Table 1, No. 62 | DV31
+// Table 1, No. 61 | DV31
 // [[61,26,12;17]]_2, distance exact.
 Gsrc:=Matrix(F,35,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,w^2,w,0,w^2,w^2,w^2,w^2,w^2,w,0,w,w^2,w^2,w,0,w^2,1,w^2,w,w^2,
@@ -3600,14 +3564,14 @@ GX4:=Matrix(F,35,61,[
 assert Rank(Gsrc) eq 35 and Rank(GX4) eq 35;
 assert RowSpace(Submatrix(GX4,1,1,35,59)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,60,35,2) eq VerticalJoin(ZeroMatrix(F,33,2),IdentityMatrix(F,2));
-Table1Generators[62]:=<Gsrc,GX4>;
+Table1Generators[61]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 61 and Dimension(Q) eq 35;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table1Parameters[62]:=[61,26,12,17];
-Table1DistanceTypes[62]:="exact";
+Table1Parameters[61]:=[61,26,12,17];
+Table1DistanceTypes[61]:="exact";
 
-// Table 1, No. 63 | DV25
+// Table 1, No. 62 | DV25
 // [[61,28,12;17]]_2, distance exact.
 Gsrc:=Matrix(F,36,57,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,w,w^2,w^2,w^2,w,w^2,w,0,w^2,1,1,w^2,w,w^2,0,w,0,w^2,w,
@@ -3688,14 +3652,14 @@ GX4:=Matrix(F,36,61,[
 assert Rank(Gsrc) eq 36 and Rank(GX4) eq 36;
 assert RowSpace(Submatrix(GX4,1,1,36,57)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,58,36,4) eq VerticalJoin(ZeroMatrix(F,32,4),IdentityMatrix(F,4));
-Table1Generators[63]:=<Gsrc,GX4>;
+Table1Generators[62]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 61 and Dimension(Q) eq 36;
 assert Dimension(HermitianHull(Q)) eq 8;
-Table1Parameters[63]:=[61,28,12,17];
-Table1DistanceTypes[63]:="exact";
+Table1Parameters[62]:=[61,28,12,17];
+Table1DistanceTypes[62]:="exact";
 
-// Table 1, No. 64 | DV36
+// Table 1, No. 63 | DV36
 // [[62,18,15;14]]_2, distance exact.
 Gsrc:=Matrix(F,33,61,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,w^2,1,w,0,w^2,0,1,1,w^2,0,w,1,0,1,w,w,0,1,w,w,0,0,w^2,
@@ -3770,14 +3734,14 @@ GX4:=Matrix(F,33,62,[
 assert Rank(Gsrc) eq 33 and Rank(GX4) eq 33;
 assert RowSpace(Submatrix(GX4,1,1,33,61)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,62,33,1) eq VerticalJoin(ZeroMatrix(F,32,1),IdentityMatrix(F,1));
-Table1Generators[64]:=<Gsrc,GX4>;
+Table1Generators[63]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 62 and Dimension(Q) eq 33;
 assert Dimension(HermitianHull(Q)) eq 15;
-Table1Parameters[64]:=[62,18,15,14];
-Table1DistanceTypes[64]:="exact";
+Table1Parameters[63]:=[62,18,15,14];
+Table1DistanceTypes[63]:="exact";
 
-// Table 1, No. 65 | DV33
+// Table 1, No. 64 | DV33
 // [[62,19,15;17]]_2, distance exact.
 Gsrc:=Matrix(F,32,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,w,w^2,w,1,0,w^2,1,1,1,0,0,w,0,w^2,1,0,w^2,1,1,w,w^2,0,w^2,1,w^2,1,w,
@@ -3850,14 +3814,14 @@ GX4:=Matrix(F,32,62,[
 assert Rank(Gsrc) eq 32 and Rank(GX4) eq 32;
 assert RowSpace(Submatrix(GX4,1,1,32,60)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,61,32,2) eq VerticalJoin(ZeroMatrix(F,30,2),IdentityMatrix(F,2));
-Table1Generators[65]:=<Gsrc,GX4>;
+Table1Generators[64]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 62 and Dimension(Q) eq 32;
 assert Dimension(HermitianHull(Q)) eq 13;
-Table1Parameters[65]:=[62,19,15,17];
-Table1DistanceTypes[65]:="exact";
+Table1Parameters[64]:=[62,19,15,17];
+Table1DistanceTypes[64]:="exact";
 
-// Table 1, No. 66 | BS096
+// Table 1, No. 65 | BS096
 // [[63,28,12;17]]_2, distance exact.
 Gsrc:=Matrix(F,37,59,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,w,0,w^2,1,1,w^2,w^2,w^2,w,0,w,1,1,1,w,w,w,w^2,w,w,
@@ -3940,14 +3904,14 @@ GX4:=Matrix(F,37,63,[
 assert Rank(Gsrc) eq 37 and Rank(GX4) eq 37;
 assert RowSpace(Submatrix(GX4,1,1,37,59)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,60,37,4) eq VerticalJoin(ZeroMatrix(F,33,4),IdentityMatrix(F,4));
-Table1Generators[66]:=<Gsrc,GX4>;
+Table1Generators[65]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 63 and Dimension(Q) eq 37;
 assert Dimension(HermitianHull(Q)) eq 9;
-Table1Parameters[66]:=[63,28,12,17];
-Table1DistanceTypes[66]:="exact";
+Table1Parameters[65]:=[63,28,12,17];
+Table1DistanceTypes[65]:="exact";
 
-// Table 1, No. 67 | DV32
+// Table 1, No. 66 | DV32
 // [[63,29,12;14]]_2, distance exact.
 Gsrc:=Matrix(F,39,62,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,1,0,w,w,w,w^2,0,0,w,w^2,w^2,w^2,w,w^2,w^2,1,0,1,w^2,w^2,
@@ -4034,14 +3998,14 @@ GX4:=Matrix(F,39,63,[
 assert Rank(Gsrc) eq 39 and Rank(GX4) eq 39;
 assert RowSpace(Submatrix(GX4,1,1,39,62)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,63,39,1) eq VerticalJoin(ZeroMatrix(F,38,1),IdentityMatrix(F,1));
-Table1Generators[67]:=<Gsrc,GX4>;
+Table1Generators[66]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 63 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 10;
-Table1Parameters[67]:=[63,29,12,14];
-Table1DistanceTypes[67]:="exact";
+Table1Parameters[66]:=[63,29,12,14];
+Table1DistanceTypes[66]:="exact";
 
-// Table 1, No. 68 | DV35
+// Table 1, No. 67 | DV35
 // [[64,28,12;14]]_2, distance exact.
 Gsrc:=Matrix(F,39,60,[
     1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,w^2,1,w,1,1,1,1,w^2,0,w^2,1,w^2,1,w^2,0,w,w,w,w^2,w^2,w^2,
@@ -4128,12 +4092,12 @@ GX4:=Matrix(F,39,64,[
 assert Rank(Gsrc) eq 39 and Rank(GX4) eq 39;
 assert RowSpace(Submatrix(GX4,1,1,39,60)) eq RowSpace(Gsrc);
 assert Submatrix(GX4,1,61,39,4) eq VerticalJoin(ZeroMatrix(F,35,4),IdentityMatrix(F,4));
-Table1Generators[68]:=<Gsrc,GX4>;
+Table1Generators[67]:=<Gsrc,GX4>;
 Q:=LinearCode(GX4);
 assert Length(Q) eq 64 and Dimension(Q) eq 39;
 assert Dimension(HermitianHull(Q)) eq 11;
-Table1Parameters[68]:=[64,28,12,14];
-Table1DistanceTypes[68]:="exact";
+Table1Parameters[67]:=[64,28,12,14];
+Table1DistanceTypes[67]:="exact";
 
-assert #Keys(Table1Generators) eq 68;
-print "TABLE1_VERIFIED 68";
+assert #Keys(Table1Generators) eq 67;
+print "TABLE1_VERIFIED 67";

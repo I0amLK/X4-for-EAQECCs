@@ -1,18 +1,18 @@
 # Construction X4 — Supplementary Data
 
-The files below contain the explicit matrices for the **200 direct constructions over GF(4)** in Tables 1–3 of the manuscript. Result numbers agree with the manuscript.
+The files below contain the explicit matrices for the **274 direct constructions over GF(4)** in the manuscript. Result numbers agree with the manuscript.
 
 ## Data files
 
 | Manuscript | Result numbers | Records | CSV | Magma |
 | --- | --- | ---: | --- | --- |
-| Table 1: Corollary 3.6 | 1–68 | 68 | [Table1_Matrix_Index.csv](Table1_Matrix_Index.csv) | [Table1_Generators.m](Table1_Generators.m) |
-| Table 2: Corollary 3.4 | 69–177 | 109 | [Table2_Matrix_Index.csv](Table2_Matrix_Index.csv) | [Table2_Generators.m](Table2_Generators.m) |
-| Table 3: QC-X4 | 178–200 | 23 | [Table3_Matrix_Index.csv](Table3_Matrix_Index.csv) | [Table3_Generators.m](Table3_Generators.m) |
+| Table 1: Corollary 3.6 | 1–67 | 67 | [Table1_Matrix_Index.csv](Table1_Matrix_Index.csv) | [Table1_Generators.m](Table1_Generators.m) |
+| Table 2: Corollary 3.4 | 68–222 | 155 | [Table2_Matrix_Index.csv](Table2_Matrix_Index.csv) | [Table2_Generators.m](Table2_Generators.m) |
+| Table 3: QC-X4 | 223–274 | 52 | [Table3_Matrix_Index.csv](Table3_Matrix_Index.csv) | [Table3_Generators.m](Table3_Generators.m) |
 
-The three Magma files are self-contained and sufficient to reconstruct all listed codes. The CSV files contain the same matrices in a readable form.
+The three Magma files are self-contained and reconstruct all listed codes. The CSV files contain the same matrices in a readable form. The optional construction routines below are also retained.
 
-All entries lie in $GF(4) = GF(2)(w)$, where $w² + w + 1 = 0$. CSV matrices list their rows as
+All entries lie in $GF(4) = GF(2)(w)$, where $w^2+w+1=0$. CSV matrices list their rows as
 
 ~~~text
 [[a11,a12,...]; [a21,a22,...]; ...]
@@ -22,26 +22,20 @@ Commas separate entries; semicolons separate rows. A zero-row matrix is written 
 
 ## Matrix entries
 
-**Table 1 CSV** has three columns: `No, G_src, G_X4`.
+**Table 1 CSV** has three columns: `No, G_src, G_X4`. The first matrix generates the input code. The second is the extension generator, with final columns `[0; I_lambda]`.
 
-- `G_src` generates the input code.
-- `G_X4` is the extension generator, with the final lambda columns equal to the block `[0; I_lambda]`. 
+**Table 2 CSV** has seven columns: `No, G_src1, G_src2, W1, W2, lambda, G_X4`.
 
-**Tables 2 and 3 CSVs** have seven columns: `No, G_src1, G_src2, W1, W2, lambda, G_X4`.
+- `G_src1` and `G_src2` are ordered as `[U1; W1]` and `[U2; W2]`.
+- The last `lambda` rows are the matched bases; their rows are paired in order.
+- The preceding rows specify the two unmatched subspaces.
+- `G_X4` is the block matrix `[U1,0; 0,U2; W1,W2]`.
 
-- `G_src1` and `G_src2` generate the two input codes.
-- `W1` and `W2` are the ordered matched bases; corresponding rows are paired.
-- `lambda` is the matched dimension, denoted k′ in Corollary 3.4.
-- `G_X4` is the X4 output generator in the displayed block-row order.
+Both input codes in Tables 2 and 3 are proper subspaces of their ambient spaces. An input may be entirely matched. Results with the same parameters are listed once, with priority given to Table 3. Table 2 has 24 part-(a) and 131 part-(b) constructions.
 
-For **Table 2**, the input generators are ordered as `[U1; W1]` and `[U2; W2]`: their last lambda rows are matched, and the preceding rows specify the unmatched subspaces. The output is
+**Table 3 CSV** has the same seven columns as Table 2 and records the QC-X4 inputs and matching bases. All Table 3 constructions use m = 3. Interleaving the three blocks gives a QC generator with shift size (N1 + N2)/3.
 
-```math
-G_{\mathrm{X4}}=
-\begin{pmatrix}U_1&0\\0&U_2\\W_1&W_2\end{pmatrix}.
-```
-
-**The Table 2 EAQECC uses the Hermitian dual of this output code.** In Magma, the classical quantum ingredient is `HermitianDual(LinearCode(GX4))`. For **Tables 1 and 3**, it is `LinearCode(GX4)` directly.
+**The Table 2 EAQECC uses `HermitianDual(LinearCode(GX4))`.** Tables 1 and 3 use `LinearCode(GX4)` directly.
 
 ## Use with Magma
 
@@ -53,9 +47,9 @@ magma -b Table2_Generators.m
 magma -b Table3_Generators.m
 ~~~
 
-The files check matrix ranks, hull dimensions and the recorded quantum length, dimension and entanglement. Table 2 also checks the matching conditions; Table 3 checks QC shift invariance after the coordinate permutation below. These checks do not recompute the minimum distances.
+The files check matrix ranks, hull dimensions, matching conditions and the recorded quantum length, dimension and entanglement. These checks do not recompute minimum distances.
 
-Each file defines an array indexed by the manuscript result number:
+The arrays are indexed by the manuscript result number:
 
 ~~~text
 Table1Generators[No] = <Gsrc, GX4>
@@ -63,29 +57,16 @@ Table2Generators[No] = <Gsrc1, Gsrc2, W1, W2, lambda, GX4>
 Table3Generators[No] = <Gsrc1, Gsrc2, W1, W2, lambda, GX4>
 ~~~
 
-`TableNParameters[No]` stores `[N,K,d,c]`, and `TableNDistanceTypes[No]` states whether d is `exact` or `lower_bound`. `Table2Parts[No]` gives `"a"` or `"b"` for Corollary 3.4.
+`TableNParameters[No]` stores `[N,K,d,c]`. `TableNDistanceTypes[No]` states whether d is `exact` or `lower_bound`. `Table2Parts[No]` gives `"a"` or `"b"`.
 
-For example, to reconstruct **Table 2, No. 69**:
+For example, to reconstruct Table 2, No. 68:
 
 ~~~magma
 load "Table2_Generators.m";
-T := Table2Generators[69];
-GX4 := T[6];
-Q := HermitianDual(LinearCode(GX4));
-parameters := Table2Parameters[69];
-distance_type := Table2DistanceTypes[69];
+T := Table2Generators[68];
+Q := HermitianDual(LinearCode(T[6]));
+parameters := Table2Parameters[68];
 ~~~
-
-## QC coordinate order — Table 3
-
-All 23 examples have co-index 3. For input lengths n_i = 3 ell_i, the matrices use the concatenated order `(u0,u1,u2,v0,v1,v2)`, with each u block of length ell_1 and each v block of length ell_2. Apply
-
-```math
-(u_0,u_1,u_2,v_0,v_1,v_2)
-\longmapsto (u_0,v_0,u_1,v_1,u_2,v_2)
-```
-
-to obtain the standard (ell_1 + ell_2)-QC coordinate order. The Table 3 Magma file performs and verifies this permutation.
 
 ## Construction routines (optional)
 
@@ -117,4 +98,3 @@ G2 := IdentityMatrix(F,1);
 GX4,A1,W1,A2,W2 := HullDecreasingX4(G1,G2,1);
 assert Dimension(HermitianHull(LinearCode(GX4))) eq 0;
 ~~~
-
